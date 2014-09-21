@@ -4,69 +4,31 @@
 #
 #-------------------------------------------------
 QT       += core gui widgets
-TARGET = newvtk
+TARGET = MedNUS
 TEMPLATE = app
 
+HEADERS += PMeshViewer.h \
+    PMeshModel.h \
+    PMeshTableWidget.h \
+    PMeshViewerCallback.h
 
 SOURCES += main.cpp \
+    PMeshViewer.cpp \
+    PMeshModel.cpp \
+    PMeshTableWidget.cpp \
     PMeshViewerCallback.cpp
-HEADERS += PMeshViewer.h \
-    PMeshViewerCallback.h
-SOURCES += PMeshViewer.cpp
-HEADERS += PMeshModel.h
-SOURCES += PMeshModel.cpp
-HEADERS += PMeshTableWidget.h
-SOURCES += PMeshTableWidget.cpp
+
 RESOURCES = panax.qrc
 
 
-#QMAKE_CXXFLAGS += -Wno-deprecated -g
-
 CONFIG += MAC_CONFIG
-#CONFIG += c+11
 MAC_CONFIG {
     QMAKE_CXXFLAGS = -std=c++11 -stdlib=libstdc++ -mmacosx-version-min=10.9 -ftemplate-depth=1024 -DBUILD_visualization=off
     QMAKE_LFLAGS = -std=c++11 -stdlib=libstdc++ -mmacosx-version-min=10.9 -ftemplate-depth=1024 -DBUILD_visualization=off
 }
 #-fobjc-gc
 INCLUDEPATH += /usr/local/include/vtk-6.1/
-#LIBS += -L/usr/local/lib -lvtkChartsCore-6.1.1 -lvtkCommonCore-6.1.1 -lvtkDICOMParser-6.1.1 -lvtkFiltersCore-6.1.1 -lvtkfreetype-6.1.1 -lvtkftgl-6.1.1 -lvtkImagingHybrid-6.1.1 -lvtkFiltersHybrid-6.1.1 -lvtkImagingCore-6.1.1 -lvtkIOCore-6.1.1 -lvtkjpeg-6.1.1 -lvtkpng-6.1.1 -lvtkRenderingQt-6.1.1 -lvtkRenderingOpenGL-6.1.1 -lvtksys-6.1.1 -lvtktiff-6.1.1 -lvtkViewsCore-6.1.1 -lvtkRenderingVolume-6.1.1 -lvtkInteractionWidgets-6.1.1  -ldl -Wl
-#-lQVTK-6.1.1 -lvtkCharts -lvtkFiltering -lvtkGenericFiltering-6.1.1 -lvtkGraphics-6.1.1 -lvtkzlib -lGL
 LIBS += -L/usr/local/lib
-#LIBS += -L/usr/local/plugins/designer/
-#    LIBS += -lvtkCommonCore-6.1.1
-#    LIBS += -lvtkCommonExecutionModel-6.1.1
-#    LIBS += -lvtksys-6.1.1
-#    LIBS += -lQVTKWidgetPlugin
-#    LIBS += -lvtkChartsCore-6.1.1
-#    LIBS += -lvtkViewsQt-6.1.1
-#    LIBS += -lvtkInteractionWidgets-6.1
-#    LIBS += -lvtkInfovisCore-6.1.1
-#    LIBS += -lvtkRenderingCore-6.1.1
-#    LIBS += -lvtkRenderingOpenGL-6.1.1
-#    LIBS += -lvtkImagingCore-6.1.1
-#    LIBS += -lvtkIOCore-6.1.1
-#    LIBS += -lvtkImagingCore-6.1.1
-    #LIBS += -lvtkFiltering
- #   LIBS += -lvtkFiltersCore-6.1.1
-#    LIBS += -lvtklibxml2-6.1.1
-#    LIBS += -lvtkDICOMParser-6.1.1
-#    LIBS += -lvtkpng-6.1.1
-#    LIBS += -lvtktiff-6.1.1
-#    LIBS += -lvtkzlib-6.1.1
-#    LIBS += -lvtkjpeg-6.1.1
-#    LIBS += -lvtkalglib-6.1.1
-#    LIBS += -lvtkexpat-6.1.1
-#    LIBS += -lvtkverdict-6.1.1
-#    LIBS += -lvtkmetaio-6.1.1
-#    LIBS += -lvtkNetCDF-6.1.1
-#    LIBS += -lvtksqlite-6.1.1
-#    LIBS += -lvtkexoIIc-6.1.1
-#    LIBS += -lvtkftgl-6.1.1
-#   LIBS += -lvtkfreetype-6.1.1
-#    LIBS += -lvtkFiltersSources-6.1.1
-#    LIBS += -lvtkGUISupportQt-6.1.1
-
 LIBS += -lstdc++
 LIBS += -lvtksys-6.1.1
 LIBS += -lvtkCommonCore-6.1.1
