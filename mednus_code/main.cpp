@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
     VTK_MODULE_INIT(vtkInteractionStyle);
     VTK_MODULE_INIT(vtkRenderingVolumeOpenGL);
 
-    PMeshViewer viewer(false);
+    PMeshViewer viewer(true);
     viewer.show();
     return app.exec();
 }

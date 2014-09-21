@@ -22,6 +22,7 @@
 #include "vtkCamera.h"
 #include "vtkProperty.h"
 #include "vtkCellArray.h"
+#include "PMeshViewerCallback.h"
 
 #include <vtkSphereSource.h>
 #include <vtkSmartPointer.h>
@@ -107,10 +108,10 @@ void PMeshViewer::createWidgets(bool withMeshPanel)
 
     if (withMeshPanel)
     {
-//        PMeshViewerCallback *callback = PMeshViewerCallback::New();
-//        callback->viewer = this;
-//        interactor->AddObserver(vtkCommand::RightButtonPressEvent, callback);
-//        callback->Delete();
+        PMeshViewerCallback *callback = PMeshViewerCallback::New();
+        callback->viewer = this;
+        interactor->AddObserver(vtkCommand::RightButtonPressEvent, callback);
+        callback->Delete();
     }
     
     // Central widget
