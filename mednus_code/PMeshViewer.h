@@ -25,6 +25,7 @@
 #include <QObject>
 #include <QString>
 #include "PMeshTableWidget.h"
+#include "MedNUSLessonPanel.h"
 #include "PMeshModel.h"
 
 class QAction;
@@ -153,7 +154,9 @@ protected:
     QVTKWidget *vtkWidget;
     QComboBox *meshModeBox;
     QDockWidget *meshPanel;
+    QDockWidget *lessonPanel;
     PMeshTableWidget *meshTable;
+    MedNUSLessonPanel *lessonTable;
 //     QList<PMeshPart> meshList;
     PMeshModel meshModel;
 

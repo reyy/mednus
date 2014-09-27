@@ -119,6 +119,7 @@ void PMeshViewer::createWidgets(bool withMeshPanel)
     grid->addWidget(vtkWidget, 0, 0);
     QWidget *main = new QWidget;
     main->setLayout(grid);
+    main->setStyleSheet("background-color: #285183;");
     setCentralWidget(main); 
     
     // Overall
@@ -148,17 +149,32 @@ void PMeshViewer::createWidgets(bool withMeshPanel)
             this, SLOT(blink(int)));
         connect(meshTable, SIGNAL(itemDeleted(int)),
             this, SLOT(deleteMesh(int)));
+        meshTable->setStyleSheet("background-color: #285183;");
+
+        // Create lesson table
+        lessonTable = new MedNUSLessonPanel;
+        lessonTable->setStyleSheet("background-color: #285183;");
         
-        // Create dock widget for right dock area.
+        // Create dock widget for bottom dock area.
+        lessonPanel = new QDockWidget("Lesson List");
+        lessonPanel->setWidget(lessonTable);
+        lessonPanel->setAllowedAreas(Qt::RightDockWidgetArea);
+        lessonPanel->setStyleSheet("background-color: #285183;");
+        addDockWidget(Qt::RightDockWidgetArea, lessonPanel);
+
+        // Create dock widget for bottom dock area.
         meshPanel = new QDockWidget("Mesh List");
         meshPanel->setWidget(meshTable);
-        meshPanel->setAllowedAreas(Qt::RightDockWidgetArea);
-        addDockWidget(Qt::RightDockWidgetArea, meshPanel);
+        meshPanel->setAllowedAreas(Qt::BottomDockWidgetArea);
+        meshPanel->setStyleSheet("background-color: #285183;");
+        addDockWidget(Qt::BottomDockWidgetArea, meshPanel);
     }
     else
     {
         meshTable = NULL;
         meshPanel = NULL;
+        lessonTable = NULL;
+        lessonPanel = NULL;
     }
     
     winWidth = 850;

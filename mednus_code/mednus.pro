@@ -10,13 +10,15 @@ TEMPLATE = app
 HEADERS += PMeshViewer.h \
     PMeshModel.h \
     PMeshTableWidget.h \
-    PMeshViewerCallback.h
+    PMeshViewerCallback.h \
+    MedNUSLessonPanel.h
 
 SOURCES += main.cpp \
     PMeshViewer.cpp \
     PMeshModel.cpp \
     PMeshTableWidget.cpp \
-    PMeshViewerCallback.cpp
+    PMeshViewerCallback.cpp \
+    MedNUSLessonPanel.cpp
 
 RESOURCES = panax.qrc
 
