@@ -7,20 +7,21 @@ QT       += core gui widgets
 TARGET = MedNUS
 TEMPLATE = app
 
-HEADERS += PMeshViewer.h \
+HEADERS += \
     PMeshModel.h \
     PMeshTableWidget.h \
-    PMeshViewerCallback.h \
     MedNUSLessonPanel.h \
-    MedNUSMainWindow.h
+    MedNUSMainWindow.h \
+    MedNUSMeshViewer.h \
+    MedNUSMeshViewerCallback.h
 
 SOURCES += main.cpp \
-    PMeshViewer.cpp \
     PMeshModel.cpp \
     PMeshTableWidget.cpp \
-    PMeshViewerCallback.cpp \
     MedNUSLessonPanel.cpp \
-    MedNUSMainWindow.cpp
+    MedNUSMainWindow.cpp \
+    MedNUSMeshViewer.cpp \
+    MedNUSMeshViewerCallback.cpp
 
 RESOURCES = panax.qrc
 

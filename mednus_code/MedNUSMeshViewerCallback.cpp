@@ -1,17 +1,17 @@
-#include "PMeshViewerCallback.h"
+#include "MedNUSMeshViewerCallback.h"
 //Callback
 
-PMeshViewerCallback::PMeshViewerCallback()
+MedNUSMeshViewerCallback::MedNUSMeshViewerCallback()
 {
 }
 
 
-PMeshViewerCallback::~PMeshViewerCallback()
+MedNUSMeshViewerCallback::~MedNUSMeshViewerCallback()
 {
 }
 
 
-void PMeshViewerCallback::Execute( vtkObject *caller,
+void MedNUSMeshViewerCallback::Execute( vtkObject *caller,
     unsigned long eventId, void *callData)
 {
     vtkRenderWindowInteractor *interactor = viewer->getInteractor();

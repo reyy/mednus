@@ -2,7 +2,7 @@
 #define MEDNUSMAINWINDOW_H
 
 #include <QMainWindow>
-#include "PMeshViewer.h"
+#include "MedNUSMeshViewer.h"
 #include "MedNUSLessonPanel.h"
 
 class MedNUSMainWindow : public QMainWindow

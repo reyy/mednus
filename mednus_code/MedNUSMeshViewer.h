@@ -1,4 +1,4 @@
-/* PMeshViewer.h
+/* MedNUSMeshViewer.h
 
    3D mesh viewer.
 
@@ -6,8 +6,8 @@
    Author: Leow Wee Kheng
 */
 
-#ifndef PMESHVIEWER_H
-#define PMESHVIEWER_H
+#ifndef MedNUSMeshViewer_H
+#define MedNUSMeshViewer_H
 #include <QApplication>
 #include <QMainWindow>
 #include <QTabBar>
@@ -49,7 +49,7 @@ class QPushButton;
 
 // class PMeshPart
 // {
-//     friend class PMeshViewer;
+//     friend class MedNUSMeshViewer;
 //     QString name;
 //     QString source;
 //     vtkPolyData *data;
@@ -61,13 +61,13 @@ class QPushButton;
 // };
 
 
-class PMeshViewer: public QWidget
+class MedNUSMeshViewer: public QWidget
 {
     Q_OBJECT
 
 public:
-    PMeshViewer(bool withMeshPanel);
-    ~PMeshViewer();
+    MedNUSMeshViewer(bool withMeshPanel);
+    ~MedNUSMeshViewer();
     void setAppName(const QString &name);
    
     // For callback
