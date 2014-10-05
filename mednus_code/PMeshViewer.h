@@ -10,6 +10,7 @@
 #define PMESHVIEWER_H
 #include <QApplication>
 #include <QMainWindow>
+#include <QTabBar>
 #include <QGridLayout>
 #include <QDockWidget>
 #include <QComboBox>
@@ -25,7 +26,6 @@
 #include <QObject>
 #include <QString>
 #include "PMeshTableWidget.h"
-#include "MedNUSLessonPanel.h"
 #include "PMeshModel.h"
 
 class QAction;
@@ -61,7 +61,7 @@ class QPushButton;
 // };
 
 
-class PMeshViewer: public QMainWindow
+class PMeshViewer: public QWidget
 {
     Q_OBJECT
 
@@ -154,9 +154,7 @@ protected:
     QVTKWidget *vtkWidget;
     QComboBox *meshModeBox;
     QDockWidget *meshPanel;
-    QDockWidget *lessonPanel;
     PMeshTableWidget *meshTable;
-    MedNUSLessonPanel *lessonTable;
 //     QList<PMeshPart> meshList;
     PMeshModel meshModel;
 

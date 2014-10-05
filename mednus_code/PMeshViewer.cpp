@@ -54,6 +54,12 @@ PMeshViewer::PMeshViewer(bool withMeshPanel)
     createToolBars();
     createStatusBar();
 
+    try{
+        QStringList list;
+       list.append("/Users/rey/Desktop/mednus/models/Skull_BWH/craniofacial.ply");
+       loadMesh(list);
+    }
+    catch(int a){ loadMesh(); }
     //drawSphere(0.5,-1,-1,-1);
     //drawSphere(0.8,2,2,2);
     //drawBoundingBox();
@@ -117,10 +123,12 @@ void PMeshViewer::createWidgets(bool withMeshPanel)
     // Central widget
     QGridLayout *grid = new QGridLayout;
     grid->addWidget(vtkWidget, 0, 0);
-    QWidget *main = new QWidget;
-    main->setLayout(grid);
-    main->setStyleSheet("background-color: #285183;");
-    setCentralWidget(main); 
+//    QWidget *main = new QWidget;
+//    main->setLayout(grid);
+//    main->setStyleSheet("background-color: #285183;");
+    this->setLayout(grid);
+    this->setStyleSheet("background-color: #285183;");
+    //setCentralWidget(main);
     
     // Overall
     setWindowTitle(appName);
@@ -151,35 +159,22 @@ void PMeshViewer::createWidgets(bool withMeshPanel)
             this, SLOT(deleteMesh(int)));
         meshTable->setStyleSheet("background-color: #285183;");
 
-        // Create lesson table
-        lessonTable = new MedNUSLessonPanel;
-        lessonTable->setStyleSheet("background-color: #285183;");
-        
-        // Create dock widget for bottom dock area.
-        lessonPanel = new QDockWidget("Lesson List");
-        lessonPanel->setWidget(lessonTable);
-        lessonPanel->setAllowedAreas(Qt::RightDockWidgetArea);
-        lessonPanel->setStyleSheet("background-color: #285183;");
-        addDockWidget(Qt::RightDockWidgetArea, lessonPanel);
+
 
         // Create dock widget for bottom dock area.
         meshPanel = new QDockWidget("Mesh List");
         meshPanel->setWidget(meshTable);
         meshPanel->setAllowedAreas(Qt::BottomDockWidgetArea);
         meshPanel->setStyleSheet("background-color: #285183;");
-        addDockWidget(Qt::BottomDockWidgetArea, meshPanel);
+        //addDockWidget(Qt::BottomDockWidgetArea, meshPanel);
     }
     else
     {
         meshTable = NULL;
         meshPanel = NULL;
-        lessonTable = NULL;
-        lessonPanel = NULL;
     }
     
-    winWidth = 850;
-    winHeight = 600;
-    setMinimumSize(winWidth, winHeight);
+
     vtkWidget->updateGeometry();
 }
 
@@ -328,75 +323,75 @@ void PMeshViewer::createActions()
 
 void PMeshViewer::createMenus()
 {
-    fileMenu = menuBar()->addMenu(QObject::tr("&File"));
-    fileMenu->addAction(newProjectAction);
-    fileMenu->addAction(openProjectAction);
-    fileMenu->addAction(saveProjectAction);
-    fileMenu->addAction(saveProjectAsAction);
-    fileMenu->addSeparator();
+//    fileMenu = menuBar()->addMenu(QObject::tr("&File"));
+//    fileMenu->addAction(newProjectAction);
+//    fileMenu->addAction(openProjectAction);
+//    fileMenu->addAction(saveProjectAction);
+//    fileMenu->addAction(saveProjectAsAction);
+//    fileMenu->addSeparator();
 
-    fileMenu->addAction(loadDirAction);
-    fileMenu->addAction(loadMeshAction);
-    fileMenu->addAction(addMeshAction);
+//    fileMenu->addAction(loadDirAction);
+//    fileMenu->addAction(loadMeshAction);
+//    fileMenu->addAction(addMeshAction);
     
-    saveMeshMenu = fileMenu->addMenu(QObject::tr("&Save Visible Meshes"));
-    saveMeshMenu->setIcon(QIcon("images/savedir.png"));
-    saveMeshMenu->addAction(saveDirPlyAction);
-    saveMeshMenu->addAction(saveDirStlAction);
+//    saveMeshMenu = fileMenu->addMenu(QObject::tr("&Save Visible Meshes"));
+//    saveMeshMenu->setIcon(QIcon("images/savedir.png"));
+//    saveMeshMenu->addAction(saveDirPlyAction);
+//    saveMeshMenu->addAction(saveDirStlAction);
     
-    fileMenu->addSeparator();
-    fileMenu->addAction(exitAction);
+//    fileMenu->addSeparator();
+//    fileMenu->addAction(exitAction);
 
-    viewMenu = menuBar()->addMenu(QObject::tr("&View"));
-    viewMenu->addAction(saveViewAction);
-    viewMenu->addAction(frontFaceAction);
+//    //viewMenu = menuBar()->addMenu(QObject::tr("&View"));
+//    viewMenu->addAction(saveViewAction);
+//    viewMenu->addAction(frontFaceAction);
     
-    meshModeMenu = viewMenu->addMenu(QObject::tr("&Mesh Mode"));
-    meshModeMenu->addAction(smoothSurfaceAction);
-    meshModeMenu->addAction(flatSurfaceAction);
-    meshModeMenu->addAction(flatLinesAction);
-    meshModeMenu->addAction(wireFrameAction);
-    meshModeMenu->addAction(meshPointAction);
+//    //meshModeMenu = viewMenu->addMenu(QObject::tr("&Mesh Mode"));
+//    meshModeMenu->addAction(smoothSurfaceAction);
+//    meshModeMenu->addAction(flatSurfaceAction);
+//    meshModeMenu->addAction(flatLinesAction);
+//    meshModeMenu->addAction(wireFrameAction);
+//    meshModeMenu->addAction(meshPointAction);
 
-    if (toggleMeshPanelAction)
-        viewMenu->addAction(toggleMeshPanelAction);
-    viewMenu->addAction(infoAction);
+//    if (toggleMeshPanelAction)
+//        viewMenu->addAction(toggleMeshPanelAction);
+//    viewMenu->addAction(infoAction);
 
-    menuBar()->addSeparator();
+//    menuBar()->addSeparator();
 
-    helpMenu = menuBar()->addMenu(QObject::tr("&Help"));
-    helpMenu->addAction(helpAction);
-    helpMenu->addAction(aboutAction);
+//    helpMenu = menuBar()->addMenu(QObject::tr("&Help"));
+//    helpMenu->addAction(helpAction);
+//    helpMenu->addAction(aboutAction);
 }
 
 
 void PMeshViewer::createToolBars()
 {
-    fileToolBar = addToolBar(QObject::tr("&File"));
-    fileToolBar->addAction(newProjectAction);
-    fileToolBar->addAction(openProjectAction);
-    fileToolBar->addAction(saveProjectAction);
-    fileToolBar->addAction(loadDirAction);
-    fileToolBar->addAction(loadMeshAction);
-    fileToolBar->addAction(addMeshAction);
+//    fileToolBar = addToolBar(QObject::tr("&File"));
+//    fileToolBar->addAction(newProjectAction);
+//    fileToolBar->addAction(openProjectAction);
+//    fileToolBar->addAction(saveProjectAction);
+//    fileToolBar->addAction(loadDirAction);
+//    fileToolBar->addAction(loadMeshAction);
+//    fileToolBar->addAction(addMeshAction);
     
-    viewToolBar = addToolBar(QObject::tr("&View"));
-    viewToolBar->addAction(saveViewAction);
-    viewToolBar->addAction(frontFaceAction);
-    viewToolBar->addWidget(meshModeBox);
+//    viewToolBar = addToolBar(QObject::tr("&View"));
+//    viewToolBar->addAction(saveViewAction);
+//    viewToolBar->addAction(frontFaceAction);
+//    viewToolBar->addWidget(meshModeBox);
     
-    if (toggleMeshPanelAction)
-        viewToolBar->addAction(toggleMeshPanelAction);
-    viewToolBar->addAction(infoAction);
+//    if (toggleMeshPanelAction)
+//        viewToolBar->addAction(toggleMeshPanelAction);
+//    viewToolBar->addAction(infoAction);
 
-    helpToolBar = addToolBar(QObject::tr("&Help"));
-    helpToolBar->addAction(helpAction);
+//    helpToolBar = addToolBar(QObject::tr("&Help"));
+//    helpToolBar->addAction(helpAction);
 }
 
 
 void PMeshViewer::createStatusBar()
 {
-    statusBar()->showMessage(QObject::tr(""));
+    //statusBar()->showMessage(QObject::tr(""));
 }
 
 

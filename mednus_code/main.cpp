@@ -1,6 +1,7 @@
 #include <QApplication>
 #include <vtkAutoInit.h>
-#include "PMeshViewer.h"
+//#include "PMeshViewer.h"
+#include "MedNUSMainWindow.h"
 
 int main(int argc, char *argv[])
 {
@@ -11,8 +12,10 @@ int main(int argc, char *argv[])
     VTK_MODULE_INIT(vtkInteractionStyle);
     VTK_MODULE_INIT(vtkRenderingVolumeOpenGL);
 
-    PMeshViewer viewer(true);
-    viewer.show();
+    MedNUSMainWindow win;
+    win.show();
+    //PMeshViewer viewer(true);
+    //viewer.show();
     return app.exec();
 }
 
