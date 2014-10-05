@@ -26,7 +26,6 @@
 #include <QString>
 #include "PMeshTableWidget.h"
 #include "MedNUSLessonPanel.h"
-#include "PMeshModel.h"
 
 class QAction;
 class QComboBox;
@@ -70,44 +69,28 @@ public:
     ~PMeshViewer();
     void setAppName(const QString &name);
    
-    // For callback
-    vtkRenderWindowInteractor *getInteractor();
-    vtkRenderer *getRenderer();
-    void highlight(vtkActor *actor);
+
     
 protected:
     void closeEvent(QCloseEvent *event);
     //Test Code Below
-    void drawSphere(double radius, double xpos, double ypos, double zpos);
-    void drawBoundingBox();
+
     
 protected slots:
     void newProject();
     void openProject();
     void saveProject();
     void saveProjectAs();
-    void loadDir();
-    void loadMesh();
-    void addMesh();
+
     void saveDirPly();
     void saveDirStl();
     void saveView();
-    void toggleFrontFace();
-    void setMeshMode(int);
-    void setSmoothSurface();
-    void setFlatSurface();
-    void setFlatLines();
-    void setWireFrame();
-    void setMeshPoint();
+
     void info();
     void help();
     void about();
 
-    void setVisibility(int row, bool visible);
-    void setColor(int row, QColor color);
-    void setTransparency(int row, float value);
-    void blink(int row);
-    void deleteMesh(int row);
+
 
 protected:
     void createWidgets(bool withMeshPanel);
@@ -151,20 +134,15 @@ protected:
     QToolBar *helpToolBar;
 
     // Widgets
-    QVTKWidget *vtkWidget;
+
     QComboBox *meshModeBox;
     QDockWidget *meshPanel;
     QDockWidget *lessonPanel;
     PMeshTableWidget *meshTable;
     MedNUSLessonPanel *lessonTable;
 //     QList<PMeshPart> meshList;
-    PMeshModel meshModel;
 
-    // VTK objects
-    vtkRenderer *renderer;
-    vtkRenderWindow *renderWindow;
-    vtkRenderWindowInteractor *interactor;
-    vtkInteractorStyleTrackballCamera *style;
+
     
     // Internal variables.
     QString appName;
@@ -175,12 +153,7 @@ protected:
     int winWidth, winHeight;
     int hideFrontFace;
     
-    // Supporting methods
-    void installPipeline(int startIndex);
-    void uninstallPipeline();
-    bool loadMesh(const QStringList &fileNames);
-    bool addMesh(const QStringList &fileNames);
-    bool saveImage(const QString &fileName);
+
 };
 
  //Callback class
