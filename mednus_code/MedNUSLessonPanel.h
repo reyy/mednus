@@ -18,9 +18,11 @@ class QPushButton;
 #include <QItemDelegate>
 #include <QColorDialog>
 #include <QKeyEvent>
+#include <QObject>
 
 class MedNUSLessonPanel : public QTableWidget
 {
+    Q_OBJECT
 public:
     MedNUSLessonPanel();
     ~MedNUSLessonPanel();

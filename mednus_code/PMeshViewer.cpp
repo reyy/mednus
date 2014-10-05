@@ -9,25 +9,9 @@
 
 #include "PMeshViewer.h"
 #include <QtGui>
-#include "vtkCommand.h"
-#include "vtkOBJReader.h"
-#include "vtkPLYReader.h"
-#include "vtkSTLReader.h"
-#include "vtkPLYWriter.h"
-#include "vtkSTLWriter.h"
-#include "vtkWindowToImageFilter.h"
-#include "vtkJPEGWriter.h"
-#include "vtkPNGWriter.h"
-#include "vtkTIFFWriter.h"
-#include "vtkCamera.h"
-#include "vtkProperty.h"
-#include "vtkCellArray.h"
+
 #include "PMeshViewerCallback.h"
 
-#include <vtkSphereSource.h>
-#include <vtkSmartPointer.h>
-#include <vtkOutlineFilter.h>
-#include <vtkOutlineSource.h>
 
 #include <unistd.h>
 using namespace std;
@@ -62,8 +46,8 @@ PMeshViewer::PMeshViewer(bool withMeshPanel)
 
 PMeshViewer::~PMeshViewer()
 {
-    uninstallPipeline();
-    style->Delete();
+    //uninstallPipeline();
+    //style->Delete();
 }
 
 
@@ -93,30 +77,20 @@ void PMeshViewer::createWidgets(bool withMeshPanel)
 {
 
 
-    // Create vtk objects
-    vtkWidget = new QVTKWidget(this);
 
-    // QVTKWidget has already created a render window and interactor
-    renderWindow = vtkWidget->GetRenderWindow();
-    renderer = vtkRenderer::New();
-    renderer->SetBackground(0.0, 0.0, 0.0);
-    renderWindow->AddRenderer(renderer);
-    
-    interactor = renderWindow->GetInteractor();
-    style = vtkInteractorStyleTrackballCamera::New();
-    interactor->SetInteractorStyle(style);
 
     if (withMeshPanel)
     {
         PMeshViewerCallback *callback = PMeshViewerCallback::New();
         callback->viewer = this;
-        interactor->AddObserver(vtkCommand::RightButtonPressEvent, callback);
+        //interactor->AddObserver(vtkCommand::RightButtonPressEvent, callback);
         callback->Delete();
     }
     
     // Central widget
     QGridLayout *grid = new QGridLayout;
-    grid->addWidget(vtkWidget, 0, 0);
+    //grid->addWidget(vtkWidget, 0, 0);
+
     QWidget *main = new QWidget;
     main->setLayout(grid);
     main->setStyleSheet("background-color: #285183;");
@@ -180,7 +154,7 @@ void PMeshViewer::createWidgets(bool withMeshPanel)
     winWidth = 850;
     winHeight = 600;
     setMinimumSize(winWidth, winHeight);
-    vtkWidget->updateGeometry();
+    //vtkWidget->updateGeometry();
 }
 
 
@@ -404,11 +378,11 @@ void PMeshViewer::createStatusBar()
 
 void PMeshViewer::newProject()
 {
-    uninstallPipeline();
-    renderer = vtkRenderer::New();
-    renderer->SetBackground(0.0, 0.0, 0.0);
-    renderWindow->AddRenderer(renderer);
-    renderWindow->Render();
+//    uninstallPipeline();
+//    renderer = vtkRenderer::New();
+//    renderer->SetBackground(0.0, 0.0, 0.0);
+//    renderWindow->AddRenderer(renderer);
+//    renderWindow->Render();
 }
 
 
@@ -427,234 +401,76 @@ void PMeshViewer::saveProjectAs()
 }
 
 
-void PMeshViewer::loadDir()
-{
-    QString dirName = QFileDialog::getExistingDirectory(this,
-        QObject::tr("Load all mesh files in a directory"), readDir);
-        
-    if (!dirName.isEmpty())
-    {
-        QDir dir(dirName);
-        QStringList filters;
-        filters << "*.obj" << "*.ply" << "*.stl";
-        QStringList list = dir.entryList(filters);
-        
-        if (!list.isEmpty())
-        {
-            QStringList fileNames;
-            for (int i = 0; i < list.size(); ++i)
-                fileNames.append(dirName + "/" + list[i]);
-                
-            QApplication::setOverrideCursor(Qt::WaitCursor);
-            if (loadMesh(fileNames))
-                readDir = dirName;
-            QApplication::restoreOverrideCursor();
-        }
-    }
-}
-
-
-void PMeshViewer::loadMesh()
-{
-    QStringList fileNames = QFileDialog::getOpenFileNames(this,
-        QObject::tr("Load one or more mesh files"), readDir,
-        QObject::tr("3D mesh files: *.obj, *.ply, *.stl (*.obj *.ply *.stl)"));
-        
-    if (!fileNames.isEmpty())
-    {
-        QApplication::setOverrideCursor(Qt::WaitCursor);
-        if (loadMesh(fileNames))
-            readDir = QFileInfo(fileNames[fileNames.size()-1]).path();
-        QApplication::restoreOverrideCursor();
-    }
-}
-
-
-void PMeshViewer::addMesh()
-{
-    QStringList fileNames = QFileDialog::getOpenFileNames(this,
-        QObject::tr("Add one or more mesh files"), readDir,
-        QObject::tr("3D mesh files: *.obj, *.ply, *.stl (*.obj *.ply *.stl)"));
-        
-    if (!fileNames.isEmpty())
-    {
-        QApplication::setOverrideCursor(Qt::WaitCursor);
-        if (addMesh(fileNames))
-            readDir = QFileInfo(fileNames[fileNames.size()-1]).path();
-        QApplication::restoreOverrideCursor();
-    }
-}
-
 
 void PMeshViewer::saveDirPly()
 {
-    QString dirName = QFileDialog::getExistingDirectory(this,
-        QObject::tr("Save visible meshes into a directory in PLY format"),
-        writeDir);
+//    QString dirName = QFileDialog::getExistingDirectory(this,
+//        QObject::tr("Save visible meshes into a directory in PLY format"),
+//        writeDir);
         
-    if (!dirName.isEmpty() && !meshModel.isEmpty())
-    {
-        for (int i = 0; i < meshModel.size(); ++i)
-            if (meshModel.getActor(i)->GetVisibility())
-            {
-                QString fileName = dirName + QString("/%1.ply").
-                    arg(i, 8, 10, QChar('0'));
-                vtkPLYWriter *writer = vtkPLYWriter::New();
-                writer->SetFileName(fileName.toLatin1().data());
-                writer->SetInputData(meshModel.getData(i));
-                writer->Update();
-                writer->Delete();
-            }
+//    if (!dirName.isEmpty() && !meshModel.isEmpty())
+//    {
+//        for (int i = 0; i < meshModel.size(); ++i)
+//            if (meshModel.getActor(i)->GetVisibility())
+//            {
+//                QString fileName = dirName + QString("/%1.ply").
+//                    arg(i, 8, 10, QChar('0'));
+//                vtkPLYWriter *writer = vtkPLYWriter::New();
+//                writer->SetFileName(fileName.toLatin1().data());
+//                writer->SetInputData(meshModel.getData(i));
+//                writer->Update();
+//                writer->Delete();
+//            }
             
-        writeDir = dirName;
-    }
+//        writeDir = dirName;
+//    }
+
 }
 
 
 void PMeshViewer::saveDirStl()
 {
-    QString dirName = QFileDialog::getExistingDirectory(this,
-        QObject::tr("Save visible meshes into a directory in STL format"),
-        writeDir);
+//    QString dirName = QFileDialog::getExistingDirectory(this,
+//        QObject::tr("Save visible meshes into a directory in STL format"),
+//        writeDir);
         
-    if (!dirName.isEmpty() && !meshModel.isEmpty())
-    {
-        for (int i = 0; i < meshModel.size(); ++i)
-            if (meshModel.getActor(i)->GetVisibility())
-            {
-                QString fileName = dirName + QString("/%1.stl").
-                    arg(i, 8, 10, QChar('0'));
-                vtkSTLWriter *writer = vtkSTLWriter::New();
-                writer->SetFileName(fileName.toLatin1().data());
-                writer->SetInputData(meshModel.getData(i));
-                writer->Update();
-                writer->Delete();
-            }
+//    if (!dirName.isEmpty() && !meshModel.isEmpty())
+//    {
+//        for (int i = 0; i < meshModel.size(); ++i)
+//            if (meshModel.getActor(i)->GetVisibility())
+//            {
+//                QString fileName = dirName + QString("/%1.stl").
+//                    arg(i, 8, 10, QChar('0'));
+//                vtkSTLWriter *writer = vtkSTLWriter::New();
+//                writer->SetFileName(fileName.toLatin1().data());
+//                writer->SetInputData(meshModel.getData(i));
+//                writer->Update();
+//                writer->Delete();
+//            }
             
-        writeDir = dirName;
-    }
+//        writeDir = dirName;
+//    }
 }
 
 
 void PMeshViewer::saveView()
 {
-    if (!loaded)  // Nothing to save.
-        return;
+//    if (!loaded)  // Nothing to save.
+//        return;
         
-    QString fileName = QFileDialog::getSaveFileName(this,
-        QObject::tr("Save current view to a file"), writeDir,
-        QObject::tr("Image files: *.jpg, *.png, *.tif (*.jpg *.png *.tif)"));
+//    QString fileName = QFileDialog::getSaveFileName(this,
+//        QObject::tr("Save current view to a file"), writeDir,
+//        QObject::tr("Image files: *.jpg, *.png, *.tif (*.jpg *.png *.tif)"));
         
-    if (fileName.isEmpty())
-        return;
+//    if (fileName.isEmpty())
+//        return;
 
-    if (saveImage(fileName))
-        writeDir = QFileInfo(fileName).path();
+//    if (saveImage(fileName))
+//        writeDir = QFileInfo(fileName).path();
 }
 
 
-void PMeshViewer::toggleFrontFace()
-{
-    if (meshModel.isEmpty())
-        return;
-        
-    hideFrontFace = !hideFrontFace;
-    
-    for (int i = 0; i < meshModel.size(); ++i)
-        meshModel.getActor(i)->GetProperty()->
-            SetFrontfaceCulling(hideFrontFace);
-    renderWindow->Render();
-}
 
-
-void PMeshViewer::setMeshMode(int mode)
-{
-    int rep, interpol, edgeOn;
-    
-    switch (mode)
-    {
-        case 0: // smooth surface
-            rep = VTK_SURFACE;
-            interpol = VTK_GOURAUD;
-            edgeOn = 0;
-            break;
-            
-        case 1: // flat surface
-            rep = VTK_SURFACE;
-            interpol = VTK_FLAT;
-            edgeOn = 0;
-            break;
-            
-        case 2: // surface + lines
-            rep = VTK_SURFACE;
-            interpol = VTK_FLAT;
-            edgeOn = 1;
-            break;
-            
-        case 3: // wire frame
-            rep = VTK_WIREFRAME;
-            interpol = VTK_FLAT;
-            edgeOn = 1;
-            break;
-            
-        case 4: // mesh point
-            rep = VTK_POINTS;
-            interpol = VTK_FLAT;
-            edgeOn = 0;
-            break;
-            
-        default: // smooth surface
-            rep = VTK_SURFACE;
-            interpol = VTK_GOURAUD;
-            edgeOn = 0;
-            break;
-    }
-    
-    for (int i = 0; i < meshModel.size(); ++i)
-    {
-        vtkProperty *property = meshModel.getActor(i)->GetProperty();
-        property->SetRepresentation(rep);
-        property->SetInterpolation(interpol);
-        property->SetEdgeVisibility(edgeOn);
-    }
-    
-    renderWindow->Render();
-}
-
-
-void PMeshViewer::setSmoothSurface()
-{
-    meshModeBox->setCurrentIndex(0);
-    setMeshMode(0);
-}
-
-
-void PMeshViewer::setFlatSurface()
-{
-    meshModeBox->setCurrentIndex(1);
-    setMeshMode(1);
-}
-
-
-void PMeshViewer::setFlatLines()
-{
-    meshModeBox->setCurrentIndex(2);
-    setMeshMode(2);
-}
-
-
-void PMeshViewer::setWireFrame()
-{
-    meshModeBox->setCurrentIndex(3);
-    setMeshMode(3);
-}
-
-
-void PMeshViewer::setMeshPoint()
-{
-    meshModeBox->setCurrentIndex(4);
-    setMeshMode(4);
-}
 
 
 void PMeshViewer::info()
@@ -665,18 +481,18 @@ void PMeshViewer::info()
     {
         msg = QString("Project name: %1<br><br>").arg(projectName);
         
-        int numFaces = 0;
-        long memSize = 0;
+//        int numFaces = 0;
+//        long memSize = 0;
         
-        for (int i = 0; i < meshModel.size(); ++i)
-        {
-            vtkPolyData *data = meshModel.getData(i);
-            numFaces += data->GetPolys()->GetNumberOfCells();
-            memSize += data->GetPolys()->GetActualMemorySize();
-        }
+//        for (int i = 0; i < meshModel.size(); ++i)
+//        {
+//            vtkPolyData *data = meshModel.getData(i);
+//            numFaces += data->GetPolys()->GetNumberOfCells();
+//            memSize += data->GetPolys()->GetActualMemorySize();
+//        }
         
-        msg += QString("%1 faces, %2 MB<br>").
-           arg(numFaces).arg(memSize / 1000.0, 0, 'f', 2);
+//        msg += QString("%1 faces, %2 MB<br>").
+//           arg(numFaces).arg(memSize / 1000.0, 0, 'f', 2);
     }
     else
         msg = QString("No mesh loaded.");
@@ -723,300 +539,7 @@ void PMeshViewer::setAppName(const QString &name)
 }
 
 
-void PMeshViewer::setVisibility(int row, bool visible)
-{
-   if (row < 0 || row >= meshModel.size())
-       return;
-       
-    meshModel.getActor(row)->SetVisibility(visible ? 1 : 0);
-    renderWindow->Render();
-}
 
-
-void PMeshViewer::setColor(int row, QColor color)
-{
-   if (row < 0 || row >= meshModel.size())
-       return;
-    
-    double red = color.red() / 255.0;
-    double green = color.green() / 255.0;
-    double blue = color.blue() / 255.0;
-    meshModel.getActor(row)->GetProperty()->SetColor(red, green, blue);
-    renderWindow->Render();
-}
-
-
-void PMeshViewer::setTransparency(int row, float value)
-{
-   if (row < 0 || row >= meshModel.size())
-       return;
-    
-    meshModel.getActor(row)->GetProperty()->SetOpacity(1.0 - value);
-    renderWindow->Render();
-}
-
-
-void PMeshViewer::blink(int row)
-{
-   if (row < 0 || row >= meshModel.size())
-       return;
-        
-    double red, green, blue, r, g, b;
-    vtkProperty *property = meshModel.getActor(row)->GetProperty();
-    property->GetColor(red, green, blue);
-    r = g = b = 0.5;
-    
-    for (int i = 0; i < 2; ++i)  // Blink 2 times
-    {
-        property->SetColor(r, g, b);
-        renderWindow->Render();
-        usleep(250000);
-        property->SetColor(red, green, blue);
-        renderWindow->Render();
-        usleep(250000);
-    }
-}
-
-
-void PMeshViewer::deleteMesh(int row)
-{
-   if (row < 0 || row >= meshModel.size())
-       return;
-       
-    renderer->RemoveActor(meshModel.getActor(row));
-    meshModel.removeAt(row);
-    renderWindow->Render();
-}
-
-
-// Supporting methods
-
-void PMeshViewer::installPipeline(int startIndex)
-{
-    if (!renderer)
-    {
-        renderer = vtkRenderer::New();  // Camera is also reset.
-        renderer->SetBackground(0.8, 0.8, 0.8);
-        renderWindow->AddRenderer(renderer);
-    }
-    
-    for (int i = startIndex; i < meshModel.size(); ++i){
-        renderer->AddActor(meshModel.getActor(i));
-        meshModel.getActor(i)->SetScale(i*0.1 + 1);
-}
-    //****CRAPPY TEST CODE
-
-
-    //drawSphere(0.5,-1,-1,-1);
-    //drawBoundingBox();
-
-    //****END OF CRAPPY CODE
-
-    hideFrontFace = 0;
-    frontFaceAction->setChecked(false);
-    meshModeBox->setCurrentIndex(0);
-    smoothSurfaceAction->setChecked(true);
-    renderer->ResetCamera();
-    loaded = true;
-    //vtkWidget->SetRenderWindow(renderWindow);
-}
-
-
-
-void PMeshViewer::drawSphere(double radius, double xpos, double ypos, double zpos)
-{
-    vtkSmartPointer<vtkSphereSource> sphereSource =
-        vtkSmartPointer<vtkSphereSource>::New();
-    sphereSource->SetRadius(radius);
-    sphereSource->Update();
-    vtkSmartPointer<vtkPolyDataMapper> sphereMapper =
-        vtkSmartPointer<vtkPolyDataMapper>::New();
-    sphereMapper->SetInputConnection(sphereSource->GetOutputPort());
-    vtkSmartPointer<vtkActor> sphereActor =
-        vtkSmartPointer<vtkActor>::New();
-    sphereActor->SetMapper(sphereMapper);
-    sphereActor->SetPosition(xpos,ypos,zpos);
-    renderer->AddActor(sphereActor);
-}
-
-void PMeshViewer::drawBoundingBox()
-{
-    vector<vtkActor*> temp;
-    vtkActorCollection *act= renderer->GetActors();
-    act->InitTraversal();
-    for (int i=0;i<act->GetNumberOfItems();++i) {
-        vtkActor* acty = act->GetNextActor();
-        vtkOutlineSource *bb = vtkOutlineSource::New();
-
-        // set the bb
-        bb->SetBounds(acty->GetBounds());
-
-        // bb -> mapper
-        vtkPolyDataMapper *mapper = vtkPolyDataMapper::New();
-        mapper->SetInputConnection(bb->GetOutputPort());
-
-        // mapper -> actor
-        vtkActor *actor = vtkActor::New();
-        actor->SetMapper(mapper);
-        actor->GetProperty()->SetColor(255,255,0);
-        renderer->AddActor(actor);
-    }
-    for(int i=0; i<temp.size(); i++)
-        renderer->AddActor(temp[i]);
-}
-
-void PMeshViewer::uninstallPipeline()
-{   
-    if (renderer)
-    {
-        renderer->RemoveAllViewProps();
-        renderWindow->RemoveRenderer(renderer);
-        renderer->Delete();
-        renderer = NULL;
-    }
-    
-    meshModel.clear();
-    if (meshTable)
-    {
-        int size = meshTable->rowCount();
-        for (int i = size - 1; i >= 0; --i)
-            meshTable->removeRow(i);  // Remove rows from bottom up.
-    }
-    projectName = QString("Untitled");
-    loaded = false;
-}
-
-
-#define RowHeight 20
-#define MaxHeight 600
-
-bool PMeshViewer::loadMesh(const QStringList &fileNames)
-{
-    uninstallPipeline();
-    return addMesh(fileNames);
-}
-
-
-bool PMeshViewer::addMesh(const QStringList &fileNames)
-{
-    int startIndex = meshModel.size();
-    
-    for (int i = 0; i < fileNames.size(); ++i)
-    {
-        QString suffix = QFileInfo(fileNames[i]).suffix();
-       
-        vtkPolyDataAlgorithm *reader = NULL;
-
-        if (suffix == "obj")
-        {
-            vtkOBJReader *rd = vtkOBJReader::New();
-            rd->SetFileName(fileNames[i].toLatin1().data());
-            reader = rd;
-        }
-        else if (suffix == "ply")
-        {
-            vtkPLYReader *rd = vtkPLYReader::New();
-            rd->SetFileName(fileNames[i].toLatin1().data());
-            reader = rd;
-        }
-        else if (suffix == "stl")
-        {
-            vtkSTLReader *rd = vtkSTLReader::New();
-            rd->SetFileName(fileNames[i].toLatin1().data());
-            reader = rd;
-        }
-        else // This should not happen, but just in case.
-        {
-            uninstallPipeline();
-            cout << "Error: In PMeshViewer::loadMesh(): file type " << 
-                suffix.toLatin1().data() << " is unsupported.\n" << flush;
-            return false;
-        }
-        
-        // Try to read data
-        reader->Update();
-        unsigned long err = reader->GetErrorCode();
-        
-        if (err != 0)
-        {
-            QMessageBox::critical(this, appName,
-                QString("Error reading mesh file %1.").arg(fileNames[i]));
-            reader->Delete();
-            return false;
-        }
-        
-        // Append to mesh model
-        QString name = QFileInfo(fileNames[i]).baseName();
-        QString source = fileNames[i];
-        vtkPolyData *data = reader->GetOutput();
-        meshModel.append(name, source, data);
-        reader->Delete();
-
-        if (meshTable)
-            meshTable->append(name, source);
-    }
-       
-    installPipeline(startIndex);
-    setWindowTitle(QString("%1 - %2").arg(appName).arg(projectName));
-    return true;
-}
-
-
-bool PMeshViewer::saveImage(const QString &fileName)
-{
-    vtkWindowToImageFilter *filter = vtkWindowToImageFilter::New();
-    filter->SetInput(vtkWidget->GetRenderWindow());
-
-    QString suffix = QFileInfo(fileName).suffix();
-    vtkImageWriter *writer;
-
-    if (suffix == "jpg")
-        writer = vtkJPEGWriter::New();
-    else if (suffix == "png")
-        writer = vtkPNGWriter::New();
-    else if (suffix == "tif")
-        writer = vtkTIFFWriter::New();
-    else
-    {
-        QMessageBox::critical(this, appName,
-            QString("File type %1 is unsupported.").arg(suffix));
-        return false;
-    }
-
-    writer->SetInputData(filter->GetOutput());
-    writer->SetFileName(fileName.toLatin1().data());
-    writer->Write();
-    writer->Delete();
-    filter->Delete();
-    return true;
-}
-
-
-// For callback
-
-vtkRenderWindowInteractor *PMeshViewer::getInteractor()
-{
-    return interactor;
-}
-
-
-vtkRenderer *PMeshViewer::getRenderer()
-{
-    return renderer;
-}
-
-
-void PMeshViewer::highlight(vtkActor *actor)
-{
-    if (!actor)
-        meshTable->setCurrentCell(-1, -1);
-    else
-    {
-        for (int i = 0; i < meshModel.size(); ++i)
-            if (meshModel.getActor(i) == actor)
-                meshTable->setCurrentCell(i, NameColumn);
-    }
-}
 
 
 
