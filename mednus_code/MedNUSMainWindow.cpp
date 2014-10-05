@@ -5,9 +5,10 @@ MedNUSMainWindow::MedNUSMainWindow(QWidget *parent) :
 {
 
     setWindowTitle(QString("MedNUS"));
+    setWindowIcon(QIcon(":/images/panax-icon.png"));
 
-    int winWidth = 850;
-    int winHeight = 600;
+    int winWidth = 1024;
+    int winHeight = 768;
     setMinimumSize(winWidth, winHeight);
 
     createWidgets();
@@ -27,7 +28,7 @@ void MedNUSMainWindow::createWidgets()
     setCentralWidget(tabs);
 
     //Add Model
-    PMeshViewer *view = new PMeshViewer(false);
+    MedNUSMeshViewer *view = new MedNUSMeshViewer(false);
     tabs->addTab(view,"Skull Model");
     tabs->addTab(new QWidget(),"TAB 2");
 

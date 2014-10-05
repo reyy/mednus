@@ -1,4 +1,4 @@
-/* PMeshViewer.cpp
+/* MedNUSMeshViewer.cpp
 
    3D mesh viewer.
    
@@ -7,7 +7,7 @@
 */
 
 
-#include "PMeshViewer.h"
+#include "MedNUSMeshViewer.h"
 #include <QtGui>
 #include "vtkCommand.h"
 #include "vtkOBJReader.h"
@@ -22,7 +22,7 @@
 #include "vtkCamera.h"
 #include "vtkProperty.h"
 #include "vtkCellArray.h"
-#include "PMeshViewerCallback.h"
+#include "MedNUSMeshViewerCallback.h"
 
 #include <vtkSphereSource.h>
 #include <vtkSmartPointer.h>
@@ -35,9 +35,9 @@ using namespace std;
 
 
 
-// PMeshViewer class
+// MedNUSMeshViewer class
 
-PMeshViewer::PMeshViewer(bool withMeshPanel)
+MedNUSMeshViewer::MedNUSMeshViewer(bool withMeshPanel)
 {
     // Initialisation
     appName = QString("Mesh Viewer");
@@ -66,7 +66,7 @@ PMeshViewer::PMeshViewer(bool withMeshPanel)
 }
 
 
-PMeshViewer::~PMeshViewer()
+MedNUSMeshViewer::~MedNUSMeshViewer()
 {
     uninstallPipeline();
     style->Delete();
@@ -75,7 +75,7 @@ PMeshViewer::~PMeshViewer()
 
 // Event handling
 
-void PMeshViewer::closeEvent(QCloseEvent *event)
+void MedNUSMeshViewer::closeEvent(QCloseEvent *event)
 {
     if (meshTable)
         meshTable->close();
@@ -95,7 +95,7 @@ void PMeshViewer::closeEvent(QCloseEvent *event)
 #define NameColumn 5
 #define SourceColumn 6
 
-void PMeshViewer::createWidgets(bool withMeshPanel)
+void MedNUSMeshViewer::createWidgets(bool withMeshPanel)
 {
 
 
@@ -114,7 +114,7 @@ void PMeshViewer::createWidgets(bool withMeshPanel)
 
     if (withMeshPanel)
     {
-        PMeshViewerCallback *callback = PMeshViewerCallback::New();
+        MedNUSMeshViewerCallback *callback = MedNUSMeshViewerCallback::New();
         callback->viewer = this;
         interactor->AddObserver(vtkCommand::RightButtonPressEvent, callback);
         callback->Delete();
@@ -127,12 +127,8 @@ void PMeshViewer::createWidgets(bool withMeshPanel)
 //    main->setLayout(grid);
 //    main->setStyleSheet("background-color: #285183;");
     this->setLayout(grid);
-    this->setStyleSheet("background-color: #285183;");
+    //this->setStyleSheet("background-color: #285183;");
     //setCentralWidget(main);
-    
-    // Overall
-    setWindowTitle(appName);
-    setWindowIcon(QIcon(":/images/panax-icon.png"));
     
     // Create mesh mode box
     meshModeBox = new QComboBox(this);
@@ -166,7 +162,10 @@ void PMeshViewer::createWidgets(bool withMeshPanel)
         meshPanel->setWidget(meshTable);
         meshPanel->setAllowedAreas(Qt::BottomDockWidgetArea);
         meshPanel->setStyleSheet("background-color: #285183;");
-        //addDockWidget(Qt::BottomDockWidgetArea, meshPanel);
+//        QMainWindow *mw = new QMainWindow( this );
+//        this->layout()->addWidget(mw);
+//        mw->addDockWidget(Qt::BottomDockWidgetArea, meshPanel);
+        this->layout()->addWidget(meshPanel);
     }
     else
     {
@@ -179,7 +178,7 @@ void PMeshViewer::createWidgets(bool withMeshPanel)
 }
 
 
-void PMeshViewer::createActions()
+void MedNUSMeshViewer::createActions()
 {
     newProjectAction = new QAction(QObject::tr("&New Project"), this);
     newProjectAction->setIcon(QIcon(":/images/new.png"));
@@ -321,7 +320,7 @@ void PMeshViewer::createActions()
 }
 
 
-void PMeshViewer::createMenus()
+void MedNUSMeshViewer::createMenus()
 {
 //    fileMenu = menuBar()->addMenu(QObject::tr("&File"));
 //    fileMenu->addAction(newProjectAction);
@@ -365,31 +364,38 @@ void PMeshViewer::createMenus()
 }
 
 
-void PMeshViewer::createToolBars()
+void MedNUSMeshViewer::createToolBars()
 {
-//    fileToolBar = addToolBar(QObject::tr("&File"));
-//    fileToolBar->addAction(newProjectAction);
-//    fileToolBar->addAction(openProjectAction);
-//    fileToolBar->addAction(saveProjectAction);
-//    fileToolBar->addAction(loadDirAction);
-//    fileToolBar->addAction(loadMeshAction);
-//    fileToolBar->addAction(addMeshAction);
+    //
+    //fileToolBar = addToolBar(QObject::tr("&File"));
+    fileToolBar = new QToolBar("File", this);
+    fileToolBar->addAction(newProjectAction);
+    fileToolBar->addAction(openProjectAction);
+    fileToolBar->addAction(saveProjectAction);
+    fileToolBar->addAction(loadDirAction);
+    fileToolBar->addAction(loadMeshAction);
+    fileToolBar->addAction(addMeshAction);
+    //this->layout()->addWidget(fileToolBar);
     
-//    viewToolBar = addToolBar(QObject::tr("&View"));
-//    viewToolBar->addAction(saveViewAction);
-//    viewToolBar->addAction(frontFaceAction);
-//    viewToolBar->addWidget(meshModeBox);
+    //viewToolBar = addToolBar(QObject::tr("&View"));
+    //viewToolBar = new QToolBar("View", this);
+    fileToolBar->addAction(saveViewAction);
+    fileToolBar->addAction(frontFaceAction);
+    fileToolBar->addWidget(meshModeBox);
+    //
     
-//    if (toggleMeshPanelAction)
-//        viewToolBar->addAction(toggleMeshPanelAction);
-//    viewToolBar->addAction(infoAction);
+    if (toggleMeshPanelAction)
+        fileToolBar->addAction(toggleMeshPanelAction);
+    fileToolBar->addAction(infoAction);
+    //this->layout()->addWidget(viewToolBar);
 
-//    helpToolBar = addToolBar(QObject::tr("&Help"));
-//    helpToolBar->addAction(helpAction);
+    //fileToolBar = new QToolBar("Help", this);
+    fileToolBar->addAction(helpAction);
+    this->layout()->addWidget(fileToolBar);
 }
 
 
-void PMeshViewer::createStatusBar()
+void MedNUSMeshViewer::createStatusBar()
 {
     //statusBar()->showMessage(QObject::tr(""));
 }
@@ -397,7 +403,7 @@ void PMeshViewer::createStatusBar()
 
 // Slot methods
 
-void PMeshViewer::newProject()
+void MedNUSMeshViewer::newProject()
 {
     uninstallPipeline();
     renderer = vtkRenderer::New();
@@ -407,22 +413,22 @@ void PMeshViewer::newProject()
 }
 
 
-void PMeshViewer::openProject()
+void MedNUSMeshViewer::openProject()
 {
 }
 
 
-void PMeshViewer::saveProject()
+void MedNUSMeshViewer::saveProject()
 {
 }
 
 
-void PMeshViewer::saveProjectAs()
+void MedNUSMeshViewer::saveProjectAs()
 {
 }
 
 
-void PMeshViewer::loadDir()
+void MedNUSMeshViewer::loadDir()
 {
     QString dirName = QFileDialog::getExistingDirectory(this,
         QObject::tr("Load all mesh files in a directory"), readDir);
@@ -449,7 +455,7 @@ void PMeshViewer::loadDir()
 }
 
 
-void PMeshViewer::loadMesh()
+void MedNUSMeshViewer::loadMesh()
 {
     QStringList fileNames = QFileDialog::getOpenFileNames(this,
         QObject::tr("Load one or more mesh files"), readDir,
@@ -465,7 +471,7 @@ void PMeshViewer::loadMesh()
 }
 
 
-void PMeshViewer::addMesh()
+void MedNUSMeshViewer::addMesh()
 {
     QStringList fileNames = QFileDialog::getOpenFileNames(this,
         QObject::tr("Add one or more mesh files"), readDir,
@@ -481,7 +487,7 @@ void PMeshViewer::addMesh()
 }
 
 
-void PMeshViewer::saveDirPly()
+void MedNUSMeshViewer::saveDirPly()
 {
     QString dirName = QFileDialog::getExistingDirectory(this,
         QObject::tr("Save visible meshes into a directory in PLY format"),
@@ -506,7 +512,7 @@ void PMeshViewer::saveDirPly()
 }
 
 
-void PMeshViewer::saveDirStl()
+void MedNUSMeshViewer::saveDirStl()
 {
     QString dirName = QFileDialog::getExistingDirectory(this,
         QObject::tr("Save visible meshes into a directory in STL format"),
@@ -531,7 +537,7 @@ void PMeshViewer::saveDirStl()
 }
 
 
-void PMeshViewer::saveView()
+void MedNUSMeshViewer::saveView()
 {
     if (!loaded)  // Nothing to save.
         return;
@@ -548,7 +554,7 @@ void PMeshViewer::saveView()
 }
 
 
-void PMeshViewer::toggleFrontFace()
+void MedNUSMeshViewer::toggleFrontFace()
 {
     if (meshModel.isEmpty())
         return;
@@ -562,7 +568,7 @@ void PMeshViewer::toggleFrontFace()
 }
 
 
-void PMeshViewer::setMeshMode(int mode)
+void MedNUSMeshViewer::setMeshMode(int mode)
 {
     int rep, interpol, edgeOn;
     
@@ -617,42 +623,42 @@ void PMeshViewer::setMeshMode(int mode)
 }
 
 
-void PMeshViewer::setSmoothSurface()
+void MedNUSMeshViewer::setSmoothSurface()
 {
     meshModeBox->setCurrentIndex(0);
     setMeshMode(0);
 }
 
 
-void PMeshViewer::setFlatSurface()
+void MedNUSMeshViewer::setFlatSurface()
 {
     meshModeBox->setCurrentIndex(1);
     setMeshMode(1);
 }
 
 
-void PMeshViewer::setFlatLines()
+void MedNUSMeshViewer::setFlatLines()
 {
     meshModeBox->setCurrentIndex(2);
     setMeshMode(2);
 }
 
 
-void PMeshViewer::setWireFrame()
+void MedNUSMeshViewer::setWireFrame()
 {
     meshModeBox->setCurrentIndex(3);
     setMeshMode(3);
 }
 
 
-void PMeshViewer::setMeshPoint()
+void MedNUSMeshViewer::setMeshPoint()
 {
     meshModeBox->setCurrentIndex(4);
     setMeshMode(4);
 }
 
 
-void PMeshViewer::info()
+void MedNUSMeshViewer::info()
 {
     QString msg;
     
@@ -682,7 +688,7 @@ void PMeshViewer::info()
 }
 
 
-void PMeshViewer::help()
+void MedNUSMeshViewer::help()
 {
     QMessageBox::about(this, QObject::tr("Help information"),
        QString("<h2>%1</h2>").arg(appName) +
@@ -700,7 +706,7 @@ void PMeshViewer::help()
 }
 
 
-void PMeshViewer::about()
+void MedNUSMeshViewer::about()
 {
     QMessageBox::about(this, QString("About %1").arg(appName),
        QString("<h2>%1</h2>").arg(appName) +
@@ -712,13 +718,13 @@ void PMeshViewer::about()
 }
 
 
-void PMeshViewer::setAppName(const QString &name)
+void MedNUSMeshViewer::setAppName(const QString &name)
 {
     appName = name;
 }
 
 
-void PMeshViewer::setVisibility(int row, bool visible)
+void MedNUSMeshViewer::setVisibility(int row, bool visible)
 {
    if (row < 0 || row >= meshModel.size())
        return;
@@ -728,7 +734,7 @@ void PMeshViewer::setVisibility(int row, bool visible)
 }
 
 
-void PMeshViewer::setColor(int row, QColor color)
+void MedNUSMeshViewer::setColor(int row, QColor color)
 {
    if (row < 0 || row >= meshModel.size())
        return;
@@ -741,7 +747,7 @@ void PMeshViewer::setColor(int row, QColor color)
 }
 
 
-void PMeshViewer::setTransparency(int row, float value)
+void MedNUSMeshViewer::setTransparency(int row, float value)
 {
    if (row < 0 || row >= meshModel.size())
        return;
@@ -751,7 +757,7 @@ void PMeshViewer::setTransparency(int row, float value)
 }
 
 
-void PMeshViewer::blink(int row)
+void MedNUSMeshViewer::blink(int row)
 {
    if (row < 0 || row >= meshModel.size())
        return;
@@ -773,7 +779,7 @@ void PMeshViewer::blink(int row)
 }
 
 
-void PMeshViewer::deleteMesh(int row)
+void MedNUSMeshViewer::deleteMesh(int row)
 {
    if (row < 0 || row >= meshModel.size())
        return;
@@ -786,7 +792,7 @@ void PMeshViewer::deleteMesh(int row)
 
 // Supporting methods
 
-void PMeshViewer::installPipeline(int startIndex)
+void MedNUSMeshViewer::installPipeline(int startIndex)
 {
     if (!renderer)
     {
@@ -818,7 +824,7 @@ void PMeshViewer::installPipeline(int startIndex)
 
 
 
-void PMeshViewer::drawSphere(double radius, double xpos, double ypos, double zpos)
+void MedNUSMeshViewer::drawSphere(double radius, double xpos, double ypos, double zpos)
 {
     vtkSmartPointer<vtkSphereSource> sphereSource =
         vtkSmartPointer<vtkSphereSource>::New();
@@ -834,7 +840,7 @@ void PMeshViewer::drawSphere(double radius, double xpos, double ypos, double zpo
     renderer->AddActor(sphereActor);
 }
 
-void PMeshViewer::drawBoundingBox()
+void MedNUSMeshViewer::drawBoundingBox()
 {
     vector<vtkActor*> temp;
     vtkActorCollection *act= renderer->GetActors();
@@ -860,7 +866,7 @@ void PMeshViewer::drawBoundingBox()
         renderer->AddActor(temp[i]);
 }
 
-void PMeshViewer::uninstallPipeline()
+void MedNUSMeshViewer::uninstallPipeline()
 {   
     if (renderer)
     {
@@ -885,14 +891,14 @@ void PMeshViewer::uninstallPipeline()
 #define RowHeight 20
 #define MaxHeight 600
 
-bool PMeshViewer::loadMesh(const QStringList &fileNames)
+bool MedNUSMeshViewer::loadMesh(const QStringList &fileNames)
 {
     uninstallPipeline();
     return addMesh(fileNames);
 }
 
 
-bool PMeshViewer::addMesh(const QStringList &fileNames)
+bool MedNUSMeshViewer::addMesh(const QStringList &fileNames)
 {
     int startIndex = meshModel.size();
     
@@ -923,7 +929,7 @@ bool PMeshViewer::addMesh(const QStringList &fileNames)
         else // This should not happen, but just in case.
         {
             uninstallPipeline();
-            cout << "Error: In PMeshViewer::loadMesh(): file type " << 
+            cout << "Error: In MedNUSMeshViewer::loadMesh(): file type " <<
                 suffix.toLatin1().data() << " is unsupported.\n" << flush;
             return false;
         }
@@ -957,7 +963,7 @@ bool PMeshViewer::addMesh(const QStringList &fileNames)
 }
 
 
-bool PMeshViewer::saveImage(const QString &fileName)
+bool MedNUSMeshViewer::saveImage(const QString &fileName)
 {
     vtkWindowToImageFilter *filter = vtkWindowToImageFilter::New();
     filter->SetInput(vtkWidget->GetRenderWindow());
@@ -989,19 +995,19 @@ bool PMeshViewer::saveImage(const QString &fileName)
 
 // For callback
 
-vtkRenderWindowInteractor *PMeshViewer::getInteractor()
+vtkRenderWindowInteractor *MedNUSMeshViewer::getInteractor()
 {
     return interactor;
 }
 
 
-vtkRenderer *PMeshViewer::getRenderer()
+vtkRenderer *MedNUSMeshViewer::getRenderer()
 {
     return renderer;
 }
 
 
-void PMeshViewer::highlight(vtkActor *actor)
+void MedNUSMeshViewer::highlight(vtkActor *actor)
 {
     if (!actor)
         meshTable->setCurrentCell(-1, -1);
