@@ -1,0 +1,51 @@
+#include "MedNUSMainWindow.h"
+
+MedNUSMainWindow::MedNUSMainWindow(QWidget *parent) :
+    QMainWindow(parent)
+{
+
+    setWindowTitle(QString("MedNUS"));
+
+    int winWidth = 850;
+    int winHeight = 600;
+    setMinimumSize(winWidth, winHeight);
+
+    createWidgets();
+    createMenus();
+}
+
+void MedNUSMainWindow::createWidgets()
+{
+    //Tab (Push out to new class)
+    QTabWidget *tabs = new QTabWidget();
+    tabs->setTabsClosable(true);
+    tabs->setMovable(true);
+    tabs->setDocumentMode(true);
+    tabs->setUsesScrollButtons(true);
+    tabs->setElideMode(Qt::ElideRight);
+    tabs->setTabShape(QTabWidget::Rounded);
+    setCentralWidget(tabs);
+
+    //Add Model
+    PMeshViewer *view = new PMeshViewer(false);
+    tabs->addTab(view,"Skull Model");
+    tabs->addTab(new QWidget(),"TAB 2");
+
+    // Create lesson table
+    MedNUSLessonPanel *lessonTable;
+    lessonTable = new MedNUSLessonPanel;
+    lessonTable->setStyleSheet("background-color: #285183;");
+
+    // Create dock widget for bottom dock area.
+    QDockWidget *lessonPanel;
+    lessonPanel = new QDockWidget("Lesson List");
+    lessonPanel->setWidget(lessonTable);
+    lessonPanel->setAllowedAreas(Qt::RightDockWidgetArea);
+    lessonPanel->setStyleSheet("background-color: #285183;");
+    addDockWidget(Qt::RightDockWidgetArea, lessonPanel);
+}
+
+void MedNUSMainWindow::createMenus()
+{
+    //
+}

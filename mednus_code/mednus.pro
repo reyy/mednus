@@ -11,14 +11,16 @@ HEADERS += PMeshViewer.h \
     PMeshModel.h \
     PMeshTableWidget.h \
     PMeshViewerCallback.h \
-    MedNUSLessonPanel.h
+    MedNUSLessonPanel.h \
+    MedNUSMainWindow.h
 
 SOURCES += main.cpp \
     PMeshViewer.cpp \
     PMeshModel.cpp \
     PMeshTableWidget.cpp \
     PMeshViewerCallback.cpp \
-    MedNUSLessonPanel.cpp
+    MedNUSLessonPanel.cpp \
+    MedNUSMainWindow.cpp
 
 RESOURCES = panax.qrc
 
