@@ -18,7 +18,7 @@ MedNUSMainWindow::MedNUSMainWindow(QWidget *parent) :
 void MedNUSMainWindow::createWidgets()
 {
     //Tab (Push out to new class)
-    QTabWidget *tabs = new QTabWidget();
+    tabs = new QTabWidget();
     tabs->setTabsClosable(true);
     tabs->setMovable(true);
     tabs->setDocumentMode(true);
@@ -29,7 +29,9 @@ void MedNUSMainWindow::createWidgets()
 
     //Add Model
     MedNUSMeshViewer *view = new MedNUSMeshViewer(false);
+    vid = new MedNUSVideoViewer();
     tabs->addTab(view,"Skull Model");
+    tabs->addTab(vid, "Video");
     tabs->addTab(new QWidget(),"TAB 2");
 
     // Create lesson table

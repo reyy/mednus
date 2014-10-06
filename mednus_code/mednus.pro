@@ -3,7 +3,7 @@
 # Project created by QtCreator 2014-09-14T14:37:29
 #
 #-------------------------------------------------
-QT       += core gui widgets
+QT       += core gui widgets multimedia multimediawidgets
 TARGET = MedNUS
 TEMPLATE = app
 
@@ -13,7 +13,8 @@ HEADERS += \
     MedNUSLessonPanel.h \
     MedNUSMainWindow.h \
     MedNUSMeshViewer.h \
-    MedNUSMeshViewerCallback.h
+    MedNUSMeshViewerCallback.h \
+    MedNUSVideoViewer.h
 
 SOURCES += main.cpp \
     PMeshModel.cpp \
@@ -21,7 +22,8 @@ SOURCES += main.cpp \
     MedNUSLessonPanel.cpp \
     MedNUSMainWindow.cpp \
     MedNUSMeshViewer.cpp \
-    MedNUSMeshViewerCallback.cpp
+    MedNUSMeshViewerCallback.cpp \
+    MedNUSVideoViewer.cpp
 
 RESOURCES = panax.qrc
 
