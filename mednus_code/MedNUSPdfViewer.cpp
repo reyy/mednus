@@ -36,6 +36,14 @@ void MedNUSPdfViewer::setPage(int num)
     imageLabel->setPixmap(QPixmap::fromImage(image));
 }
 
+void MedNUSPdfViewer::keyPressEvent(QKeyEvent *event)
+{
+    if(event->key() == Qt::Key_Up || event->key() == Qt::Key_Left) {
+        setPage(pageNum-1<0?0:--pageNum);
+    } else if(event->key() == Qt::Key_Down || event->key() == Qt::Key_Right) {
+        setPage(pageNum+1>document->numPages()?document->numPages():++pageNum);
+    }
+}
 //void MedNUSPdfViewer::paintEvent(QPaintEvent *event)
 //{
 //    QPainter p(this);
