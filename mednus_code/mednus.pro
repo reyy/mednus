@@ -14,7 +14,8 @@ HEADERS += \
     MedNUSMainWindow.h \
     MedNUSMeshViewer.h \
     MedNUSMeshViewerCallback.h \
-    MedNUSVideoViewer.h
+    MedNUSVideoViewer.h \
+    MedNUSPdfViewer.h
 
 SOURCES += main.cpp \
     PMeshModel.cpp \
@@ -23,7 +24,8 @@ SOURCES += main.cpp \
     MedNUSMainWindow.cpp \
     MedNUSMeshViewer.cpp \
     MedNUSMeshViewerCallback.cpp \
-    MedNUSVideoViewer.cpp
+    MedNUSVideoViewer.cpp \
+    MedNUSPdfViewer.cpp
 
 RESOURCES = panax.qrc
 
@@ -34,8 +36,10 @@ MAC_CONFIG {
     QMAKE_LFLAGS = -std=c++11 -stdlib=libstdc++ -mmacosx-version-min=10.9 -ftemplate-depth=1024 -DBUILD_visualization=off
 }
 #-fobjc-gc
+INCLUDEPATH += /usr/local/include/poppler/qt5/
 INCLUDEPATH += /usr/local/include/vtk-6.1/
 LIBS += -L/usr/local/lib
+LIBS += -lpoppler-qt5
 LIBS += -lstdc++
 LIBS += -lvtksys-6.1.1
 LIBS += -lvtkCommonCore-6.1.1

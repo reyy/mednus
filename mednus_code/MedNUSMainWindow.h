@@ -5,6 +5,7 @@
 #include "MedNUSMeshViewer.h"
 #include "MedNUSLessonPanel.h"
 #include "MedNUSVideoViewer.h"
+#include "MedNUSPdfViewer.h"
 
 class MedNUSMainWindow : public QMainWindow
 {

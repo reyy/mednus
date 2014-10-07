@@ -31,8 +31,9 @@ void MedNUSMainWindow::createWidgets()
     MedNUSMeshViewer *view = new MedNUSMeshViewer(false);
     vid = new MedNUSVideoViewer();
     tabs->addTab(view,"Skull Model");
+    tabs->addTab(new MedNUSPdfViewer(),"PDF Test");
     tabs->addTab(vid, "Video");
-    tabs->addTab(new QWidget(),"TAB 2");
+    //tabs->addTab(new QWidget(),"TAB 2");
 
     // Create lesson table
     MedNUSLessonPanel *lessonTable;
