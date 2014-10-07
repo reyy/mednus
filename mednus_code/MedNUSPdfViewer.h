@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QLabel>
+#include <QKeyEvent>
 #include <QPainter>
 #include <poppler-qt5.h>
 
@@ -13,10 +14,12 @@ public:
     explicit MedNUSPdfViewer(QWidget *parent = 0);
     void setPage(int num);
 protected:
-    //void paintEvent(QPaintEvent *event);
+    int pageNum = 0 ;
     Poppler::Document* document;
     Poppler::Page* pdfPage;
     QLabel *imageLabel;
+
+    void keyPressEvent(QKeyEvent *event);
 signals:
 
 public slots:
