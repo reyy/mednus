@@ -7,8 +7,8 @@ MedNUSMainWindow::MedNUSMainWindow(QWidget *parent) :
     setWindowTitle(QString("MedNUS"));
     setWindowIcon(QIcon(":/images/panax-icon.png"));
 
-    int winWidth = 1024;
-    int winHeight = 768;
+    int winWidth = 800;
+    int winHeight = 600;
     setMinimumSize(winWidth, winHeight);
 
     createWidgets();
@@ -17,6 +17,11 @@ MedNUSMainWindow::MedNUSMainWindow(QWidget *parent) :
 
 void MedNUSMainWindow::createWidgets()
 {
+    //Logo Display
+    QLabel *label = new QLabel(this);
+    label->setGeometry(QRect(20, 10, 114, 31));
+    label->setPixmap(QPixmap(QString::fromStdString(":/images/logo.png")));
+
     //Tab (Push out to new class)
     tabs = new QTabWidget();
     tabs->setTabsClosable(true);
