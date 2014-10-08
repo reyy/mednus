@@ -8,7 +8,7 @@
 #ifndef MEDNUSLESSONPANEL_H
 #define MEDNUSLESSONPANEL_H
 
-class QPushButton;
+//class QPushButton;
 
 #include <QPushButton>
 #include <QHBoxLayout>
@@ -18,11 +18,13 @@ class QPushButton;
 #include <QItemDelegate>
 #include <QColorDialog>
 #include <QKeyEvent>
+#include <QWidget>
 
-class MedNUSLessonPanel : public QTableWidget
+class MedNUSLessonPanel : public QWidget
 {
+    Q_OBJECT
 public:
-    MedNUSLessonPanel();
+    MedNUSLessonPanel(QWidget *parent);
     ~MedNUSLessonPanel();
 };
 
