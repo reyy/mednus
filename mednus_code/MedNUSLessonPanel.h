@@ -14,15 +14,17 @@ class QPushButton;
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QHeaderView>
-#include <QTableWidget>
 #include <QItemDelegate>
 #include <QColorDialog>
 #include <QKeyEvent>
+#include <QObject>
 
-class MedNUSLessonPanel : public QTableWidget
+class MedNUSLessonPanel : public QWidget
 {
+    Q_OBJECT
+
 public:
-    MedNUSLessonPanel();
+    explicit MedNUSLessonPanel(QWidget *parent = 0);
     ~MedNUSLessonPanel();
 };
 

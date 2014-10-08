@@ -11,7 +11,8 @@
 
 #include <iostream>
 
-MedNUSLessonPanel::MedNUSLessonPanel(): QTableWidget(0, 0)
+MedNUSLessonPanel::MedNUSLessonPanel(QWidget *parent) :
+    QWidget(parent)
 {
 }
 
