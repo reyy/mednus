@@ -37,7 +37,7 @@ void MedNUSMainWindow::createWidgets()
 
     // Create lesson table
     MedNUSLessonPanel *lessonTable;
-    lessonTable = new MedNUSLessonPanel;
+    lessonTable = new MedNUSLessonPanel(this);
     lessonTable->setStyleSheet("background-color: #285183;");
 
     // Create dock widget for bottom dock area.
