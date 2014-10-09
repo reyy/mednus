@@ -19,10 +19,15 @@
 #include <QColorDialog>
 #include <QKeyEvent>
 #include <QWidget>
+#include "MedNUSLessonPackage.h"
 
 class MedNUSLessonPanel : public QWidget
 {
     Q_OBJECT
+
+private:
+    MedNUSLessonPackage *_package;
+
 public:
     MedNUSLessonPanel(QWidget *parent);
     ~MedNUSLessonPanel();

@@ -7,8 +7,8 @@ MedNUSMainWindow::MedNUSMainWindow(QWidget *parent) :
     setWindowTitle(QString("MedNUS"));
     setWindowIcon(QIcon(":/images/panax-icon.png"));
 
-    int winWidth = 1024;
-    int winHeight = 768;
+    int winWidth = 800;
+    int winHeight = 600;
     setMinimumSize(winWidth, winHeight);
 
     createWidgets();
@@ -38,14 +38,15 @@ void MedNUSMainWindow::createWidgets()
     // Create lesson table
     MedNUSLessonPanel *lessonTable;
     lessonTable = new MedNUSLessonPanel(this);
-    lessonTable->setStyleSheet("background-color: #285183;");
 
     // Create dock widget for bottom dock area.
     QDockWidget *lessonPanel;
-    lessonPanel = new QDockWidget("Lesson List");
+    lessonPanel = new QDockWidget("Lesson Panel");
     lessonPanel->setWidget(lessonTable);
-    lessonPanel->setAllowedAreas(Qt::RightDockWidgetArea);
-    lessonPanel->setStyleSheet("background-color: #285183;");
+
+    lessonPanel->setTitleBarWidget(0);
+    //lessonPanel->setAllowedAreas(Qt::RightDockWidgetArea);
+    lessonPanel->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
     addDockWidget(Qt::RightDockWidgetArea, lessonPanel);
 }
 
