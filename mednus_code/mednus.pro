@@ -15,7 +15,8 @@ HEADERS += \
     MedNUSMeshViewer.h \
     MedNUSMeshViewerCallback.h \
     MedNUSVideoViewer.h \
-    MedNUSPdfViewer.h
+    MedNUSPdfViewer.h \
+    MedNUSLessonPackage.h
 
 SOURCES += main.cpp \
     PMeshModel.cpp \
@@ -25,7 +26,8 @@ SOURCES += main.cpp \
     MedNUSMeshViewer.cpp \
     MedNUSMeshViewerCallback.cpp \
     MedNUSVideoViewer.cpp \
-    MedNUSPdfViewer.cpp
+    MedNUSPdfViewer.cpp \
+    MedNUSLessonPackage.cpp
 
 RESOURCES = panax.qrc
 
@@ -39,7 +41,7 @@ MAC_CONFIG {
 INCLUDEPATH += /usr/local/include/poppler/qt5/
 INCLUDEPATH += /usr/local/include/vtk-6.1/
 LIBS += -L/usr/local/lib
-LIBS += -lpoppler-qt5
+LIBS += -lpoppler-qt5.1.1.0
 LIBS += -lstdc++
 LIBS += -lvtksys-6.1.1
 LIBS += -lvtkCommonCore-6.1.1
