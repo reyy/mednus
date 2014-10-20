@@ -14,7 +14,7 @@ public:
     explicit MedNUSPdfViewer(QWidget *parent = 0);
     void setPage(int num);
 protected:
-    int pageNum = 0 ;
+    int pageNum = 0;
     Poppler::Document* document;
     Poppler::Page* pdfPage;
     QLabel *imageLabel;
