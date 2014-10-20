@@ -159,8 +159,7 @@ macx {
     LIBS += -lvtkViewsGeovis-6.1.1
 }
 
-win32
-{
+win32{
     QMAKE_CXXFLAGS = -std=c++11
 
     INCLUDEPATH += "C:/Program Files (x86)/VTK/include/vtk-6.1/"
