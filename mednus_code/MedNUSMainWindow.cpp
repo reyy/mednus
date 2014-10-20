@@ -38,6 +38,22 @@ void MedNUSMainWindow::createWidgets()
     // Create lesson table
     MedNUSLessonPanel *lessonTable;
     lessonTable = new MedNUSLessonPanel(this);
+    lessonTable->addLesson("LSM 1301 - Biology","Professor Gopal","Module about biology.");
+    lessonTable->addLesson("LSM 1302 - Difficult Biology","Professor Gopal","Module about more biology.");
+    lessonTable->addLesson("LSM 1303 - Very difficult Biology","Professor Gopal","Module about more biology.");
+    lessonTable->addLesson("LSM 1304 - Crazy Biology","Professor Gopal","Module about more biology.");
+    lessonTable->addLesson("LSM 1301 - Biology","Professor Gopal","Module about biology.");
+    lessonTable->addLesson("LSM 1302 - Difficult Biology","Professor Gopal","Module about more biology.");
+    lessonTable->addLesson("LSM 1303 - Very difficult Biology","Professor Gopal","Module about more biology.");
+    lessonTable->addLesson("LSM 1304 - Crazy Biology","Professor Gopal","Module about more biology.");
+    lessonTable->addLesson("LSM 1301 - Biology","Professor Gopal","Module about biology.");
+    lessonTable->addLesson("LSM 1302 - Difficult Biology","Professor Gopal","Module about more biology.");
+    lessonTable->addLesson("LSM 1303 - Very difficult Biology","Professor Gopal","Module about more biology.");
+    lessonTable->addLesson("LSM 1304 - Crazy Biology","Professor Gopal","Module about more biology.");
+    lessonTable->addLesson("LSM 1301 - Biology","Professor Gopal","Module about biology.");
+    lessonTable->addLesson("LSM 1302 - Difficult Biology","Professor Gopal","Module about more biology.");
+    lessonTable->addLesson("LSM 1303 - Very difficult Biology","Professor Gopal","Module about more biology.");
+    lessonTable->addLesson("LSM 1304 - Crazy Biology","Professor Gopal","Module about more biology.");
 
     // Create dock widget for bottom dock area.
     QDockWidget *lessonPanel;

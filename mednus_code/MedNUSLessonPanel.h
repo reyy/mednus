@@ -19,18 +19,27 @@
 #include <QColorDialog>
 #include <QKeyEvent>
 #include <QWidget>
+#include <QVector>
 #include "MedNUSLessonPackage.h"
 
 class MedNUSLessonPanel : public QWidget
 {
     Q_OBJECT
-
 private:
-    MedNUSLessonPackage *_package;
+    QVector<MedNUSLessonPackage *> _lessonList;
 
 public:
     MedNUSLessonPanel(QWidget *parent);
     ~MedNUSLessonPanel();
+    void addLesson(QString title,QString subTitle, QString description);
+    bool removeLesson(QString title);
+    void clearLesson();
+    void updateGUI();
+
+protected:
+    void mousePressEvent ( QMouseEvent * event ) ;
+
+public slots:
 };
 
 #endif // MEDNUSLESSONPANEL_H
