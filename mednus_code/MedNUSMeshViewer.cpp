@@ -54,12 +54,12 @@ MedNUSMeshViewer::MedNUSMeshViewer(bool withMeshPanel)
     createToolBars();
     createStatusBar();
 
-    try{
-        QStringList list;
-       list.append("/Users/rey/Desktop/mednus/models/Skull_BWH/craniofacial.ply");
-       loadMesh(list);
-    }
-    catch(int a){ loadMesh(); }
+//    try{
+//       QStringList list;
+//       list.append("/Users/rey/Desktop/mednus/models/Skull_BWH/craniofacial.ply");
+//       loadMesh(list);
+//    }
+//    catch(int a){ loadMesh(); }
     //drawSphere(0.5,-1,-1,-1);
     //drawSphere(0.8,2,2,2);
     //drawBoundingBox();

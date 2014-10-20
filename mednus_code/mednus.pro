@@ -163,9 +163,9 @@ win32{
     QMAKE_CXXFLAGS = -std=c++11
 
     INCLUDEPATH += "C:/Program Files (x86)/VTK/include/vtk-6.1/"
-    INCLUDEPATH += "C:/Code/mednus_code/include/poppler-qt5/"
+    INCLUDEPATH += "C:/Code/mednus/mednus_code/include/poppler-qt5/"
     LIBS += -L"C:/Program Files (x86)/VTK/bin/"
-    LIBS += -L"C:/Code/mednus_code/lib/"
+    LIBS += -L"C:/Code/mednus/mednus_code/lib/"
 
     LIBS += -lpoppler-qt5
     #-fobjc-gc
