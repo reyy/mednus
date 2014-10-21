@@ -33,6 +33,9 @@ MedNUSLessonPackage::MedNUSLessonPackage(QWidget *parent) :
 
 MedNUSLessonPackage::~MedNUSLessonPackage() {
     delete _background;
+    delete _moduleTitle;
+    delete _subHeader;
+    delete _description;
 }
 
 void MedNUSLessonPackage::setY(int value) {

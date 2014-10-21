@@ -16,7 +16,9 @@ HEADERS += \
     MedNUSMeshViewerCallback.h \
     MedNUSVideoViewer.h \
     MedNUSPdfViewer.h \
-    MedNUSLessonPackage.h
+    MedNUSLessonPackage.h \
+    MedNUSFrontBar.h \
+    MedNUSUserBar.h
 
 SOURCES += main.cpp \
     PMeshModel.cpp \
@@ -27,7 +29,9 @@ SOURCES += main.cpp \
     MedNUSMeshViewerCallback.cpp \
     MedNUSVideoViewer.cpp \
     MedNUSPdfViewer.cpp \
-    MedNUSLessonPackage.cpp
+    MedNUSLessonPackage.cpp \
+    MedNUSFrontBar.cpp \
+    MedNUSUserBar.cpp
 
 RESOURCES = panax.qrc
 

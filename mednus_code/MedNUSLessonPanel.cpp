@@ -17,7 +17,7 @@ MedNUSLessonPanel::MedNUSLessonPanel(QWidget *parent) : QWidget(parent)
     this->setMaximumWidth(300);
     this->setMinimumHeight(parent->height());
     this->setMaximumHeight(parent->height());
-    QLabel *_background = new QLabel(this);
+    _background = new QLabel(this);
     _background->setGeometry(QRect(this->x(), this->y(), this->width(), this->height()));
     _background->setStyleSheet("background-color: #193b50;");
  }
@@ -26,6 +26,7 @@ MedNUSLessonPanel::MedNUSLessonPanel(QWidget *parent) : QWidget(parent)
 MedNUSLessonPanel::~MedNUSLessonPanel()
 {
     clearLesson();
+    delete _background;
 }
 
 void MedNUSLessonPanel::addLesson(QString title,QString subTitle, QString description) {
@@ -73,7 +74,7 @@ void MedNUSLessonPanel::updateGUI() {
 
 void MedNUSLessonPanel::mousePressEvent ( QMouseEvent * event )
 {
-    qDebug() << "Debug Message";
+    //qDebug() << "Debug Message";
     bool collapseEveryoneElse=false;
     MedNUSLessonPackage *temp, *temp2;
 
