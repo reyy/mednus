@@ -39,6 +39,7 @@ public:
 
 protected:
     void mousePressEvent ( QMouseEvent * event ) ;
+    void resizeEvent(QResizeEvent* event);
 
 public slots:
 };

@@ -21,27 +21,24 @@ void MedNUSMainWindow::createWidgets()
      QGridLayout *mainLayout = new QGridLayout();
      mainLayout->setColumnStretch(0,1);
      mainLayout->setColumnStretch(1,0);
+     mainLayout->setRowStretch(0,0);
+     mainLayout->setRowStretch(0,1);
      mainLayout->setContentsMargins(0,0,0,0);
      mainLayout->setSpacing(0);
+     mainLayout->setSizeConstraint(QLayout::SetNoConstraint);
 
     //Add FrontBar (Top bar that has logo)
      MedNUSFrontBar *fb = new MedNUSFrontBar(this);
-     mainLayout->addWidget(fb,0,0);
+     fb->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+     mainLayout->addWidget(fb,0,0, Qt::AlignTop);
 
     //Add UserBar (Top right bar that has user info)
      MedNUSUserBar *ub = new MedNUSUserBar(this);
-     mainLayout->addWidget(ub,0,1);
+     ub->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+     mainLayout->addWidget(ub,0,1, Qt::AlignTop);
 
-    //Tab (Push out to new class)
-    tabs = new QTabWidget();
-    tabs->setTabsClosable(true);
-    tabs->setMovable(true);
-    tabs->setDocumentMode(true);
-    tabs->setUsesScrollButtons(true);
-    tabs->setElideMode(Qt::ElideRight);
-    tabs->setTabShape(QTabWidget::Rounded);
-    mainLayout->addWidget(tabs,1,0);
-
+    //Add Content View
+    tabs = new MedNUSContentPanel();
     //Add Model
     MedNUSMeshViewer *view = new MedNUSMeshViewer(false);
     vid = new MedNUSVideoViewer();
@@ -49,6 +46,8 @@ void MedNUSMainWindow::createWidgets()
     tabs->addTab(new MedNUSPdfViewer(),"PDF Test");
     tabs->addTab(vid, "Video");
     //tabs->addTab(new QWidget(),"TAB 2");
+    tabs->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    mainLayout->addWidget(tabs,1,0, Qt::AlignTop);
 
     // Create lesson table
     MedNUSLessonPanel *lessonTable;
@@ -69,7 +68,8 @@ void MedNUSMainWindow::createWidgets()
     lessonTable->addLesson("LSM 1302 - Difficult Biology","Professor Gopal","Module about more biology.");
     lessonTable->addLesson("LSM 1303 - Very difficult Biology","Professor Gopal","Module about more biology.");
     lessonTable->addLesson("LSM 1304 - Crazy Biology","Professor Gopal","Module about more biology.");
-    mainLayout->addWidget(lessonTable,1,1);
+    lessonTable->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+    mainLayout->addWidget(lessonTable,1,1, Qt::AlignTop);
 
     centralWidget->setLayout(mainLayout);
     setCentralWidget(centralWidget);

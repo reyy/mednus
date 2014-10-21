@@ -5,6 +5,7 @@ MedNUSUserBar::MedNUSUserBar(QWidget *parent) :
 {
     this->setMinimumWidth(300);
     this->setMinimumHeight(64);
+    this->setMaximumHeight(64);
 
     _background = new QLabel(this);
     _background->setGeometry(QRect(this->x(), this->y(), 300, 64));

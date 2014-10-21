@@ -18,7 +18,8 @@ HEADERS += \
     MedNUSPdfViewer.h \
     MedNUSLessonPackage.h \
     MedNUSFrontBar.h \
-    MedNUSUserBar.h
+    MedNUSUserBar.h \
+    MedNUSContentPanel.h
 
 SOURCES += main.cpp \
     PMeshModel.cpp \
@@ -31,7 +32,8 @@ SOURCES += main.cpp \
     MedNUSPdfViewer.cpp \
     MedNUSLessonPackage.cpp \
     MedNUSFrontBar.cpp \
-    MedNUSUserBar.cpp
+    MedNUSUserBar.cpp \
+    MedNUSContentPanel.cpp
 
 RESOURCES = panax.qrc
 
