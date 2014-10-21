@@ -14,7 +14,7 @@
 MedNUSLessonPanel::MedNUSLessonPanel(QWidget *parent) : QWidget(parent) {
     this->setMinimumWidth(300);
     this->setMaximumWidth(300);
-    this->setMinimumHeight(600-64);
+    this->setMinimumHeight(600-32);
 
     _background = new QLabel(this);
     _background->setGeometry(QRect(0,0, this->width(), this->height()));
