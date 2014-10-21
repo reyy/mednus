@@ -8,6 +8,7 @@
 #include "MedNUSPdfViewer.h"
 #include "MedNUSFrontBar.h"
 #include "MedNUSUserBar.h"
+#include "MedNUSContentPanel.h"
 
 class MedNUSMainWindow : public QMainWindow
 {

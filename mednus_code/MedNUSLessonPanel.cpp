@@ -11,20 +11,17 @@
 
 
 
-MedNUSLessonPanel::MedNUSLessonPanel(QWidget *parent) : QWidget(parent)
-{
+MedNUSLessonPanel::MedNUSLessonPanel(QWidget *parent) : QWidget(parent) {
     this->setMinimumWidth(300);
     this->setMaximumWidth(300);
-    this->setMinimumHeight(parent->height());
-    this->setMaximumHeight(parent->height());
+    this->setMinimumHeight(600-64);
+
     _background = new QLabel(this);
-    _background->setGeometry(QRect(this->x(), this->y(), this->width(), this->height()));
+    _background->setGeometry(QRect(0,0, this->width(), this->height()));
     _background->setStyleSheet("background-color: #193b50;");
- }
+}
 
-
-MedNUSLessonPanel::~MedNUSLessonPanel()
-{
+MedNUSLessonPanel::~MedNUSLessonPanel() {
     clearLesson();
     delete _background;
 }
@@ -100,4 +97,10 @@ void MedNUSLessonPanel::mousePressEvent ( QMouseEvent * event )
     }
 
     this->updateGUI();
+}
+
+void MedNUSLessonPanel::resizeEvent(QResizeEvent* event)
+{
+   //qDebug() << "Resize";
+    _background->setGeometry(QRect(0,0, this->width(), this->height()));
 }
