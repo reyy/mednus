@@ -26,6 +26,7 @@ class MedNUSLessonPanel : public QWidget
 {
     Q_OBJECT
 private:
+    QLabel *_background;
     QVector<MedNUSLessonPackage *> _lessonList;
 
 public:
