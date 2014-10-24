@@ -14,7 +14,5 @@ signals:
 
 public slots:
 
-protected:
-    void resizeEvent(QResizeEvent* event);
 };
 #endif // MEDNUSCONTENTPANEL_H

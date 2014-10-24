@@ -3,7 +3,7 @@
 MedNUSPdfViewer::MedNUSPdfViewer(QWidget *parent) :
     QWidget(parent)
 {
-    QString filename = "/Users/JayChua/Desktop/asd.pdf";
+    QString filename = ":/content/test.pdf";
     document = Poppler::Document::load(filename);
     if (!document || document->isLocked()) {
       // err
