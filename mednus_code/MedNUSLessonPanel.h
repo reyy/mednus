@@ -26,13 +26,22 @@ class MedNUSLessonPanel : public QWidget
 {
     Q_OBJECT
 private:
+    QPixmap _icon_3d;
+    QPixmap _icon_image;
+    QPixmap _icon_pdf;
+    QPixmap _icon_quiz;
+    QPixmap _icon_video;
+
     QLabel *_background;
     QVector<MedNUSLessonPackage *> _lessonList;
+
+    void loadPixmap();
 
 public:
     MedNUSLessonPanel(QWidget *parent);
     ~MedNUSLessonPanel();
-    void addLesson(QString title,QString subTitle, QString description);
+    void addLesson(MedNUSLessonPackage*);
+    void addLesson(QString title, QString subTitle, QString description, QStringList directory);
     bool removeLesson(QString title);
     void clearLesson();
     void updateGUI();
