@@ -126,18 +126,19 @@ void MedNUSMeshViewer::createWidgets(bool withMeshPanel)
 //    QWidget *main = new QWidget;
 //    main->setLayout(grid);
 //    main->setStyleSheet("background-color: #285183;");
+    grid->setContentsMargins(0,0,0,0);
     this->setLayout(grid);
     //this->setStyleSheet("background-color: #285183;");
     //setCentralWidget(main);
     
     // Create mesh mode box
-    meshModeBox = new QComboBox(this);
-    QStringList choices;
-    choices << "smooth surface" << "flat surface" << "flat lines" 
-        << "wire frame" << "points";
-    meshModeBox->insertItems(0, choices);
-    connect(meshModeBox, SIGNAL(activated(int)), this,
-        SLOT(setMeshMode(int)));
+//    meshModeBox = new QComboBox(this);
+//    QStringList choices;
+//    choices << "smooth surface" << "flat surface" << "flat lines"
+//        << "wire frame" << "points";
+//    meshModeBox->insertItems(0, choices);
+//    connect(meshModeBox, SIGNAL(activated(int)), this,
+//        SLOT(setMeshMode(int)));
     
     if (withMeshPanel)
     {
@@ -180,143 +181,143 @@ void MedNUSMeshViewer::createWidgets(bool withMeshPanel)
 
 void MedNUSMeshViewer::createActions()
 {
-    newProjectAction = new QAction(QObject::tr("&New Project"), this);
-    newProjectAction->setIcon(QIcon(":/images/new.png"));
-    newProjectAction->setShortcut(QObject::tr("Ctrl+N"));
-    newProjectAction->setStatusTip(QObject::tr("Create a new project"));
-    connect(newProjectAction, SIGNAL(triggered()),
-        this, SLOT(newProject()));
+//    newProjectAction = new QAction(QObject::tr("&New Project"), this);
+//    newProjectAction->setIcon(QIcon(":/images/new.png"));
+//    newProjectAction->setShortcut(QObject::tr("Ctrl+N"));
+//    newProjectAction->setStatusTip(QObject::tr("Create a new project"));
+//    connect(newProjectAction, SIGNAL(triggered()),
+//        this, SLOT(newProject()));
     
-    openProjectAction = new QAction(QObject::tr("&Open Project"), this);
-    openProjectAction->setIcon(QIcon(":/images/open.png"));
-    openProjectAction->setShortcut(QObject::tr("Ctrl+O"));
-    openProjectAction->setStatusTip(QObject::tr("Open a project file"));
-    connect(openProjectAction, SIGNAL(triggered()),
-        this, SLOT(openProject()));
+//    openProjectAction = new QAction(QObject::tr("&Open Project"), this);
+//    openProjectAction->setIcon(QIcon(":/images/open.png"));
+//    openProjectAction->setShortcut(QObject::tr("Ctrl+O"));
+//    openProjectAction->setStatusTip(QObject::tr("Open a project file"));
+//    connect(openProjectAction, SIGNAL(triggered()),
+//        this, SLOT(openProject()));
 
-    saveProjectAction = new QAction(QObject::tr("&Save Project"), this);
-    saveProjectAction->setIcon(QIcon(":/images/save.png"));
-    saveProjectAction->setShortcut(QObject::tr("Ctrl+S"));
-    saveProjectAction->setStatusTip(QObject::tr("Save project to file"));
-    connect(saveProjectAction, SIGNAL(triggered()),
-        this, SLOT(saveProject()));
+//    saveProjectAction = new QAction(QObject::tr("&Save Project"), this);
+//    saveProjectAction->setIcon(QIcon(":/images/save.png"));
+//    saveProjectAction->setShortcut(QObject::tr("Ctrl+S"));
+//    saveProjectAction->setStatusTip(QObject::tr("Save project to file"));
+//    connect(saveProjectAction, SIGNAL(triggered()),
+//        this, SLOT(saveProject()));
 
-    saveProjectAsAction = new QAction(QObject::tr("Save Project &As"), this);
-    saveProjectAsAction->setIcon(QIcon(":/images/saveas.png"));
-    saveProjectAsAction->setShortcut(QObject::tr("Ctrl+A"));
-    saveProjectAsAction->setStatusTip(QObject::tr("Save project to another file"));
-    connect(saveProjectAsAction, SIGNAL(triggered()),
-        this, SLOT(saveProjectAs()));
+//    saveProjectAsAction = new QAction(QObject::tr("Save Project &As"), this);
+//    saveProjectAsAction->setIcon(QIcon(":/images/saveas.png"));
+//    saveProjectAsAction->setShortcut(QObject::tr("Ctrl+A"));
+//    saveProjectAsAction->setStatusTip(QObject::tr("Save project to another file"));
+//    connect(saveProjectAsAction, SIGNAL(triggered()),
+//        this, SLOT(saveProjectAs()));
     
-    loadDirAction = new QAction(QObject::tr("Load Mesh by &Directory"), this);
-    loadDirAction->setIcon(QIcon(":/images/loaddir.png"));
-    loadDirAction->setShortcut(QObject::tr("Ctrl+D"));
-    loadDirAction->setStatusTip(QObject::tr("Load mesh files in a directory"));
-    connect(loadDirAction, SIGNAL(triggered()), this, SLOT(loadDir()));
+//    loadDirAction = new QAction(QObject::tr("Load Mesh by &Directory"), this);
+//    loadDirAction->setIcon(QIcon(":/images/loaddir.png"));
+//    loadDirAction->setShortcut(QObject::tr("Ctrl+D"));
+//    loadDirAction->setStatusTip(QObject::tr("Load mesh files in a directory"));
+//    connect(loadDirAction, SIGNAL(triggered()), this, SLOT(loadDir()));
     
-    loadMeshAction = new QAction(QObject::tr("Load Mesh by &File"), this);
-    loadMeshAction->setIcon(QIcon(":/images/loadmesh.png"));
-    loadMeshAction->setShortcut(QObject::tr("Ctrl+F"));
-    loadMeshAction->setStatusTip(QObject::tr("Load meshes by file names"));
-    connect(loadMeshAction, SIGNAL(triggered()), this, SLOT(loadMesh()));
+//    loadMeshAction = new QAction(QObject::tr("Load Mesh by &File"), this);
+//    loadMeshAction->setIcon(QIcon(":/images/loadmesh.png"));
+//    loadMeshAction->setShortcut(QObject::tr("Ctrl+F"));
+//    loadMeshAction->setStatusTip(QObject::tr("Load meshes by file names"));
+//    connect(loadMeshAction, SIGNAL(triggered()), this, SLOT(loadMesh()));
     
-    addMeshAction = new QAction(QObject::tr("Add Mesh by File"), this);
-    addMeshAction->setIcon(QIcon(":/images/addmesh.png"));
-    addMeshAction->setStatusTip(QObject::tr("Add meshes by file names"));
-    connect(addMeshAction, SIGNAL(triggered()), this, SLOT(addMesh()));
+//    addMeshAction = new QAction(QObject::tr("Add Mesh by File"), this);
+//    addMeshAction->setIcon(QIcon(":/images/addmesh.png"));
+//    addMeshAction->setStatusTip(QObject::tr("Add meshes by file names"));
+//    connect(addMeshAction, SIGNAL(triggered()), this, SLOT(addMesh()));
         
-    saveDirPlyAction = new QAction(QObject::tr("in PLY format"), this);
-    connect(saveDirPlyAction, SIGNAL(triggered()), this, SLOT(saveDirPly()));
+//    saveDirPlyAction = new QAction(QObject::tr("in PLY format"), this);
+//    connect(saveDirPlyAction, SIGNAL(triggered()), this, SLOT(saveDirPly()));
 
-    saveDirStlAction = new QAction(QObject::tr("in STL format"), this);
-    connect(saveDirStlAction, SIGNAL(triggered()), this, SLOT(saveDirStl()));
+//    saveDirStlAction = new QAction(QObject::tr("in STL format"), this);
+//    connect(saveDirStlAction, SIGNAL(triggered()), this, SLOT(saveDirStl()));
     
-    exitAction = new QAction(QObject::tr("E&xit"), this);
-    exitAction->setShortcut(QObject::tr("Ctrl+Q"));
-    exitAction->setStatusTip(QObject::tr("Exit Mesh Viewer"));
-    connect(exitAction, SIGNAL(triggered()), this, SLOT(close()));
+//    exitAction = new QAction(QObject::tr("E&xit"), this);
+//    exitAction->setShortcut(QObject::tr("Ctrl+Q"));
+//    exitAction->setStatusTip(QObject::tr("Exit Mesh Viewer"));
+//    connect(exitAction, SIGNAL(triggered()), this, SLOT(close()));
     
-    saveViewAction = new QAction(QObject::tr("Save &View"), this);
-    saveViewAction->setIcon(QIcon(":/images/saveview.png"));
-    saveViewAction->setShortcut(QObject::tr("Shift+V"));
-    saveViewAction->setStatusTip(QObject::tr("Save current view to a file"));
-    connect(saveViewAction, SIGNAL(triggered()), this, SLOT(saveView()));
+//    saveViewAction = new QAction(QObject::tr("Save &View"), this);
+//    saveViewAction->setIcon(QIcon(":/images/saveview.png"));
+//    saveViewAction->setShortcut(QObject::tr("Shift+V"));
+//    saveViewAction->setStatusTip(QObject::tr("Save current view to a file"));
+//    connect(saveViewAction, SIGNAL(triggered()), this, SLOT(saveView()));
     
-    frontFaceAction = new QAction(QObject::tr("&Hide Front Faces"), this);
-    frontFaceAction->setIcon(QIcon(":/images/hide.png"));
-    frontFaceAction->setShortcut(QObject::tr("Shift+H"));
-    frontFaceAction->setStatusTip(QObject::tr("Hide/show front faces"));
-    frontFaceAction->setCheckable(true);
-    connect(frontFaceAction, SIGNAL(triggered()), this,
-        SLOT(toggleFrontFace()));
+//    frontFaceAction = new QAction(QObject::tr("&Hide Front Faces"), this);
+//    frontFaceAction->setIcon(QIcon(":/images/hide.png"));
+//    frontFaceAction->setShortcut(QObject::tr("Shift+H"));
+//    frontFaceAction->setStatusTip(QObject::tr("Hide/show front faces"));
+//    frontFaceAction->setCheckable(true);
+//    connect(frontFaceAction, SIGNAL(triggered()), this,
+//        SLOT(toggleFrontFace()));
         
-    smoothSurfaceAction = new QAction(QObject::tr("&Smooth Surface"), this);
-    smoothSurfaceAction->setShortcut(QObject::tr("Shift+S"));
-    smoothSurfaceAction->setStatusTip(QObject::tr("Smooth surface"));
-    smoothSurfaceAction->setCheckable(true);
-    connect(smoothSurfaceAction, SIGNAL(triggered()), this,
-        SLOT(setSmoothSurface()));
+//    smoothSurfaceAction = new QAction(QObject::tr("&Smooth Surface"), this);
+//    smoothSurfaceAction->setShortcut(QObject::tr("Shift+S"));
+//    smoothSurfaceAction->setStatusTip(QObject::tr("Smooth surface"));
+//    smoothSurfaceAction->setCheckable(true);
+//    connect(smoothSurfaceAction, SIGNAL(triggered()), this,
+//        SLOT(setSmoothSurface()));
         
-    flatSurfaceAction = new QAction(QObject::tr("&Flat Surface"), this);
-    flatSurfaceAction->setShortcut(QObject::tr("Shift+F"));
-    flatSurfaceAction->setStatusTip(QObject::tr("Flat surface"));
-    flatSurfaceAction->setCheckable(true);
-    connect(flatSurfaceAction, SIGNAL(triggered()), this,
-        SLOT(setFlatSurface()));
+//    flatSurfaceAction = new QAction(QObject::tr("&Flat Surface"), this);
+//    flatSurfaceAction->setShortcut(QObject::tr("Shift+F"));
+//    flatSurfaceAction->setStatusTip(QObject::tr("Flat surface"));
+//    flatSurfaceAction->setCheckable(true);
+//    connect(flatSurfaceAction, SIGNAL(triggered()), this,
+//        SLOT(setFlatSurface()));
         
-    flatLinesAction = new QAction(QObject::tr("Flat &Lines"), this);
-    flatLinesAction->setShortcut(QObject::tr("Shift+L"));
-    flatLinesAction->setStatusTip(QObject::tr("Flat surface & lines"));
-    flatLinesAction->setCheckable(true);
-    connect(flatLinesAction, SIGNAL(triggered()), this,
-        SLOT(setFlatLines()));
+//    flatLinesAction = new QAction(QObject::tr("Flat &Lines"), this);
+//    flatLinesAction->setShortcut(QObject::tr("Shift+L"));
+//    flatLinesAction->setStatusTip(QObject::tr("Flat surface & lines"));
+//    flatLinesAction->setCheckable(true);
+//    connect(flatLinesAction, SIGNAL(triggered()), this,
+//        SLOT(setFlatLines()));
         
-    wireFrameAction = new QAction(QObject::tr("&Wire Frame"), this);
-    wireFrameAction->setShortcut(QObject::tr("Shift+W"));
-    wireFrameAction->setStatusTip(QObject::tr("Wire frame"));
-    wireFrameAction->setCheckable(true);
-    connect(wireFrameAction, SIGNAL(triggered()), this,
-        SLOT(setWireFrame()));
+//    wireFrameAction = new QAction(QObject::tr("&Wire Frame"), this);
+//    wireFrameAction->setShortcut(QObject::tr("Shift+W"));
+//    wireFrameAction->setStatusTip(QObject::tr("Wire frame"));
+//    wireFrameAction->setCheckable(true);
+//    connect(wireFrameAction, SIGNAL(triggered()), this,
+//        SLOT(setWireFrame()));
         
-    meshPointAction = new QAction(QObject::tr("&Points"), this);
-    meshPointAction->setShortcut(QObject::tr("Shift+P"));
-    meshPointAction->setStatusTip(QObject::tr("Point"));
-    meshPointAction->setCheckable(true);
-    connect(meshPointAction, SIGNAL(triggered()), this,
-        SLOT(setMeshPoint()));
+//    meshPointAction = new QAction(QObject::tr("&Points"), this);
+//    meshPointAction->setShortcut(QObject::tr("Shift+P"));
+//    meshPointAction->setStatusTip(QObject::tr("Point"));
+//    meshPointAction->setCheckable(true);
+//    connect(meshPointAction, SIGNAL(triggered()), this,
+//        SLOT(setMeshPoint()));
         
-    QActionGroup *meshModeGroup = new QActionGroup(this);
-    meshModeGroup->addAction(smoothSurfaceAction);
-    meshModeGroup->addAction(flatSurfaceAction);
-    meshModeGroup->addAction(flatLinesAction);
-    meshModeGroup->addAction(wireFrameAction);
-    meshModeGroup->addAction(meshPointAction);
-    smoothSurfaceAction->setChecked(true);
+//    QActionGroup *meshModeGroup = new QActionGroup(this);
+//    meshModeGroup->addAction(smoothSurfaceAction);
+//    meshModeGroup->addAction(flatSurfaceAction);
+//    meshModeGroup->addAction(flatLinesAction);
+//    meshModeGroup->addAction(wireFrameAction);
+//    meshModeGroup->addAction(meshPointAction);
+//    smoothSurfaceAction->setChecked(true);
     
-    if (meshPanel)
-    {
-        toggleMeshPanelAction = meshPanel->toggleViewAction();
-        toggleMeshPanelAction->setIcon(QIcon(":/images/list.png"));
-    }
-    else
-        toggleMeshPanelAction = NULL;
+//    if (meshPanel)
+//    {
+//        toggleMeshPanelAction = meshPanel->toggleViewAction();
+//        toggleMeshPanelAction->setIcon(QIcon(":/images/list.png"));
+//    }
+//    else
+//        toggleMeshPanelAction = NULL;
        
-    infoAction = new QAction(QObject::tr("&Info"), this);
-    infoAction->setIcon(QIcon(":/images/info.png"));
-    infoAction->setShortcut(QObject::tr("Ctrl+I"));
-    infoAction->setStatusTip(QObject::tr("Data information"));
-    connect(infoAction, SIGNAL(triggered()), this,
-        SLOT(info()));
+//    infoAction = new QAction(QObject::tr("&Info"), this);
+//    infoAction->setIcon(QIcon(":/images/info.png"));
+//    infoAction->setShortcut(QObject::tr("Ctrl+I"));
+//    infoAction->setStatusTip(QObject::tr("Data information"));
+//    connect(infoAction, SIGNAL(triggered()), this,
+//        SLOT(info()));
 
-    helpAction = new QAction(QObject::tr("&Help"), this);
-    helpAction->setIcon(QIcon(":/images/help.png"));
-    helpAction->setShortcut(QObject::tr("Ctrl+H"));
-    helpAction->setStatusTip(QObject::tr("Help information"));
-    connect(helpAction, SIGNAL(triggered()), this, SLOT(help()));
+//    helpAction = new QAction(QObject::tr("&Help"), this);
+//    helpAction->setIcon(QIcon(":/images/help.png"));
+//    helpAction->setShortcut(QObject::tr("Ctrl+H"));
+//    helpAction->setStatusTip(QObject::tr("Help information"));
+//    connect(helpAction, SIGNAL(triggered()), this, SLOT(help()));
         
-    aboutAction = new QAction(QObject::tr("About"), this);
-    aboutAction->setStatusTip(QObject::tr("About this software"));
-    connect(aboutAction, SIGNAL(triggered()), this, SLOT(about()));
+//    aboutAction = new QAction(QObject::tr("About"), this);
+//    aboutAction->setStatusTip(QObject::tr("About this software"));
+//    connect(aboutAction, SIGNAL(triggered()), this, SLOT(about()));
 }
 
 
@@ -368,30 +369,30 @@ void MedNUSMeshViewer::createToolBars()
 {
     //
     //fileToolBar = addToolBar(QObject::tr("&File"));
-    fileToolBar = new QToolBar("File", this);
-    fileToolBar->addAction(newProjectAction);
-    fileToolBar->addAction(openProjectAction);
-    fileToolBar->addAction(saveProjectAction);
-    fileToolBar->addAction(loadDirAction);
-    fileToolBar->addAction(loadMeshAction);
-    fileToolBar->addAction(addMeshAction);
-    //this->layout()->addWidget(fileToolBar);
+//    fileToolBar = new QToolBar("File", this);
+//    fileToolBar->addAction(newProjectAction);
+//    fileToolBar->addAction(openProjectAction);
+//    fileToolBar->addAction(saveProjectAction);
+//    fileToolBar->addAction(loadDirAction);
+//    fileToolBar->addAction(loadMeshAction);
+//    fileToolBar->addAction(addMeshAction);
+//    //this->layout()->addWidget(fileToolBar);
     
-    //viewToolBar = addToolBar(QObject::tr("&View"));
-    //viewToolBar = new QToolBar("View", this);
-    fileToolBar->addAction(saveViewAction);
-    fileToolBar->addAction(frontFaceAction);
-    fileToolBar->addWidget(meshModeBox);
-    //
+//    //viewToolBar = addToolBar(QObject::tr("&View"));
+//    //viewToolBar = new QToolBar("View", this);
+//    fileToolBar->addAction(saveViewAction);
+//    fileToolBar->addAction(frontFaceAction);
+//    fileToolBar->addWidget(meshModeBox);
+//    //
     
-    if (toggleMeshPanelAction)
-        fileToolBar->addAction(toggleMeshPanelAction);
-    fileToolBar->addAction(infoAction);
-    //this->layout()->addWidget(viewToolBar);
+//    if (toggleMeshPanelAction)
+//        fileToolBar->addAction(toggleMeshPanelAction);
+//    fileToolBar->addAction(infoAction);
+//    //this->layout()->addWidget(viewToolBar);
 
-    //fileToolBar = new QToolBar("Help", this);
-    fileToolBar->addAction(helpAction);
-    this->layout()->addWidget(fileToolBar);
+//    //fileToolBar = new QToolBar("Help", this);
+//    fileToolBar->addAction(helpAction);
+    //this->layout()->addWidget(fileToolBar);
 }
 
 

@@ -14,6 +14,7 @@ MedNUSVideoViewer::MedNUSVideoViewer(QWidget *parent) :
     player->setVideoOutput(videoWidget);
 
     QGridLayout *grid = new QGridLayout;
+    grid->setContentsMargins(0,0,0,0);
     this->setLayout(grid);
     this->layout()->addWidget(videoWidget);
     player->setPlaylist(playlist);
