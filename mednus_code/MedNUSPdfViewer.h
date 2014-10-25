@@ -11,7 +11,7 @@ class MedNUSPdfViewer : public QWidget
 {
     Q_OBJECT
 public:
-    explicit MedNUSPdfViewer(QWidget *parent = 0);
+    explicit MedNUSPdfViewer(QString filename, QWidget *parent = 0);
     void setPage(int num);
 protected:
     int pageNum = 0;

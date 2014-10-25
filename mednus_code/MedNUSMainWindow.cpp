@@ -1,4 +1,5 @@
 #include "MedNUSMainWindow.h"
+#include <QDir>
 
 MedNUSMainWindow::MedNUSMainWindow(QWidget *parent) :
     QMainWindow(parent)
@@ -40,12 +41,23 @@ void MedNUSMainWindow::createWidgets()
     //Add Content View
     tabs = new MedNUSContentPanel();
     //Add Model
-    MedNUSMeshViewer *view = new MedNUSMeshViewer(false);
-    vid = new MedNUSVideoViewer();
+    QString dir = "";
+    dir.append(QDir::homePath());
+    dir.append("/mednus/lesson1/models/craniofacial.ply");
+    MedNUSMeshViewer *view = new MedNUSMeshViewer(dir,false);
     tabs->addTab(view,"Skull Model");
-    tabs->addTab(new MedNUSPdfViewer(),"PDF Test");
+
+    dir = "";
+    dir.append(QDir::homePath());
+    dir.append("/mednus/lesson1/pdf/thorax.ppt.pdf");
+    tabs->addTab(new MedNUSPdfViewer(dir),"PDF Test");
+
+    dir = "";
+    dir.append(QDir::homePath());
+    dir.append("/mednus/lesson1/videos/Untitled.mov");
+    vid = new MedNUSVideoViewer(dir);
     tabs->addTab(vid, "Video");
-    //tabs->addTab(new QWidget(),"TAB 2");
+
     tabs->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     mainLayout->addWidget(tabs,1,0);
 
