@@ -16,7 +16,7 @@ class MedNUSMainWindow : public QMainWindow
 public:
     explicit MedNUSMainWindow(QWidget *parent = 0);
 protected:
-    QTabWidget *tabs;
+    MedNUSContentPanel *tabs;
     MedNUSVideoViewer *vid;
     void createWidgets();
     void createMenus();
