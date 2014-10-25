@@ -11,7 +11,7 @@ class MedNUSVideoViewer : public QWidget
 {
     Q_OBJECT
 public:
-    explicit MedNUSVideoViewer(QWidget *parent = 0);
+    explicit MedNUSVideoViewer(QString filename, QWidget *parent = 0);
     ~MedNUSVideoViewer();
 protected:
     QMediaPlayer *player;

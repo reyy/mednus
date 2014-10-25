@@ -1,9 +1,9 @@
 #include "MedNUSPdfViewer.h"
 
-MedNUSPdfViewer::MedNUSPdfViewer(QWidget *parent) :
+MedNUSPdfViewer::MedNUSPdfViewer(QString filename, QWidget *parent) :
     QWidget(parent)
 {
-    QString filename = ":/content/test.pdf";
+    //QString filename = ":/content/test.pdf";
     document = Poppler::Document::load(filename);
     if (!document || document->isLocked()) {
       // err

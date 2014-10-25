@@ -1,14 +1,14 @@
 #include "MedNUSVideoViewer.h"
 #include <QGridLayout>
 
-MedNUSVideoViewer::MedNUSVideoViewer(QWidget *parent) :
+MedNUSVideoViewer::MedNUSVideoViewer(QString filename, QWidget *parent) :
     QWidget(parent)
 {
     player = new QMediaPlayer();
 
     QMediaPlaylist *playlist = new QMediaPlaylist(player);
     //playlist->addMedia(QUrl("mms://live-vip-49.nus.edu.sg/INV_CSEWARE/anatomy/respiratory/landmarks_patient.wmv"));
-    playlist->addMedia(QUrl::fromLocalFile("/Users/rey/Desktop/Untitled.mov"));
+    playlist->addMedia(QUrl::fromLocalFile(filename));
 
     QVideoWidget *videoWidget = new QVideoWidget();
     player->setVideoOutput(videoWidget);

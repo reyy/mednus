@@ -66,7 +66,7 @@ class MedNUSMeshViewer: public QWidget
     Q_OBJECT
 
 public:
-    MedNUSMeshViewer(bool withMeshPanel);
+    MedNUSMeshViewer(QString dir, bool withMeshPanel);
     ~MedNUSMeshViewer();
     void setAppName(const QString &name);
    

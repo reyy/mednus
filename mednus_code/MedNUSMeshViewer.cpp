@@ -37,7 +37,7 @@ using namespace std;
 
 // MedNUSMeshViewer class
 
-MedNUSMeshViewer::MedNUSMeshViewer(bool withMeshPanel)
+MedNUSMeshViewer::MedNUSMeshViewer(QString dir, bool withMeshPanel)
 {
     // Initialisation
     appName = QString("Mesh Viewer");
@@ -54,12 +54,12 @@ MedNUSMeshViewer::MedNUSMeshViewer(bool withMeshPanel)
     createToolBars();
     createStatusBar();
 
-//    try{
-//       QStringList list;
-//       list.append("/Users/rey/Desktop/mednus/models/Skull_BWH/craniofacial.ply");
-//       loadMesh(list);
-//    }
-//    catch(int a){ loadMesh(); }
+    try{
+       QStringList list;
+       list.append(dir);
+       loadMesh(list);
+    }
+    catch(int a){ loadMesh(); }
     //drawSphere(0.5,-1,-1,-1);
     //drawSphere(0.8,2,2,2);
     //drawBoundingBox();
@@ -815,9 +815,9 @@ void MedNUSMeshViewer::installPipeline(int startIndex)
     //****END OF CRAPPY CODE
 
     hideFrontFace = 0;
-    frontFaceAction->setChecked(false);
-    meshModeBox->setCurrentIndex(0);
-    smoothSurfaceAction->setChecked(true);
+    //frontFaceAction->setChecked(false);
+    //meshModeBox->setCurrentIndex(0);
+    //smoothSurfaceAction->setChecked(true);
     renderer->ResetCamera();
     loaded = true;
     //vtkWidget->SetRenderWindow(renderWindow);
