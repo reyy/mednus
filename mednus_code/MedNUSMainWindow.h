@@ -11,6 +11,7 @@
 #include "MedNUSContentPanel.h"
 #include "MedNUSContentManager.h"
 #include "MedNUSLogin.h"
+#include "MedNUSNetwork.h"
 
 class MedNUSMainWindow : public QMainWindow
 {
@@ -31,6 +32,10 @@ protected:
     MedNUSUserBar *ub;
     MedNUSLessonPanel *lp;
     MedNUSLogin *login;
+    MedNUSNetwork *network;
+
+    QString matricNo;
+    QString userName;
 
     void createWidgets();
     void createMenus();
@@ -40,7 +45,7 @@ protected:
 signals:
 
 public slots:
-
+    void loginCompleted(bool,QString,QString);
 protected:
     void mousePressEvent ( QMouseEvent * event ) ;
 

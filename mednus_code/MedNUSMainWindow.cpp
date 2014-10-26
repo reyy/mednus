@@ -18,6 +18,10 @@ MedNUSMainWindow::MedNUSMainWindow(QWidget *parent) :
 
     login = new MedNUSLogin(this);
     setCentralWidget(login);
+
+    network = new MedNUSNetwork();
+    network->login("a","b");
+    connect(network,SIGNAL(loginResults(bool,QString,QString)),this,SLOT(loginCompleted(bool,QString,QString)));
     //createWidgets();
     //createMenus();
     //_layoutCreated=true;
@@ -122,6 +126,22 @@ void MedNUSMainWindow::deleteWidgets() {
 void MedNUSMainWindow::deleteMenus() {
     if(_menuCreated) {
         _menuCreated=false;
+    }
+}
+
+void MedNUSMainWindow::loginCompleted(bool sucess, QString matric, QString name)
+{
+    if(!sucess)
+        qDebug() << "Wrong User/Pass.";
+    else
+    {
+        this->matricNo = matric;
+        this->userName = name;
+
+        this->layout()->removeWidget(login);
+        createWidgets();
+        createMenus();
+        //_layoutCreated=true;
     }
 }
 
