@@ -18,9 +18,8 @@ void MedNUSContentManager::initLessonList(QStringList)
     emit callAddLesson("Skull Biology","Professor Gopal","Module about biology.",content);
 
     content.clear();
-    content.push_back("/mednus/lesson1/pdf/thorax.ppt.pdf");
-    content.push_back("/mednus/lesson1/videos/Untitled.mp4");
-    content.push_back("/mednus/lesson1/models/craniofacial.ply");
+    content.push_back(":/content/test.pdf");
+    content.push_back(":/content/samplevideo.mp4");
 
     emit callAddLesson("Amazing Lesson 2","Professor RMJ","Module about stuffs.",content);
 }
