@@ -10,7 +10,9 @@ private:
     QLabel *_highlight;
     QLabel *_icon;
     QLabel *_text;
-    QPixmap _directory;
+    QPixmap _directory;    
+    QString _path;
+
     float _x;
     float _y;
 

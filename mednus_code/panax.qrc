@@ -63,5 +63,7 @@
         <file>images/icon_video_small.png</file>
         <file>images/icon_video.png</file>
         <file>content/test.pdf</file>
+        <file>images/button_trayin.png</file>
+        <file>images/button_trayout.png</file>
     </qresource>
 </RCC>
