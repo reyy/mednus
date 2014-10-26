@@ -13,6 +13,7 @@ class MedNUSPdfViewer : public QWidget
 public:
     explicit MedNUSPdfViewer(QString filename, QWidget *parent = 0);
     void setPage(int num);
+    void resizeEvent(QResizeEvent *event);
 protected:
     int pageNum = 0;
     Poppler::Document* document;

@@ -19,7 +19,7 @@ MedNUSPdfViewer::MedNUSPdfViewer(QString filename, QWidget *parent) :
     if (pdfPage == 0) {
       return;
     }
-    QImage image = pdfPage->renderToImage();
+    QImage image = pdfPage->renderToImage(this->width(),this->height());
     imageLabel = new QLabel(this);
     imageLabel->setPixmap(QPixmap::fromImage(image));
     //delete pdfPage;
@@ -33,6 +33,14 @@ void MedNUSPdfViewer::setPage(int num)
       return;
     }
     QImage image = pdfPage->renderToImage();
+    imageLabel->setPixmap(QPixmap::fromImage(image));
+}
+
+void MedNUSPdfViewer::resizeEvent(QResizeEvent *event)
+{
+    //delete imageLabel;
+    QImage image = pdfPage->renderToImage(72,72);
+    imageLabel = new QLabel(this);
     imageLabel->setPixmap(QPixmap::fromImage(image));
 }
 
