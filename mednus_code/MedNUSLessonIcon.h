@@ -15,7 +15,7 @@ private:
     float _y;
 
 public:
-     MedNUSLessonIcon(QString title, QPixmap directory, QWidget *parent);
+     MedNUSLessonIcon(QString path, QPixmap directory, QWidget *parent);
     ~MedNUSLessonIcon();
      void updatePosition(float x, float y);
      void setSelected(bool value);

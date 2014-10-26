@@ -121,9 +121,7 @@ void MedNUSLessonPanel::mousePressEvent ( QMouseEvent * event )
         //For mouse click.
         if(event->pos().y()>=temp->getY()&&event->pos().y()<=temp->getY()+temp->getHeight()) {
             for(int j=0;j<temp->getContentSize();j++) {
-                if(temp->getContentItem(j)->checkMouseClick(event->pos().x(),event->pos().y())) {
-                    break;
-                }
+                temp->getContentItem(j)->checkMouseClick(event->pos().x(),event->pos().y());
             }
         }
     }
