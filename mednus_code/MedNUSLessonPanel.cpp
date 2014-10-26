@@ -14,20 +14,35 @@
 MedNUSLessonPanel::MedNUSLessonPanel(QWidget *parent) : QWidget(parent) {
     this->setMinimumWidth(300);
     this->setMaximumWidth(300);
-    this->setMinimumHeight(600-32);
+    this->setMaximumHeight(600-32);
 
     loadPixmap();
     _background = new QLabel(this);
     _background->setGeometry(QRect(0,0, this->width(), this->height()));
     _background->setStyleSheet("background-color: #193b50;");
+
+    _dividerBackground = new QLabel(this);
+    _dividerBackground->setGeometry(QRect(0,0, 10, this->height()));
+    _dividerBackground->setStyleSheet("background-color: #193b50;");
+
+    _button = new QLabel(this);
+    _button->setGeometry(QRect(0,this->height()/2-32, 10, 64));
+    _button->setPixmap(_button_toclose);
+
+    _trayOut = true;
 }
 
 MedNUSLessonPanel::~MedNUSLessonPanel() {
     clearLesson();
     delete _background;
+    delete _dividerBackground;
+    delete _button;
 }
 
 void MedNUSLessonPanel::loadPixmap() {
+
+    _button_toopen = QPixmap(QString::fromStdString(":/images/button_trayout.png"));
+    _button_toclose = QPixmap(QString::fromStdString(":/images/button_trayin.png"));
     _icon_3d = QPixmap(QString::fromStdString(":/images/icon_3d_small.png"));
     _icon_image = QPixmap(QString::fromStdString(":/images/icon_image_small.png"));
     _icon_pdf = QPixmap(QString::fromStdString(":/images/icon_pdf_small.png"));
@@ -97,6 +112,15 @@ void MedNUSLessonPanel::updateGUI() {
         temp->updateGUI();
         offset+=temp->getHeight();
         //qDebug() << offset;
+    }
+}
+
+void MedNUSLessonPanel::setTrayOut(bool value) {
+    _trayOut = value;
+
+    if(value) {
+        _button->setPixmap(_button_toclose);
+
     }
 }
 

@@ -12,6 +12,7 @@ class MedNUSLessonPackage : public QWidget
 {
     Q_OBJECT
 private:
+    int _x;
     int _y;
     int _tone;
     int _height;

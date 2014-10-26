@@ -31,9 +31,15 @@ private:
     QPixmap _icon_pdf;
     QPixmap _icon_quiz;
     QPixmap _icon_video;
+    QPixmap _button_toopen;
+    QPixmap _button_toclose;
 
     QLabel *_background;
+    QLabel *_dividerBackground;
+    QLabel *_button;
     QVector<MedNUSLessonPackage *> _lessonList;
+
+    bool _trayOut;
 
     void loadPixmap();
 
