@@ -102,7 +102,7 @@ void MedNUSLessonPackage::setDescription(QString value) {
 }
 
 void MedNUSLessonPackage::setTone(int value) {
-    _tone=std::min(std::max(value,0),16);
+    _tone=value;
 }
 
 bool MedNUSLessonPackage::getCollapse() {
