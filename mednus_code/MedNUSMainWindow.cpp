@@ -12,6 +12,8 @@ MedNUSMainWindow::MedNUSMainWindow(QWidget *parent) :
     int winHeight = 600;
     setMinimumSize(winWidth, winHeight);
 
+    _trayOut=true;
+
     createWidgets();
     createMenus();
 }
@@ -34,7 +36,7 @@ void MedNUSMainWindow::createWidgets()
      mainLayout->addWidget(fb,0,0);
 
     //Add UserBar (Top right bar that has user info)
-     MedNUSUserBar *ub = new MedNUSUserBar(this);
+     ub = new MedNUSUserBar(this);
      ub->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
      mainLayout->addWidget(ub,0,1);
 
@@ -63,16 +65,17 @@ void MedNUSMainWindow::createWidgets()
 
 
     // Create lesson table
-    MedNUSLessonPanel *lessonTable;
-    lessonTable = new MedNUSLessonPanel(this);
-    lessonTable->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
-    mainLayout->addWidget(lessonTable,1,1);
+    lp = new MedNUSLessonPanel(this);
+    QStringList content;
+
+    lp->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+    mainLayout->addWidget(lp,1,1);
 
     //Content Manager
     MedNUSContentManager *contentManager;
     contentManager = new MedNUSContentManager();
-    connect(contentManager, SIGNAL(callAddLesson(QString,QString,QString,QStringList)), lessonTable, SLOT(addLesson(QString,QString,QString,QStringList)));
-    connect(lessonTable, SIGNAL(emitOpenFile(QString,QString,int)), contentManager, SLOT(openFile(QString,QString,int)));
+    connect(contentManager, SIGNAL(callAddLesson(QString,QString,QString,QStringList)), lp, SLOT(addLesson(QString,QString,QString,QStringList)));
+    connect(lp, SIGNAL(emitOpenFile(QString,QString,int)), contentManager, SLOT(openFile(QString,QString,int)));
     connect(contentManager, SIGNAL(callAddTab(QWidget*,QString)), tabs, SLOT(addTab(QWidget*,QString)));
     contentManager->initLessonList(QStringList());
     //lessonTable->l
@@ -86,4 +89,18 @@ void MedNUSMainWindow::createWidgets()
 void MedNUSMainWindow::createMenus()
 {
     //
+}
+
+void MedNUSMainWindow::mousePressEvent ( QMouseEvent * event )
+{
+    if(event->buttons() == Qt::LeftButton) {
+        if(lp!=NULL) {
+            if(lp->checkTrayButton(event->x(),event->y())) {
+                _trayOut=!_trayOut;
+            }
+
+            lp->setTrayOut(_trayOut);
+            ub->setTrayOut(_trayOut);
+        }
+    }
 }

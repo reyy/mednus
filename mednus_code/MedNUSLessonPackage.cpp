@@ -102,6 +102,10 @@ void MedNUSLessonPackage::setTone(int value) {
     _tone=std::min(std::max(value,0),16);
 }
 
+bool MedNUSLessonPackage::getCollapse() {
+    return _collapse;
+}
+
 int MedNUSLessonPackage::getHeight(){
     if(_collapse)
         return _collapsedHeight;

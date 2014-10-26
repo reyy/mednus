@@ -17,6 +17,21 @@ MedNUSUserBar::~MedNUSUserBar()
     delete _background;
 }
 
+void MedNUSUserBar::setTrayOut(bool value) {
+    _trayOut = value;
+
+    if(value) {
+        this->setMinimumWidth(10);
+        this->setMinimumHeight(32);
+        this->setMaximumHeight(32);
+
+    } else {
+        this->setMinimumWidth(300);
+        this->setMinimumHeight(32);
+        this->setMaximumHeight(32);
+    }
+}
+
 void MedNUSUserBar::resizeEvent(QResizeEvent* event)
 {
 }
