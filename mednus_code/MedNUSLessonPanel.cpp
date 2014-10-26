@@ -51,9 +51,6 @@ void MedNUSLessonPanel::addLesson(QString title,QString subTitle, QString descri
 
     for(int i=0;i<directories.size();i++) {
         QString directory = directories.at(i);
-        int startIndex=directory.lastIndexOf("/");
-        int nameLength=directory.size()-startIndex;
-        QString filename = directory.mid(startIndex+1,nameLength-1);
         QPixmap icon_directory;
         if(directory.contains(".png", Qt::CaseInsensitive))
             icon_directory = _icon_image;
