@@ -41,7 +41,6 @@ public:
     MedNUSLessonPanel(QWidget *parent);
     ~MedNUSLessonPanel();
     void addLesson(MedNUSLessonPackage*);
-    void addLesson(QString title, QString subTitle, QString description, QStringList directory);
     bool removeLesson(QString title);
     void clearLesson();
     void updateGUI();
@@ -51,6 +50,7 @@ protected:
     void resizeEvent(QResizeEvent* event);
 
 public slots:
+    void addLesson(QString title, QString subTitle, QString description, QStringList directory);
 };
 
 #endif // MEDNUSLESSONPANEL_H
