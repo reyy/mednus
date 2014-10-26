@@ -67,9 +67,11 @@ void MedNUSMainWindow::createWidgets()
     tabs->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     mainLayout->addWidget(tabs,1,0);
 
+
     // Create lesson table
     lp = new MedNUSLessonPanel(this);
     QStringList content;
+<<<<<<< local
     content.push_back(":/content/test.pdf");
     content.push_back(":/content/samplevideo.mp4");
     lp->addLesson("LSM 1301 - Biology","Professor Gopal","Module about biology.",content);
@@ -77,9 +79,20 @@ void MedNUSMainWindow::createWidgets()
     lp->addLesson("LSM 1303 - Biology","Professor Gopal","Module about biology.",content);
     lp->addLesson("LSM 1304 - Biology","Professor Gopal","Module about biology.",content);
     lp->addLesson("LSM 1305 - Biology","Professor Gopal","Module about biology.",content);
+=======
+>>>>>>> other
 
     lp->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
     mainLayout->addWidget(lp,1,1);
+
+    //Content Manager
+    MedNUSContentManager *contentManager;
+    contentManager = new MedNUSContentManager();
+    connect(contentManager, SIGNAL(callAddLesson(QString,QString,QString,QStringList)), lp, SLOT(addLesson(QString,QString,QString,QStringList)));
+    connect(lp, SIGNAL(emitOpenFile(QString,QString,int)), contentManager, SLOT(openFile(QString,QString,int)));
+    connect(contentManager, SIGNAL(callAddTab(QWidget*,QString)), tabs, SLOT(addTab(QWidget*,QString)));
+    contentManager->initLessonList(QStringList());
+    //lessonTable->l
 
     centralWidget->setLayout(mainLayout);
     setCentralWidget(centralWidget);

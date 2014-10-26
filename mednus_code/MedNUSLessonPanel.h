@@ -47,7 +47,6 @@ public:
     MedNUSLessonPanel(QWidget *parent);
     ~MedNUSLessonPanel();
     void addLesson(MedNUSLessonPackage*);
-    void addLesson(QString title, QString subTitle, QString description, QStringList directory);
     bool removeLesson(QString title);
     void clearLesson();
     void updateGUI();
@@ -59,6 +58,11 @@ protected:
     void resizeEvent(QResizeEvent* event);
 
 public slots:
+    void addLesson(QString title, QString subTitle, QString description, QStringList directory);
+    void callOpenFile(QString str, QString title, int type)
+    {emit emitOpenFile(str, title, type);}
+signals:
+    void emitOpenFile(QString, QString, int);
 };
 
 #endif // MEDNUSLESSONPANEL_H

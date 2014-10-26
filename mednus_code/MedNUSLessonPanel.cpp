@@ -79,6 +79,8 @@ void MedNUSLessonPanel::addLesson(QString title,QString subTitle, QString descri
     }
     _lessonList.push_back(_package);
     updateGUI();
+
+    connect(_package, SIGNAL(emitOpenFile(QString,QString,int)), this, SLOT(callOpenFile(QString,QString,int)));
 }
 
 bool MedNUSLessonPanel::removeLesson(QString title) {

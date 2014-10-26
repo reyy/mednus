@@ -23,6 +23,7 @@ signals:
  public slots:
     void closeTab(int index)
     {
+        delete this->widget(index);
         this->removeTab(index);
         if(this->count()==0)
             emit noMoreTabs(this);
@@ -37,14 +38,15 @@ public:
     explicit MedNUSContentPanel(QWidget *parent = 0);
     ~MedNUSContentPanel();
 
-    MedNUSTab tabList[4];
+    MedNUSTab tabList[3];
     QGridLayout *layout;
     int counter =2;
-    void addTab(QWidget*,QString);
+
 signals:
 
 public slots:
     void closeTab(MedNUSTab *index);
+    void addTab(QWidget*,QString);
 };
 
 

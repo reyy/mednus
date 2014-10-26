@@ -61,6 +61,7 @@ bool MedNUSLessonIcon::checkMouseClick(float xpos, float ypos) {
     if(xpos>=_x&&xpos<=_x+LESSONPANEL_WIDTH/2&&ypos>=_y&&ypos<=_y+_directory.height()) {
         _selected = true;
         _highlight->setVisible(true);
+        emit emitOpenFile(_path, _text->text(), 0); //todo: pass actual type!
         return true;
     } else {
         _selected = false;
