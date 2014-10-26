@@ -9,6 +9,7 @@
 #include "MedNUSFrontBar.h"
 #include "MedNUSUserBar.h"
 #include "MedNUSContentPanel.h"
+#include "MedNUSContentManager.h"
 
 class MedNUSMainWindow : public QMainWindow
 {

@@ -61,31 +61,19 @@ void MedNUSMainWindow::createWidgets()
     tabs->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     mainLayout->addWidget(tabs,1,0);
 
+
     // Create lesson table
     MedNUSLessonPanel *lessonTable;
     lessonTable = new MedNUSLessonPanel(this);
-    QStringList content;
-    content.push_back(":/content/test.pdf");
-    content.push_back(":/content/samplevideo.mp4");
-    lessonTable->addLesson("LSM 1301 - Biology","Professor Gopal","Module about biology.",content);
-    /*lessonTable->addLesson("LSM 1302 - Difficult Biology","Professor Gopal","Module about more biology.");
-    lessonTable->addLesson("LSM 1303 - Very difficult Biology","Professor Gopal","Module about more biology.");
-    lessonTable->addLesson("LSM 1304 - Crazy Biology","Professor Gopal","Module about more biology.");
-    lessonTable->addLesson("LSM 1301 - Biology","Professor Gopal","Module about biology.");
-    lessonTable->addLesson("LSM 1302 - Difficult Biology","Professor Gopal","Module about more biology.");
-    lessonTable->addLesson("LSM 1303 - Very difficult Biology","Professor Gopal","Module about more biology.");
-    lessonTable->addLesson("LSM 1304 - Crazy Biology","Professor Gopal","Module about more biology.");
-    lessonTable->addLesson("LSM 1301 - Biology","Professor Gopal","Module about biology.");
-    lessonTable->addLesson("LSM 1302 - Difficult Biology","Professor Gopal","Module about more biology.");
-    lessonTable->addLesson("LSM 1303 - Very difficult Biology","Professor Gopal","Module about more biology.");
-    lessonTable->addLesson("LSM 1304 - Crazy Biology","Professor Gopal","Module about more biology.");
-    lessonTable->addLesson("LSM 1301 - Biology","Professor Gopal","Module about biology.");
-    lessonTable->addLesson("LSM 1302 - Difficult Biology","Professor Gopal","Module about more biology.");
-    lessonTable->addLesson("LSM 1303 - Very difficult Biology","Professor Gopal","Module about more biology.");
-    lessonTable->addLesson("LSM 1304 - Crazy Biology","Professor Gopal","Module about more biology.");*/
-
     lessonTable->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
     mainLayout->addWidget(lessonTable,1,1);
+
+    //Content Manager
+    MedNUSContentManager *contentManager;
+    contentManager = new MedNUSContentManager();
+    connect((QObject*)contentManager, SIGNAL(callAddLesson(QString,QString,QString,QStringList)), lessonTable, SLOT(addLesson(QString,QString,QString,QStringList)));
+    contentManager->initLessonList(QStringList());
+    lessonTable->l
 
     centralWidget->setLayout(mainLayout);
     setCentralWidget(centralWidget);

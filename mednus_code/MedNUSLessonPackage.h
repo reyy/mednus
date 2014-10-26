@@ -50,7 +50,9 @@ public:
     void updateGUI();
 
 public slots:
-
+    void callOpenFile(QString){}
+signals:
+    void callOpenFile(QString);
 };
 
 #endif // MEDNUSLESSONPACKAGE_H
