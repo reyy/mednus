@@ -51,6 +51,7 @@ public:
     bool removeLesson(QString title);
     void clearLesson();
     void updateGUI();
+    void setTrayOut(bool value);
 
 protected:
     void mousePressEvent ( QMouseEvent * event ) ;

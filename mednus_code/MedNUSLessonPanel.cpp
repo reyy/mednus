@@ -77,7 +77,7 @@ void MedNUSLessonPanel::addLesson(QString title,QString subTitle, QString descri
             icon_directory = _icon_quiz;
         if(directory.contains(".mp4", Qt::CaseInsensitive))
             icon_directory = _icon_video;
-        _package->addContent(filename,icon_directory);
+        _package->addContent(directory,icon_directory);
     }
     _lessonList.push_back(_package);
     updateGUI();
