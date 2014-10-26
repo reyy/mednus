@@ -6,27 +6,28 @@
 */
 
 #include "MedNUSLessonPanel.h"
+#include "MedNUSAUISettings.h"
 #include <QtGui>
 #include <QPalette>
 
 
 
 MedNUSLessonPanel::MedNUSLessonPanel(QWidget *parent) : QWidget(parent) {
-    this->setMinimumWidth(300);
-    this->setMaximumWidth(300);
-    this->setMaximumHeight(600-32);
+    this->setMinimumWidth(LESSONPANEL_WIDTH);
+    this->setMaximumWidth(LESSONPANEL_WIDTH);
 
     loadPixmap();
     _background = new QLabel(this);
     _background->setGeometry(QRect(0,0, this->width(), this->height()));
-    _background->setStyleSheet("background-color: #193b50;");
+    _background->setStyleSheet("background-color: #1a394a;");
 
     _dividerBackground = new QLabel(this);
-    _dividerBackground->setGeometry(QRect(0,0, 10, this->height()));
+    _dividerBackground->setGeometry(QRect(0,0, SIDEBAR_OFFSET, this->height()));
     _dividerBackground->setStyleSheet("background-color: #162a37;");
 
     _button = new QLabel(this);
-    _button->setGeometry(QRect(0,this->height()/2-32, 10, 64));
+    _button->setGeometry(QRect(0,this->height()/2-SIDEBAR_OFFSET*3.2, SIDEBAR_OFFSET, SIDEBAR_OFFSET*6.4));
+    _button->setScaledContents(true);
     _button->setPixmap(_button_toclose);
 
     _trayOut = true;
@@ -48,9 +49,6 @@ void MedNUSLessonPanel::loadPixmap() {
     _icon_pdf = QPixmap(QString::fromStdString(":/images/icon_pdf_small.png"));
     _icon_quiz = QPixmap(QString::fromStdString(":/images/icon_quiz_small.png"));
     _icon_video = QPixmap(QString::fromStdString(":/images/icon_video_small.png"));
-
-    qDebug() << "Images:Loaded";
-    qDebug() << _icon_3d.width()<<" "<< _icon_3d.height();
 }
 
 void MedNUSLessonPanel::addLesson(MedNUSLessonPackage * _package) {
@@ -111,7 +109,6 @@ void MedNUSLessonPanel::updateGUI() {
         temp->setY(offset);
         temp->updateGUI();
         offset+=temp->getHeight();
-        //qDebug() << offset;
     }
 }
 
@@ -119,15 +116,13 @@ void MedNUSLessonPanel::setTrayOut(bool value) {
     _trayOut = value;
 
     if(value) {
-        this->setMinimumWidth(10);
-        this->setMaximumWidth(10);
-        this->setMaximumHeight(600-32);
+        this->setMinimumWidth(SIDEBAR_OFFSET);
+        this->setMaximumWidth(SIDEBAR_OFFSET);
         _button->setPixmap(_button_toopen);
 
     } else {
-        this->setMinimumWidth(300);
-        this->setMaximumWidth(300);
-        this->setMaximumHeight(600-32);
+        this->setMinimumWidth(LESSONPANEL_WIDTH);
+        this->setMaximumWidth(LESSONPANEL_WIDTH);
         _button->setPixmap(_button_toclose);
     }
 }
@@ -136,7 +131,7 @@ bool MedNUSLessonPanel::checkTrayButton(float xpos, float ypos) {
     xpos-=this->pos().x();
     ypos-=this->pos().y();
 
-    if(xpos>=0&&xpos<=10&&ypos>=this->height()/2-32&&ypos<=this->height()/2+32) {
+    if(xpos>=0&&xpos<=SIDEBAR_OFFSET&&ypos>=this->height()/2-SIDEBAR_OFFSET*3.2&&ypos<=this->height()/2+SIDEBAR_OFFSET*3.2) {
         return true;
     }
     return false;
@@ -185,8 +180,7 @@ void MedNUSLessonPanel::mousePressEvent ( QMouseEvent * event )
 
 void MedNUSLessonPanel::resizeEvent(QResizeEvent* event)
 {
-   //qDebug() << "Resize";
-    _background->setGeometry(QRect(0,0, this->width(), this->height()));
-    _dividerBackground->setGeometry(QRect(0,0, 10, this->height()));
-    _button->setGeometry(QRect(0,this->height()/2-32, 10, 64));
+    _background->setGeometry(QRect(0,0, this->width(),this->height()));
+    _dividerBackground->setGeometry(QRect(0,0, SIDEBAR_OFFSET, this->height()));
+    _button->setGeometry(QRect(0,this->height()/2-32, SIDEBAR_OFFSET, 64));
 }

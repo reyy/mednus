@@ -18,6 +18,8 @@ private:
     int _height;
     int _interactiveHeight;
     int _collapsedHeight;
+    int _border;
+
     QString _title;
     QLabel *_background;
     QLabel *_contentBackground;

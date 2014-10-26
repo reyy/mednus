@@ -20,7 +20,8 @@ HEADERS += \
     MedNUSFrontBar.h \
     MedNUSUserBar.h \
     MedNUSContentPanel.h \
-    MedNUSLessonIcon.h
+    MedNUSLessonIcon.h \
+    MedNUSAUISettings.h
 
 SOURCES += main.cpp \
     PMeshModel.cpp \

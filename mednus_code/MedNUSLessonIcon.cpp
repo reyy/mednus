@@ -1,4 +1,5 @@
 #include "MedNUSLessonIcon.h"
+#include "MedNUSAUISettings.h"
 #include <QDebug>
 
 MedNUSLessonIcon::MedNUSLessonIcon(QString path, QPixmap directory, QWidget *parent)
@@ -34,11 +35,11 @@ MedNUSLessonIcon::~MedNUSLessonIcon() {
 }
 
 void MedNUSLessonIcon::updatePosition(float x, float y) {
-    _x=x+10;
+    _x=x + _directory.width() +5;
     _y=y;
     _icon->setGeometry(QRect(_x, _y, _directory.width(), _directory.height()));
-    _text->setGeometry(QRect(_x+_directory.width()+5, _y+1, 150, 16));
-    _highlight->setGeometry(QRect(_x-2, _y-2, 150+4, _directory.height()+4));
+    _text->setGeometry(QRect(_x+_directory.width()+5, _y+1, LESSONPANEL_WIDTH/2, 16));
+    _highlight->setGeometry(QRect(_x-2, _y-2, LESSONPANEL_WIDTH/2+4, _directory.height()+4));
 }
 
 void MedNUSLessonIcon::setSelected(bool value) {
@@ -57,7 +58,7 @@ void MedNUSLessonIcon::setVisible(bool value) {
 
 
 bool MedNUSLessonIcon::checkMouseClick(float xpos, float ypos) {
-    if(xpos>=_x&&xpos<=_x+150&&ypos>=_y&&ypos<=_y+_directory.height()) {
+    if(xpos>=_x&&xpos<=_x+LESSONPANEL_WIDTH/2&&ypos>=_y&&ypos<=_y+_directory.height()) {
         _selected = true;
         _highlight->setVisible(true);
         return true;

@@ -31,13 +31,17 @@ void MedNUSMainWindow::createWidgets()
      mainLayout->setSizeConstraint(QLayout::SetNoConstraint);
 
     //Add FrontBar (Top bar that has logo)
-     MedNUSFrontBar *fb = new MedNUSFrontBar(this);
+     fb = new MedNUSFrontBar(this);
      fb->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
+     fb->setName("Jay Chua");
+     fb->setAvatar(":/images/ivle_profile.jpg");
      mainLayout->addWidget(fb,0,0);
 
     //Add UserBar (Top right bar that has user info)
      ub = new MedNUSUserBar(this);
      ub->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
+     ub->setName("Jay Chua");
+     ub->setAvatar(":/images/ivle_profile.jpg");
      mainLayout->addWidget(ub,0,1);
 
     //Add Content View
@@ -69,6 +73,10 @@ void MedNUSMainWindow::createWidgets()
     content.push_back(":/content/test.pdf");
     content.push_back(":/content/samplevideo.mp4");
     lp->addLesson("LSM 1301 - Biology","Professor Gopal","Module about biology.",content);
+    lp->addLesson("LSM 1302 - Biology","Professor Gopal","Module about biology.",content);
+    lp->addLesson("LSM 1303 - Biology","Professor Gopal","Module about biology.",content);
+    lp->addLesson("LSM 1304 - Biology","Professor Gopal","Module about biology.",content);
+    lp->addLesson("LSM 1305 - Biology","Professor Gopal","Module about biology.",content);
 
     lp->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
     mainLayout->addWidget(lp,1,1);
@@ -94,6 +102,7 @@ void MedNUSMainWindow::mousePressEvent ( QMouseEvent * event )
 
             lp->setTrayOut(_trayOut);
             ub->setTrayOut(_trayOut);
+            fb->setTrayOut(_trayOut);
         }
     }
 }
