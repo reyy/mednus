@@ -52,6 +52,7 @@ public:
     void clearLesson();
     void updateGUI();
     void setTrayOut(bool value);
+    bool checkTrayButton(float xpos, float ypos);
 
 protected:
     void mousePressEvent ( QMouseEvent * event ) ;

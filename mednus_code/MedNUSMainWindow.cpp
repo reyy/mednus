@@ -12,6 +12,8 @@ MedNUSMainWindow::MedNUSMainWindow(QWidget *parent) :
     int winHeight = 600;
     setMinimumSize(winWidth, winHeight);
 
+    _trayOut=true;
+
     createWidgets();
     createMenus();
 }
@@ -34,7 +36,7 @@ void MedNUSMainWindow::createWidgets()
      mainLayout->addWidget(fb,0,0);
 
     //Add UserBar (Top right bar that has user info)
-     MedNUSUserBar *ub = new MedNUSUserBar(this);
+     ub = new MedNUSUserBar(this);
      ub->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
      mainLayout->addWidget(ub,0,1);
 
@@ -62,30 +64,14 @@ void MedNUSMainWindow::createWidgets()
     mainLayout->addWidget(tabs,1,0);
 
     // Create lesson table
-    MedNUSLessonPanel *lessonTable;
-    lessonTable = new MedNUSLessonPanel(this);
+    lp = new MedNUSLessonPanel(this);
     QStringList content;
     content.push_back(":/content/test.pdf");
     content.push_back(":/content/samplevideo.mp4");
-    lessonTable->addLesson("LSM 1301 - Biology","Professor Gopal","Module about biology.",content);
-    /*lessonTable->addLesson("LSM 1302 - Difficult Biology","Professor Gopal","Module about more biology.");
-    lessonTable->addLesson("LSM 1303 - Very difficult Biology","Professor Gopal","Module about more biology.");
-    lessonTable->addLesson("LSM 1304 - Crazy Biology","Professor Gopal","Module about more biology.");
-    lessonTable->addLesson("LSM 1301 - Biology","Professor Gopal","Module about biology.");
-    lessonTable->addLesson("LSM 1302 - Difficult Biology","Professor Gopal","Module about more biology.");
-    lessonTable->addLesson("LSM 1303 - Very difficult Biology","Professor Gopal","Module about more biology.");
-    lessonTable->addLesson("LSM 1304 - Crazy Biology","Professor Gopal","Module about more biology.");
-    lessonTable->addLesson("LSM 1301 - Biology","Professor Gopal","Module about biology.");
-    lessonTable->addLesson("LSM 1302 - Difficult Biology","Professor Gopal","Module about more biology.");
-    lessonTable->addLesson("LSM 1303 - Very difficult Biology","Professor Gopal","Module about more biology.");
-    lessonTable->addLesson("LSM 1304 - Crazy Biology","Professor Gopal","Module about more biology.");
-    lessonTable->addLesson("LSM 1301 - Biology","Professor Gopal","Module about biology.");
-    lessonTable->addLesson("LSM 1302 - Difficult Biology","Professor Gopal","Module about more biology.");
-    lessonTable->addLesson("LSM 1303 - Very difficult Biology","Professor Gopal","Module about more biology.");
-    lessonTable->addLesson("LSM 1304 - Crazy Biology","Professor Gopal","Module about more biology.");*/
+    lp->addLesson("LSM 1301 - Biology","Professor Gopal","Module about biology.",content);
 
-    lessonTable->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
-    mainLayout->addWidget(lessonTable,1,1);
+    lp->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+    mainLayout->addWidget(lp,1,1);
 
     centralWidget->setLayout(mainLayout);
     setCentralWidget(centralWidget);
@@ -96,4 +82,18 @@ void MedNUSMainWindow::createWidgets()
 void MedNUSMainWindow::createMenus()
 {
     //
+}
+
+void MedNUSMainWindow::mousePressEvent ( QMouseEvent * event )
+{
+    if(event->buttons() == Qt::LeftButton) {
+        if(lp!=NULL) {
+            if(lp->checkTrayButton(event->x(),event->y())) {
+                _trayOut=!_trayOut;
+            }
+
+            lp->setTrayOut(_trayOut);
+            ub->setTrayOut(_trayOut);
+        }
+    }
 }
