@@ -43,6 +43,7 @@ public:
     void setDescription(QString value);
     void setTone(int value);
     int getInteractiveHeight();
+    bool getCollapse();
     int getHeight();
     int getCollapseHeight();
     void toggleCollapse();

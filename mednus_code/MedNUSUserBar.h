@@ -11,14 +11,12 @@ class MedNUSUserBar : public QWidget
 private:
     QLabel *_background;
     QLabel *_logo;
+    bool _trayOut;
 
 public:
     explicit MedNUSUserBar(QWidget *parent = 0);
     ~MedNUSUserBar();
-
-signals:
-
-public slots:
+    void setTrayOut(bool value);
 
 protected:
     void resizeEvent(QResizeEvent* event);

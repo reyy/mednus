@@ -13,17 +13,25 @@
 class MedNUSMainWindow : public QMainWindow
 {
     Q_OBJECT
+private:
+    bool _trayOut;
+
 public:
     explicit MedNUSMainWindow(QWidget *parent = 0);
 protected:
     MedNUSContentPanel *tabs;
     MedNUSVideoViewer *vid;
+    MedNUSUserBar *ub;
+    MedNUSLessonPanel *lp;
     void createWidgets();
     void createMenus();
 
 signals:
 
 public slots:
+
+protected:
+    void mousePressEvent ( QMouseEvent * event ) ;
 
 };
 
