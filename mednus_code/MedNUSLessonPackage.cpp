@@ -66,6 +66,8 @@ void MedNUSLessonPackage::addContent(QString filename, QPixmap directory) {
     MedNUSLessonIcon *item = new MedNUSLessonIcon(filename,directory,_parent);
     item->updatePosition(5,_y+70+_listOfItems.size()*24);
     _listOfItems.push_back(item);
+
+    connect(item, SIGNAL(emitOpenFile(QString,QString,int)), this, SLOT(callOpenFile(QString,QString,int)));
 }
 
 void MedNUSLessonPackage::clearContent() {

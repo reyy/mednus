@@ -71,9 +71,11 @@ void MedNUSMainWindow::createWidgets()
     //Content Manager
     MedNUSContentManager *contentManager;
     contentManager = new MedNUSContentManager();
-    connect((QObject*)contentManager, SIGNAL(callAddLesson(QString,QString,QString,QStringList)), lessonTable, SLOT(addLesson(QString,QString,QString,QStringList)));
+    connect(contentManager, SIGNAL(callAddLesson(QString,QString,QString,QStringList)), lessonTable, SLOT(addLesson(QString,QString,QString,QStringList)));
+    connect(lessonTable, SIGNAL(emitOpenFile(QString,QString,int)), contentManager, SLOT(openFile(QString,QString,int)));
+    connect(contentManager, SIGNAL(callAddTab(QWidget*,QString)), tabs, SLOT(addTab(QWidget*,QString)));
     contentManager->initLessonList(QStringList());
-    lessonTable->l
+    //lessonTable->l
 
     centralWidget->setLayout(mainLayout);
     setCentralWidget(centralWidget);
