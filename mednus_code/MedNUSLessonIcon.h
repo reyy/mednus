@@ -10,12 +10,14 @@ private:
     QLabel *_highlight;
     QLabel *_icon;
     QLabel *_text;
-    QPixmap _directory;
+    QPixmap _directory;    
+    QString _path;
+
     float _x;
     float _y;
 
 public:
-     MedNUSLessonIcon(QString title, QPixmap directory, QWidget *parent);
+     MedNUSLessonIcon(QString path, QPixmap directory, QWidget *parent);
     ~MedNUSLessonIcon();
      void updatePosition(float x, float y);
      void setSelected(bool value);

@@ -14,20 +14,35 @@
 MedNUSLessonPanel::MedNUSLessonPanel(QWidget *parent) : QWidget(parent) {
     this->setMinimumWidth(300);
     this->setMaximumWidth(300);
-    this->setMinimumHeight(600-32);
+    this->setMaximumHeight(600-32);
 
     loadPixmap();
     _background = new QLabel(this);
     _background->setGeometry(QRect(0,0, this->width(), this->height()));
     _background->setStyleSheet("background-color: #193b50;");
+
+    _dividerBackground = new QLabel(this);
+    _dividerBackground->setGeometry(QRect(0,0, 10, this->height()));
+    _dividerBackground->setStyleSheet("background-color: #193b50;");
+
+    _button = new QLabel(this);
+    _button->setGeometry(QRect(0,this->height()/2-32, 10, 64));
+    _button->setPixmap(_button_toclose);
+
+    _trayOut = true;
 }
 
 MedNUSLessonPanel::~MedNUSLessonPanel() {
     clearLesson();
     delete _background;
+    delete _dividerBackground;
+    delete _button;
 }
 
 void MedNUSLessonPanel::loadPixmap() {
+
+    _button_toopen = QPixmap(QString::fromStdString(":/images/button_trayout.png"));
+    _button_toclose = QPixmap(QString::fromStdString(":/images/button_trayin.png"));
     _icon_3d = QPixmap(QString::fromStdString(":/images/icon_3d_small.png"));
     _icon_image = QPixmap(QString::fromStdString(":/images/icon_image_small.png"));
     _icon_pdf = QPixmap(QString::fromStdString(":/images/icon_pdf_small.png"));
@@ -51,9 +66,6 @@ void MedNUSLessonPanel::addLesson(QString title,QString subTitle, QString descri
 
     for(int i=0;i<directories.size();i++) {
         QString directory = directories.at(i);
-        int startIndex=directory.lastIndexOf("/");
-        int nameLength=directory.size()-startIndex;
-        QString filename = directory.mid(startIndex+1,nameLength-1);
         QPixmap icon_directory;
         if(directory.contains(".png", Qt::CaseInsensitive))
             icon_directory = _icon_image;
@@ -65,7 +77,7 @@ void MedNUSLessonPanel::addLesson(QString title,QString subTitle, QString descri
             icon_directory = _icon_quiz;
         if(directory.contains(".mp4", Qt::CaseInsensitive))
             icon_directory = _icon_video;
-        _package->addContent(filename,icon_directory);
+        _package->addContent(directory,icon_directory);
     }
     _lessonList.push_back(_package);
     updateGUI();
@@ -103,6 +115,15 @@ void MedNUSLessonPanel::updateGUI() {
     }
 }
 
+void MedNUSLessonPanel::setTrayOut(bool value) {
+    _trayOut = value;
+
+    if(value) {
+        _button->setPixmap(_button_toclose);
+
+    }
+}
+
 void MedNUSLessonPanel::mousePressEvent ( QMouseEvent * event )
 {
     //qDebug() << "Debug Message";
@@ -121,9 +142,7 @@ void MedNUSLessonPanel::mousePressEvent ( QMouseEvent * event )
         //For mouse click.
         if(event->pos().y()>=temp->getY()&&event->pos().y()<=temp->getY()+temp->getHeight()) {
             for(int j=0;j<temp->getContentSize();j++) {
-                if(temp->getContentItem(j)->checkMouseClick(event->pos().x(),event->pos().y())) {
-                    break;
-                }
+                temp->getContentItem(j)->checkMouseClick(event->pos().x(),event->pos().y());
             }
         }
     }
