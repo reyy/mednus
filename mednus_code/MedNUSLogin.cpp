@@ -33,6 +33,7 @@ MedNUSLogin::MedNUSLogin(QWidget *parent) :
     _loginButton->setIcon(QIcon(":/images/icon_login.png"));
     _loginButton->setIconSize(QSize(24,24));
     _loginButton->setGeometry(QRect(this->geometry().width()*0.5+100-24, this->geometry().height()*0.5+16, 24,24));
+    connect(_loginButton,SIGNAL(clicked()),this,SLOT(loginButtonPress()));
 }
 
 MedNUSLogin::~MedNUSLogin() {
@@ -40,4 +41,9 @@ MedNUSLogin::~MedNUSLogin() {
     delete _logo;
     delete _username;
     delete _password;
+}
+
+void MedNUSLogin::loginButtonPress()
+{
+    emit callLogin(_username->text(),_password->text());
 }

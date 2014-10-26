@@ -16,11 +16,12 @@ MedNUSMainWindow::MedNUSMainWindow(QWidget *parent) :
     _widgetsCreated=false;
     _menuCreated=false;
 
+    network = new MedNUSNetwork();
+
     login = new MedNUSLogin(this);
     setCentralWidget(login);
 
-    network = new MedNUSNetwork();
-    network->login("a","b");
+    connect(login, SIGNAL(callLogin(QString,QString)), network, SLOT(login(QString,QString)));
     connect(network,SIGNAL(loginResults(bool,QString,QString)),this,SLOT(loginCompleted(bool,QString,QString)));
     //createWidgets();
     //createMenus();
@@ -49,14 +50,14 @@ void MedNUSMainWindow::createWidgets()
         //Add FrontBar (Top bar that has logo)
          fb = new MedNUSFrontBar(this);
          fb->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
-         fb->setName("Jay Chua");
+         fb->setName(userName);
          fb->setAvatar(":/images/ivle_profile.jpg");
          mainLayout->addWidget(fb,0,0);
 
         //Add UserBar (Top right bar that has user info)
          ub = new MedNUSUserBar(this);
          ub->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
-         ub->setName("Jay Chua");
+         ub->setName(userName);
          ub->setAvatar(":/images/ivle_profile.jpg");
          mainLayout->addWidget(ub,0,1);
 
@@ -118,7 +119,7 @@ void MedNUSMainWindow::deleteWidgets() {
         delete fb;
         delete ub;
         delete tabs;
-        delete vid;
+        //delete vid; //todo: fix crashing bug
         _widgetsCreated=false;
     }
 }
@@ -132,16 +133,31 @@ void MedNUSMainWindow::deleteMenus() {
 void MedNUSMainWindow::loginCompleted(bool sucess, QString matric, QString name)
 {
     if(!sucess)
-        qDebug() << "Wrong User/Pass.";
+        qDebug() << "\nWrong User/Pass.";
     else
     {
         this->matricNo = matric;
         this->userName = name;
 
-        this->layout()->removeWidget(login);
-        createWidgets();
+        //De-capitalize
+        //Todo: push to function
+        QRegExp re("\\W\\w");
+        int pos=-1;
+        name = name.toLower();
+        QChar * base = name.data();
+        QChar * ch;
+        do{
+         pos++;
+         ch = base + pos;
+         pos = name.indexOf(re, pos);
+         *ch = ch->toUpper();
+        }while(pos >= 0);
+        this->userName = name;
+
+        layout()->removeWidget(login);
+
         createMenus();
-        //_layoutCreated=true;
+        createWidgets();
     }
 }
 
