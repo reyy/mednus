@@ -21,6 +21,7 @@ protected:
     const static QString _baseURL;
     QString token;
     QNetworkAccessManager mgr;
+    bool isLocked = false;
 
     void getProfile();
     void loginReply(QJsonObject);

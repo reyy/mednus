@@ -21,9 +21,9 @@ public:
     ~MedNUSLogin();
 
 signals:
-
+    void callLogin(QString,QString);
 public slots:
-
+    void loginButtonPress();
 };
 
 #endif // MEDNUSLOGIN_H
