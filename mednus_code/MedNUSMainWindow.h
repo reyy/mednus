@@ -22,6 +22,7 @@ public:
 protected:
     MedNUSContentPanel *tabs;
     MedNUSVideoViewer *vid;
+    MedNUSFrontBar *fb;
     MedNUSUserBar *ub;
     MedNUSLessonPanel *lp;
     void createWidgets();

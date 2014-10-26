@@ -12,7 +12,7 @@ MedNUSMainWindow::MedNUSMainWindow(QWidget *parent) :
     int winHeight = 600;
     setMinimumSize(winWidth, winHeight);
 
-    _trayOut=true;
+    _trayOut=false;
 
     createWidgets();
     createMenus();
@@ -70,18 +70,6 @@ void MedNUSMainWindow::createWidgets()
 
     // Create lesson table
     lp = new MedNUSLessonPanel(this);
-    QStringList content;
-<<<<<<< local
-    content.push_back(":/content/test.pdf");
-    content.push_back(":/content/samplevideo.mp4");
-    lp->addLesson("LSM 1301 - Biology","Professor Gopal","Module about biology.",content);
-    lp->addLesson("LSM 1302 - Biology","Professor Gopal","Module about biology.",content);
-    lp->addLesson("LSM 1303 - Biology","Professor Gopal","Module about biology.",content);
-    lp->addLesson("LSM 1304 - Biology","Professor Gopal","Module about biology.",content);
-    lp->addLesson("LSM 1305 - Biology","Professor Gopal","Module about biology.",content);
-=======
->>>>>>> other
-
     lp->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
     mainLayout->addWidget(lp,1,1);
 
