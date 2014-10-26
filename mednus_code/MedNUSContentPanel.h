@@ -1,8 +1,15 @@
 #ifndef MEDNUSCONTENTPANEL_H
 #define MEDNUSCONTENTPANEL_H
 
+#include "MedNUSMeshViewer.h"
+#include "MedNUSPdfViewer.h"
+#include "MedNUSVideoViewer.h"
 #include <QTabWidget>
 #include <QGridLayout>
+
+#define VIDEO_INDEX 0
+#define PDF_INDEX 1
+#define MESH_INDEX 2
 
 class MedNUSTab : public QTabWidget
 {
