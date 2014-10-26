@@ -24,6 +24,7 @@ MedNUSVideoViewer::MedNUSVideoViewer(QString filename, QWidget *parent) :
 
 MedNUSVideoViewer::~MedNUSVideoViewer()
 {
+    this->hide();
     player->stop();
     delete player;
 }

@@ -3,8 +3,9 @@
 
 #include <QLabel>
 
-class MedNUSLessonIcon
+class MedNUSLessonIcon : public QObject
 {
+    Q_OBJECT
 private:
     bool _selected;
     QLabel *_highlight;
@@ -25,7 +26,7 @@ public:
      bool checkMouseClick(float xpos, float ypox);
 
 signals:
-
+    void emitOpenFile(QString, QString, int);
 public slots:
 
 };

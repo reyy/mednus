@@ -3,6 +3,10 @@
 #include <QObject>
 #include <QStringList>
 #include <QWidget>
+#include <QDir>
+#include "MedNUSPdfViewer.h"
+#include "MedNUSMeshViewer.h"
+#include "MedNUSVideoViewer.h"
 
 class MedNUSContentManager : public QObject
 {
@@ -12,13 +16,13 @@ public:
     void initLessonList(QStringList);
 
 public slots:
-    void openFile(QString);
+    void openFile(QString fileDir, QString title, int type);
 signals:
-    //void callAddTab(QWidget);
+    void callAddTab(QWidget*,QString);
     void callAddLesson(QString title, QString subTitle, QString description, QStringList directory);
 
 private:
-    bool isFileExist();
+    bool isFileExist(QString);
 };
 
 

@@ -58,6 +58,10 @@ protected:
 
 public slots:
     void addLesson(QString title, QString subTitle, QString description, QStringList directory);
+    void callOpenFile(QString str, QString title, int type)
+    {emit emitOpenFile(str, title, type);}
+signals:
+    void emitOpenFile(QString, QString, int);
 };
 
 #endif // MEDNUSLESSONPANEL_H
