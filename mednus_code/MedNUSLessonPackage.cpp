@@ -9,6 +9,7 @@ MedNUSLessonPackage::MedNUSLessonPackage(QWidget *parent) :
     _interactiveHeight = 64;
     _collapsedHeight = 24;
     _tone=1;
+    _x=10;
     _y=0;
     _parent = parent;
 
@@ -17,23 +18,23 @@ MedNUSLessonPackage::MedNUSLessonPackage(QWidget *parent) :
     this->setStyleSheet("background-color: #1c4f6e;");
 
     _contentBackground = new QLabel(parent);
-    _contentBackground->setGeometry(QRect(0, _y, 300, _height));
+    _contentBackground->setGeometry(QRect(_x, _y, 300, _height));
     _contentBackground->setStyleSheet("background-color: #2d3949;");
 
     _background = new QLabel(parent);
-    _background->setGeometry(QRect(0, _y, 300, _interactiveHeight));
+    _background->setGeometry(QRect(_x, _y, 300, _interactiveHeight));
     //_background->setPixmap(QPixmap(QString::fromStdString(":/images/copy.png")));
 
     _moduleTitle = new QLabel(parent);
-    _moduleTitle->setGeometry(QRect(0+10, _y, 280, 25));
+    _moduleTitle->setGeometry(QRect(_x+10, _y, 280, 25));
     _moduleTitle->setStyleSheet("color:#FFF;font-size:12px;font-weight:bold;");
 
     _subHeader = new QLabel(parent);
-    _subHeader->setGeometry(QRect(0+10, _y+22, 280, 20));
+    _subHeader->setGeometry(QRect(_x+10, _y+22, 280, 20));
     _subHeader->setStyleSheet("color:#FFF;font-size:10px;");
 
     _description = new QLabel(parent);
-    _description->setGeometry(QRect(0+10, _y+40, 280, 20));
+    _description->setGeometry(QRect(_x+10, _y+40, 280, 20));
     _description->setStyleSheet("color:#FFF;font-size:10px;");
 }
 
@@ -131,11 +132,11 @@ void MedNUSLessonPackage::updateGUI() {
         _moduleTitle->setStyleSheet("color:#FFF;font-size:12px;font-weight:bold;");
         _subHeader->setStyleSheet("color:#FFF;font-size:10px;");
         _description->setStyleSheet("color:#FFF;font-size:10px;");
-        _background->setGeometry(QRect(0, _y, 300, 24));
-        _contentBackground->setGeometry(QRect(0, _y, 300, _collapsedHeight));
-        _moduleTitle->setGeometry(QRect(0+10, _y, 280, 24));
-        _subHeader->setGeometry(QRect(0+10, _y+22, 280, 20));
-        _description->setGeometry(QRect(0+10, _y+40, 280, 20));
+        _background->setGeometry(QRect(_x, _y, 300, 24));
+        _contentBackground->setGeometry(QRect(_x, _y, 300, _collapsedHeight));
+        _moduleTitle->setGeometry(QRect(_x+10, _y, 280, 24));
+        _subHeader->setGeometry(QRect(_x+10, _y+22, 280, 20));
+        _description->setGeometry(QRect(_x+10, _y+40, 280, 20));
 
         _contentBackground->setVisible(false);
         _subHeader->setVisible(false);
@@ -147,11 +148,11 @@ void MedNUSLessonPackage::updateGUI() {
         _moduleTitle->setStyleSheet("color:#FFF;font-size:12px;font-weight:bold;");
         _subHeader->setStyleSheet("color:#FFF;font-size:10px;");
         _description->setStyleSheet("color:#FFF;font-size:10px;");
-        _background->setGeometry(QRect(0, _y, 300, 64));
-        _contentBackground->setGeometry(QRect(0, _y, 300, _height));
-        _moduleTitle->setGeometry(QRect(0+10, _y, 280, 24));
-        _subHeader->setGeometry(QRect(0+10, _y+22, 280, 20));
-        _description->setGeometry(QRect(0+10, _y+40, 280, 20));
+        _background->setGeometry(QRect(_x, _y, 300, 64));
+        _contentBackground->setGeometry(QRect(_x, _y, 300, _height));
+        _moduleTitle->setGeometry(QRect(_x+10, _y, 280, 24));
+        _subHeader->setGeometry(QRect(_x+10, _y+22, 280, 20));
+        _description->setGeometry(QRect(_x+10, _y+40, 280, 20));
 
         _contentBackground->setVisible(true);
         _subHeader->setVisible(true);
