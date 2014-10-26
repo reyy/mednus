@@ -53,7 +53,10 @@ public:
     void updateGUI();
 
 public slots:
-
+    void callOpenFile(QString str, QString title, int type)
+    {emit emitOpenFile(str, title, type);}
+signals:
+    void emitOpenFile(QString, QString, int);
 };
 
 #endif // MEDNUSLESSONPACKAGE_H
