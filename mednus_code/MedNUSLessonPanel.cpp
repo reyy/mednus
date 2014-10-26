@@ -23,7 +23,7 @@ MedNUSLessonPanel::MedNUSLessonPanel(QWidget *parent) : QWidget(parent) {
 
     _dividerBackground = new QLabel(this);
     _dividerBackground->setGeometry(QRect(0,0, 10, this->height()));
-    _dividerBackground->setStyleSheet("background-color: #193b50;");
+    _dividerBackground->setStyleSheet("background-color: #162a37;");
 
     _button = new QLabel(this);
     _button->setGeometry(QRect(0,this->height()/2-32, 10, 64));
@@ -121,49 +121,74 @@ void MedNUSLessonPanel::setTrayOut(bool value) {
     _trayOut = value;
 
     if(value) {
-        _button->setPixmap(_button_toclose);
+        this->setMinimumWidth(10);
+        this->setMaximumWidth(10);
+        this->setMaximumHeight(600-32);
+        _button->setPixmap(_button_toopen);
 
+    } else {
+        this->setMinimumWidth(300);
+        this->setMaximumWidth(300);
+        this->setMaximumHeight(600-32);
+        _button->setPixmap(_button_toclose);
     }
+}
+
+bool MedNUSLessonPanel::checkTrayButton(float xpos, float ypos) {
+    xpos-=this->pos().x();
+    ypos-=this->pos().y();
+
+    if(xpos>=0&&xpos<=10&&ypos>=this->height()/2-32&&ypos<=this->height()/2+32) {
+        return true;
+    }
+    return false;
 }
 
 void MedNUSLessonPanel::mousePressEvent ( QMouseEvent * event )
 {
-    //qDebug() << "Debug Message";
-    bool collapseEveryoneElse=false;
-    MedNUSLessonPackage *temp, *temp2;
+    if(event->buttons() == Qt::LeftButton) {
+        //qDebug() << "Debug Message";
+        bool collapseEveryoneElse=false;
+        MedNUSLessonPackage *temp, *temp2;
 
-    for(int i=0;i<(int)_lessonList.size();i++) {
-        temp = _lessonList.at(i);
-        if(event->pos().y()>=temp->getY()&&event->pos().y()<=temp->getY()+temp->getInteractiveHeight()) {
-            temp->toggleCollapse();
-            temp->updateGUI();
-            collapseEveryoneElse=true;
-            break;
-         }
-
-        //For mouse click.
-        if(event->pos().y()>=temp->getY()&&event->pos().y()<=temp->getY()+temp->getHeight()) {
-            for(int j=0;j<temp->getContentSize();j++) {
-                temp->getContentItem(j)->checkMouseClick(event->pos().x(),event->pos().y());
-            }
-        }
-    }
-
-    if(collapseEveryoneElse) {
         for(int i=0;i<(int)_lessonList.size();i++) {
-            temp2 = _lessonList.at(i);
-            if(temp!=temp2) {
-                temp2->toggleCollapse(true);
-                temp2->updateGUI();
+            temp = _lessonList.at(i);
+            if(event->pos().x()>10&&event->pos().y()>=temp->getY()&&event->pos().y()<=temp->getY()+temp->getInteractiveHeight()) {
+                temp->toggleCollapse();
+                temp->updateGUI();
+                collapseEveryoneElse=true;
+                break;
+             }
+
+            //For mouse click.
+            if(!temp->getCollapse()) {
+                if(event->pos().y()>=temp->getY()&&event->pos().y()<=temp->getY()+temp->getHeight()) {
+                    for(int j=0;j<temp->getContentSize();j++) {
+                        temp->getContentItem(j)->checkMouseClick(event->pos().x(),event->pos().y());
+                    }
+                }
             }
         }
-    }
 
-    this->updateGUI();
+        if(collapseEveryoneElse) {
+            for(int i=0;i<(int)_lessonList.size();i++) {
+                temp2 = _lessonList.at(i);
+                if(temp!=temp2) {
+                    temp2->toggleCollapse(true);
+                    temp2->updateGUI();
+                }
+            }
+        }
+
+        this->updateGUI();
+    }
+    event->ignore();
 }
 
 void MedNUSLessonPanel::resizeEvent(QResizeEvent* event)
 {
    //qDebug() << "Resize";
     _background->setGeometry(QRect(0,0, this->width(), this->height()));
+    _dividerBackground->setGeometry(QRect(0,0, 10, this->height()));
+    _button->setGeometry(QRect(0,this->height()/2-32, 10, 64));
 }
