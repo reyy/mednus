@@ -4,7 +4,6 @@
 MedNUSMainWindow::MedNUSMainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
-
     setWindowTitle(QString("MedNUS"));
     setWindowIcon(QIcon(":/images/panax-icon.png"));
 
@@ -23,15 +22,16 @@ MedNUSMainWindow::MedNUSMainWindow(QWidget *parent) :
 
     connect(login, SIGNAL(callLogin(QString,QString)), network, SLOT(login(QString,QString)));
     connect(network,SIGNAL(loginResults(bool,QString,QString)),this,SLOT(loginCompleted(bool,QString,QString)));
+
     //createWidgets();
     //createMenus();
-    //_layoutCreated=true;
 }
 
 MedNUSMainWindow::~MedNUSMainWindow() {
     deleteWidgets();
     deleteMenus();
-    delete login;
+    if(login!=NULL)
+        delete login;
 }
 
 void MedNUSMainWindow::createWidgets()
@@ -130,9 +130,9 @@ void MedNUSMainWindow::deleteMenus() {
     }
 }
 
-void MedNUSMainWindow::loginCompleted(bool sucess, QString matric, QString name)
+void MedNUSMainWindow::loginCompleted(bool success, QString matric, QString name)
 {
-    if(!sucess)
+    if(!success)
         qDebug() << "\nWrong User/Pass.";
     else
     {
@@ -155,6 +155,7 @@ void MedNUSMainWindow::loginCompleted(bool sucess, QString matric, QString name)
         this->userName = name;
 
         layout()->removeWidget(login);
+        delete login;
 
         createMenus();
         createWidgets();

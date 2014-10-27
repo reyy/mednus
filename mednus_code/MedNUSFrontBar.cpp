@@ -8,14 +8,16 @@ MedNUSFrontBar::MedNUSFrontBar(QWidget *parent) :
     this->setMaximumHeight(TOPBAR_HEIGHT);
 
     _background = new QLabel(parent);
-    _background->setGeometry(QRect(0, 0, this->width(), TOPBAR_HEIGHT));
+    _background->setGeometry(QRect(this->x(), this->y(), this->width(), TOPBAR_HEIGHT));
     _background->setStyleSheet("background-color: #152d3b;");
+    _background->setVisible(true);
 
     _logo = new QLabel(parent);
     int space = (TOPBAR_HEIGHT-TOPBAR_HEIGHT/40*21)/2;
-    _logo->setGeometry(QRect(space, space, TOPBAR_HEIGHT/40*76, TOPBAR_HEIGHT/40*21));
+    _logo->setGeometry(QRect(this->x()+space, this->y()+space, TOPBAR_HEIGHT/40*76, TOPBAR_HEIGHT/40*21));
     _logo->setPixmap(QPixmap(QString::fromStdString(":/images/logo.png")));
     _logo->setScaledContents(true);
+    _logo->setVisible(true);
 
     _avatar = new QLabel(parent);
     _avatar->setGeometry(QRect(this->x()+this->width()-TOPBAR_HEIGHT*0.9, this->y()+TOPBAR_HEIGHT*0.1, TOPBAR_HEIGHT*0.8, TOPBAR_HEIGHT*0.8));
@@ -71,8 +73,10 @@ void MedNUSFrontBar::setTrayOut(bool value) {
 
 void MedNUSFrontBar::resizeEvent(QResizeEvent* event)
 {
-    _background->setGeometry(QRect(0, 0, this->geometry().width(), this->geometry().height()));
-    _avatar->setGeometry(QRect(this->geometry().width()-TOPBAR_HEIGHT*0.9, this->y()+TOPBAR_HEIGHT*0.1, TOPBAR_HEIGHT*0.8, TOPBAR_HEIGHT*0.8));
-    _cutoutAvatar->setGeometry(QRect(this->geometry().width()-TOPBAR_HEIGHT*0.9, this->y()+TOPBAR_HEIGHT*0.1, TOPBAR_HEIGHT*0.8, TOPBAR_HEIGHT*0.8));
-    _name->setGeometry(QRect(this->geometry().width()-100-10-TOPBAR_HEIGHT, this->y()+(TOPBAR_HEIGHT-20)*0.5, 100, 20));
+    _background->setGeometry(QRect(this->x(), this->y(), this->geometry().width(), TOPBAR_HEIGHT));
+    int space = (TOPBAR_HEIGHT-TOPBAR_HEIGHT/40*21)/2;
+    _logo->setGeometry(QRect(this->x()+space, this->y()+space, TOPBAR_HEIGHT/40*76, TOPBAR_HEIGHT/40*21));
+    _avatar->setGeometry(QRect(this->x()+this->geometry().width()-TOPBAR_HEIGHT*0.9, this->y()+TOPBAR_HEIGHT*0.1, TOPBAR_HEIGHT*0.8, TOPBAR_HEIGHT*0.8));
+    _cutoutAvatar->setGeometry(QRect(this->x()+this->geometry().width()-TOPBAR_HEIGHT*0.9, this->y()+TOPBAR_HEIGHT*0.1, TOPBAR_HEIGHT*0.8, TOPBAR_HEIGHT*0.8));
+    _name->setGeometry(QRect(this->x()+this->geometry().width()-100-10-TOPBAR_HEIGHT, this->y()+(TOPBAR_HEIGHT-20)*0.5, 100, 20));
 }
