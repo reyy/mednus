@@ -65,5 +65,8 @@
         <file>content/test.pdf</file>
         <file>images/button_trayin.png</file>
         <file>images/button_trayout.png</file>
+        <file>images/avatar_cutout.png</file>
+        <file>images/ivle_profile.jpg</file>
+        <file>images/avatar_cutout_dark.png</file>
     </qresource>
 </RCC>
