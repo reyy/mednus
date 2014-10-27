@@ -24,8 +24,8 @@ MedNUSUserBar::MedNUSUserBar(QWidget *parent) :
 
     _name = new QLabel(this);
     _name->setStyleSheet("font-size:14px;color:#FFFFFF;");
-    _name->setGeometry(QRect(this->x()+LESSONPANEL_WIDTH-SIDEBAR_OFFSET-100-10-TOPBAR_HEIGHT, this->y()+(TOPBAR_HEIGHT-20)*0.5, 100, 20));
     _name->setAlignment(Qt::AlignRight);
+    _name->setGeometry(QRect(this->x()+this->geometry().width()-LESSONPANEL_WIDTH-20-10-TOPBAR_HEIGHT-SIDEBAR_OFFSET, this->y()+(TOPBAR_HEIGHT-20)*0.5, LESSONPANEL_WIDTH-20, 20));
 }
 
 MedNUSUserBar::~MedNUSUserBar()
@@ -39,6 +39,7 @@ MedNUSUserBar::~MedNUSUserBar()
 void MedNUSUserBar::setName(QString value) {
     QFontMetrics metrics(_name->font());
     _name->setText(metrics.elidedText(value, Qt::ElideRight, _name->width()));
+    _name->setAlignment(Qt::AlignRight);
 }
 
 void MedNUSUserBar::setAvatar(QString path) {

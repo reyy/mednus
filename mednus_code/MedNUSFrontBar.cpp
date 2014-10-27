@@ -32,8 +32,9 @@ MedNUSFrontBar::MedNUSFrontBar(QWidget *parent) :
 
     _name = new QLabel(parent);
     _name->setStyleSheet("font-size:14px;color:#FFFFFF;");
-    _name->setVisible(false);
     _name->setAlignment(Qt::AlignRight);
+    _name->setGeometry(QRect(this->x()+this->geometry().width()-LESSONPANEL_WIDTH-20-10-TOPBAR_HEIGHT, this->y()+(TOPBAR_HEIGHT-20)*0.5, LESSONPANEL_WIDTH-20, 20));
+    _name->setVisible(false);
 
     _trayOut = true;
 }
@@ -50,6 +51,7 @@ MedNUSFrontBar::~MedNUSFrontBar()
 void MedNUSFrontBar::setName(QString value) {
     QFontMetrics metrics(_name->font());
     _name->setText(metrics.elidedText(value, Qt::ElideRight, _name->width()));
+    _name->setAlignment(Qt::AlignRight);
 }
 
 void MedNUSFrontBar::setAvatar(QString path) {
@@ -78,5 +80,5 @@ void MedNUSFrontBar::resizeEvent(QResizeEvent* event)
     _logo->setGeometry(QRect(this->x()+space, this->y()+space, TOPBAR_HEIGHT/40*76, TOPBAR_HEIGHT/40*21));
     _avatar->setGeometry(QRect(this->x()+this->geometry().width()-TOPBAR_HEIGHT*0.9, this->y()+TOPBAR_HEIGHT*0.1, TOPBAR_HEIGHT*0.8, TOPBAR_HEIGHT*0.8));
     _cutoutAvatar->setGeometry(QRect(this->x()+this->geometry().width()-TOPBAR_HEIGHT*0.9, this->y()+TOPBAR_HEIGHT*0.1, TOPBAR_HEIGHT*0.8, TOPBAR_HEIGHT*0.8));
-    _name->setGeometry(QRect(this->x()+this->geometry().width()-100-10-TOPBAR_HEIGHT, this->y()+(TOPBAR_HEIGHT-20)*0.5, 100, 20));
+    _name->setGeometry(QRect(this->x()+this->geometry().width()-LESSONPANEL_WIDTH-20-10-TOPBAR_HEIGHT, this->y()+(TOPBAR_HEIGHT-20)*0.5, LESSONPANEL_WIDTH-20, 20));
 }

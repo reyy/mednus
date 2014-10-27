@@ -24,6 +24,7 @@ MedNUSMainWindow::MedNUSMainWindow(QWidget *parent) :
         connect(login, SIGNAL(callLogin(QString,QString)), network, SLOT(login(QString,QString)));
         connect(network,SIGNAL(loginResults(bool,QString,QString)),this,SLOT(loginCompleted(bool,QString,QString)));
     } else {
+        this->userName = "Temporary Testing Name";
         login = NULL;
         createWidgets();
         createMenus();
