@@ -32,9 +32,6 @@
 #include <unistd.h>
 using namespace std;
 
-
-
-
 // MedNUSMeshViewer class
 
 MedNUSMeshViewer::MedNUSMeshViewer(QString dir, bool withMeshPanel)
