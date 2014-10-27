@@ -55,14 +55,18 @@ void MedNUSPdfViewer::setPage(int num)
     if (pdfPage == 0) {
       return;
     }
-    QImage image = pdfPage->renderToImage();
+    image = pdfPage->renderToImage(0.3 * physicalDpiX(), 0.3 * physicalDpiY());
     imageLabel->setPixmap(QPixmap::fromImage(image));
 }
 
 void MedNUSPdfViewer::wheelEvent(QWheelEvent *event)
 {
-    //scrollArea->verticalScrollBar()->
-    qDebug() << event->pixelDelta().y();
+    if (scrollArea->verticalScrollBar()->value() == scrollArea->verticalScrollBar()->maximum()
+            && event->pixelDelta().y() < 0)
+        setPage(pageNum+1>document->numPages()?document->numPages():++pageNum);
+    else if (scrollArea->verticalScrollBar()->value() == scrollArea->verticalScrollBar()->minimum()
+             && event->pixelDelta().y() > 0)
+        setPage(pageNum-1<0?0:--pageNum);
 }
 
 void MedNUSPdfViewer::resizeEvent(QResizeEvent *event)
@@ -82,9 +86,3 @@ void MedNUSPdfViewer::keyPressEvent(QKeyEvent *event)
         setPage(pageNum+1>document->numPages()?document->numPages():++pageNum);
     }
 }
-//void MedNUSPdfViewer::paintEvent(QPaintEvent *event)
-//{
-//    QPainter p(this);
-//    pdfPage->renderToPainter(&p);
-
-//}
