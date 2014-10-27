@@ -15,6 +15,7 @@ public:
     ~MedNUSVideoViewer();
 protected:
     QMediaPlayer *player;
+    QVideoWidget *videoWidget;
     void keyPressEvent(QKeyEvent *event);
 signals:
 
