@@ -1,5 +1,6 @@
 #include "MedNUSMainWindow.h"
 #include <QDir>
+#define SKIP_LOGIN 1
 
 MedNUSMainWindow::MedNUSMainWindow(QWidget *parent) :
     QMainWindow(parent)
@@ -17,14 +18,15 @@ MedNUSMainWindow::MedNUSMainWindow(QWidget *parent) :
 
     network = new MedNUSNetwork();
 
-    login = new MedNUSLogin(this);
-    setCentralWidget(login);
-
-    connect(login, SIGNAL(callLogin(QString,QString)), network, SLOT(login(QString,QString)));
-    connect(network,SIGNAL(loginResults(bool,QString,QString)),this,SLOT(loginCompleted(bool,QString,QString)));
-
-    //createWidgets();
-    //createMenus();
+    if(!SKIP_LOGIN) {
+        login = new MedNUSLogin(this);
+        setCentralWidget(login);
+        connect(login, SIGNAL(callLogin(QString,QString)), network, SLOT(login(QString,QString)));
+        connect(network,SIGNAL(loginResults(bool,QString,QString)),this,SLOT(loginCompleted(bool,QString,QString)));
+    } else {
+        createWidgets();
+        createMenus();
+    }
 }
 
 MedNUSMainWindow::~MedNUSMainWindow() {
@@ -81,6 +83,11 @@ void MedNUSMainWindow::createWidgets()
         vid = new MedNUSVideoViewer(dir);
         tabs->addTab(vid, "Video");
 
+        // Quiz
+        dir = "";
+        dir.append(QDir::homePath());
+        dir.append("/mednus/lesson1/quiz/quiz1.txt");
+        tabs->addTab(new MedNUSQuiz(dir), "da quiz");
         tabs->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
         mainLayout->addWidget(tabs,1,0);
 

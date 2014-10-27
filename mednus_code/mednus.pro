@@ -24,7 +24,8 @@ HEADERS += \
     MedNUSContentManager.h \
     MedNUSLogin.h \
     MedNUSAUISettings.h \
-    MedNUSNetwork.h
+    MedNUSNetwork.h \
+    MedNUSQuiz.h
 
 SOURCES += main.cpp \
     PMeshModel.cpp \
@@ -42,7 +43,8 @@ SOURCES += main.cpp \
     MedNUSLessonIcon.cpp \
     MedNUSContentManager.cpp \
     MedNUSLogin.cpp \
-    MedNUSNetwork.cpp
+    MedNUSNetwork.cpp \
+    MedNUSQuiz.cpp
 
 RESOURCES = panax.qrc
 

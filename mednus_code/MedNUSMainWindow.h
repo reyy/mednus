@@ -6,6 +6,7 @@
 #include "MedNUSLessonPanel.h"
 #include "MedNUSVideoViewer.h"
 #include "MedNUSPdfViewer.h"
+#include "MedNUSQuiz.h"
 #include "MedNUSFrontBar.h"
 #include "MedNUSUserBar.h"
 #include "MedNUSContentPanel.h"
