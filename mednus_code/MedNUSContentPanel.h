@@ -16,19 +16,12 @@ class MedNUSTab : public QTabWidget
 {
     Q_OBJECT
 public:
-    explicit MedNUSTab(QWidget *parent = 0)
-    {connect(this,SIGNAL(tabCloseRequested(int)),this,SLOT(closeTab(int)));}
+    explicit MedNUSTab(QWidget *parent = 0);
     ~MedNUSTab(){}
 signals:
     void noMoreTabs(MedNUSTab*);
  public slots:
-    void closeTab(int index)
-    {
-        delete this->widget(index);
-        this->removeTab(index);
-        if(this->count()==0)
-            emit noMoreTabs(this);
-    }
+    void closeTab(int index);
 
 };
 

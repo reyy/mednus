@@ -9,18 +9,7 @@ MedNUSContentPanel::MedNUSContentPanel(QWidget *parent) :
 
     layout = new QGridLayout();
     for(int i=0; i<3; i++)
-    {
         tabList[i] = new MedNUSTab(this);
-        tabList[i]->setTabsClosable(true);
-        tabList[i]->setMovable(true);
-        tabList[i]->setDocumentMode(true);
-        tabList[i]->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-        tabList[i]->setMinimumWidth(100);
-        tabList[i]->setMinimumHeight(100);
-        tabList[i]->setContentsMargins(0,0,0,0);
-
-        connect(tabList[i],SIGNAL(noMoreTabs(MedNUSTab*)),this,SLOT(closeTab(MedNUSTab*)));
-    }
     layout->setMargin(0);
     layout->setContentsMargins(0,0,0,0);
     layout->setSpacing(1);
@@ -64,8 +53,15 @@ void MedNUSContentPanel::addTab(QWidget* toAdd,QString title)
 
 void MedNUSContentPanel::closeTab(MedNUSTab* index)
 {
-    layout->removeWidget(index);
-    delete index;
+
+    for(int i=0; i<3; i++)
+        if(tabList[i] == index)
+        {
+            layout->removeWidget(index);
+            delete tabList[i];
+            tabList[i] = new MedNUSTab(this);
+
+        }
 }
 
 MedNUSContentPanel::~MedNUSContentPanel()
@@ -73,3 +69,26 @@ MedNUSContentPanel::~MedNUSContentPanel()
 }
 
 
+
+
+MedNUSTab::MedNUSTab(QWidget *parent)
+{
+    connect(this,SIGNAL(tabCloseRequested(int)),this,SLOT(closeTab(int)));
+    this->setTabsClosable(true);
+    this->setMovable(true);
+    this->setDocumentMode(true);
+    this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    this->setMinimumWidth(100);
+    this->setMinimumHeight(100);
+    this->setContentsMargins(0,0,0,0);
+
+    connect(this,SIGNAL(noMoreTabs(MedNUSTab*)),parent,SLOT(closeTab(MedNUSTab*)));
+}
+
+void MedNUSTab::closeTab(int index)
+{
+    delete this->widget(index);
+    this->removeTab(index);
+    if(this->count()==0)
+        emit noMoreTabs(this);
+}
