@@ -1,10 +1,13 @@
 #ifndef MEDNUSPDFVIEWER_H
 #define MEDNUSPDFVIEWER_H
 
+#include <QDebug>
 #include <QWidget>
 #include <QLabel>
 #include <QKeyEvent>
-#include <QPainter>
+#include <QScrollArea>
+#include <QGridLayout>
+#include <QScrollBar>
 #include <poppler-qt5.h>
 
 class MedNUSPdfViewer : public QWidget
@@ -18,7 +21,13 @@ protected:
     Poppler::Document* document;
     Poppler::Page* pdfPage;
     QLabel *imageLabel;
+    QGridLayout *layout;
+    QImage image;
+    QScrollArea *scrollArea;
+    QWidget * scrollAreaWidgetContents;
 
+    void wheelEvent(QWheelEvent *);
+    void resizeEvent(QResizeEvent *);
     void keyPressEvent(QKeyEvent *event);
 signals:
 
