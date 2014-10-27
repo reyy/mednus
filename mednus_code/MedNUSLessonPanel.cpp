@@ -107,7 +107,7 @@ void MedNUSLessonPanel::updateGUI() {
     int offset=0;
     for(int i=0;i<(int)_lessonList.size();i++) {
         MedNUSLessonPackage *temp = _lessonList.at(i);
-        temp->setTone((int)((float)i/(float)_lessonList.size()*16.0));
+        temp->setTone((int)_lessonList.size());
         temp->setY(offset);
         temp->updateGUI();
         offset+=temp->getHeight();
