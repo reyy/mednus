@@ -10,13 +10,13 @@ MedNUSVideoViewer::MedNUSVideoViewer(QString filename, QWidget *parent) :
     //playlist->addMedia(QUrl("mms://live-vip-49.nus.edu.sg/INV_CSEWARE/anatomy/respiratory/landmarks_patient.wmv"));
     playlist->addMedia(QUrl::fromLocalFile(filename));
 
-    QVideoWidget *videoWidget = new QVideoWidget();
+    videoWidget = new QVideoWidget();
     player->setVideoOutput(videoWidget);
 
     QGridLayout *grid = new QGridLayout;
     grid->setContentsMargins(0,0,0,0);
     this->setLayout(grid);
-    this->layout()->addWidget(videoWidget);
+    grid->addWidget(videoWidget);
     player->setPlaylist(playlist);
     playlist->setCurrentIndex(0);
     player->play();
@@ -24,9 +24,11 @@ MedNUSVideoViewer::MedNUSVideoViewer(QString filename, QWidget *parent) :
 
 MedNUSVideoViewer::~MedNUSVideoViewer()
 {
-    this->hide();
     player->stop();
     delete player;
+
+    this->layout()->removeWidget(videoWidget);
+    delete videoWidget;
 }
 
 void MedNUSVideoViewer::keyPressEvent(QKeyEvent *event)
