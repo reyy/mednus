@@ -25,7 +25,7 @@ MedNUSContentPanel::MedNUSContentPanel(QWidget *parent) :
     layout->setSpacing(1);
 
     this->setAutoFillBackground(true);
-    this->setStyleSheet("background-color: #193b50;");
+    this->setStyleSheet("background-color: #152d3b;");
     this->setLayout(layout);
 
 }
