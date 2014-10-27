@@ -10,8 +10,6 @@
 #include <QtGui>
 #include <QPalette>
 
-
-
 MedNUSLessonPanel::MedNUSLessonPanel(QWidget *parent) : QWidget(parent) {
     this->setMinimumWidth(LESSONPANEL_WIDTH);
     this->setMaximumWidth(LESSONPANEL_WIDTH);
@@ -107,7 +105,7 @@ void MedNUSLessonPanel::updateGUI() {
     int offset=0;
     for(int i=0;i<(int)_lessonList.size();i++) {
         MedNUSLessonPackage *temp = _lessonList.at(i);
-        temp->setTone(_lessonList.size());
+        temp->setTone(i);
         temp->setY(offset);
         temp->updateGUI();
         offset+=temp->getHeight();
