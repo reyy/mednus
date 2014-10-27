@@ -48,7 +48,7 @@ void MedNUSContentPanel::addTab(QWidget* toAdd,QString title)
         tabList[PDF_INDEX].addTab(toAdd, title);
         tabList[PDF_INDEX].setCurrentIndex(tabList[PDF_INDEX].count()-1);
     }
-    else if(dynamic_cast<MedNUSMeshViewer*>(toAdd) != NULL)
+    else if(dynamic_cast<MedNUSMeshViewer*>(toAdd) != NULL || dynamic_cast<MedNUSQuiz*>(toAdd) != NULL)
     {
         if(!layout->children().contains(&tabList[MESH_INDEX]))
             layout->addWidget(&tabList[MESH_INDEX],0,1,2,1);

@@ -60,6 +60,12 @@ void MedNUSMainWindow::createWidgets()
     vid = new MedNUSVideoViewer(dir);
     tabs->addTab(vid, "Video");
 
+    // Quiz
+    dir = "";
+    dir.append(QDir::homePath());
+    dir.append("/mednus/lesson1/quiz/quiz1.txt");
+    tabs->addTab(new MedNUSQuiz(dir), "da quiz");
+
     tabs->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     mainLayout->addWidget(tabs,1,0);
 
