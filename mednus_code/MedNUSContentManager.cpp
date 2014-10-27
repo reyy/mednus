@@ -41,6 +41,8 @@ void MedNUSContentManager::openFile(QString fileDir, QString title, int type)
             toAdd = new MedNUSMeshViewer(dir,false);
         else if(fileDir.contains(".mp4", Qt::CaseInsensitive) || fileDir.contains(".mov", Qt::CaseInsensitive))
             toAdd = new MedNUSVideoViewer(dir);
+        else if(fileDir.contains(".qiz", Qt::CaseInsensitive))
+            toAdd = new MedNUSQuiz(dir);
 
         emit callAddTab(toAdd,title);
     }

@@ -4,6 +4,7 @@
 #include "MedNUSMeshViewer.h"
 #include "MedNUSPdfViewer.h"
 #include "MedNUSVideoViewer.h"
+#include "MedNUSQuiz.h"
 #include <QTabWidget>
 #include <QGridLayout>
 
