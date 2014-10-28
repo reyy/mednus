@@ -66,10 +66,8 @@ void MedNUSContentPanel::closeTab(MedNUSTab* index)
 
 MedNUSContentPanel::~MedNUSContentPanel()
 {
+    delete layout;
 }
-
-
-
 
 MedNUSTab::MedNUSTab(QWidget *parent)
 {
@@ -81,6 +79,11 @@ MedNUSTab::MedNUSTab(QWidget *parent)
     this->setMinimumWidth(100);
     this->setMinimumHeight(100);
     this->setContentsMargins(0,0,0,0);
+    QFile file(":/images/tabwidget.css");
+    if(file.open(QIODevice::ReadOnly|QIODevice::Text)) {
+        this->setStyleSheet(file.readAll());
+        file.close();
+    }
 
     connect(this,SIGNAL(noMoreTabs(MedNUSTab*)),parent,SLOT(closeTab(MedNUSTab*)));
 }
