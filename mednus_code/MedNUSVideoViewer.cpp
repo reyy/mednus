@@ -20,6 +20,9 @@ MedNUSVideoViewer::MedNUSVideoViewer(QString filename, QWidget *parent) :
     player->setPlaylist(playlist);
     playlist->setCurrentIndex(0);
     player->play();
+    player->pause();
+
+    this->setFocusPolicy(Qt::StrongFocus);
 }
 
 MedNUSVideoViewer::~MedNUSVideoViewer()
