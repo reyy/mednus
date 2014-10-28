@@ -68,5 +68,6 @@
         <file>images/avatar_cutout.png</file>
         <file>images/ivle_profile.jpg</file>
         <file>images/avatar_cutout_dark.png</file>
+        <file>images/tabwidget.css</file>
     </qresource>
 </RCC>

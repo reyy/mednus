@@ -43,7 +43,6 @@ MedNUSLogin::~MedNUSLogin() {
     delete _password;
 }
 
-void MedNUSLogin::loginButtonPress()
-{
+void MedNUSLogin::loginButtonPress() {
     emit callLogin(_username->text(),_password->text());
 }

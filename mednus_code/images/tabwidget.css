@@ -1,0 +1,66 @@
+QTabWidget::pane { /* The tab widget frame */
+     border-top: 2px solid #C2C7CB;
+    position: absolute;
+    top: 0.5em;
+     background-color:#286c91;
+ }
+
+ QTabWidget::tab-bar {
+     background:red;
+ }
+
+ /* Style the tab using the tab sub-control. Note that
+     it reads QTabBar _not_ QTabWidget */
+ QTabBar::tab {
+     color:#FFFFFF;
+     background-color:#286c91;
+     border: 0px solid #000000;
+     border-top-left-radius: 0px;
+     border-top-right-radius: 0px;
+     border-bottom-left-radius: 0px;
+     border-bottom-right-radius: 0px;
+     padding-left:10px;
+     padding-right:10px;
+     padding-top:5px;
+     padding-bottom:5px;
+ }
+
+ QTabBar::tab:selected, QTabBar::tab:hover {
+     color:#FFFFFF;
+     background-color:#2d7196;
+     border: 0px solid #000000;
+     border-top-left-radius: 0px;
+     border-top-right-radius: 0px;
+     border-bottom-left-radius: 0px;
+     border-bottom-right-radius: 0px;
+     padding-left:10px;
+     padding-right:10px;
+     padding-top:5px;
+     padding-bottom:5px;
+ }
+
+ QTabBar::tab:selected {
+     color:#FFFFFF;
+     background-color:#338cbd;
+     border: 0px solid #000000;
+     border-top-left-radius: 0px;
+     border-top-right-radius: 0px;
+     border-bottom-left-radius: 0px;
+     border-bottom-right-radius: 0px;
+     padding-left:10px;
+     padding-right:10px;
+     padding-top:5px;
+     padding-bottom:5px;
+ }
+
+ QTabBar::tab:!selected {
+ }
+
+ QTabBar::close-button {
+     image: url(“./images/logo_inapp.png”);
+     subcontrol-position: right;
+ }
+
+ QTabBar::close-button:hover {
+     image: url(.images/logo_inapp.png);
+ }
