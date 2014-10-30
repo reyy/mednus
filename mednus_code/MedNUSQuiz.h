@@ -13,12 +13,10 @@
 class MedNUSQuizQuestion
 {
 public:
-    MedNUSQuizQuestion(QWidget *parent);
+    MedNUSQuizQuestion(QWidget *parent, QVBoxLayout *layout);
     ~MedNUSQuizQuestion();
 
 private:
-    QGroupBox *_content;
-
     QLabel _questionTextLabel;
     QRadioButton* _option1;
 };
@@ -33,6 +31,9 @@ public:
 
 protected:
     QVector<MedNUSQuizQuestion*> *_questionList;
+
+    QGroupBox* _content;
+    QVBoxLayout* _layout;
 
 signals:
 
