@@ -33,10 +33,14 @@ MedNUSVideoViewer::MedNUSVideoViewer(QString filename, QWidget *parent) :
     layout->setSpacing(0);
     layout->setMargin(0);
 
-    control = new MedNUSVideoControl();
-    control->setParent(videoView);
+    control = new MedNUSVideoControl(videoView);
     control->show();
     installEventFilter(this);
+
+    connect(&mediaPlayer, SIGNAL(stateChanged(QMediaPlayer::State)),
+            control, SLOT(mediaStateChanged(QMediaPlayer::State)));
+    connect(&mediaPlayer, SIGNAL(positionChanged(qint64)), control, SLOT(positionChanged(qint64)));
+    connect(&mediaPlayer, SIGNAL(durationChanged(qint64)), control, SLOT(durationChanged(qint64)));
 }
 
 MedNUSVideoViewer::~MedNUSVideoViewer()
@@ -52,10 +56,7 @@ MedNUSVideoViewer::~MedNUSVideoViewer()
 void MedNUSVideoViewer::keyPressEvent(QKeyEvent *event)
 {
     if(event->key() == Qt::Key_Space) {
-        if(player->state() == QMediaPlayer::PlayingState)
-            player->pause();
-        else
-            player->play();
+        this->togglePlay();
     }
     event->ignore();
 }
@@ -84,6 +85,21 @@ bool MedNUSVideoViewer::eventFilter(QObject *obj, QEvent *e)
     }
 }
 
+void MedNUSVideoViewer::togglePlay()
+{
+    if(mediaPlayer.state() == QMediaPlayer::PlayingState)
+        mediaPlayer.pause();
+    else
+        mediaPlayer.play();
+}
+
+void MedNUSVideoViewer::setPosition(int position)
+{
+    mediaPlayer.setPosition(position);
+}
+
+
+
 
 MedNUSVideoControl::MedNUSVideoControl(QWidget *parent):
     QWidget(parent)
@@ -97,24 +113,43 @@ MedNUSVideoControl::MedNUSVideoControl(QWidget *parent):
 //    box->show();
 
     QGridLayout *layout = new QGridLayout(this);
-    this->play = new QLabel("play");
-    this->pause = new QLabel("pause");
+    this->play = new QPushButton("play");
 
     positionSlider = new QSlider(Qt::Horizontal);
-//    positionSlider->setRange(0, 0);
-//    connect(positionSlider, SIGNAL(sliderMoved(int)),
-//            this, SLOT(setPosition(int)));
+    positionSlider->setRange(0, 0);
 
-    layout->addWidget(play,0,0,1,1);
-    //layout->addWidget(pause,0,0,1,1);
-    layout->addWidget(positionSlider,1,0,1,1);
+    layout->addWidget(play,0,1,1,1);
+    layout->addWidget(positionSlider,1,0,1,3);
+    layout->setSpacing(8);
+    layout->setMargin(8);
 
-
-
+    connect(play, SIGNAL(clicked()),parent->parentWidget(), SLOT(togglePlay()));
+    connect(positionSlider, SIGNAL(sliderMoved(int)),parent->parentWidget(), SLOT(setPosition(int)));
 }
 
 MedNUSVideoControl::~MedNUSVideoControl()
 {
     delete play;
-    delete pause;
+}
+
+void MedNUSVideoControl::mediaStateChanged(QMediaPlayer::State state)
+{
+    switch(state) {
+    case QMediaPlayer::PlayingState:
+        this->play->setText("Pause");//change pixmap
+        break;
+    default:
+        this->play->setText("Play");
+        break;
+    }
+}
+
+void MedNUSVideoControl::positionChanged(qint64 position)
+{
+    positionSlider->setValue(position);
+}
+
+void MedNUSVideoControl::durationChanged(qint64 duration)
+{
+    positionSlider->setRange(0, duration);
 }
