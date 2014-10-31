@@ -6,7 +6,7 @@
 MedNUSLessonPackage::MedNUSLessonPackage(QWidget *parent) :
     QWidget(parent) {
     _collapse = true;
-    _height = 164;
+    _height = 194;
     _interactiveHeight = 64;
     _collapsedHeight = 24;
     _border = 5;
