@@ -4,6 +4,7 @@
 MedNUSVideoViewer::MedNUSVideoViewer(QString filename, QWidget *parent) :
     QWidget(parent)
 {
+    this->setAccessibleName(filename);
     player = new QMediaPlayer();
 
     QMediaPlaylist *playlist = new QMediaPlaylist(player);

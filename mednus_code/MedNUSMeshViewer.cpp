@@ -36,6 +36,7 @@ using namespace std;
 
 MedNUSMeshViewer::MedNUSMeshViewer(QString dir, bool withMeshPanel)
 {
+    this->setAccessibleName(dir);
     // Initialisation
     appName = QString("Mesh Viewer");
     projectName = QString("Untitled");

@@ -3,6 +3,7 @@
 MedNUSPdfViewer::MedNUSPdfViewer(QString filename, QWidget *parent) :
     QWidget(parent)
 {
+    this->setAccessibleName(filename);
     //QString filename = ":/content/test.pdf";
     document = Poppler::Document::load(filename);
     if (!document || document->isLocked()) {
@@ -41,7 +42,7 @@ void MedNUSPdfViewer::setPage(int num)
     if (pdfPage == 0) {
       return;
     }
-    image = pdfPage->renderToImage(0.3 * physicalDpiX(), 0.3 * physicalDpiY());
+    image = pdfPage->renderToImage(0.4 * physicalDpiX(), 0.4 * physicalDpiY());
     imageLabel->setPixmap(QPixmap::fromImage(image));
 }
 
@@ -59,7 +60,7 @@ void MedNUSPdfViewer::resizeEvent(QResizeEvent *event)
 {
     scrollArea->setGeometry(this->geometry());
 
-    image = pdfPage->renderToImage(0.3 * physicalDpiX(), 0.3 * physicalDpiY());
+    image = pdfPage->renderToImage(0.4 * physicalDpiX(), 0.4 * physicalDpiY());
     imageLabel->setPixmap(QPixmap::fromImage(image));
 }
 
