@@ -75,8 +75,11 @@ void MedNUSLessonPanel::addLesson(QString title,QString subTitle, QString descri
             icon_directory = _icon_video;
         _package->addContent(directory,icon_directory);
     }
+    if(_lessonList.size()==0)
+        _package->toggleCollapse(false);
+
     _lessonList.push_back(_package);
-    updateGUI();
+    updateGUI(); 
 
     connect(_package, SIGNAL(emitOpenFile(QString,QString,int)), this, SLOT(callOpenFile(QString,QString,int)));
 }
