@@ -79,7 +79,7 @@ void MedNUSMainWindow::createWidgets()
         QString dir = "";
         dir.append(QDir::homePath());
         dir.append("/mednus/lesson1/quiz/quiz1.txt");
-        tabs->addTab(new MedNUSQuiz(dir), "Quiz");
+        tabs->addTab(new MedNUSQuiz(dir), "Quiz", dir);
         tabs->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
         //Add Model
@@ -87,24 +87,24 @@ void MedNUSMainWindow::createWidgets()
         dir.append(QDir::homePath());
         dir.append("/mednus/lesson1/models/craniofacial.ply");
         MedNUSMeshViewer *view = new MedNUSMeshViewer(dir,false);
-        tabs->addTab(view,"Skull 3D Model");
+        tabs->addTab(view,"Skull 3D Model", dir);
 
         dir = "";
         dir.append(QDir::homePath());
         dir.append("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
-        tabs->addTab(new MedNUSPdfViewer(dir),"Skull Notes");
+        tabs->addTab(new MedNUSPdfViewer(dir),"Skull Notes", dir);
 
         dir = "";
         dir.append(QDir::homePath());
         dir.append("/mednus/lesson1/videos/Osteology of the Skull- 12 Newborn Skull.mp4");
         vid = new MedNUSVideoViewer(dir);
-        tabs->addTab(vid, "Video 1");
+        tabs->addTab(vid, "Video 1", dir);
 
         dir = "";
         dir.append(QDir::homePath());
         dir.append("/mednus/lesson1/videos/Skull Anatomy (1 of 5)- Superior, Posterior and Lateral Views -- Head and Neck Anatomy 101.mp4");
         vid = new MedNUSVideoViewer(dir);
-        tabs->addTab(vid, "Video 2");
+        tabs->addTab(vid, "Video 2", dir);
 
 
 
@@ -118,7 +118,7 @@ void MedNUSMainWindow::createWidgets()
         contentManager = new MedNUSContentManager();
         connect(contentManager, SIGNAL(callAddLesson(QString,QString,QString,QStringList)), lp, SLOT(addLesson(QString,QString,QString,QStringList)));
         connect(lp, SIGNAL(emitOpenFile(QString,QString,int)), contentManager, SLOT(openFile(QString,QString,int)));
-        connect(contentManager, SIGNAL(callAddTab(QWidget*,QString)), tabs, SLOT(addTab(QWidget*,QString)));
+        connect(contentManager, SIGNAL(callAddTab(QWidget*,QString,QString)), tabs, SLOT(addTab(QWidget*,QString,QString)));
         contentManager->initLessonList(QStringList());
         //lessonTable->l
 
