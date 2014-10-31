@@ -9,6 +9,9 @@
 #include <QGraphicsView>
 #include <QGraphicsVideoItem>
 #include <QMediaPlayer>
+#include <QSlider>
+#include <QStyle>
+#include <QMouseEvent>
 
 class MedNUSVideoControl;
 
@@ -32,6 +35,7 @@ protected:
 
     void keyPressEvent(QKeyEvent *event);
     void resizeEvent(QResizeEvent *);
+    bool eventFilter(QObject* obj, QEvent* e);
 signals:
 
 public slots:
@@ -47,6 +51,7 @@ public:
 protected:
     QLabel *pause;
     QLabel *play;
+    QSlider *positionSlider;
 };
 
 #endif // MEDNUSVIDEOVIEWER_H
