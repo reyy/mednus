@@ -20,14 +20,23 @@ MedNUSContentPanel::MedNUSContentPanel(QWidget *parent) :
 
 }
 
-void MedNUSContentPanel::addTab(QWidget* toAdd,QString title)
+void MedNUSContentPanel::addTab(QWidget* toAdd,QString title, QString dir)
 {
     //Add by 'default view' rules
     if(dynamic_cast<MedNUSVideoViewer*>(toAdd) != NULL)
     {
         if(!layout->children().contains(tabList[VIDEO_INDEX]))
             layout->addWidget(tabList[VIDEO_INDEX],0,0,1,1);
-        //Todo: Check whether already open anot!
+
+        //Check whether already open anot!
+        for(int i=0 ; i<tabList[VIDEO_INDEX]->count(); i++)
+            if(tabList[VIDEO_INDEX]->widget(i)->accessibleName().compare(dir) == 0)
+            {
+                delete toAdd;
+                tabList[VIDEO_INDEX]->setCurrentIndex(i);
+                return;
+            }
+
         tabList[VIDEO_INDEX]->addTab(toAdd, title);
         tabList[VIDEO_INDEX]->setCurrentIndex(tabList[VIDEO_INDEX]->count()-1);
     }
@@ -35,6 +44,16 @@ void MedNUSContentPanel::addTab(QWidget* toAdd,QString title)
     {
         if(!layout->children().contains(tabList[PDF_INDEX]))
             layout->addWidget(tabList[PDF_INDEX],1,0,1,1);
+
+        //Check whether already open anot!
+        for(int i=0 ; i<tabList[PDF_INDEX]->count(); i++)
+            if(tabList[PDF_INDEX]->widget(i)->accessibleName().compare(dir) == 0)
+            {
+                delete toAdd;
+                tabList[PDF_INDEX]->setCurrentIndex(i);
+                return;
+            }
+
         tabList[PDF_INDEX]->addTab(toAdd, title);
         tabList[PDF_INDEX]->setCurrentIndex(tabList[PDF_INDEX]->count()-1);
     }
@@ -42,6 +61,16 @@ void MedNUSContentPanel::addTab(QWidget* toAdd,QString title)
     {
         if(!layout->children().contains(tabList[MESH_INDEX]))
             layout->addWidget(tabList[MESH_INDEX],0,1,2,1);
+
+        //Check whether already open anot!
+        for(int i=0 ; i<tabList[MESH_INDEX]->count(); i++)
+            if(tabList[MESH_INDEX]->widget(i)->accessibleName().compare(dir) == 0)
+            {
+                delete toAdd;
+                tabList[MESH_INDEX]->setCurrentIndex(i);
+                return;
+            }
+
         tabList[MESH_INDEX]->addTab(toAdd, title);
         tabList[MESH_INDEX]->setCurrentIndex(tabList[MESH_INDEX]->count()-1);
     }

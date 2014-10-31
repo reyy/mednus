@@ -40,7 +40,7 @@ signals:
 
 public slots:
     void closeTab(MedNUSTab *index);
-    void addTab(QWidget*,QString);
+    void addTab(QWidget*, QString, QString dir);
 };
 
 
