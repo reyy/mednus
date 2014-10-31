@@ -19,7 +19,7 @@ public:
 public slots:
     void openFile(QString fileDir, QString title, int type);
 signals:
-    void callAddTab(QWidget*,QString);
+    void callAddTab(QWidget*,QString,QString);
     void callAddLesson(QString title, QString subTitle, QString description, QStringList directory);
 
 private:

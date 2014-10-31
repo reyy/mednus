@@ -45,7 +45,7 @@ void MedNUSContentManager::openFile(QString fileDir, QString title, int type)
         else if(fileDir.contains(".qiz", Qt::CaseInsensitive))
             toAdd = new MedNUSQuiz(dir);
 
-        emit callAddTab(toAdd,title);
+        emit callAddTab(toAdd,title,dir);
     }
     else
     {

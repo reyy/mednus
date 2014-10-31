@@ -3,6 +3,7 @@
 MedNUSPdfViewer::MedNUSPdfViewer(QString filename, QWidget *parent) :
     QWidget(parent)
 {
+    this->setAccessibleName(filename);
     //QString filename = ":/content/test.pdf";
     document = Poppler::Document::load(filename);
     if (!document || document->isLocked()) {
