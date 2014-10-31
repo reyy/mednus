@@ -11,7 +11,7 @@
 #include <QMediaPlayer>
 #include <QSlider>
 #include <QStyle>
-#include <QMouseEvent>
+#include <QPushButton>
 
 class MedNUSVideoControl;
 
@@ -38,8 +38,9 @@ protected:
     bool eventFilter(QObject* obj, QEvent* e);
 signals:
 
-public slots:
-
+protected slots:
+    void togglePlay();
+    void setPosition(int position);
 };
 
 class MedNUSVideoControl : public QWidget
@@ -49,9 +50,14 @@ public:
     explicit MedNUSVideoControl(QWidget *parent = 0);
     ~MedNUSVideoControl();
 protected:
-    QLabel *pause;
-    QLabel *play;
+    QPushButton *play;
     QSlider *positionSlider;
+signals:
+    void seekTo(int millisecond);
+protected slots:
+    void mediaStateChanged(QMediaPlayer::State state);
+    void positionChanged(qint64 position);
+    void durationChanged(qint64 duration);
 };
 
 #endif // MEDNUSVIDEOVIEWER_H
