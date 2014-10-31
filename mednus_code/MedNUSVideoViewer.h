@@ -3,8 +3,6 @@
 
 #include <QWidget>
 #include <QLabel>
-#include <QMediaPlaylist>
-#include <QVideoWidget>
 #include <QKeyEvent>
 #include <QGraphicsView>
 #include <QGraphicsVideoItem>
@@ -12,6 +10,7 @@
 #include <QSlider>
 #include <QStyle>
 #include <QPushButton>
+#include <QGridLayout>
 
 class MedNUSVideoControl;
 
@@ -22,21 +21,15 @@ public:
     explicit MedNUSVideoViewer(QString filename, QWidget *parent = 0);
     ~MedNUSVideoViewer();
 protected:
-    QMediaPlayer *player;
-    QVideoWidget *videoWidget;
-    MedNUSVideoControl *control;
     QMediaPlayer mediaPlayer;
-    QSize videoSize;
-    //QVideoWidget *videoWidget;
-    // test
     QGraphicsView *videoView;
     QGraphicsVideoItem *videoItem;
     QGraphicsScene *scene;
+    MedNUSVideoControl *control;
 
     void keyPressEvent(QKeyEvent *event);
     void resizeEvent(QResizeEvent *);
     bool eventFilter(QObject* obj, QEvent* e);
-signals:
 
 protected slots:
     void togglePlay();
@@ -50,7 +43,7 @@ public:
     explicit MedNUSVideoControl(QWidget *parent = 0);
     ~MedNUSVideoControl();
 protected:
-    QPushButton *play;
+    QPushButton *playButton;
     QSlider *positionSlider;
 signals:
     void seekTo(int millisecond);
