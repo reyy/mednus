@@ -7,29 +7,6 @@ MedNUSVideoViewer::MedNUSVideoViewer(QString filename, QWidget *parent) :
     QWidget(parent)
 {
     this->setAccessibleName(filename);
-//    player = new QMediaPlayer();
-
-//    QMediaPlaylist *playlist = new QMediaPlaylist(player);
-//    //playlist->addMedia(QUrl("mms://live-vip-49.nus.edu.sg/INV_CSEWARE/anatomy/respiratory/landmarks_patient.wmv"));
-//    playlist->addMedia(QUrl::fromLocalFile(filename));
-
-
-//    videoWidget = new QVideoWidget();
-//    player->setVideoOutput(videoWidget);
-
-//    QStackedLayout *grid2 = new QStackedLayout;
-//    QGridLayout *grid = new QGridLayout;
-//    grid->setContentsMargins(0,0,0,0);
-//    this->setLayout(grid2);
-//    grid2->setStackingMode(QStackedLayout::StackAll);
-//    grid2->addWidget(videoWidget);
-//    player->setPlaylist(playlist);
-//    playlist->setCurrentIndex(0);
-//    player->play();
-//    player->pause();
-
-//    videoWidget->lower();
-    // video widget
 
     videoView = new QGraphicsView();
     scene = new QGraphicsScene(videoView);
@@ -46,11 +23,8 @@ MedNUSVideoViewer::MedNUSVideoViewer(QString filename, QWidget *parent) :
 
     scene->addItem(videoItem);
     videoView->setAutoFillBackground(true);
-    //videoView->setAlignment(Qt::AlignLeft | Qt::AlignTop);
-    //videoView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    //videoView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    //videoView->setStyleSheet( "QGraphicsView { border-style: none; background-color:black}" );
     videoView->setBackgroundBrush(QBrush(Qt::black, Qt::SolidPattern));
+    videoView->setStyleSheet( "QGraphicsView { border-style: none; background-color:black}" );
 
     QGridLayout *layout = new QGridLayout;
     layout->addWidget(videoView);
@@ -62,28 +36,18 @@ MedNUSVideoViewer::MedNUSVideoViewer(QString filename, QWidget *parent) :
     control = new MedNUSVideoControl();
     control->setParent(videoView);
     control->show();
-    //grid2->addWidget(control);
-    //grid2->setCurrentWidget(control);
-    //control->setGeometry(this->width()/2, 4*this->height()/5, this->width()/5, this->height()/5);
-    //control->raise();
-    //videoWidget->stackUnder(control);
-
-//    QPushButton *hello = new QPushButton("Some veryb long text");
-//    grid2->addWidget(hello);
-//    grid2->setCurrentWidget(hello);
-    //hello->raise();
-    //control->setFrameStyle(QFrame::Box | QFrame::Raised);
-
+    installEventFilter(this);
 }
 
 MedNUSVideoViewer::~MedNUSVideoViewer()
 {
-    player->stop();
-    delete player;
+//    player->stop();
+//    delete player;
 
-    this->layout()->removeWidget(videoWidget);
-    delete videoWidget;
+//    this->layout()->removeWidget(videoWidget);
+//    delete videoWidget;
 }
+
 
 void MedNUSVideoViewer::keyPressEvent(QKeyEvent *event)
 {
@@ -93,6 +57,7 @@ void MedNUSVideoViewer::keyPressEvent(QKeyEvent *event)
         else
             player->play();
     }
+    event->ignore();
 }
 
 void MedNUSVideoViewer::resizeEvent(QResizeEvent *event)
@@ -103,16 +68,49 @@ void MedNUSVideoViewer::resizeEvent(QResizeEvent *event)
 
     videoView->lower();
     control->raise();
-    control->setGeometry(50, 50, control->width(), control->height());
+    control->setGeometry(/*this->width()/2.0 - control->width()/2.0*/0, 4*this->height()/5.0, this->width(), control->height());
     //control->setGeometry(this->width()/2, 4*this->height()/5, this->width()/5, this->height()/5);
+}
+
+bool MedNUSVideoViewer::eventFilter(QObject *obj, QEvent *e)
+{
+    if(e->type() == QEvent::Enter)
+    {
+        control->show();
+    }
+    if(e->type() == QEvent::Leave)
+    {
+        control->hide();
+    }
 }
 
 
 MedNUSVideoControl::MedNUSVideoControl(QWidget *parent):
     QWidget(parent)
 {
-    this->play = new QLabel("play",this);
-    this->pause = new QLabel("pause",this);
+//    QWidget *box = new QWidget(this);
+//    QPalette Pal(palette());
+//    Pal.setColor(QPalette::Background, QColor(255, 255, 255, 30));
+//    box->setAutoFillBackground(true);
+//    box->setPalette(Pal);
+//    box->setGeometry(0, 0, 50, 50);
+//    box->show();
+
+    QGridLayout *layout = new QGridLayout(this);
+    this->play = new QLabel("play");
+    this->pause = new QLabel("pause");
+
+    positionSlider = new QSlider(Qt::Horizontal);
+//    positionSlider->setRange(0, 0);
+//    connect(positionSlider, SIGNAL(sliderMoved(int)),
+//            this, SLOT(setPosition(int)));
+
+    layout->addWidget(play,0,0,1,1);
+    //layout->addWidget(pause,0,0,1,1);
+    layout->addWidget(positionSlider,1,0,1,1);
+
+
+
 }
 
 MedNUSVideoControl::~MedNUSVideoControl()

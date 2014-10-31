@@ -5,6 +5,7 @@
 MedNUSMainWindow::MedNUSMainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
+
     setWindowTitle(QString("MedNUS"));
     setWindowIcon(QIcon(":/images/panax-icon.png"));
 
@@ -197,4 +198,7 @@ void MedNUSMainWindow::mousePressEvent ( QMouseEvent * event )
             fb->setTrayOut(_trayOut);
         }
     }
+    event->ignore();
 }
+
+
