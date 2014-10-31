@@ -11,7 +11,7 @@
 #include <QPushButton>
 #include <QVector>
 #include <QString>
-
+#include <QMessageBox>
 // For debugging
 #include<QTextStream>
 
@@ -48,6 +48,8 @@ protected:
     QPushButton* _markButton;
     QVector<int> _correctAnswerList;
     int _score;
+
+    QMessageBox* _scoreMsgBox;
 
 signals:
 
