@@ -106,8 +106,6 @@ void MedNUSMainWindow::createWidgets()
         vid = new MedNUSVideoViewer(dir);
         tabs->addTab(vid, "Video 2", dir);
 
-
-
         // Create lesson table
         lp = new MedNUSLessonPanel(this);
         lp->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
@@ -121,6 +119,7 @@ void MedNUSMainWindow::createWidgets()
         connect(contentManager, SIGNAL(callAddTab(QWidget*,QString,QString)), tabs, SLOT(addTab(QWidget*,QString,QString)));
         contentManager->initLessonList(QStringList());
         //lessonTable->l
+
 
         centralWidget->setLayout(mainLayout);
         setCentralWidget(centralWidget);

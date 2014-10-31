@@ -142,6 +142,7 @@ MedNUSQuiz::MedNUSQuiz(QString filename, QWidget *parent) :
     _questionOptionGroup.append(temp);
     _correctAnswerList.append(1);
 
+    /*
     temp = new QButtonGroup(_content);
     tempLabel = new QLabel("Q6. During bone formation, as the periosteum calcifies, it gives rise to a thin plate of compact bone called the _____.");
     tempLabel->setStyleSheet("QLabel { color : white; }");
@@ -306,6 +307,8 @@ MedNUSQuiz::MedNUSQuiz(QString filename, QWidget *parent) :
     _layout->addWidget(tempButton);
     _questionOptionGroup.append(temp);
     _correctAnswerList.append(1);
+
+    */
 
     _markButton = new QPushButton("Check Answers");
     _markButton->setGeometry(QRect(QPoint(100, 100), QSize(200, 50)));
