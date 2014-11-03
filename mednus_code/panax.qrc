@@ -69,5 +69,10 @@
         <file>images/ivle_profile.jpg</file>
         <file>images/avatar_cutout_dark.png</file>
         <file>images/tabwidget.css</file>
+        <file>images/login_background.jpg</file>
+        <file>images/login_overlay.png</file>
+        <file>images/icon_login_pressed.png</file>
+        <file>images/login_lines.png</file>
+        <file>images/login_rect.png</file>
     </qresource>
 </RCC>

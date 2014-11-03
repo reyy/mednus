@@ -1,6 +1,6 @@
 #include "MedNUSMainWindow.h"
 #include <QDir>
-#define SKIP_LOGIN 1
+#define SKIP_LOGIN 0
 
 MedNUSMainWindow::MedNUSMainWindow(QWidget *parent) :
     QMainWindow(parent)
@@ -155,8 +155,11 @@ void MedNUSMainWindow::deleteMenus() {
 
 void MedNUSMainWindow::loginCompleted(bool success, QString matric, QString name)
 {
-    if(!success)
+    if(!success) {
         qDebug() << "\nWrong User/Pass.";
+        login->setLoading(false);
+        login->setErrorMessage("Wrong credential. Try again.");
+    }
     else
     {
         this->matricNo = matric;
