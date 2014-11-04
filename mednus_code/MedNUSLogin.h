@@ -28,6 +28,7 @@ private:
 
 protected:
     void resizeEvent(QResizeEvent* event);
+    void keyReleaseEvent(QKeyEvent *event);
 
 public:
     explicit MedNUSLogin(QWidget *parent = 0);

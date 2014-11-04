@@ -158,7 +158,7 @@ void MedNUSMainWindow::loginCompleted(bool success, QString matric, QString name
     if(!success) {
         qDebug() << "\nWrong User/Pass.";
         login->setLoading(false);
-        login->setErrorMessage("Wrong credential. Try again.");
+        login->setErrorMessage("Wrong credentials. Try again.");
     }
     else
     {
