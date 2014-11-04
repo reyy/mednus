@@ -1,6 +1,6 @@
 #include "MedNUSMainWindow.h"
 #include <QDir>
-#define SKIP_LOGIN 0
+#define SKIP_LOGIN 1
 
 MedNUSMainWindow::MedNUSMainWindow(QWidget *parent) :
     QMainWindow(parent)

@@ -1,4 +1,5 @@
 #include "MedNUSVideoViewer.h"
+#include <QDebug>
 
 MedNUSVideoViewer::MedNUSVideoViewer(QString filename, QWidget *parent) :
     QWidget(parent)
@@ -69,7 +70,8 @@ void MedNUSVideoViewer::resizeEvent(QResizeEvent *event)
 
     videoView->lower();
     control->raise();
-    control->setGeometry(/*this->width()/2.0 - control->width()/2.0*/0, 4*this->height()/5.0, this->width(), control->height());
+    control->setGeometry(0, 0, this->width(), this->height());
+    control->updateUI();
 }
 
 bool MedNUSVideoViewer::eventFilter(QObject *obj, QEvent *e)
@@ -97,16 +99,13 @@ void MedNUSVideoViewer::setPosition(int position)
 MedNUSVideoControl::MedNUSVideoControl(QWidget *parent):
     QWidget(parent)
 {
-    QGridLayout *layout = new QGridLayout(this);
-    playButton = new QPushButton("play");
-
-    positionSlider = new QSlider(Qt::Horizontal);
+    playButton = new QPushButton((this));
+    playButton->setIconSize(QSize(48,48));
+    playButton->setFlat(true);
+    playButton->setStyleSheet("QPushButton {border-style: outset; border-width: 0px;background-image: url(:/images/bt_play.png); background-color:rgba(0,0,0,0);}");
+    positionSlider = new QSlider(Qt::Horizontal,this);
     positionSlider->setRange(0, 0);
-
-    layout->addWidget(playButton,0,1,1,1);
-    layout->addWidget(positionSlider,1,0,1,3);
-    layout->setSpacing(8);
-    layout->setMargin(8);
+    positionSlider->setStyleSheet("QSlider {background-color:rgba(0,0,0,0);}");
 
     connect(playButton, SIGNAL(clicked()),parent->parentWidget(), SLOT(togglePlay()));
     connect(positionSlider, SIGNAL(sliderMoved(int)),parent->parentWidget(), SLOT(setPosition(int)));
@@ -118,14 +117,20 @@ MedNUSVideoControl::~MedNUSVideoControl()
     delete positionSlider;
 }
 
+void MedNUSVideoControl::updateUI() {
+    qDebug() <<this->width();
+    playButton->setGeometry(QRect(10,this->height()-48-10,48,48));
+    positionSlider->setGeometry(QRect(10+48+5,this->height()-48-10,this->width()-10-48-5-15,48));
+}
+
 void MedNUSVideoControl::mediaStateChanged(QMediaPlayer::State state)
 {
     switch(state) {
     case QMediaPlayer::PlayingState:
-        this->playButton->setText("Pause");//change pixmap
+        this->playButton->setStyleSheet("QPushButton {border-style: outset; border-width: 0px;background-image: url(:/images/bt_pause.png); background-color:rgba(0,0,0,0);}");
         break;
     default:
-        this->playButton->setText("Play");
+        this->playButton->setStyleSheet("QPushButton {border-style: outset; border-width: 0px;background-image: url(:/images/bt_play.png); background-color:rgba(0,0,0,0);}");
         break;
     }
 }
