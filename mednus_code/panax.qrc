@@ -74,5 +74,7 @@
         <file>images/icon_login_pressed.png</file>
         <file>images/login_lines.png</file>
         <file>images/login_rect.png</file>
+        <file>images/bt_pause.png</file>
+        <file>images/bt_play.png</file>
     </qresource>
 </RCC>

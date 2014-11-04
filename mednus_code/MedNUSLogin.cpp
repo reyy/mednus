@@ -1,6 +1,8 @@
 #include "MedNUSLogin.h"
 #include "MedNUSAUISettings.h"
 #include <QFileDialog>
+#include <QDebug>
+#include <QKeyEvent>
 
 MedNUSLogin::MedNUSLogin(QWidget *parent) :
     QWidget(parent)
@@ -140,4 +142,13 @@ void MedNUSLogin::setLoading(bool value) {
 
 void MedNUSLogin::setErrorMessage(QString value) {
     _error->setText(value);
+}
+
+void MedNUSLogin::keyReleaseEvent(QKeyEvent *event)
+{
+    if(event->key() == Qt::Key_Return)
+    {
+        loginButtonPress();
+    }
+    event->ignore();
 }
