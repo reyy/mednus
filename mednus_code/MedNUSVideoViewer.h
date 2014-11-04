@@ -39,12 +39,15 @@ protected slots:
 class MedNUSVideoControl : public QWidget
 {
     Q_OBJECT
+
 public:
     explicit MedNUSVideoControl(QWidget *parent = 0);
     ~MedNUSVideoControl();
+    void updateUI();
 protected:
     QPushButton *playButton;
     QSlider *positionSlider;
+
 signals:
     void seekTo(int millisecond);
 protected slots:
