@@ -17,13 +17,13 @@ MedNUSLessonIcon::MedNUSLessonIcon(QString path, QPixmap directory, QWidget *par
 
     _text = new QLabel(parent);
     _text->setStyleSheet("color:#FFFFFF;font-size:10px;");
-    QFontMetrics metrics(_text->font());
 
     int startIndex=_path.lastIndexOf("/");
     int nameLength=_path.size()-startIndex;
-    QString filename = _path.mid(startIndex+1,nameLength-1);
+    _filename = _path.mid(startIndex+1,nameLength-1);
 
-    _text->setText(metrics.elidedText(filename, Qt::ElideRight, _text->width()));
+    QFontMetrics metrics(_text->font());
+    _text->setText(metrics.elidedText(_filename, Qt::ElideRight, _text->width()));
 
     _x=0;
     _y=0;
@@ -38,8 +38,11 @@ void MedNUSLessonIcon::updatePosition(float x, float y) {
     _x=x + _directory.width() +5;
     _y=y;
     _icon->setGeometry(QRect(_x, _y, _directory.width(), _directory.height()));
-    _text->setGeometry(QRect(_x+_directory.width()+5, _y+1, LESSONPANEL_WIDTH/2, 16));
-    _highlight->setGeometry(QRect(_x-2, _y-2, LESSONPANEL_WIDTH/2+4, _directory.height()+4));
+    _text->setGeometry(QRect(_x+_directory.width()+5, _y+1, LESSONPANEL_WIDTH-SIDEBAR_OFFSET*4, 16));
+    _highlight->setGeometry(QRect(_x-2, _y-2, LESSONPANEL_WIDTH-SIDEBAR_OFFSET*4+4, _directory.height()+4));
+
+    QFontMetrics metrics(_text->font());
+    _text->setText(metrics.elidedText(_filename, Qt::ElideRight, _text->width()-20));
 }
 
 void MedNUSLessonIcon::setSelected(bool value) {
@@ -58,7 +61,7 @@ void MedNUSLessonIcon::setVisible(bool value) {
 
 
 bool MedNUSLessonIcon::checkMouseClick(float xpos, float ypos) {
-    if(xpos>=_x&&xpos<=_x+LESSONPANEL_WIDTH/2&&ypos>=_y&&ypos<=_y+_directory.height()) {
+    if(xpos>=_x&&xpos<=_x+LESSONPANEL_WIDTH&&ypos>=_y&&ypos<=_y+_directory.height()) {
         _selected = true;
         _highlight->setVisible(true);
         emit emitOpenFile(_path, _text->text(), 0); //todo: pass actual type!
