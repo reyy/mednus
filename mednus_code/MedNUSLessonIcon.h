@@ -13,6 +13,7 @@ private:
     QLabel *_text;
     QPixmap _directory;    
     QString _path;
+    QString _filename;
 
     float _x;
     float _y;
