@@ -11,12 +11,13 @@
 #include <QPushButton>
 #include <QVector>
 #include <QString>
+#include <QScrollArea>
 #include <QMessageBox>
 // For debugging
 #include<QTextStream>
 
 // MedNUSQuizQuestion is not used for now.
-class MedNUSQuizQuestion
+class MedNUSQuizQuestion : public QWidget
 {
 public:
     MedNUSQuizQuestion(QWidget *parent, QGroupBox *box);
@@ -38,10 +39,9 @@ public:
 
 
 protected:
-    //QVector<MedNUSQuizQuestion*> *_questionList;
-
-    QGroupBox* _content;
+    QWidget* _tempWidget;
     QVBoxLayout* _layout;
+    QScrollArea* _scrollArea;
 
     QVector<QButtonGroup*> _questionOptionGroup;
 
@@ -50,6 +50,8 @@ protected:
     int _score;
 
     QMessageBox* _scoreMsgBox;
+
+    void resizeEvent(QResizeEvent *);
 
 signals:
 
