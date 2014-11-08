@@ -10,4 +10,12 @@
 #define SIDEBAR_OFFSET 10
 #define LOGO_WIDTH 160
 
+#define VIDEO_BORDER 10
+#define VIDEO_SEP_LENGTH 7
+#define VIDEO_TIME_LENGTH 50
+#define VIDEO_ICON_SIZE 24
+
+ #define MIN(a,b) ((a) < (b) ? (a) : (b))
+ #define MAX(a,b) ((a) > (b) ? (a) : (b))
+
 #endif // MEDNUSAUISETTINGS_H

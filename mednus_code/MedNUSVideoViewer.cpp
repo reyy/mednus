@@ -1,5 +1,6 @@
 #include "MedNUSVideoViewer.h"
 #include <QDebug>
+#include "MedNUSAUISettings.h"
 
 MedNUSVideoViewer::MedNUSVideoViewer(QString filename, QWidget *parent) :
     QWidget(parent)
@@ -99,10 +100,16 @@ void MedNUSVideoViewer::setPosition(int position)
 MedNUSVideoControl::MedNUSVideoControl(QWidget *parent):
     QWidget(parent)
 {
+    _volume=3;
     _playButton = new QPushButton((this));
     _playButton->setIconSize(QSize(24,24));
     _playButton->setFlat(true);
     _playButton->setStyleSheet("QPushButton {border-style: outset; border-width: 0px;background-image: url(:/images/bt_play.png); background-color:rgba(0,0,0,0);}");
+
+    _volumeButton = new QPushButton((this));
+    _volumeButton->setIconSize(QSize(30,24));
+    _volumeButton->setFlat(true);
+    _volumeButton->setStyleSheet("QPushButton {border-style: outset; border-width: 0px;background-image: url(:/images/bt_volume_3.png); background-color:rgba(0,0,0,0);}");
 
     _positionSlider = new QSlider(Qt::Horizontal,this);
     _positionSlider->setRange(0, 0);
@@ -121,12 +128,16 @@ MedNUSVideoControl::~MedNUSVideoControl()
     delete _playButton;
     delete _positionSlider;
     delete _videoTimer;
+    delete _volumeButton;
 }
 
 void MedNUSVideoControl::updateUI() {
-    _playButton->setGeometry(QRect(10,this->height()-24-10,24,24));
-    _positionSlider->setGeometry(QRect(10+24+5,this->height()-24-10,this->width()-10-48-5-15-40,24));
-    _videoTimer->setGeometry(QRect(10+24+5+this->width()-10-48-5-15-40+15,this->height()-24-10,50,24));
+    int playerHeight = this->height()-VIDEO_ICON_SIZE-VIDEO_BORDER;
+    _playButton->setGeometry(QRect(VIDEO_BORDER,playerHeight,VIDEO_ICON_SIZE,VIDEO_ICON_SIZE));
+    _volumeButton->setGeometry(QRect(VIDEO_BORDER+VIDEO_ICON_SIZE+VIDEO_SEP_LENGTH,playerHeight,VIDEO_ICON_SIZE,VIDEO_ICON_SIZE));
+    _positionSlider->setGeometry(QRect(VIDEO_BORDER+VIDEO_ICON_SIZE*2+VIDEO_SEP_LENGTH*2,playerHeight,this->width()-(VIDEO_BORDER*2+VIDEO_ICON_SIZE*2+VIDEO_SEP_LENGTH*3)-VIDEO_TIME_LENGTH,VIDEO_ICON_SIZE));
+    _videoTimer->setGeometry(QRect(this->width()-VIDEO_BORDER-VIDEO_TIME_LENGTH,playerHeight,VIDEO_TIME_LENGTH,VIDEO_ICON_SIZE));
+
 }
 
 void MedNUSVideoControl::mediaStateChanged(QMediaPlayer::State state)
@@ -151,4 +162,10 @@ void MedNUSVideoControl::durationChanged(qint64 duration)
     _positionSlider->setRange(0, duration);
     //TODO Assigned duration value over the total duration of video.
     //_videoTimer->setText("1:11 / 3:20");
+}
+
+void MedNUSVideoControl::volumeChanged(qint64 value) {
+    _volume=MIN(3,MAX(0,value));
+    //TODO Assig value to volume. Value of volume range from 0 to 3.
+    _volumeButton->setStyleSheet("QPushButton {border-style: outset; border-width: 0px;background-image: url(:/images/bt_volume_"+QString::number(_volume)+".png); background-color:rgba(0,0,0,0);}");
 }

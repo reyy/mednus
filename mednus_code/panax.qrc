@@ -78,5 +78,9 @@
         <file>images/bt_play.png</file>
         <file>images/checkbox_checked.png</file>
         <file>images/checkbox_unchecked.png</file>
+        <file>images/bt_volume_0.png</file>
+        <file>images/bt_volume_1.png</file>
+        <file>images/bt_volume_2.png</file>
+        <file>images/bt_volume_3.png</file>
     </qresource>
 </RCC>
