@@ -46,8 +46,10 @@ public:
     void updateUI();
 protected:
     QPushButton *_playButton;
+    QPushButton *_volumeButton;
     QSlider *_positionSlider;
     QLabel *_videoTimer;
+    int _volume;
 
 signals:
     void seekTo(int millisecond);
@@ -55,6 +57,7 @@ protected slots:
     void mediaStateChanged(QMediaPlayer::State state);
     void positionChanged(qint64 position);
     void durationChanged(qint64 duration);
+    void volumeChanged(qint64 value);
 };
 
 #endif // MEDNUSVIDEOVIEWER_H
