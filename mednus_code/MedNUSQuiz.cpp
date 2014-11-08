@@ -53,10 +53,13 @@ MedNUSQuiz::MedNUSQuiz(QString filename, QWidget *parent) :
     _questionList = new QVector<MedNUSQuizQuestion*>();
     // Read Json file
     QFile file(filename);
-    file.open(QIODevice::ReadOnly | QIODevice::Text);
-    QString fileValue = file.readAll();
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        qWarning() << "Unable to open file.";
+    }
+    QByteArray fileValue = file.readAll();
     file.close();
-    QJsonDocument doc = QJsonDocument::fromJson(fileValue.toUtf8());
+    QJsonDocument doc = QJsonDocument::fromJson(fileValue);
     QJsonObject obj = doc.object();
     QJsonValue v = obj.value(QString("details"));
     QJsonObject quizDetails = v.toObject();
