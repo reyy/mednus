@@ -76,5 +76,7 @@
         <file>images/login_rect.png</file>
         <file>images/bt_pause.png</file>
         <file>images/bt_play.png</file>
+        <file>images/checkbox_checked.png</file>
+        <file>images/checkbox_unchecked.png</file>
     </qresource>
 </RCC>

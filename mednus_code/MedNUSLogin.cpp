@@ -37,6 +37,7 @@ MedNUSLogin::MedNUSLogin(QWidget *parent) :
     _error->setText("");
     _error->setStyleSheet("color:#c3f0fb;");
     _error->setFont (QFont ("Geneva", 12));
+    _error->setVisible(true);
 
     _title = new QLabel((this));
     _title->setText("MedNUS");
@@ -52,7 +53,7 @@ MedNUSLogin::MedNUSLogin(QWidget *parent) :
 
     _message = new QLabel((this));
     _message->setText("Welcome");
-    _message->setStyleSheet("color:#FFFFFF;");
+    _message->setStyleSheet("color:#FFFFFF;vertical-align: middle;");
     _message->setFont (QFont ("Helvetica", 40));
 
     _sideText = new QLabel((this));
@@ -72,6 +73,12 @@ MedNUSLogin::MedNUSLogin(QWidget *parent) :
     _password->setInputMethodHints(Qt::ImhHiddenText| Qt::ImhNoPredictiveText|Qt::ImhNoAutoUppercase);
     _password->setPlaceholderText("Password");
     _password->setFont (QFont ("Helvetica", 15));
+
+    _remember = new QCheckBox(this);
+    _remember->setText("Keep me signed in");
+    _remember->setStyleSheet(" QCheckBox {spacing: 5px;color:#c3f0fb;} QCheckBox::indicator:unchecked {image: url(:/images/checkbox_unchecked.png);} QCheckBox::indicator:checked {image: url(:/images/checkbox_checked.png);}");
+    _remember->setFont (QFont ("Geneva", 12));
+    _remember->setCheckState(Qt::Checked);
 
     _loginButton = new QPushButton((this));
     _loginButton->setIconSize(QSize(64,64));
@@ -97,6 +104,7 @@ MedNUSLogin::~MedNUSLogin() {
     delete _loginButton;
     delete _username;
     delete _password;
+    delete _remember;
 }
 
 void MedNUSLogin::loginButtonPress() {
@@ -115,11 +123,12 @@ void MedNUSLogin::resizeEvent(QResizeEvent* event)
     _title->setGeometry(QRect(this->geometry().width()*0.62, this->geometry().height()*0.1, 100,32));_username->setGeometry(QRect(this->geometry().width()*0.11, this->geometry().height()*0.5-16, 200,24));
     _subTitle->setGeometry(QRect(this->geometry().width()*0.62, this->geometry().height()*0.1+12, 100,32));
     _bottomText->setGeometry(QRect(this->geometry().width()*0.62, this->geometry().height()*0.1+12+30, 300,250));
-    _message->setGeometry(QRect(this->geometry().width()*0.08, this->geometry().height()*0.3, 200,42));
+    _message->setGeometry(QRect(this->geometry().width()*0.08, this->geometry().height()*0.3, 500,100));
     _sideText->setGeometry(QRect(this->geometry().width()*0.08+210+64+10, this->geometry().height()*0.5, 100,64));
     _username->setGeometry(QRect(this->geometry().width()*0.08, this->geometry().height()*0.5, 200,24));
     _password->setGeometry(QRect(this->geometry().width()*0.08, this->geometry().height()*0.5+34, 200,24));
-    _error->setGeometry(QRect(this->geometry().width()*0.08+10, this->geometry().height()*0.5+34+22, 300,30));
+    _error->setGeometry(QRect(this->geometry().width()*0.08, this->geometry().height()*0.5+34+32, 300,30));
+    _remember->setGeometry(QRect(this->geometry().width()*0.08, this->geometry().height()*0.5+34+22, 300,30));
     _loginButton->setGeometry(QRect(this->geometry().width()*0.08+210, this->geometry().height()*0.5, 64,64));
 }
 
@@ -130,18 +139,21 @@ void MedNUSLogin::setLoading(bool value) {
         _loginButton->setVisible(false);
         _username->setVisible(false);
         _password->setVisible(false);
-        _error->setText("");
+        _remember->setVisible(false);
+        //_error->setText("");
     } else  {
         _message->setText("Welcome");
         _sideText->setText("Login");
         _loginButton->setVisible(true);
         _username->setVisible(true);
         _password->setVisible(true);
+        _remember->setVisible(true);
     }
 }
 
 void MedNUSLogin::setErrorMessage(QString value) {
-    _error->setText(value);
+   // _error->setText(value);
+    _message->setText(value);
 }
 
 void MedNUSLogin::keyReleaseEvent(QKeyEvent *event)

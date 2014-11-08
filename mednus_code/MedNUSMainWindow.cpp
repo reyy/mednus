@@ -1,6 +1,6 @@
 #include "MedNUSMainWindow.h"
 #include <QDir>
-#define SKIP_LOGIN 1
+#define SKIP_LOGIN 0
 
 MedNUSMainWindow::MedNUSMainWindow(QWidget *parent) :
     QMainWindow(parent)
@@ -158,7 +158,7 @@ void MedNUSMainWindow::loginCompleted(bool success, QString matric, QString name
     if(!success) {
         qDebug() << "\nWrong User/Pass.";
         login->setLoading(false);
-        login->setErrorMessage("Wrong credentials. Try again.");
+        login->setErrorMessage("Wrong credentials.\nTry again.");
     }
     else
     {
