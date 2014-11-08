@@ -35,11 +35,11 @@ MedNUSLessonIcon::~MedNUSLessonIcon() {
 }
 
 void MedNUSLessonIcon::updatePosition(float x, float y) {
-    _x=x + _directory.width() +5;
+    _x=x+5;
     _y=y;
     _icon->setGeometry(QRect(_x, _y, _directory.width(), _directory.height()));
-    _text->setGeometry(QRect(_x+_directory.width()+5, _y+1, LESSONPANEL_WIDTH-SIDEBAR_OFFSET*4, 16));
-    _highlight->setGeometry(QRect(_x-2, _y-2, LESSONPANEL_WIDTH-SIDEBAR_OFFSET*4+4, _directory.height()+4));
+    _text->setGeometry(QRect(_x+_directory.width()+5, _y+1, LESSONPANEL_WIDTH-LESSONPANEL_BORDER*10, 16));
+    _highlight->setGeometry(QRect(_x-2, _y-2, LESSONPANEL_WIDTH-LESSONPANEL_BORDER*10, _directory.height()+4));
 
     QFontMetrics metrics(_text->font());
     _text->setText(metrics.elidedText(_filename, Qt::ElideRight, _text->width()-20));

@@ -6,7 +6,23 @@
 #include <QMouseEvent>
 #include <QLabel>
 #include <QDebug>
+#include <QScrollArea>
 #include "MedNUSLessonIcon.h"
+
+class MedNUSLessonPackageContentPanel : public QWidget
+{
+    QWidget *_parent;
+    QVector<MedNUSLessonIcon*> _listOfItems;
+
+public:
+    explicit MedNUSLessonPackageContentPanel(int x, int y,QWidget *parent = 0);
+    ~MedNUSLessonPackageContentPanel();
+    MedNUSLessonIcon* getContentItem(int value);
+    int getContentSize();
+    MedNUSLessonIcon* addContent(QString filename, QPixmap directory);
+    void clearContent();
+    void updateGUI(int x, int y, bool collapse);
+};
 
 class MedNUSLessonPackage : public QWidget
 {
@@ -15,30 +31,28 @@ private:
     int _x;
     int _y;
     int _tone;
-    int _height;
-    int _interactiveHeight;
-    int _collapsedHeight;
-    int _border;
 
     QString _title;
     QLabel *_background;
-    QLabel *_contentBackground;
     QLabel *_moduleTitle;
     QLabel *_subHeader;
     QLabel *_description;
     bool _collapse;
     QWidget *_parent;
-    QVector<MedNUSLessonIcon*> _listOfItems;
+    QScrollArea *_scrollArea;
+    MedNUSLessonPackageContentPanel *_contentPanel;
 
 public:
     explicit MedNUSLessonPackage(QWidget *parent = 0);
     ~MedNUSLessonPackage();
     void setY(int value);
     int getY();
-    MedNUSLessonIcon* getContentItem(int value);
-    int getContentSize();
+
     void addContent(QString filename, QPixmap directory);
     void clearContent();
+    int getContentSize();
+    MedNUSLessonIcon* getContentItem(int value);
+
     void setTitle(QString value);
     QString getTitle();
     void setSubHeader(QString value);
@@ -47,7 +61,6 @@ public:
     int getInteractiveHeight();
     bool getCollapse();
     int getHeight();
-    int getCollapseHeight();
     void toggleCollapse();
     void toggleCollapse(bool value);
     void updateGUI();

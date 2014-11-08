@@ -3,30 +3,68 @@
 #include <QFontMetrics>
 #include <math.h>
 
+MedNUSLessonPackageContentPanel::MedNUSLessonPackageContentPanel(int x,int y,QWidget *parent) :
+    QWidget(parent) {
+
+    this->setGeometry(QRect(0,0,LESSONPANEL_WIDTH-LESSONPANEL_BORDER*2,_listOfItems.size()*24));
+
+    _parent=this;
+}
+
+MedNUSLessonPackageContentPanel::~MedNUSLessonPackageContentPanel(){
+}
+
+MedNUSLessonIcon* MedNUSLessonPackageContentPanel::getContentItem(int value) {
+    return _listOfItems.at(value);
+}
+
+int MedNUSLessonPackageContentPanel::getContentSize() {
+    return _listOfItems.size();
+}
+
+MedNUSLessonIcon* MedNUSLessonPackageContentPanel::addContent(QString filename, QPixmap directory) {
+    MedNUSLessonIcon *item = new MedNUSLessonIcon(filename,directory,_parent);
+    _listOfItems.push_back(item);
+    return item;
+}
+
+void MedNUSLessonPackageContentPanel::clearContent() {
+    while(_listOfItems.size()>0) {
+        delete _listOfItems.front();
+        _listOfItems.pop_front();
+    }
+}
+
+void MedNUSLessonPackageContentPanel::updateGUI(int x, int y, bool collapse) {
+    this->setGeometry(QRect(0,0,LESSONPANEL_WIDTH,_listOfItems.size()*24));
+
+    if(collapse) {
+        for(int i=0;i<_listOfItems.size();i++)
+            _listOfItems.at(i)->setVisible(false);
+    } else {
+        for(int i=0;i<_listOfItems.size();i++) {
+            _listOfItems.at(i)->setVisible(true);
+            _listOfItems.at(i)->updatePosition(0,5+i*24);
+        }
+    }
+}
+
 MedNUSLessonPackage::MedNUSLessonPackage(QWidget *parent) :
     QWidget(parent) {
     _collapse = true;
-    _height = 194;
-    _interactiveHeight = 64;
-    _collapsedHeight = 24;
-    _border = 5;
     _tone=1;
     _x=SIDEBAR_OFFSET;
     _y=0;
     _parent = parent;
 
-    this->setBaseSize(LESSONPANEL_WIDTH,_height);
+    this->setBaseSize(LESSONPANEL_WIDTH,LESSONPANEL_HEIGHT);
     this->setMinimumWidth(LESSONPANEL_WIDTH);
     this->setStyleSheet("background-color: #1c4f6e;");
 
 
     _background = new QLabel(parent);
-    _background->setGeometry(QRect(_x, _y, LESSONPANEL_WIDTH, _interactiveHeight));
+    _background->setGeometry(QRect(_x, _y, LESSONPANEL_WIDTH, LESSONPANEL_CLICKHEIGHT));
     //_background->setPixmap(QPixmap(QString::fromStdString(":/images/copy.png")));
-
-    _contentBackground = new QLabel(parent);
-    _contentBackground->setGeometry(QRect(_x+TOPBAR_HEIGHT, _y, LESSONPANEL_WIDTH, _height));
-    _contentBackground->setStyleSheet("background-color: #2d3949;");
 
     _moduleTitle = new QLabel(parent);
     _moduleTitle->setGeometry(QRect(_x+TOPBAR_HEIGHT, _y, LESSONPANEL_WIDTH, 25));
@@ -39,14 +77,25 @@ MedNUSLessonPackage::MedNUSLessonPackage(QWidget *parent) :
     _description = new QLabel(parent);
     _description->setGeometry(QRect(_x+TOPBAR_HEIGHT, _y+40, LESSONPANEL_WIDTH, 20));
     _description->setStyleSheet("color:#FFF;font-size:10px;");
+
+    _contentPanel = new MedNUSLessonPackageContentPanel(_x,_y,parent);
+
+    _scrollArea = new QScrollArea(parent);
+    _scrollArea->setWidgetResizable(false);
+    _scrollArea->setContentsMargins(0,0,0,0);
+    _scrollArea->setGeometry(_contentPanel->geometry());
+    _scrollArea->setAutoFillBackground(true);
+    _scrollArea->setWidget(_contentPanel);
+    _scrollArea->setStyleSheet("background-color: #2d3949;");
 }
 
 MedNUSLessonPackage::~MedNUSLessonPackage() {
     delete _background;
-    delete _contentBackground;
     delete _moduleTitle;
     delete _subHeader;
     delete _description;
+    delete _contentPanel;
+    delete _scrollArea;
 }
 
 void MedNUSLessonPackage::setY(int value) {
@@ -57,27 +106,21 @@ int MedNUSLessonPackage::getY() {
     return _y;
 }
 
-MedNUSLessonIcon* MedNUSLessonPackage::getContentItem(int value) {
-    return _listOfItems.at(value);
-}
-
-int MedNUSLessonPackage::getContentSize() {
-    return _listOfItems.size();
-}
-
 void MedNUSLessonPackage::addContent(QString filename, QPixmap directory) {
-    MedNUSLessonIcon *item = new MedNUSLessonIcon(filename,directory,_parent);
-    item->updatePosition(_border,_y+_interactiveHeight+5+_listOfItems.size()*24);
-    _listOfItems.push_back(item);
-
+    MedNUSLessonIcon *item = _contentPanel->addContent(filename,directory);
     connect(item, SIGNAL(emitOpenFile(QString,QString,int)), this, SLOT(callOpenFile(QString,QString,int)));
 }
 
 void MedNUSLessonPackage::clearContent() {
-    while(_listOfItems.size()>0) {
-        delete _listOfItems.front();
-        _listOfItems.pop_front();
-    }
+    _contentPanel->clearContent();
+}
+
+int MedNUSLessonPackage::getContentSize() {
+    return _contentPanel->getContentSize();
+}
+
+MedNUSLessonIcon* MedNUSLessonPackage::getContentItem(int value) {
+    return _contentPanel->getContentItem(value);
 }
 
 void MedNUSLessonPackage::setTitle(QString value) {
@@ -111,16 +154,16 @@ bool MedNUSLessonPackage::getCollapse() {
 
 int MedNUSLessonPackage::getHeight(){
     if(_collapse)
-        return _collapsedHeight;
+        return LESSONPANEL_CONTRACTED_CLICKHEIGHT;
     else
-        return _height;
+        return LESSONPANEL_HEIGHT;
 }
 
 int MedNUSLessonPackage::getInteractiveHeight(){
     if(_collapse)
-        return _collapsedHeight;
+        return LESSONPANEL_CONTRACTED_CLICKHEIGHT;
     else
-        return _interactiveHeight;
+        return LESSONPANEL_CLICKHEIGHT;
 }
 
 void MedNUSLessonPackage::toggleCollapse() {
@@ -132,6 +175,8 @@ void MedNUSLessonPackage::toggleCollapse(bool value) {
 }
 
 void MedNUSLessonPackage::updateGUI() {
+    _contentPanel->updateGUI(_x,_y,_collapse);
+
     if(_tone%2==0)
         _background->setStyleSheet("background-color: #286c91;");
     else
@@ -141,35 +186,27 @@ void MedNUSLessonPackage::updateGUI() {
         _moduleTitle->setStyleSheet("color:#FFF;font-size:12px;font-weight:bold;");
         _subHeader->setStyleSheet("color:#FFF;font-size:10px;");
         _description->setStyleSheet("color:#FFF;font-size:10px;");
-        _background->setGeometry(QRect(_x, _y, LESSONPANEL_WIDTH, _collapsedHeight));
+        _background->setGeometry(QRect(_x, _y, LESSONPANEL_WIDTH, LESSONPANEL_CONTRACTED_CLICKHEIGHT));
         _moduleTitle->setGeometry(QRect(_x+10, _y, LESSONPANEL_WIDTH, 24));
         _subHeader->setGeometry(QRect(_x+15, _y+22, LESSONPANEL_WIDTH, 20));
         _description->setGeometry(QRect(_x+15, _y+40, LESSONPANEL_WIDTH, 20));
 
-        _contentBackground->setVisible(false);
+        _scrollArea->setVisible(false);
         _subHeader->setVisible(false);
         _description->setVisible(false);
-
-        for(int i=0;i<_listOfItems.size();i++)
-            _listOfItems.at(i)->setVisible(false);
     } else {
         _moduleTitle->setStyleSheet("color:#FFF;font-size:12px;font-weight:bold;");
         _subHeader->setStyleSheet("color:#FFF;font-size:10px;");
         _description->setStyleSheet("color:#FFF;font-size:10px;");
-        _background->setGeometry(QRect(_x, _y, LESSONPANEL_WIDTH, _height));
-        _contentBackground->setGeometry(QRect(_x+_border, _y+_interactiveHeight, LESSONPANEL_WIDTH-_border*2, _height-_interactiveHeight-_border));
+        _background->setGeometry(QRect(_x, _y, LESSONPANEL_WIDTH, LESSONPANEL_HEIGHT));
         _moduleTitle->setGeometry(QRect(_x+10, _y, LESSONPANEL_WIDTH, 24));
         _subHeader->setGeometry(QRect(_x+15, _y+22, LESSONPANEL_WIDTH, 20));
         _description->setGeometry(QRect(_x+15, _y+40, LESSONPANEL_WIDTH, 20));
+        _scrollArea->setGeometry(QRect(_x+LESSONPANEL_BORDER, _y+LESSONPANEL_CLICKHEIGHT, LESSONPANEL_WIDTH-LESSONPANEL_BORDER*4, LESSONPANEL_HEIGHT-LESSONPANEL_CLICKHEIGHT-LESSONPANEL_BORDER));
 
-        _contentBackground->setVisible(true);
+        _scrollArea->setVisible(true);
         _subHeader->setVisible(true);
         _description->setVisible(true);
-
-        for(int i=0;i<_listOfItems.size();i++) {
-            _listOfItems.at(i)->setVisible(true);
-            _listOfItems.at(i)->updatePosition(_border,_y+_interactiveHeight+5+i*24);
-        }
     }
 }
 
