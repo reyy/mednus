@@ -109,7 +109,7 @@ MedNUSLogin::~MedNUSLogin() {
 
 void MedNUSLogin::loginButtonPress() {
     setLoading(true);
-    emit callLogin(_username->text(),_password->text());
+    emit callLogin(_username->text(),_password->text(),_remember->isChecked());
 }
 
 void MedNUSLogin::resizeEvent(QResizeEvent* event)

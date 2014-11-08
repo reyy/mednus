@@ -39,7 +39,7 @@ public:
     void setLoading(bool value);
     void setErrorMessage(QString value);
 signals:
-    void callLogin(QString,QString);
+    void callLogin(QString,QString,bool);
 public slots:
     void loginButtonPress();
 };
