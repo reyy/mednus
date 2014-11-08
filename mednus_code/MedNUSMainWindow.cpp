@@ -5,7 +5,6 @@
 MedNUSMainWindow::MedNUSMainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
-
     setWindowTitle(QString("MedNUS"));
     setWindowIcon(QIcon(":/images/panax-icon.png"));
 
@@ -22,7 +21,7 @@ MedNUSMainWindow::MedNUSMainWindow(QWidget *parent) :
     if(!SKIP_LOGIN) {
         login = new MedNUSLogin(this);
         setCentralWidget(login);
-        connect(login, SIGNAL(callLogin(QString,QString)), network, SLOT(login(QString,QString)));
+        connect(login, SIGNAL(callLogin(QString,QString,bool)), network, SLOT(login(QString,QString,bool)));
         connect(network,SIGNAL(loginResults(bool,QString,QString)),this,SLOT(loginCompleted(bool,QString,QString)));
     } else {
         this->userName = "Temporary Testing Name";
@@ -182,6 +181,7 @@ void MedNUSMainWindow::loginCompleted(bool success, QString matric, QString name
 
         layout()->removeWidget(login);
         delete login;
+        login = NULL;
 
         createMenus();
         createWidgets();
