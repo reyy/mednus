@@ -87,6 +87,9 @@ MedNUSLessonPackage::MedNUSLessonPackage(QWidget *parent) :
     _scrollArea->setAutoFillBackground(true);
     _scrollArea->setWidget(_contentPanel);
     _scrollArea->setStyleSheet("background-color: #2d3949;");
+    _scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    _scrollArea->setVerticalScrollBarPolicy( Qt::ScrollBarAsNeeded);
+
 }
 
 MedNUSLessonPackage::~MedNUSLessonPackage() {
