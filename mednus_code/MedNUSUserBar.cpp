@@ -1,5 +1,6 @@
 #include "MedNUSUserBar.h"
 #include "MedNUSAUISettings.h"
+#include <QMenu>
 
 MedNUSUserBar::MedNUSUserBar(QWidget *parent) :
     QWidget(parent)
@@ -23,8 +24,7 @@ MedNUSUserBar::MedNUSUserBar(QWidget *parent) :
     _cutoutAvatar->setScaledContents(true);
 
     _name = new QLabel(this);
-    _name->setStyleSheet("font-size:14px;color:#FFFFFF;");
-    _name->setAlignment(Qt::AlignRight);
+    _name->setStyleSheet("font-size:14px;color:#FFFFFF;text-align:right;");
     _name->setGeometry(QRect(this->x()+this->geometry().width()-LESSONPANEL_WIDTH-20-10-TOPBAR_HEIGHT-SIDEBAR_OFFSET, this->y()+(TOPBAR_HEIGHT-20)*0.5, LESSONPANEL_WIDTH-20, 20));
 }
 
@@ -68,4 +68,31 @@ void MedNUSUserBar::setTrayOut(bool value) {
 
 void MedNUSUserBar::resizeEvent(QResizeEvent* event)
 {
+}
+
+void MedNUSUserBar::mousePressEvent(QMouseEvent *event)
+{
+    if(event->buttons() == Qt::LeftButton) {
+        if(event->x()>=_avatar->x()&&
+           event->x()<=_avatar->x()+_avatar->width()&&
+           event->y()>=_avatar->y()&&
+           event->y()<=_avatar->y()+_avatar->height())
+        showContextMenu(event->pos());
+    }
+}
+
+void MedNUSUserBar::showContextMenu(const QPoint& pos)
+{
+    QPoint globalPos = this->mapToGlobal(pos);
+    QMenu myMenu;
+    myMenu.addAction("Logout");
+    QAction* selectedItem = myMenu.exec(this->mapToGlobal(_avatar->pos())+QPoint(-24,24));
+    if (selectedItem)
+    {
+        qDebug() <<"Logout";
+        //TODO call logout.
+    }
+    else
+    {
+    }
 }
