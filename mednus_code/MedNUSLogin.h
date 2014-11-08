@@ -5,6 +5,7 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
+#include <QCheckBox>
 
 class MedNUSLogin : public QWidget
 {
@@ -25,6 +26,7 @@ private:
     QPushButton *_loginButton;
     QLineEdit *_username;
     QLineEdit *_password;
+    QCheckBox *_remember;
 
 protected:
     void resizeEvent(QResizeEvent* event);
