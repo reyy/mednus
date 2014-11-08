@@ -40,6 +40,7 @@ MedNUSVideoViewer::MedNUSVideoViewer(QString filename, QWidget *parent) :
             control, SLOT(mediaStateChanged(QMediaPlayer::State)));
     connect(&mediaPlayer, SIGNAL(positionChanged(qint64)), control, SLOT(positionChanged(qint64)));
     connect(&mediaPlayer, SIGNAL(durationChanged(qint64)), control, SLOT(durationChanged(qint64)));
+    connect(control, SIGNAL(changeVolume(int)), &mediaPlayer, SLOT(setVolume(int)));
 }
 
 MedNUSVideoViewer::~MedNUSVideoViewer()
@@ -94,6 +95,11 @@ void MedNUSVideoViewer::setPosition(int position)
     mediaPlayer.setPosition(position);
 }
 
+void MedNUSVideoViewer::setVolume(int volume)
+{
+    mediaPlayer.setVolume(volume);
+}
+
 
 MedNUSVideoControl::MedNUSVideoControl(QWidget *parent):
     QWidget(parent)
@@ -117,6 +123,7 @@ MedNUSVideoControl::MedNUSVideoControl(QWidget *parent):
     _videoTimer->setStyleSheet("color:#FFFFFF;font-size:8px;text-align:center;background-color:rgba(0,0,0,0);");
     _videoTimer->setText("0:00 / 0:00");
 
+    connect(_volumeButton,SIGNAL(clicked()), this, SLOT(volumeClicked()));
     connect(_playButton, SIGNAL(clicked()),parent->parentWidget(), SLOT(togglePlay()));
     connect(_positionSlider, SIGNAL(sliderMoved(int)),parent->parentWidget(), SLOT(setPosition(int)));
 }
@@ -181,8 +188,10 @@ void MedNUSVideoControl::durationChanged(qint64 duration)
     _videoTimer->setText("00:00/" + _durationText);
 }
 
-void MedNUSVideoControl::volumeChanged(qint64 value) {
-    _volume=MIN(3,MAX(0,value));
-    //TODO Assig value to volume. Value of volume range from 0 to 3.
+void MedNUSVideoControl::volumeClicked() {
+    if(++_volume>3)
+        _volume = 0;
+
     _volumeButton->setStyleSheet("QPushButton {border-style: outset; border-width: 0px;background-image: url(:/images/bt_volume_"+QString::number(_volume)+".png); background-color:rgba(0,0,0,0);}");
+    emit changeVolume(_volume*100/3);
 }
