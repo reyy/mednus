@@ -49,8 +49,9 @@ protected:
     QPushButton *_volumeButton;
     QSlider *_positionSlider;
     QLabel *_videoTimer;
+    QString _durationText;
     int _volume;
-
+    QString timeConvert(qint64);
 signals:
     void seekTo(int millisecond);
 protected slots:
