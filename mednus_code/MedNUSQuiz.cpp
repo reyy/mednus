@@ -1,360 +1,137 @@
 #include "MedNUSQuiz.h"
 
-MedNUSQuizQuestion::MedNUSQuizQuestion(QWidget *parent, QGroupBox *box)
+MedNUSQuizQuestion::MedNUSQuizQuestion(QWidget *parent, QVBoxLayout *layout, QVector<QString> content, int noOfOptions)
 {
-    //box->addWidget(new QLabel("This is a question that has to be answered."));
+    _optionButtonGroup = new QButtonGroup(parent);
 
-    _optionButtonGroup = new QButtonGroup(box);
-    _optionButtonGroup->addButton(new QRadioButton("option 1", parent));
-    _optionButtonGroup->addButton(new QRadioButton("option 2", parent));
-    _optionButtonGroup->addButton(new QRadioButton("option 3", parent));
-    _optionButtonGroup->addButton(new QRadioButton("option 4", parent));
+    // Initialize the QLabel
+    _questionTextLabel = new QLabel(content[0]);
+    _questionTextLabel->setStyleSheet("QLabel { color : white; }");
+    _questionTextLabel->setGeometry(parent->geometry());
+    _questionTextLabel->setWordWrap(true);
+    layout->addWidget(_questionTextLabel);
+
+    // Initialize the buttons
+    QRadioButton* tempButton;
+    for (int i = 1; i <= noOfOptions; i++)
+    {
+        tempButton = new QRadioButton(content[i]);
+        tempButton->setStyleSheet("QRadioButton { color : white; }");
+        _optionButtonGroup->addButton(tempButton, i);
+        layout->addWidget(tempButton);
+    }
 }
 
 MedNUSQuizQuestion::~MedNUSQuizQuestion()
 {
-    delete _option1;
+    //TODO: Do a proper clean up
+    //QTextStream(stdout) << "HELLO I'm being destroyed! D=";
+    // Clean up the label
+    delete _questionTextLabel;
+    _questionTextLabel = NULL;
+
+    // Clean up the buttons
+    delete _optionButtonGroup;
+    _optionButtonGroup = NULL;
+}
+
+void MedNUSQuizQuestion::myForceResize()
+{
+    QTextStream(stdout) << "resize";
+    // Resize the QLabel geometry as well as the radio buttons
+    //TODO: Fix this
+    //_questionTextLabel->setGeometry(((QWidget*)_questionTextLabel->parent())->geometry());
 }
 
 MedNUSQuiz::MedNUSQuiz(QString filename, QWidget *parent) :
     QWidget(parent)
 {
-    _content = new QGroupBox(this);
-    _layout = new QVBoxLayout(this);
+    _tempWidget = new QWidget(parent);
+    _layout = new QVBoxLayout(_tempWidget);
 
     // Add questions here
-    QButtonGroup *temp;
-    QRadioButton *tempButton;
-    QLabel *tempLabel;
+    _questionList = new QVector<MedNUSQuizQuestion*>();
+    // Read Json file
+    QFile file(filename);
+    file.open(QIODevice::ReadOnly | QIODevice::Text);
+    QString fileValue = file.readAll();
+    file.close();
+    QJsonDocument doc = QJsonDocument::fromJson(fileValue.toUtf8());
+    QJsonObject obj = doc.object();
+    QJsonValue v = obj.value(QString("details"));
+    QJsonObject quizDetails = v.toObject();
 
-    temp = new QButtonGroup(_content);
-    tempLabel = new QLabel("Q1. There are _____ cranial bones and _____ facial bones in the adult skull.");
-    tempLabel->setStyleSheet("QLabel { color : white; }");
-    _layout->addWidget(tempLabel);
-    tempButton = new QRadioButton("A) 6; 10");
-    tempButton->setStyleSheet("QRadioButton { color : white; }");
-    temp->addButton(tempButton, 1);
-    _layout->addWidget(tempButton);
-    tempButton = new QRadioButton("B) 8; 14");
-    tempButton->setStyleSheet("QRadioButton { color : white; }");
-    temp->addButton(tempButton, 2);
-    _layout->addWidget(tempButton);
-    tempButton = new QRadioButton("C) 12; 12");
-    tempButton->setStyleSheet("QRadioButton { color : white; }");
-    temp->addButton(tempButton, 3);
-    _layout->addWidget(tempButton);
-    tempButton = new QRadioButton("D) 5; 9");
-    tempButton->setStyleSheet("QRadioButton { color : white; }");
-    temp->addButton(tempButton, 4);
-    _layout->addWidget(tempButton);
-    _questionOptionGroup.append(temp);
-    _correctAnswerList.append(3);
+    int noOfQuestions = quizDetails["noOfQuestions"].toInt();
 
-    temp = new QButtonGroup(_content);
-    tempLabel = new QLabel("Q2. Which of these is not a normal function of the skeleton?");
-    tempLabel->setStyleSheet("QLabel { color : white; }");
-    _layout->addWidget(tempLabel);
-    tempButton = new QRadioButton("A) mineral storage");
-    tempButton->setStyleSheet("QRadioButton { color : white; }");
-    temp->addButton(tempButton, 1);
-    _layout->addWidget(tempButton);
-    tempButton = new QRadioButton("B) protection of underlying tissues");
-    tempButton->setStyleSheet("QRadioButton { color : white; }");
-    temp->addButton(tempButton, 2);
-    _layout->addWidget(tempButton);
-    tempButton = new QRadioButton("C) storing hemopoietic tissues");
-    tempButton->setStyleSheet("QRadioButton { color : white; }");
-    temp->addButton(tempButton, 3);
-    _layout->addWidget(tempButton);
-    tempButton = new QRadioButton("D) All of these are functions of the skeleton.");
-    tempButton->setStyleSheet("QRadioButton { color : white; }");
-    temp->addButton(tempButton, 4);
-    _layout->addWidget(tempButton);
-    _questionOptionGroup.append(temp);
-    _correctAnswerList.append(1);
+    QString questionLabelString = "question_";
+    QVector<QString> content;
+    for (int i = 1; i <= noOfQuestions; i++)
+    {
+        // Construct the QJsonObject for the particular question first.
+        QJsonObject jsonQuestion = obj.value(questionLabelString+QString::number(i)).toObject();
 
-    temp = new QButtonGroup(_content);
-    tempLabel = new QLabel("Q3. Choose the surface feature that represents a depression in a bone.");
-    tempLabel->setStyleSheet("QLabel { color : white; }");
-    _layout->addWidget(tempLabel);
-    tempButton = new QRadioButton("A) fossa");
-    tempButton->setStyleSheet("QRadioButton { color : white; }");
-    temp->addButton(tempButton, 1);
-    _layout->addWidget(tempButton);
-    tempButton = new QRadioButton("B) process");
-    tempButton->setStyleSheet("QRadioButton { color : white; }");
-    temp->addButton(tempButton, 2);
-    _layout->addWidget(tempButton);
-    tempButton = new QRadioButton("C) facet");
-    tempButton->setStyleSheet("QRadioButton { color : white; }");
-    temp->addButton(tempButton, 3);
-    _layout->addWidget(tempButton);
-    tempButton = new QRadioButton("D) condyle");
-    tempButton->setStyleSheet("QRadioButton { color : white; }");
-    temp->addButton(tempButton, 4);
-    _layout->addWidget(tempButton);
-    _questionOptionGroup.append(temp);
-    _correctAnswerList.append(1);
+        // Check the number of options for the question.
+        int noOfOptions = jsonQuestion["noOfOptions"].toInt();
 
-    temp = new QButtonGroup(_content);
-    tempLabel = new QLabel("Q4. The medullary cavity of a long bone is lined with a thin layer of connective tissue called the");
-    tempLabel->setStyleSheet("QLabel { color : white; }");
-    _layout->addWidget(tempLabel);
-    tempButton = new QRadioButton("A) diaphysis");
-    tempButton->setStyleSheet("QRadioButton { color : white; }");
-    temp->addButton(tempButton, 1);
-    _layout->addWidget(tempButton);
-    tempButton = new QRadioButton("B) endosteum");
-    tempButton->setStyleSheet("QRadioButton { color : white; }");
-    temp->addButton(tempButton, 2);
-    _layout->addWidget(tempButton);
-    tempButton = new QRadioButton("C) periosteum");
-    tempButton->setStyleSheet("QRadioButton { color : white; }");
-    temp->addButton(tempButton, 3);
-    _layout->addWidget(tempButton);
-    tempButton = new QRadioButton("D) epiphysis");
-    tempButton->setStyleSheet("QRadioButton { color : white; }");
-    temp->addButton(tempButton, 4);
-    _layout->addWidget(tempButton);
-    _questionOptionGroup.append(temp);
-    _correctAnswerList.append(1);
+        // Load the question.
+        content.append(QString(jsonQuestion["question"].toString()));
 
-    temp = new QButtonGroup(_content);
-    tempLabel = new QLabel("Q5. _____ are the type of bone cell that tears down bone during the building and remodeling process.");
-    tempLabel->setStyleSheet("QLabel { color : white; }");
-    _layout->addWidget(tempLabel);
-    tempButton = new QRadioButton("A) osteocytes");
-    tempButton->setStyleSheet("QRadioButton { color : white; }");
-    temp->addButton(tempButton, 1);
-    _layout->addWidget(tempButton);
-    tempButton = new QRadioButton("B) osteoblasts");
-    tempButton->setStyleSheet("QRadioButton { color : white; }");
-    temp->addButton(tempButton, 2);
-    _layout->addWidget(tempButton);
-    tempButton = new QRadioButton("C) osteoclasts");
-    tempButton->setStyleSheet("QRadioButton { color : white; }");
-    temp->addButton(tempButton, 3);
-    _layout->addWidget(tempButton);
-    tempButton = new QRadioButton("D) bone lining cells");
-    tempButton->setStyleSheet("QRadioButton { color : white; }");
-    temp->addButton(tempButton, 4);
-    _layout->addWidget(tempButton);
-    _questionOptionGroup.append(temp);
-    _correctAnswerList.append(1);
+        // Load the options.
+        QJsonArray optionArray = jsonQuestion["options"].toArray();
 
-    /*
-    temp = new QButtonGroup(_content);
-    tempLabel = new QLabel("Q6. During bone formation, as the periosteum calcifies, it gives rise to a thin plate of compact bone called the _____.");
-    tempLabel->setStyleSheet("QLabel { color : white; }");
-    _layout->addWidget(tempLabel);
-    tempButton = new QRadioButton("A) periosteal bud");
-    tempButton->setStyleSheet("QRadioButton { color : white; }");
-    temp->addButton(tempButton, 1);
-    _layout->addWidget(tempButton);
-    tempButton = new QRadioButton("B) periosteal bone collar");
-    tempButton->setStyleSheet("QRadioButton { color : white; }");
-    temp->addButton(tempButton, 2);
-    _layout->addWidget(tempButton);
-    tempButton = new QRadioButton("C) primary ossification center");
-    tempButton->setStyleSheet("QRadioButton { color : white; }");
-    temp->addButton(tempButton, 3);
-    _layout->addWidget(tempButton);
-    tempButton = new QRadioButton("D) epiphyseal plate");
-    tempButton->setStyleSheet("QRadioButton { color : white; }");
-    temp->addButton(tempButton, 4);
-    _layout->addWidget(tempButton);
-    _questionOptionGroup.append(temp);
-    _correctAnswerList.append(1);
+        for (int j = 0; j < optionArray.size(); j++)
+            content.append(QString(optionArray[j].toString()));
 
-    temp = new QButtonGroup(_content);
-    tempLabel = new QLabel("Q7. Which pair of fontanels are located on the front sides of the infant skull?");
-    tempLabel->setStyleSheet("QLabel { color : white; }");
-    _layout->addWidget(tempLabel);
-    tempButton = new QRadioButton("A) posterolateral fontanels");
-    tempButton->setStyleSheet("QRadioButton { color : white; }");
-    temp->addButton(tempButton, 1);
-    _layout->addWidget(tempButton);
-    tempButton = new QRadioButton("B) anterior fontanel");
-    tempButton->setStyleSheet("QRadioButton { color : white; }");
-    temp->addButton(tempButton, 2);
-    _layout->addWidget(tempButton);
-    tempButton = new QRadioButton("C) posterior fontanel");
-    tempButton->setStyleSheet("QRadioButton { color : white; }");
-    temp->addButton(tempButton, 3);
-    _layout->addWidget(tempButton);
-    tempButton = new QRadioButton("D) anterolateral fontanels");
-    tempButton->setStyleSheet("QRadioButton { color : white; }");
-    temp->addButton(tempButton, 4);
-    _layout->addWidget(tempButton);
-    _questionOptionGroup.append(temp);
-    _correctAnswerList.append(1);
+        // Create the question.
+        MedNUSQuizQuestion *question = new MedNUSQuizQuestion(_tempWidget, _layout, content, noOfOptions);
 
-    temp = new QButtonGroup(_content);
-    tempLabel = new QLabel("Q8. The foramen magnum is located in the _____ bone of the skull.");
-    tempLabel->setStyleSheet("QLabel { color : white; }");
-    _layout->addWidget(tempLabel);
-    tempButton = new QRadioButton("A) frontal");
-    tempButton->setStyleSheet("QRadioButton { color : white; }");
-    temp->addButton(tempButton, 1);
-    _layout->addWidget(tempButton);
-    tempButton = new QRadioButton("B) parietal");
-    tempButton->setStyleSheet("QRadioButton { color : white; }");
-    temp->addButton(tempButton, 2);
-    _layout->addWidget(tempButton);
-    tempButton = new QRadioButton("C) occipital");
-    tempButton->setStyleSheet("QRadioButton { color : white; }");
-    temp->addButton(tempButton, 3);
-    _layout->addWidget(tempButton);
-    tempButton = new QRadioButton("D) temporal");
-    tempButton->setStyleSheet("QRadioButton { color : white; }");
-    temp->addButton(tempButton, 4);
-    _layout->addWidget(tempButton);
-    _questionOptionGroup.append(temp);
-    _correctAnswerList.append(1);
+        // Push the question into the question vector.
+        _questionList->append(question);
+        content.clear();
+    }
 
-    temp = new QButtonGroup(_content);
-    tempLabel = new QLabel("Q9. Which of these features is not present in the sphenoid bone?");
-    tempLabel->setStyleSheet("QLabel { color : white; }");
-    _layout->addWidget(tempLabel);
-    tempButton = new QRadioButton("A) crista galli");
-    tempButton->setStyleSheet("QRadioButton { color : white; }");
-    temp->addButton(tempButton, 1);
-    _layout->addWidget(tempButton);
-    tempButton = new QRadioButton("B) sella turcica");
-    tempButton->setStyleSheet("QRadioButton { color : white; }");
-    temp->addButton(tempButton, 2);
-    _layout->addWidget(tempButton);
-    tempButton = new QRadioButton("C) pterygoid processes");
-    tempButton->setStyleSheet("QRadioButton { color : white; }");
-    temp->addButton(tempButton, 3);
-    _layout->addWidget(tempButton);
-    tempButton = new QRadioButton("D) foramen rotundum");
-    tempButton->setStyleSheet("QRadioButton { color : white; }");
-    temp->addButton(tempButton, 4);
-    _layout->addWidget(tempButton);
-    tempButton = new QRadioButton("E) foramen ovale");
-    tempButton->setStyleSheet("QRadioButton { color : white; }");
-    temp->addButton(tempButton, 5);
-    _layout->addWidget(tempButton);
-    _questionOptionGroup.append(temp);
-    _correctAnswerList.append(1);
-
-    temp = new QButtonGroup(_content);
-    tempLabel = new QLabel("Q10. Besides the maxilla, the hard palate is also composed of the _____.");
-    tempLabel->setStyleSheet("QLabel { color : white; }");
-    _layout->addWidget(tempLabel);
-    tempButton = new QRadioButton("A) ethmoid bone");
-    tempButton->setStyleSheet("QRadioButton { color : white; }");
-    temp->addButton(tempButton, 1);
-    _layout->addWidget(tempButton);
-    tempButton = new QRadioButton("B) palatine bones");
-    tempButton->setStyleSheet("QRadioButton { color : white; }");
-    temp->addButton(tempButton, 2);
-    _layout->addWidget(tempButton);
-    tempButton = new QRadioButton("C) zygomatic bones");
-    tempButton->setStyleSheet("QRadioButton { color : white; }");
-    temp->addButton(tempButton, 3);
-    _layout->addWidget(tempButton);
-    tempButton = new QRadioButton("D) nasal bone");
-    tempButton->setStyleSheet("QRadioButton { color : white; }");
-    temp->addButton(tempButton, 4);
-    _layout->addWidget(tempButton);
-    _questionOptionGroup.append(temp);
-    _correctAnswerList.append(1);
-
-    temp = new QButtonGroup(_content);
-    tempLabel = new QLabel("Q11. What two bones, or portions of bones, make up the nasal septum?");
-    tempLabel->setStyleSheet("QLabel { color : white; }");
-    _layout->addWidget(tempLabel);
-    tempButton = new QRadioButton("A) perpendicular plate of the ethmoid; vomer");
-    tempButton->setStyleSheet("QRadioButton { color : white; }");
-    temp->addButton(tempButton, 1);
-    _layout->addWidget(tempButton);
-    tempButton = new QRadioButton("B) nasal; vomer");
-    tempButton->setStyleSheet("QRadioButton { color : white; }");
-    temp->addButton(tempButton, 2);
-    _layout->addWidget(tempButton);
-    tempButton = new QRadioButton("C) maxilla; sphemoid");
-    tempButton->setStyleSheet("QRadioButton { color : white; }");
-    temp->addButton(tempButton, 3);
-    _layout->addWidget(tempButton);
-    tempButton = new QRadioButton("D) inferior nasal concha; perpendicular plate of the ethomoid");
-    tempButton->setStyleSheet("QRadioButton { color : white; }");
-    temp->addButton(tempButton, 4);
-    _layout->addWidget(tempButton);
-    _questionOptionGroup.append(temp);
-    _correctAnswerList.append(1);
-
-    temp = new QButtonGroup(_content);
-    tempLabel = new QLabel("Q12. Cervical vertebrae differ from lumbar vertebrae in all of these aspects except");
-    tempLabel->setStyleSheet("QLabel { color : white; }");
-    _layout->addWidget(tempLabel);
-    tempButton = new QRadioButton("A) size");
-    tempButton->setStyleSheet("QRadioButton { color : white; }");
-    temp->addButton(tempButton, 1);
-    _layout->addWidget(tempButton);
-    tempButton = new QRadioButton("B) bifid spinous process");
-    tempButton->setStyleSheet("QRadioButton { color : white; }");
-    temp->addButton(tempButton, 2);
-    _layout->addWidget(tempButton);
-    tempButton = new QRadioButton("C) presence of transverse foramina");
-    tempButton->setStyleSheet("QRadioButton { color : white; }");
-    temp->addButton(tempButton, 3);
-    _layout->addWidget(tempButton);
-    tempButton = new QRadioButton("D) presence of transverse processes");
-    tempButton->setStyleSheet("QRadioButton { color : white; }");
-    temp->addButton(tempButton, 4);
-    _layout->addWidget(tempButton);
-    _questionOptionGroup.append(temp);
-    _correctAnswerList.append(1);
-
-    */
-
+    // Marking button
     _markButton = new QPushButton("Check Answers");
-    _markButton->setGeometry(QRect(QPoint(100, 100), QSize(200, 50)));
+    _markButton->setGeometry(QRect(QPoint(100, 100), QSize(50, 50)));
     _markButton->setStyleSheet("QPushButton { color : white; }");
     connect(_markButton, SIGNAL(released()), this, SLOT(markQuiz()));
     _layout->addWidget(_markButton);
+    _layout->setAlignment(Qt::AlignTop);
 
-    _content->setLayout(_layout);
+    _tempWidget->setLayout(_layout);
+    _scrollArea = new QScrollArea(this);
+    _scrollArea->setObjectName(QStringLiteral("_scrollArea"));
+    _scrollArea->setWidgetResizable(true);
+    _scrollArea->setContentsMargins(0,0,0,0);
+    _scrollArea->setWidget(_tempWidget);
+    _scrollArea->setGeometry(_tempWidget->geometry());
+    _scrollArea->setAutoFillBackground(true);
 }
 
 MedNUSQuiz::~MedNUSQuiz()
 {
     delete _layout;
-    delete _content;
 
-    //_questionList->clear();
-    //delete _questionList;
-    //_questionList = NULL;
+    // NEW
+    _questionList->clear();
+    delete _questionList;
+    _questionList = NULL;
+    // END NEW
 }
 
 void MedNUSQuiz::markQuiz()
 {
-    _score = 0;
-    // go to each button group and see
-    // what is the correct answer.
-    // add up the score and report to the user.
-    for (int i = 0; i < 2; i++)
+    QTextStream(stdout) << "no more quiz marking for now.";
+}
+
+void MedNUSQuiz::resizeEvent(QResizeEvent *event)
+{
+    QTextStream(stdout) << "resize quiz";
+    _scrollArea->setGeometry(this->geometry());
+
+    // Go through every QLabel in _layout and setGeomtry accordingly
+    for (int i = 0; i < _questionList->size(); i++)
     {
-        QTextStream(stdout) << "Question " << i+1 << ": ";
-        //QTextStream(stdout) << _questionOptionGroup[i]->checkedId() << endl;
-        if (_questionOptionGroup[i]->checkedId() == _correctAnswerList[i])
-        {
-            _score++;
-            QTextStream(stdout) << "CORRECT\n";
-        }
-        else
-        {
-            QTextStream(stdout) << "WRONG\n";
-        }
+        ((MedNUSQuizQuestion*)_questionList->at(i))->myForceResize();
     }
-
-    QTextStream(stdout) << "SCORE: " << _score << endl;
-
-    _scoreMsgBox = new QMessageBox();
-    QString text = "SCORE: ";
-    text += QString::number(_score);
-    _scoreMsgBox->setText(text);
-    _scoreMsgBox->exec();
 }
