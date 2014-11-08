@@ -45,8 +45,9 @@ public:
     ~MedNUSVideoControl();
     void updateUI();
 protected:
-    QPushButton *playButton;
-    QSlider *positionSlider;
+    QPushButton *_playButton;
+    QSlider *_positionSlider;
+    QLabel *_videoTimer;
 
 signals:
     void seekTo(int millisecond);
