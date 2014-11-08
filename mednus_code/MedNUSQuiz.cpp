@@ -1,11 +1,11 @@
 #include "MedNUSQuiz.h"
 
-MedNUSQuizQuestion::MedNUSQuizQuestion(QWidget *parent, QVBoxLayout *layout)
+MedNUSQuizQuestion::MedNUSQuizQuestion(QWidget *parent, QVBoxLayout *layout, QVector<QString> content, int noOfOptions)
 {
     _optionButtonGroup = new QButtonGroup(parent);
 
     // Initialize the QLabel
-    _questionTextLabel = new QLabel("Q1. There are _____ cranial bones and _____ facial bones in the adult skull.");
+    _questionTextLabel = new QLabel(content[0]);
     _questionTextLabel->setStyleSheet("QLabel { color : white; }");
     _questionTextLabel->setGeometry(parent->geometry());
     _questionTextLabel->setWordWrap(true);
@@ -13,22 +13,13 @@ MedNUSQuizQuestion::MedNUSQuizQuestion(QWidget *parent, QVBoxLayout *layout)
 
     // Initialize the buttons
     QRadioButton* tempButton;
-    tempButton = new QRadioButton("A) 6; 10");
-    tempButton->setStyleSheet("QRadioButton { color : white; }");
-    _optionButtonGroup->addButton(tempButton, 1);
-    layout->addWidget(tempButton);
-    tempButton = new QRadioButton("B) 8; 14");
-    tempButton->setStyleSheet("QRadioButton { color : white; }");
-    _optionButtonGroup->addButton(tempButton, 2);
-    layout->addWidget(tempButton);
-    tempButton = new QRadioButton("C) 12; 12");
-    tempButton->setStyleSheet("QRadioButton { color : white; }");
-    _optionButtonGroup->addButton(tempButton, 3);
-    layout->addWidget(tempButton);
-    tempButton = new QRadioButton("D) 5; 9");
-    tempButton->setStyleSheet("QRadioButton { color : white; }");
-    _optionButtonGroup->addButton(tempButton, 4);
-    layout->addWidget(tempButton);
+    for (int i = 1; i <= noOfOptions; i++)
+    {
+        tempButton = new QRadioButton(content[i]);
+        tempButton->setStyleSheet("QRadioButton { color : white; }");
+        _optionButtonGroup->addButton(tempButton, i);
+        layout->addWidget(tempButton);
+    }
 }
 
 MedNUSQuizQuestion::~MedNUSQuizQuestion()
@@ -59,14 +50,47 @@ MedNUSQuiz::MedNUSQuiz(QString filename, QWidget *parent) :
     _layout = new QVBoxLayout(_tempWidget);
 
     // Add questions here
-    // NEW
-    for (int i = 0; i < 10; i++)
-    {
-        _questionList = new QVector<MedNUSQuizQuestion*>();
-        _questionList->append(new MedNUSQuizQuestion(_tempWidget, _layout));
-    }
-    // END NEW
+    _questionList = new QVector<MedNUSQuizQuestion*>();
+    // Read Json file
+    QFile file(filename);
+    file.open(QIODevice::ReadOnly | QIODevice::Text);
+    QString fileValue = file.readAll();
+    file.close();
+    QJsonDocument doc = QJsonDocument::fromJson(fileValue.toUtf8());
+    QJsonObject obj = doc.object();
+    QJsonValue v = obj.value(QString("details"));
+    QJsonObject quizDetails = v.toObject();
 
+    int noOfQuestions = quizDetails["noOfQuestions"].toInt();
+
+    QString questionLabelString = "question_";
+    QVector<QString> content;
+    for (int i = 1; i <= noOfQuestions; i++)
+    {
+        // Construct the QJsonObject for the particular question first.
+        QJsonObject jsonQuestion = obj.value(questionLabelString+QString::number(i)).toObject();
+
+        // Check the number of options for the question.
+        int noOfOptions = jsonQuestion["noOfOptions"].toInt();
+
+        // Load the question.
+        content.append(QString(jsonQuestion["question"].toString()));
+
+        // Load the options.
+        QJsonArray optionArray = jsonQuestion["options"].toArray();
+
+        for (int j = 0; j < optionArray.size(); j++)
+            content.append(QString(optionArray[j].toString()));
+
+        // Create the question.
+        MedNUSQuizQuestion *question = new MedNUSQuizQuestion(_tempWidget, _layout, content, noOfOptions);
+
+        // Push the question into the question vector.
+        _questionList->append(question);
+        content.clear();
+    }
+
+    // Marking button
     _markButton = new QPushButton("Check Answers");
     _markButton->setGeometry(QRect(QPoint(100, 100), QSize(50, 50)));
     _markButton->setStyleSheet("QPushButton { color : white; }");
