@@ -1,23 +1,33 @@
 #ifndef MEDNUSQUIZ_H
 #define MEDNUSQUIZ_H
 
+// General
 #include <QWidget>
 #include <QLabel>
-#include <QJsonObject>
+#include <QVector>
+#include <QString>
+
+// For Graphics
 #include <QVBoxLayout>
 #include <QRadioButton>
 #include <QButtonGroup>
 #include <QPushButton>
-#include <QVector>
-#include <QString>
 #include <QScrollArea>
+
+// For JSON
+#include <QFile>
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QJsonArray>
+
 // For debugging
-#include<QTextStream>
+#include <QTextStream>
+#include <QDebug>
 
 class MedNUSQuizQuestion : public QWidget
 {
 public:
-    MedNUSQuizQuestion(QWidget *parent, QVBoxLayout *layout);
+    MedNUSQuizQuestion(QWidget *parent, QVBoxLayout *layout, QVector<QString> content, int noOfOptions);
     ~MedNUSQuizQuestion();
 
     void myForceResize();
@@ -48,6 +58,10 @@ protected:
     QVector<int> _correctAnswerList;
 
     void resizeEvent(QResizeEvent *);
+
+    // JSON
+    void writeFile();
+    void readFile();
 
 private:
     QVector<MedNUSQuizQuestion*>* _questionList;
