@@ -78,7 +78,7 @@ void MedNUSMainWindow::createWidgets()
         // Quiz
         QString dir = "";
         dir.append(QDir::homePath());
-        dir.append("/mednus/lesson1/quiz/quiz1.txt");
+        dir.append("/mednus/lesson1/quiz/quiz.json");
         tabs->addTab(new MedNUSQuiz(dir), "Quiz", dir);
         tabs->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
