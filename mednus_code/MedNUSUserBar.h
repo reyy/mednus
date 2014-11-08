@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QLabel>
 #include <QDebug>
+#include <QMouseEvent>
 
 class MedNUSUserBar : public QWidget
 {
@@ -25,7 +26,11 @@ public:
 
 protected:
     void resizeEvent(QResizeEvent* event);
+    void mousePressEvent ( QMouseEvent * event ) ;
 
+public slots:
+    void showContextMenu(const QPoint& pos);
 };
+
 
 #endif // MEDNUSUSERBAR_H

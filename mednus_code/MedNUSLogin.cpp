@@ -123,7 +123,7 @@ void MedNUSLogin::resizeEvent(QResizeEvent* event)
     _title->setGeometry(QRect(this->geometry().width()*0.62, this->geometry().height()*0.1, 100,32));_username->setGeometry(QRect(this->geometry().width()*0.11, this->geometry().height()*0.5-16, 200,24));
     _subTitle->setGeometry(QRect(this->geometry().width()*0.62, this->geometry().height()*0.1+12, 100,32));
     _bottomText->setGeometry(QRect(this->geometry().width()*0.62, this->geometry().height()*0.1+12+30, 300,250));
-    _message->setGeometry(QRect(this->geometry().width()*0.08, this->geometry().height()*0.3, 500,100));
+    _message->setGeometry(QRect(this->geometry().width()*0.08, this->geometry().height()*0.25, 500,100));
     _sideText->setGeometry(QRect(this->geometry().width()*0.08+210+64+10, this->geometry().height()*0.5, 100,64));
     _username->setGeometry(QRect(this->geometry().width()*0.08, this->geometry().height()*0.5, 200,24));
     _password->setGeometry(QRect(this->geometry().width()*0.08, this->geometry().height()*0.5+34, 200,24));
