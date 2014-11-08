@@ -16,6 +16,7 @@
 
 // For JSON
 #include <QFile>
+#include <QByteArray>
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QJsonArray>
