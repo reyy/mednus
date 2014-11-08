@@ -50,8 +50,6 @@ MedNUSVideoViewer::~MedNUSVideoViewer()
     layout()->removeWidget(videoView);
     delete control;
     delete videoView;
-    delete videoItem;
-    delete scene;
 }
 
 
@@ -140,6 +138,24 @@ void MedNUSVideoControl::updateUI() {
 
 }
 
+QString MedNUSVideoControl::timeConvert(qint64 msecs)
+{
+    QString formattedTime;
+
+    int hours = msecs/(1000*60*60);
+    int minutes = (msecs-(hours*1000*60*60))/(1000*60);
+    int seconds = (msecs-(minutes*1000*60)-(hours*1000*60*60))/1000;
+    //int milliseconds = msecs-(seconds*1000)-(minutes*1000*60)-(hours*1000*60*60);
+
+    formattedTime.append(/*QString("%1").arg(hours, 2, 10, QLatin1Char('0')) + ":" +*/
+                         QString( "%1" ).arg(minutes, 2, 10, QLatin1Char('0')) + ":" +
+                         QString( "%1" ).arg(seconds, 2, 10, QLatin1Char('0')) /*+ ":" +
+                         QString( "%1" ).arg(milliseconds, 3, 10, QLatin1Char('0'))*/);
+
+    return formattedTime;
+
+}
+
 void MedNUSVideoControl::mediaStateChanged(QMediaPlayer::State state)
 {
     switch(state) {
@@ -155,13 +171,14 @@ void MedNUSVideoControl::mediaStateChanged(QMediaPlayer::State state)
 void MedNUSVideoControl::positionChanged(qint64 position)
 {
     _positionSlider->setValue(position);
+    _videoTimer->setText(timeConvert(position) +"/" + _durationText);
 }
 
 void MedNUSVideoControl::durationChanged(qint64 duration)
 {
     _positionSlider->setRange(0, duration);
-    //TODO Assigned duration value over the total duration of video.
-    //_videoTimer->setText("1:11 / 3:20");
+    _durationText = timeConvert(duration);
+    _videoTimer->setText("00:00/" + _durationText);
 }
 
 void MedNUSVideoControl::volumeChanged(qint64 value) {
