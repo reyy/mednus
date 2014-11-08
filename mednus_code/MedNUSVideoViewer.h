@@ -34,6 +34,7 @@ protected:
 protected slots:
     void togglePlay();
     void setPosition(int position);
+    void setVolume(int volume);
 };
 
 class MedNUSVideoControl : public QWidget
@@ -54,11 +55,12 @@ protected:
     QString timeConvert(qint64);
 signals:
     void seekTo(int millisecond);
+    void changeVolume(int);
 protected slots:
     void mediaStateChanged(QMediaPlayer::State state);
     void positionChanged(qint64 position);
     void durationChanged(qint64 duration);
-    void volumeChanged(qint64 value);
+    void volumeClicked();
 };
 
 #endif // MEDNUSVIDEOVIEWER_H
