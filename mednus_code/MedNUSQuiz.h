@@ -31,6 +31,8 @@ public:
     MedNUSQuizQuestion(QWidget *parent, QVBoxLayout *layout, QVector<QString> content, int noOfOptions);
     ~MedNUSQuizQuestion();
 
+    int getSelectedAnswer() const;
+
     void myForceResize();
 
 protected:

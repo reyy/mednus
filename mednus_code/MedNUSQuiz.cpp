@@ -24,8 +24,6 @@ MedNUSQuizQuestion::MedNUSQuizQuestion(QWidget *parent, QVBoxLayout *layout, QVe
 
 MedNUSQuizQuestion::~MedNUSQuizQuestion()
 {
-    //TODO: Do a proper clean up
-    //QTextStream(stdout) << "HELLO I'm being destroyed! D=";
     // Clean up the label
     delete _questionTextLabel;
     _questionTextLabel = NULL;
@@ -35,10 +33,13 @@ MedNUSQuizQuestion::~MedNUSQuizQuestion()
     _optionButtonGroup = NULL;
 }
 
+int MedNUSQuizQuestion::getSelectedAnswer() const
+{
+    return _optionButtonGroup->checkedId();
+}
+
 void MedNUSQuizQuestion::myForceResize()
 {
-    QTextStream(stdout) << "resize";
-    // Resize the QLabel geometry as well as the radio buttons
     //TODO: Fix this
     //_questionTextLabel->setGeometry(((QWidget*)_questionTextLabel->parent())->geometry());
 }
@@ -85,6 +86,9 @@ MedNUSQuiz::MedNUSQuiz(QString filename, QWidget *parent) :
         for (int j = 0; j < optionArray.size(); j++)
             content.append(QString(optionArray[j].toString()));
 
+        // Load the correct answers.
+        _correctAnswerList.append(jsonQuestion["correctAnswer"].toInt());
+
         // Create the question.
         MedNUSQuizQuestion *question = new MedNUSQuizQuestion(_tempWidget, _layout, content, noOfOptions);
 
@@ -113,23 +117,43 @@ MedNUSQuiz::MedNUSQuiz(QString filename, QWidget *parent) :
 
 MedNUSQuiz::~MedNUSQuiz()
 {
-    delete _layout;
+    //TODO: Fix clean up.
+    //      Currently, clicking the close quiz icon crashes the program.
 
-    // NEW
+    /*// Clean up the question list.
     _questionList->clear();
-    delete _questionList;
-    _questionList = NULL;
-    // END NEW
+    delete _questionList; _questionList = NULL;
+
+    // Clean up the answer list.
+    _correctAnswerList.clear();
+
+    // Clean up the other QT stuff.
+    delete _layout; _layout = NULL;
+    delete _scrollArea; _scrollArea = NULL;
+    delete _markButton; _markButton = NULL;
+    delete _tempWidget; _tempWidget = NULL;*/
 }
 
 void MedNUSQuiz::markQuiz()
 {
-    QTextStream(stdout) << "no more quiz marking for now.";
+    int score = 0;
+    for (int i = 0; i < _questionList->size(); i++)
+    {
+        if (((MedNUSQuizQuestion*)_questionList->at(i))->getSelectedAnswer() == _correctAnswerList[i])
+        {
+            score++;
+            QTextStream(stdout) << "Q" << i+1 << "=CORRECT";
+        }
+        else
+        {
+            QTextStream(stdout) << "Q" << i+1 << "=WRONG";
+        }
+    }
+    QTextStream(stdout) << "score=" << score;
 }
 
 void MedNUSQuiz::resizeEvent(QResizeEvent *event)
 {
-    QTextStream(stdout) << "resize quiz";
     _scrollArea->setGeometry(this->geometry());
 
     // Go through every QLabel in _layout and setGeomtry accordingly
