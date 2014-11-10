@@ -65,6 +65,9 @@ void MedNUSMainWindow::createWidgets()
          ub->setAvatar(":/images/ivle_profile.jpg");
          mainLayout->addWidget(ub,0,1);
 
+         //connect ub to logout
+         connect(ub,SIGNAL(emitLogout()),this,SLOT(logout()));
+
         //Add Content View
         tabs = new MedNUSContentPanel();
         mainLayout->addWidget(tabs,1,0);
@@ -186,6 +189,17 @@ void MedNUSMainWindow::loginCompleted(bool success, QString matric, QString name
         createMenus();
         createWidgets();
     }
+}
+
+void MedNUSMainWindow::logout()
+{
+    network->logout();
+    deleteWidgets();
+    deleteMenus();
+    login = new MedNUSLogin(this);
+    setCentralWidget(login);
+    connect(login, SIGNAL(callLogin(QString,QString,bool)), network, SLOT(login(QString,QString,bool)));
+    connect(network,SIGNAL(loginResults(bool,QString,QString)),this,SLOT(loginCompleted(bool,QString,QString)));
 }
 
 void MedNUSMainWindow::mousePressEvent ( QMouseEvent * event )

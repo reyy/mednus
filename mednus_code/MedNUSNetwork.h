@@ -38,6 +38,7 @@ signals:
     void loginResults(bool,QString,QString);
 public slots:
     void login(QString matric, QString password, bool r);
+    void logout();
 protected slots:
     void getReply(QNetworkReply*);
 };
