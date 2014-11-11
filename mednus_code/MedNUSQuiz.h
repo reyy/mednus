@@ -6,6 +6,7 @@
 #include <QLabel>
 #include <QVector>
 #include <QString>
+#include <QMessageBox>
 
 // For Graphics
 #include <QVBoxLayout>
@@ -32,8 +33,10 @@ public:
     ~MedNUSQuizQuestion();
 
     int getSelectedAnswer() const;
+    void showCorrectAnswer(int correctAnswer) const;
+    bool oneOptionSelected() const;
 
-    void myForceResize();
+    void myForceResize(QRect geometry);
 
 protected:
 
@@ -60,7 +63,7 @@ protected:
     QPushButton* _markButton;
     QVector<int> _correctAnswerList;
 
-    void resizeEvent(QResizeEvent *);
+    void resizeEvent(QResizeEvent *event);
 
     // JSON
     void writeFile();
