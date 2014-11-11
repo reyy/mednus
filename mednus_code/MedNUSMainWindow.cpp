@@ -29,6 +29,8 @@ MedNUSMainWindow::MedNUSMainWindow(QWidget *parent) :
         createWidgets();
         createMenus();
     }
+    //Tab Bkg Change
+    this->setStyleSheet("MedNUSMainWindow{background:#1a394a;}");
 }
 
 MedNUSMainWindow::~MedNUSMainWindow() {
@@ -70,6 +72,7 @@ void MedNUSMainWindow::createWidgets()
 
         //Add Content View
         tabs = new MedNUSContentPanel();
+
         mainLayout->addWidget(tabs,1,0);
 
         /*

@@ -13,9 +13,9 @@ MedNUSContentPanel::MedNUSContentPanel(QWidget *parent) :
     layout->setMargin(0);
     layout->setContentsMargins(0,0,0,0);
     layout->setSpacing(1);
-
-    this->setAutoFillBackground(true);
-    this->setStyleSheet("background-color: #152d3b;");
+    //this->setAutoFillBackground(true);
+    //Tab Bkg Change
+    this->setStyleSheet("background-color:#1c4f6e;color:#ffffff");
     this->setLayout(layout);
 
 }
@@ -103,17 +103,18 @@ MedNUSTab::MedNUSTab(QWidget *parent)
     connect(this,SIGNAL(tabCloseRequested(int)),this,SLOT(closeTab(int)));
     this->setTabsClosable(true);
     this->setMovable(true);
-    this->setDocumentMode(true);
+    //this->setDocumentMode(true);
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     this->setMinimumWidth(100);
     this->setMinimumHeight(100);
     this->setContentsMargins(0,0,0,0);
-    /*QFile file(":/images/tabwidget.css");
+    //this->setAutoFillBackground(true);
+    this->tabBar()->setAutoFillBackground(true);
+    QFile file(":/images/tabwidget.css");
     if(file.open(QIODevice::ReadOnly|QIODevice::Text)) {
         this->setStyleSheet(file.readAll());
         file.close();
-    }*/
-
+    }
     connect(this,SIGNAL(noMoreTabs(MedNUSTab*)),parent,SLOT(closeTab(MedNUSTab*)));
 }
 
