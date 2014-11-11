@@ -11,6 +11,7 @@ MedNUSQuizQuestion::MedNUSQuizQuestion(QWidget *parent, QVBoxLayout *layout, QVe
     _questionTextLabel->setStyleSheet("QLabel { color : black; }");
     _questionTextLabel->setGeometry(parent->geometry());
     _questionTextLabel->setWordWrap(true);
+    _questionTextLabel->setContentsMargins(0,0,0,0);
     _questionTextLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     layout->addWidget(_questionTextLabel);
 
@@ -20,9 +21,19 @@ MedNUSQuizQuestion::MedNUSQuizQuestion(QWidget *parent, QVBoxLayout *layout, QVe
     {
         tempButton = new QRadioButton(content[i], this);
         tempButton->setStyleSheet("QRadioButton { color : black; }");
+        tempButton->setContentsMargins(0,0,0,0);
         _optionButtonGroup->addButton(tempButton, i);
         layout->addWidget(tempButton);
     }
+    _teacherCommentLabel = new QLabel(this);
+    _teacherCommentLabel->setText(content[noOfOptions+1]);
+    _teacherCommentLabel->setStyleSheet("QLabel { color : black; }");
+    _teacherCommentLabel->setGeometry(parent->geometry());
+    _teacherCommentLabel->setWordWrap(true);
+    _teacherCommentLabel->setContentsMargins(0,0,0,0);
+    _teacherCommentLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    layout->addWidget(_teacherCommentLabel);
+    _teacherCommentLabel->setVisible(false);
 }
 
 MedNUSQuizQuestion::~MedNUSQuizQuestion()
@@ -62,6 +73,7 @@ void MedNUSQuizQuestion::showCorrectAnswer(int correctAnswer) const
             ((QRadioButton*)buttonList.at(i))->setStyleSheet("QRadioButton::indicator {width: 0px;height: 13px; } QRadioButton {color: rgba(0, 0, 0, 50);}");
         }
     }
+    _teacherCommentLabel->setVisible(true);
 }
 
 bool MedNUSQuizQuestion::oneOptionSelected() const
@@ -119,6 +131,9 @@ MedNUSQuiz::MedNUSQuiz(QString filename, QWidget *parent) :
 
         for (int j = 0; j < optionArray.size(); j++)
             content.append(QString(optionArray[j].toString()));
+
+        // Load the teacher comment.
+        content.append(QString(jsonQuestion["teacherComment"].toString()));
 
         // Load the correct answers.
         _correctAnswerList.append(jsonQuestion["correctAnswer"].toInt());

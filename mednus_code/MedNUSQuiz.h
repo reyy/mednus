@@ -29,6 +29,14 @@
 class MedNUSQuizQuestion : public QWidget
 {
 public:
+
+    /*  MedNUSQuizQuestion constructor:
+     *      The content that is being passed in contains the question text,
+     *      options, and the teacher's comment. It is stored in this format:
+     *          content[0]              = question text
+     *          content[1..noOfOptions] = options
+     *          content[noOfOptions+1]  = teacher's comment
+     */
     MedNUSQuizQuestion(QWidget *parent, QVBoxLayout *layout, QVector<QString> content, int noOfOptions);
     ~MedNUSQuizQuestion();
 
@@ -42,6 +50,7 @@ protected:
 
 private:
     QLabel* _questionTextLabel;
+    QLabel* _teacherCommentLabel;
     QButtonGroup* _optionButtonGroup;
 };
 
