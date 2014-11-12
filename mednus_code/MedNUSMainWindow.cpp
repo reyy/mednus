@@ -72,39 +72,7 @@ void MedNUSMainWindow::createWidgets()
 
         //Add Content View
         tabs = new MedNUSContentPanel();
-
         mainLayout->addWidget(tabs,1,0);
-
-        // Quiz
-        QString dir = "";
-        dir.append(QDir::homePath());
-        dir.append("/mednus/lesson1/quiz/quiz.qiz");
-        tabs->addTab(new MedNUSQuiz(dir), "Quiz", dir);
-        tabs->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-
-        //Add Model
-        dir = "";
-        dir.append(QDir::homePath());
-        dir.append("/mednus/lesson1/models/craniofacial.ply");
-        MedNUSMeshViewer *view = new MedNUSMeshViewer(dir,false);
-        tabs->addTab(view,"Skull 3D Model", dir);
-
-        dir = "";
-        dir.append(QDir::homePath());
-        dir.append("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
-        tabs->addTab(new MedNUSPdfViewer(dir),"Skull Notes", dir);
-
-        dir = "";
-        dir.append(QDir::homePath());
-        dir.append("/mednus/lesson1/videos/Osteology of the Skull- 12 Newborn Skull.mp4");
-        vid = new MedNUSVideoViewer(dir);
-        tabs->addTab(vid, "Video 1", dir);
-
-        dir = "";
-        dir.append(QDir::homePath());
-        dir.append("/mednus/lesson1/videos/Skull Anatomy (1 of 5)- Superior, Posterior and Lateral Views -- Head and Neck Anatomy 101.mp4");
-        vid = new MedNUSVideoViewer(dir);
-        tabs->addTab(vid, "Video 2", dir);
 
         // Create lesson table
         lp = new MedNUSLessonPanel(this);
@@ -118,7 +86,6 @@ void MedNUSMainWindow::createWidgets()
         connect(lp, SIGNAL(emitOpenFile(QString,QString,int)), contentManager, SLOT(openFile(QString,QString,int)));
         connect(contentManager, SIGNAL(callAddTab(QWidget*,QString,QString)), tabs, SLOT(addTab(QWidget*,QString,QString)));
         contentManager->initLessonList(QStringList());
-        //lessonTable->l
 
 
         centralWidget->setLayout(mainLayout);

@@ -109,6 +109,8 @@ MedNUSTab::MedNUSTab(QWidget *parent)
     this->setMinimumHeight(100);
     this->setContentsMargins(0,0,0,0);
     //this->setAutoFillBackground(true);
+    this->tabBar()->setUsesScrollButtons(true);
+    this->tabBar()->setElideMode(Qt::ElideLeft);
     this->tabBar()->setAutoFillBackground(true);
     QFile file(":/images/tabwidget.css");
     if(file.open(QIODevice::ReadOnly|QIODevice::Text)) {
