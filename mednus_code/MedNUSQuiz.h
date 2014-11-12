@@ -14,6 +14,7 @@
 #include <QButtonGroup>
 #include <QPushButton>
 #include <QScrollArea>
+#include <QResizeEvent>
 
 // For JSON
 #include <QFile>
@@ -67,6 +68,7 @@ protected:
     QVBoxLayout* _layout;
     QScrollArea* _scrollArea;
 
+    QLabel* _instructionTextLabel;
     QVector<QButtonGroup*> _questionOptionGroup;
 
     QPushButton* _markButton;

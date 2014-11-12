@@ -8,11 +8,11 @@ MedNUSQuizQuestion::MedNUSQuizQuestion(QWidget *parent, QVBoxLayout *layout, QVe
 
     // Initialize the QLabel
     _questionTextLabel = new QLabel(content[0], this);
-    _questionTextLabel->setStyleSheet("QLabel { color : black; }");
-    _questionTextLabel->setGeometry(parent->geometry());
-    _questionTextLabel->setWordWrap(true);
-    _questionTextLabel->setContentsMargins(0,0,0,0);
-    _questionTextLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    //_questionTextLabel->setStyleSheet("QLabel { color : black; }");
+    //_questionTextLabel->setGeometry(parent->geometry());
+    //_questionTextLabel->setWordWrap(true);
+    //_questionTextLabel->setContentsMargins(5,5,5,5);
+    //_questionTextLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     layout->addWidget(_questionTextLabel);
 
     // Initialize the buttons
@@ -20,18 +20,18 @@ MedNUSQuizQuestion::MedNUSQuizQuestion(QWidget *parent, QVBoxLayout *layout, QVe
     for (int i = 1; i <= noOfOptions; i++)
     {
         tempButton = new QRadioButton(content[i], this);
-        tempButton->setStyleSheet("QRadioButton { color : black;}");
-        tempButton->setContentsMargins(5,5,5,5);
+        //tempButton->setStyleSheet("QRadioButton { color : black;}");
+        //tempButton->setContentsMargins(5,5,5,5);
         _optionButtonGroup->addButton(tempButton, i);
         layout->addWidget(tempButton);
     }
     _teacherCommentLabel = new QLabel(this);
     _teacherCommentLabel->setText(content[noOfOptions+1]);
-    _teacherCommentLabel->setStyleSheet("QLabel { color : black; }");
-    _teacherCommentLabel->setGeometry(parent->geometry());
-    _teacherCommentLabel->setWordWrap(true);
-    _teacherCommentLabel->setContentsMargins(0,0,0,0);
-    _teacherCommentLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    //_teacherCommentLabel->setStyleSheet("QLabel { color : black; }");
+    //_teacherCommentLabel->setGeometry(parent->geometry());
+    //_teacherCommentLabel->setWordWrap(true);
+    //_teacherCommentLabel->setContentsMargins(5,5,5,5);
+    //_teacherCommentLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     layout->addWidget(_teacherCommentLabel);
     _teacherCommentLabel->setVisible(false);
 }
@@ -87,7 +87,7 @@ bool MedNUSQuizQuestion::oneOptionSelected() const
 void MedNUSQuizQuestion::myForceResize(QRect geometry)
 {
     //TODO: Fix this
-    _questionTextLabel->setGeometry(QRect(_questionTextLabel->geometry().left(), _questionTextLabel->geometry().top(), geometry.width(), _questionTextLabel->geometry().height()));
+    //_questionTextLabel->setGeometry(QRect(_questionTextLabel->geometry().left(), _questionTextLabel->geometry().top(), geometry.width(), _questionTextLabel->geometry().height()));
 }
 
 MedNUSQuiz::MedNUSQuiz(QString filename, QWidget *parent) :
@@ -98,8 +98,9 @@ MedNUSQuiz::MedNUSQuiz(QString filename, QWidget *parent) :
     _tempWidget = new QWidget(parent);
     _layout = new QVBoxLayout(_tempWidget);
 
-    // Add questions here
+    // Add questions here //
     _questionList = new QVector<MedNUSQuizQuestion*>();
+
     // Read Json file
     QFile file(filename);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
@@ -114,6 +115,14 @@ MedNUSQuiz::MedNUSQuiz(QString filename, QWidget *parent) :
     QJsonObject quizDetails = v.toObject();
 
     int noOfQuestions = quizDetails["noOfQuestions"].toInt();
+
+    // The instruction text at the top of the quiz.
+    QString instructionText = "The following quiz consists of " + QString::number(noOfQuestions) + " questions. " + \
+                              "Please attempt all of the given questions by selecting the button " + \
+                              "next to the option that you think is correct. To end the quiz, " + \
+                              "press the \'Check Answers\' button at the bottom of the quiz.";
+    _instructionTextLabel = new QLabel(instructionText, _tempWidget);
+    _layout->addWidget(_instructionTextLabel);
 
     QString questionLabelString = "question_";
     QVector<QString> content;
@@ -151,21 +160,23 @@ MedNUSQuiz::MedNUSQuiz(QString filename, QWidget *parent) :
     // Marking button
     _markButton = new QPushButton("Check Answers", this);
     _markButton->setGeometry(QRect(QPoint(100, 100), QSize(50, 50)));
-    _markButton->setStyleSheet("QPushButton { background-color : rgba(255, 255, 255, 255) }");
+    //_markButton->setStyleSheet("QPushButton { background-color : rgba(255, 255, 255, 255) }");
     connect(_markButton, SIGNAL(released()), this, SLOT(markQuiz()));
     _layout->addWidget(_markButton);
     _layout->setAlignment(Qt::AlignTop);
-    _layout->setContentsMargins(5,5,5,5);
+    //_layout->setContentsMargins(5,5,5,5);
 
     _tempWidget->setLayout(_layout);
-    _tempWidget->setStyleSheet("QWidget { background-color : rgba(255, 255, 255, 255) }");
+    _tempWidget->setStyleSheet("background-color: #ff00ff");
+    _tempWidget->setContentsMargins(20,20,20,20);
     _tempWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     _scrollArea = new QScrollArea(this);
     //_scrollArea->setObjectName(QStringLiteral("_scrollArea"));
-    //_scrollArea->setWidgetResizable(true);
-    _scrollArea->setContentsMargins(0,0,0,0);
+    _scrollArea->setStyleSheet("background-color: #ff0000");
+    _scrollArea->setContentsMargins(20,20,20,20);
+    _scrollArea->setWidgetResizable(true);
     _scrollArea->setWidget(_tempWidget);
-    _scrollArea->setGeometry(this->geometry());
+    //_scrollArea->setGeometry(this->geometry());
     _scrollArea->setAutoFillBackground(true);
     _scrollArea->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     //Load scrollbar style.
@@ -229,11 +240,11 @@ void MedNUSQuiz::markQuiz()
 void MedNUSQuiz::resizeEvent(QResizeEvent *event)
 {
     _scrollArea->setGeometry(this->geometry());
-    _tempWidget->setGeometry(this->geometry());
+    //_tempWidget->setGeometry(this->geometry());
 
     // Go through every QLabel in _layout and setGeomtry accordingly
     for (int i = 0; i < _questionList->size(); i++)
     {
-       //((MedNUSQuizQuestion*)_questionList->at(i))->myForceResize(this->geometry());
+       ((MedNUSQuizQuestion*)_questionList->at(i))->myForceResize(this->geometry());
     }
 }
