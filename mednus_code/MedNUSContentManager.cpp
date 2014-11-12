@@ -15,8 +15,8 @@ void MedNUSContentManager::initLessonList(QStringList)
     content.push_back("/mednus/lesson1/models/craniofacial.ply");
     content.push_back("/mednus/lesson1/quiz/quiz.qiz");//
 
-    openLastView(content);
     emit callAddLesson("Functional Anatomy of the Skull","Professor Gopal","Anatomy Department",content);
+    openLastView(content);
 
     content.clear();
     content.push_back("/mednus/lesson2/pdf/axial_lecture_2.pdf");
