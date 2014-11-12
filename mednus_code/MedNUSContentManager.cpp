@@ -9,14 +9,13 @@ void MedNUSContentManager::initLessonList(QStringList)
 {
     //STUB For future Network I/O connection!
     QStringList content;
-    //content.push_back(":/content/test.pdf");
-    //content.push_back(":/content/samplevideo.mp4");
-    content.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
     content.push_back("/mednus/lesson1/videos/Osteology of the Skull- 12 Newborn Skull.mp4");
     content.push_back("/mednus/lesson1/videos/Skull Anatomy (1 of 5)- Superior, Posterior and Lateral Views -- Head and Neck Anatomy 101.mp4");
+    content.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
     content.push_back("/mednus/lesson1/models/craniofacial.ply");
     content.push_back("/mednus/lesson1/quiz/quiz.qiz");//
 
+    openLastView(content);
     emit callAddLesson("Functional Anatomy of the Skull","Professor Gopal","Anatomy Department",content);
 
     content.clear();
@@ -25,6 +24,20 @@ void MedNUSContentManager::initLessonList(QStringList)
     content.push_back("/mednus/lesson1/models/craniofacial.ply");
 
     emit callAddLesson("Osteology of the Skull","A/Professor Tan","Anatomy Department",content);
+}
+
+void MedNUSContentManager::openLastView(QStringList content)
+{
+    //Stub: Future use of QSettings to determine last open tabs
+    for(int i=content.size()-1; i>=0; i--)
+    {
+        //DUPLICATED EFFORT FOR FILE NAME! MUST REFACTOR!
+        int startIndex=content[i].lastIndexOf("/");
+        int nameLength=content[i].size()-startIndex;
+        QString title = content[i].mid(startIndex+1,nameLength-1);
+
+        openFile(content[i],title,0);
+    }
 }
 
 void MedNUSContentManager::openFile(QString fileDir, QString title, int type)
@@ -46,6 +59,12 @@ void MedNUSContentManager::openFile(QString fileDir, QString title, int type)
         else if(fileDir.contains(".qiz", Qt::CaseInsensitive))
             toAdd = new MedNUSQuiz(dir);
 
+        //Todo: Temp fix for too long titles
+        if(title.length()>10)
+        {
+            title.truncate(10);
+            title.append("...");
+        }
         emit callAddTab(toAdd,title,dir);
     }
     else
