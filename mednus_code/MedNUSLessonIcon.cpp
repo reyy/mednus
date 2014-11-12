@@ -2,21 +2,24 @@
 #include "MedNUSAUISettings.h"
 #include <QDebug>
 
-MedNUSLessonIcon::MedNUSLessonIcon(QString path, QPixmap directory, QWidget *parent)
+MedNUSLessonIcon::MedNUSLessonIcon(QString path, QPixmap directory, QWidget *parent) : QWidget(parent)
 {
     _selected = false;
     _directory = directory;
 
     _path = path;
+    _parent = parent;
 
-    _highlight = new QLabel(parent);
+    _highlight = new QLabel(this);
     _highlight->setStyleSheet("background-color: #4e698a;border-color:#ffffff;border-style: dotted;border-width: 1px;");
 
-    _icon = new QLabel(parent);
+    _icon = new QLabel(this);
     _icon->setPixmap(directory);
+    _icon->setStyleSheet("background-color:rgba(0,0,0,0);color:#FFFFFF;");
+    _icon->setScaledContents(true);
 
-    _text = new QLabel(parent);
-    _text->setStyleSheet("color:#FFFFFF;font-size:10px;");
+    _text = new QLabel(this);
+    _text->setStyleSheet("background-color:rgba(0,0,0,0);color:#FFFFFF;font-size:10px;");
 
     int startIndex=_path.lastIndexOf("/");
     int nameLength=_path.size()-startIndex;
@@ -34,15 +37,25 @@ MedNUSLessonIcon::~MedNUSLessonIcon() {
     delete _text;
 }
 
-void MedNUSLessonIcon::updatePosition(float x, float y) {
-    _x=x+5;
-    _y=y;
-    _icon->setGeometry(QRect(_x, _y, _directory.width(), _directory.height()));
-    _text->setGeometry(QRect(_x+_directory.width()+5, _y+1, LESSONPANEL_WIDTH-LESSONPANEL_BORDER*10, 16));
-    _highlight->setGeometry(QRect(_x-2, _y-2, LESSONPANEL_WIDTH-LESSONPANEL_BORDER*10, _directory.height()+4));
+void MedNUSLessonIcon::updatePosition(float packageX, float packageY, float x, float y) {
+    _x=packageX;
+    _y=packageY+y;
+    qDebug() <<packageX<<" "<<packageY<<" "<<_x<<" "<< _y;
+    _icon->setGeometry(QRect(LESSONPANEL_BORDER+1,1, _directory.width()-2, _directory.height()-2));
+    _text->setGeometry(QRect(LESSONPANEL_BORDER+_directory.width()+5, 1, LESSONPANEL_WIDTH-LESSONPANEL_BORDER*10, 16));
+    _highlight->setGeometry(QRect(LESSONPANEL_BORDER-2, 0, LESSONPANEL_WIDTH-LESSONPANEL_BORDER*11, _directory.height()+2));
+
+    this->setGeometry(QRect(x+LESSONPANEL_BORDER-2, y, LESSONPANEL_WIDTH-LESSONPANEL_BORDER*10, _directory.height()+5));
 
     QFontMetrics metrics(_text->font());
-    _text->setText(metrics.elidedText(_filename, Qt::ElideRight, _text->width()-20));
+    _text->setText(metrics.elidedText(_filename, Qt::ElideRight, _text->width()-30));
+}
+
+void MedNUSLessonIcon::setHighlight(bool status) {
+    _selected = status;
+    _highlight->setVisible(status);
+    _highlight->repaint();
+    _parent->repaint();
 }
 
 void MedNUSLessonIcon::setSelected(bool value) {
@@ -59,16 +72,9 @@ void MedNUSLessonIcon::setVisible(bool value) {
         _highlight->setVisible(false);
 }
 
-
-bool MedNUSLessonIcon::checkMouseClick(float xpos, float ypos) {
-    if(xpos>=_x&&xpos<=_x+LESSONPANEL_WIDTH&&ypos>=_y&&ypos<=_y+_directory.height()) {
-        _selected = true;
-        _highlight->setVisible(true);
-        emit emitOpenFile(_path, _text->text(), 0); //todo: pass actual type!
-        return true;
-    } else {
-        _selected = false;
-        _highlight->setVisible(false);
-        return false;
-    }
+void MedNUSLessonIcon::mousePressEvent ( QMouseEvent * event ){
+    qDebug()<<"Hey" << _text->text();
+    setHighlight(true);
+    //emit emitOpenFile(_path, _text->text(), 0); //todo: pass actual type!
+    event->ignore();
 }

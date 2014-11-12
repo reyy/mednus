@@ -158,10 +158,8 @@ void MedNUSLessonPanel::mousePressEvent ( QMouseEvent * event )
 
             //For mouse click.
             if(!temp->getCollapse()) {
-                if(event->pos().y()>=temp->getY()&&event->pos().y()<=temp->getY()+temp->getHeight()) {
-                    for(int j=0;j<temp->getContentSize();j++) {
-                        temp->getContentItem(j)->checkMouseClick(event->pos().x(),event->pos().y());
-                    }
+                for(int j=0;j<temp->getContentSize();j++) {
+                    //temp->getContentItem(j)->setHighlight(false);
                 }
             }
         }
@@ -178,6 +176,7 @@ void MedNUSLessonPanel::mousePressEvent ( QMouseEvent * event )
 
         this->updateGUI();
     }
+
     event->ignore();
 }
 

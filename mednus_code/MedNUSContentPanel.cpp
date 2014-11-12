@@ -113,7 +113,6 @@ MedNUSTab::MedNUSTab(QWidget *parent)
         this->setStyleSheet(file.readAll());
         file.close();
     }*/
-
     connect(this,SIGNAL(noMoreTabs(MedNUSTab*)),parent,SLOT(closeTab(MedNUSTab*)));
 }
 

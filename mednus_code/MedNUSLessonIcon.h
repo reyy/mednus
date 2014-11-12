@@ -2,8 +2,9 @@
 #define MedNUSLessonIcon_H
 
 #include <QLabel>
+#include <QMouseEvent>
 
-class MedNUSLessonIcon : public QObject
+class MedNUSLessonIcon : public QWidget
 {
     Q_OBJECT
 private:
@@ -14,6 +15,7 @@ private:
     QPixmap _directory;    
     QString _path;
     QString _filename;
+    QWidget *_parent;
 
     float _x;
     float _y;
@@ -21,10 +23,13 @@ private:
 public:
      MedNUSLessonIcon(QString path, QPixmap directory, QWidget *parent);
     ~MedNUSLessonIcon();
-     void updatePosition(float x, float y);
+     void updatePosition(float packageX, float packageY, float x, float y);
+     void setHighlight(bool status);
      void setSelected(bool value);
      void setVisible(bool value);
-     bool checkMouseClick(float xpos, float ypox);
+
+protected:
+    void mousePressEvent ( QMouseEvent * event ) ;
 
 signals:
     void emitOpenFile(QString, QString, int);

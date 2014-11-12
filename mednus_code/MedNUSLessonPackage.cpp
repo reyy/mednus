@@ -44,7 +44,7 @@ void MedNUSLessonPackageContentPanel::updateGUI(int x, int y, bool collapse) {
     } else {
         for(int i=0;i<_listOfItems.size();i++) {
             _listOfItems.at(i)->setVisible(true);
-            _listOfItems.at(i)->updatePosition(0,5+i*24);
+            _listOfItems.at(i)->updatePosition(x,y,0,5+i*24);
         }
     }
 }
@@ -89,7 +89,6 @@ MedNUSLessonPackage::MedNUSLessonPackage(QWidget *parent) :
     _scrollArea->setStyleSheet("background-color: #2d3949;");
     _scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     _scrollArea->setVerticalScrollBarPolicy( Qt::ScrollBarAsNeeded);
-
 }
 
 MedNUSLessonPackage::~MedNUSLessonPackage() {
@@ -171,14 +170,18 @@ int MedNUSLessonPackage::getInteractiveHeight(){
 
 void MedNUSLessonPackage::toggleCollapse() {
     _collapse=!_collapse;
+
+    _contentPanel->updateGUI(_x,_y,_collapse);
 }
 
 void MedNUSLessonPackage::toggleCollapse(bool value) {
     _collapse=value;
+
+    _contentPanel->updateGUI(_x,_y,_collapse);
 }
 
 void MedNUSLessonPackage::updateGUI() {
-    _contentPanel->updateGUI(_x,_y,_collapse);
+    //_contentPanel->updateGUI(_x,_y,_collapse);
 
     if(_tone%2==0)
         _background->setStyleSheet("background-color: #286c91;");
