@@ -6,7 +6,7 @@ MedNUSMainWindow::MedNUSMainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
     setWindowTitle(QString("MedNUS"));
-    setWindowIcon(QIcon(":/images/panax-icon.png"));
+    setWindowIcon(QIcon(":/images/mednus-icon.png"));
 
     int winWidth = 800;
     int winHeight = 600;
@@ -30,7 +30,7 @@ MedNUSMainWindow::MedNUSMainWindow(QWidget *parent) :
         createMenus();
     }
     //Tab Bkg Change
-    this->setStyleSheet("MedNUSMainWindow{background:#1a394a;}");
+    this->setStyleSheet("MedNUSMainWindow{background:#152d3b;}");
 }
 
 MedNUSMainWindow::~MedNUSMainWindow() {
@@ -75,12 +75,6 @@ void MedNUSMainWindow::createWidgets()
 
         mainLayout->addWidget(tabs,1,0);
 
-        /*
-         content.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
-    content.push_back("/mednus/lesson1/videos/Osteology of the Skull- 12 Newborn Skull.mp4");
-    content.push_back("/mednus/lesson1/videos/Skull Anatomy (1 of 5)- Superior, Posterior and Lateral Views -- Head and Neck Anatomy 101.mp4");
-    content.push_back("/mednus/lesson1/models/craniofacial.ply");//
-    */
         // Quiz
         QString dir = "";
         dir.append(QDir::homePath());

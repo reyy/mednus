@@ -34,6 +34,12 @@ MedNUSPdfViewer::MedNUSPdfViewer(QString filename, QWidget *parent) :
     scrollArea->setWidget(imageLabel);
     scrollArea->setGeometry(this->geometry());
     scrollArea->setAutoFillBackground(true);
+    //Load scrollbar style.
+    QFile file(":/images/scrollbar.css");
+    if(file.open(QIODevice::ReadOnly|QIODevice::Text)) {
+        scrollArea->setStyleSheet(file.readAll());
+        file.close();
+    }
 }
 
 void MedNUSPdfViewer::setPage(int num)
