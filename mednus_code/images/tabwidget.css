@@ -1,22 +1,3 @@
-<<<<<<< local
-=======
-QTabWidget::pane { /* The tab widget frame */
-     border-top: 0px solid #C2C7CB;
-    position: absolute;
-	top:0px;
-     background-color:#286c91;
- }
-
- QTabWidget::tab-bar {
-     background-color:rgba(0,0,0,255);
-color:#FF00FF;
- }
-QTabBar {
-     background-color:rgba(0,0,0,255);
-color:#FF00FF;
-}
-
->>>>>>> other
  /* Style the tab using the tab sub-control. Note that
      it reads QTabBar _not_ QTabWidget */
  QTabBar::tab {
@@ -65,13 +46,12 @@ color:#FF00FF;
  }
 
  QTabBar::close-button {
-     image: url(:/images/logo_inapp.png);
+     image: url(":/images/bt_close.png");
      subcontrol-position: right;
  }
 
  QTabBar::close-button:hover {
-<<<<<<< local
-     image: url(.images/logo_inapp.png);
+     image: url(":/images/bt_close.png");
  }
 
  QTabWidget::tab-bar {
@@ -87,6 +67,3 @@ QTabWidget::pane {
      background:#338cbd;
      position: absolute;
 }
-=======
-     image: url(:/images/logo_inapp.png);
- }>>>>>>> other

@@ -114,11 +114,7 @@ MedNUSTab::MedNUSTab(QWidget *parent)
     if(file.open(QIODevice::ReadOnly|QIODevice::Text)) {
         this->setStyleSheet(file.readAll());
         file.close();
-<<<<<<< local
     }
-=======
-    }*/
->>>>>>> other
     connect(this,SIGNAL(noMoreTabs(MedNUSTab*)),parent,SLOT(closeTab(MedNUSTab*)));
 }
 
