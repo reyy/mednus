@@ -5,14 +5,22 @@ MedNUSNetwork::MedNUSNetwork(QObject *parent) :
     QObject(parent)
 {
     QObject::connect(&mgr, SIGNAL(finished(QNetworkReply*)), this, SLOT(getReply(QNetworkReply*)));
+}
+
+void MedNUSNetwork::tryAutoLogin()
+{
     QSettings settings("nus.edu", "MedNUS");
     QSettings::setDefaultFormat(QSettings::NativeFormat);
+
     if(settings.contains("Token"))
     {
         qDebug() << settings.value("Token","").toString();
         this->token = settings.value("Token","").toString();
-        verifyToken();
-        //todo: call loading page slots
+        if(token != "")
+        {
+            verifyToken();
+            emit showLoadingScreen(true);
+        }
     }
 }
 

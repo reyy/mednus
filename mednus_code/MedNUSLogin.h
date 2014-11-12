@@ -36,12 +36,13 @@ public:
     explicit MedNUSLogin(QWidget *parent = 0);
     ~MedNUSLogin();
 
-    void setLoading(bool value);
+
     void setErrorMessage(QString value);
 signals:
     void callLogin(QString,QString,bool);
 public slots:
     void loginButtonPress();
+    void setLoading(bool value);
 };
 
 #endif // MEDNUSLOGIN_H
