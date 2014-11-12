@@ -16,14 +16,14 @@ void MedNUSContentManager::initLessonList(QStringList)
     content.push_back("/mednus/lesson1/quiz/quiz.qiz");//
 
     emit callAddLesson("Functional Anatomy of the Skull","Professor Gopal","Anatomy Department",content);
-    openLastView(content);
 
-    content.clear();
-    content.push_back("/mednus/lesson2/pdf/axial_lecture_2.pdf");
-    content.push_back("/mednus/lesson2/videos/Osteology of the Skull- 7 The Face (1).mp4");
-    content.push_back("/mednus/lesson1/models/craniofacial.ply");
+    QStringList content2;
+    content2.push_back("/mednus/lesson2/pdf/axial_lecture_2.pdf");
+    content2.push_back("/mednus/lesson2/videos/Osteology of the Skull- 7 The Face (1).mp4");
+    content2.push_back("/mednus/lesson1/models/craniofacial.ply");
 
     emit callAddLesson("Osteology of the Skull","A/Professor Tan","Anatomy Department",content);
+    openLastView(content);
 }
 
 void MedNUSContentManager::openLastView(QStringList content)

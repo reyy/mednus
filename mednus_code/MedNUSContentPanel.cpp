@@ -126,8 +126,9 @@ void MedNUSTab::closeTab(int index)
 {
     emit tabClosedSignal(this->widget(index)->accessibleName());
 
-    delete this->widget(index);
+    QWidget *temp = this->widget(index);
     this->removeTab(index);
+    delete temp;
 
     if(this->count()==0)
         emit noMoreTabs(this);
