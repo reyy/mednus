@@ -30,9 +30,9 @@
         <file>images/open.png</file>
         <file>images/opendir.png</file>
         <file>images/output.png</file>
-        <file>images/panax.jpg</file>
-        <file>images/panax-icon.png</file>
-        <file>images/panax-splash.jpg</file>
+        <file>images/mednus.jpg</file>
+        <file>images/mednus-icon.png</file>
+        <file>images/mednus-splash.jpg</file>
         <file>images/reset.png</file>
         <file>images/reset2.png</file>
         <file>images/roi.png</file>
@@ -83,5 +83,6 @@
         <file>images/bt_volume_2.png</file>
         <file>images/bt_volume_3.png</file>
         <file>images/bt_close.png</file>
+        <file>images/scrollbar.css</file>
     </qresource>
 </RCC>

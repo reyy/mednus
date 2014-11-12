@@ -20,8 +20,8 @@ MedNUSQuizQuestion::MedNUSQuizQuestion(QWidget *parent, QVBoxLayout *layout, QVe
     for (int i = 1; i <= noOfOptions; i++)
     {
         tempButton = new QRadioButton(content[i], this);
-        tempButton->setStyleSheet("QRadioButton { color : black; }");
-        tempButton->setContentsMargins(0,0,0,0);
+        tempButton->setStyleSheet("QRadioButton { color : black;}");
+        tempButton->setContentsMargins(5,5,5,5);
         _optionButtonGroup->addButton(tempButton, i);
         layout->addWidget(tempButton);
     }
@@ -153,6 +153,7 @@ MedNUSQuiz::MedNUSQuiz(QString filename, QWidget *parent) :
     connect(_markButton, SIGNAL(released()), this, SLOT(markQuiz()));
     _layout->addWidget(_markButton);
     _layout->setAlignment(Qt::AlignTop);
+    _layout->setContentsMargins(5,5,5,5);
 
     _tempWidget->setLayout(_layout);
     _tempWidget->setStyleSheet("QWidget { background-color : rgba(255, 255, 255, 255) }");
@@ -165,6 +166,12 @@ MedNUSQuiz::MedNUSQuiz(QString filename, QWidget *parent) :
     _scrollArea->setGeometry(this->geometry());
     _scrollArea->setAutoFillBackground(true);
     _scrollArea->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    //Load scrollbar style.
+    QFile file2(":/images/scrollbar.css");
+    if(file2.open(QIODevice::ReadOnly|QIODevice::Text)) {
+        _scrollArea->setStyleSheet(file2.readAll());
+        file2.close();
+    }
 }
 
 MedNUSQuiz::~MedNUSQuiz()

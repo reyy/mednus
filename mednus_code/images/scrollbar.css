@@ -1,0 +1,62 @@
+QWidget {
+
+background-color: #2d3949;
+border-width:0px;
+}
+
+QScrollBar:horizontal {
+    border: 0px solid black;
+    background: rgba(0,0,0,0);
+    height: 10px;
+    margin: 0px 0 0px 0;
+}
+QScrollBar:vertical{
+      border: 0px solid black;
+      background: rgba(0,0,0,0);
+      width: 10px;
+      margin: 0px 0 0px 0;
+  }
+  QScrollBar::handle:horizontal,
+  QScrollBar::handle:vertical
+  {
+
+     border-top-left-radius: 5px;
+     border-top-right-radius: 5px;
+     border-bottom-left-radius: 5px;
+     border-bottom-right-radius: 5px;
+
+      background: rgba(255,255,255,128);
+      min-height: 20px;
+  }
+  QScrollBar::add-line:horizontal,
+  QScrollBar::add-line:vertical
+  {
+      border: 0px solid black;
+      background: #32CC99;
+      height: 0px;
+      subcontrol-origin: margin;
+  }
+
+  QScrollBar::sub-line:horizontal,
+  QScrollBar::sub-line:vertical
+  {
+      border: 0px solid black;
+      background: #32CC99;
+      height: 0px;
+      subcontrol-origin: margin;
+  }
+  QScrollBar::left-arrow:horizontal, QScrollBar::right-arrow:horizontal,
+  QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical
+  {
+
+      border: 0px solid black;
+      width: 3px;
+      height: 3px;
+      background: white;
+  }
+
+  QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal,
+  QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical
+  {
+      background: none;
+  }
