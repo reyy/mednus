@@ -30,6 +30,8 @@ protected:
 
 public slots:
     void showContextMenu(const QPoint& pos);
+signals:
+    void emitLogout();
 };
 
 

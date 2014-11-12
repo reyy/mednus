@@ -90,7 +90,7 @@ void MedNUSUserBar::showContextMenu(const QPoint& pos)
     if (selectedItem)
     {
         qDebug() <<"Logout";
-        //TODO call logout.
+        emit emitLogout();
     }
     else
     {
