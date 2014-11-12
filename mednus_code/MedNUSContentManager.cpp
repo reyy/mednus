@@ -13,7 +13,7 @@ void MedNUSContentManager::initLessonList(QStringList)
     content.push_back("/mednus/lesson1/videos/Skull Anatomy (1 of 5)- Superior, Posterior and Lateral Views -- Head and Neck Anatomy 101.mp4");
     content.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
     content.push_back("/mednus/lesson1/models/craniofacial.ply");
-    content.push_back("/mednus/lesson1/quiz/quiz.qiz");//
+    content.push_back("/mednus/lesson1/quiz/Quiz - The Skull.qiz");//
 
     emit callAddLesson("Functional Anatomy of the Skull","Professor Gopal","Anatomy Department",content);
 
