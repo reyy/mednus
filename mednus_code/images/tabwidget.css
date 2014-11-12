@@ -56,14 +56,14 @@
 
  QTabWidget::tab-bar {
      background-color:#286c91;
-     color:#286c91;
-     background:#286c91;
+     color:#FFFFFF;
      alignment:left;
  }
 QTabWidget::pane {
-    border-top: 2px solid #338cbd;
+     border: 5px solid #338cbd;
      background-color:#338cbd;
-     color:#338cbd;
-     background:#338cbd;
+     color:#FFFFFF;
      position: absolute;
+
+     margin-bottom:1px;
 }
