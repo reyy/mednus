@@ -47,6 +47,7 @@ signals:
 
 public slots:
     void loginCompleted(bool,QString,QString);
+    void logout();
 protected:
     void mousePressEvent ( QMouseEvent * event ) ;
 

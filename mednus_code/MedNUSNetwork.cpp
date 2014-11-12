@@ -69,6 +69,13 @@ void MedNUSNetwork::login(QString matric, QString password, bool remember)
     mgr.post(req, postData.toString(QUrl::FullyEncoded).toUtf8());
 }
 
+void MedNUSNetwork::logout()
+{
+    QSettings settings("nus.edu", "MedNUS");
+    QSettings::setDefaultFormat(QSettings::NativeFormat);
+    settings.setValue("Token","");
+}
+
 void MedNUSNetwork::getReply(QNetworkReply *reply)
 {
     if (reply->error() == QNetworkReply::NoError) {
