@@ -18,17 +18,24 @@ MedNUSMainWindow::MedNUSMainWindow(QWidget *parent) :
 
     network = new MedNUSNetwork();
 
-    if(!SKIP_LOGIN) {
+    if(!SKIP_LOGIN)
+    {
         login = new MedNUSLogin(this);
+        connect(network, SIGNAL(showLoadingScreen(bool)), login, SLOT(setLoading(bool)));
+        network->tryAutoLogin();
+
         setCentralWidget(login);
         connect(login, SIGNAL(callLogin(QString,QString,bool)), network, SLOT(login(QString,QString,bool)));
         connect(network,SIGNAL(loginResults(bool,QString,QString)),this,SLOT(loginCompleted(bool,QString,QString)));
-    } else {
+    }
+    else
+    {
         this->userName = "Temporary Testing Name";
         login = NULL;
         createWidgets();
         createMenus();
     }
+
     //Tab Bkg Change
     this->setStyleSheet("MedNUSMainWindow{background:#152d3b;}");
 }

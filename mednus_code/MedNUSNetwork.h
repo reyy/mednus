@@ -33,8 +33,10 @@ protected:
     void profileReply(QJsonObject);
 public:
     explicit MedNUSNetwork(QObject *parent = 0);
+    void tryAutoLogin();
 
 signals:
+    void showLoadingScreen(bool);
     void loginResults(bool,QString,QString);
 public slots:
     void login(QString matric, QString password, bool r);
