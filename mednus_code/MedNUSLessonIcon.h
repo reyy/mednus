@@ -24,17 +24,19 @@ public:
      MedNUSLessonIcon(QString path, QPixmap directory, QWidget *parent);
     ~MedNUSLessonIcon();
      void updatePosition(float packageX, float packageY, float x, float y);
-     void setHighlight(bool status);
      void setSelected(bool value);
      void setVisible(bool value);
 
 protected:
+    void setHighlight(bool status);
     void mousePressEvent ( QMouseEvent * event ) ;
 
 signals:
     void emitOpenFile(QString, QString, int);
-public slots:
 
+public slots:
+    void tabOpened(QString);
+    void tabClosed(QString);
 };
 
 #endif // MedNUSLessonIcon_H

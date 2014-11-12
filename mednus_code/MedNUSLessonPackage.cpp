@@ -116,6 +116,8 @@ int MedNUSLessonPackage::getY() {
 
 void MedNUSLessonPackage::addContent(QString filename, QPixmap directory) {
     MedNUSLessonIcon *item = _contentPanel->addContent(filename,directory);
+    connect(this->parent(), SIGNAL(tabClosedSignal(QString)), item, SLOT(tabClosed(QString)));
+    connect(this->parent(), SIGNAL(tabOpenedSignal(QString)), item, SLOT(tabOpened(QString)));
     connect(item, SIGNAL(emitOpenFile(QString,QString,int)), this, SLOT(callOpenFile(QString,QString,int)));
 }
 
