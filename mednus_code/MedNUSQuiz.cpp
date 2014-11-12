@@ -93,6 +93,8 @@ void MedNUSQuizQuestion::myForceResize(QRect geometry)
 MedNUSQuiz::MedNUSQuiz(QString filename, QWidget *parent) :
     QWidget(parent)
 {
+    this->setAccessibleName(filename);
+
     _tempWidget = new QWidget(parent);
     _layout = new QVBoxLayout(_tempWidget);
 
