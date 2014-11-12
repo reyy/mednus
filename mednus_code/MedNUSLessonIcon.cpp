@@ -73,8 +73,21 @@ void MedNUSLessonIcon::setVisible(bool value) {
 }
 
 void MedNUSLessonIcon::mousePressEvent ( QMouseEvent * event ){
-    qDebug()<<"Hey" << _text->text();
+    //qDebug()<<"Hey" << _text->text();
     setHighlight(true);
     emit emitOpenFile(_path, _text->text(), 0); //todo: pass actual type!
     event->ignore();
+}
+
+void MedNUSLessonIcon::tabOpened(QString path)
+{
+
+    if(path.contains( _path))
+        setHighlight(true);
+}
+
+void MedNUSLessonIcon::tabClosed(QString path)
+{
+    if(path.contains( _path))
+        setHighlight(false);
 }

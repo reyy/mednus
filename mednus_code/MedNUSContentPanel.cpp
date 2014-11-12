@@ -78,6 +78,7 @@ void MedNUSContentPanel::addTab(QWidget* toAdd,QString title, QString dir)
     {
         throw "Invalid Widget. Cannot add to Tab";
     }
+    emit tabOpenedSignal(dir);
 }
 
 void MedNUSContentPanel::closeTab(MedNUSTab* index)
@@ -118,12 +119,16 @@ MedNUSTab::MedNUSTab(QWidget *parent)
         file.close();
     }
     connect(this,SIGNAL(noMoreTabs(MedNUSTab*)),parent,SLOT(closeTab(MedNUSTab*)));
+    connect(this,SIGNAL(tabClosedSignal(QString)),parent,SLOT(tabClosed(QString)));
 }
 
 void MedNUSTab::closeTab(int index)
 {
+    emit tabClosedSignal(this->widget(index)->accessibleName());
+
     delete this->widget(index);
     this->removeTab(index);
+
     if(this->count()==0)
         emit noMoreTabs(this);
 }

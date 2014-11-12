@@ -61,8 +61,13 @@ public slots:
     void addLesson(QString title, QString subTitle, QString description, QStringList directory);
     void callOpenFile(QString str, QString title, int type)
     {emit emitOpenFile(str, title, type);}
+
+    void tabClosed(QString t) {emit tabClosedSignal(t);}
+    void tabOpened(QString t) {emit tabOpenedSignal(t);}
 signals:
     void emitOpenFile(QString, QString, int);
+    void tabClosedSignal(QString);
+    void tabOpenedSignal(QString);
 };
 
 #endif // MEDNUSLESSONPANEL_H

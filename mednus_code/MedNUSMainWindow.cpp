@@ -78,6 +78,8 @@ void MedNUSMainWindow::createWidgets()
         lp = new MedNUSLessonPanel(this);
         lp->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
         mainLayout->addWidget(lp,1,1);
+        connect(tabs, SIGNAL(tabClosedSignal(QString)), lp, SLOT(tabClosed(QString)));
+        connect(tabs, SIGNAL(tabOpenedSignal(QString)), lp, SLOT(tabOpened(QString)));
 
         //Content Manager
         MedNUSContentManager *contentManager;

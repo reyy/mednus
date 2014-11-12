@@ -20,6 +20,7 @@ public:
     ~MedNUSTab(){}
 signals:
     void noMoreTabs(MedNUSTab*);
+    void tabClosedSignal(QString);
  public slots:
     void closeTab(int index);
 
@@ -37,8 +38,10 @@ public:
     int counter =2;
 
 signals:
-
+    void tabClosedSignal(QString);
+    void tabOpenedSignal(QString);
 public slots:
+    void tabClosed(QString t){emit tabClosedSignal(t);}\
     void closeTab(MedNUSTab *index);
     void addTab(QWidget*, QString, QString dir);
 };
