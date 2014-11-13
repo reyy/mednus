@@ -1,13 +1,11 @@
 #include "MedNUSQuiz.h"
 
-MedNUSQuizQuestion::MedNUSQuizQuestion(QWidget *parent, QVBoxLayout *layout, QVector<QString> content, int noOfOptions) :
-    QWidget(parent)
+MedNUSQuizQuestion::MedNUSQuizQuestion(QWidget *parent, QVBoxLayout *layout, QVector<QString> content, int noOfOptions)
 {
-    this->setVisible(false);
-    _optionButtonGroup = new QButtonGroup(this);
+    _optionButtonGroup = new QButtonGroup(parent);
 
     // Initialize the QLabel
-    _questionTextLabel = new QLabel(content[0], this);
+    _questionTextLabel = new QLabel(content[0], parent);
     //_questionTextLabel->setStyleSheet("QLabel { color : black; }");
     //_questionTextLabel->setGeometry(parent->geometry());
     //_questionTextLabel->setWordWrap(true);
@@ -19,13 +17,13 @@ MedNUSQuizQuestion::MedNUSQuizQuestion(QWidget *parent, QVBoxLayout *layout, QVe
     QRadioButton* tempButton;
     for (int i = 1; i <= noOfOptions; i++)
     {
-        tempButton = new QRadioButton(content[i], this);
+        tempButton = new QRadioButton(content[i], parent);
         //tempButton->setStyleSheet("QRadioButton { color : black;}");
         //tempButton->setContentsMargins(5,5,5,5);
         _optionButtonGroup->addButton(tempButton, i);
         layout->addWidget(tempButton);
     }
-    _teacherCommentLabel = new QLabel(this);
+    _teacherCommentLabel = new QLabel(parent);
     _teacherCommentLabel->setText(content[noOfOptions+1]);
     //_teacherCommentLabel->setStyleSheet("QLabel { color : black; }");
     //_teacherCommentLabel->setGeometry(parent->geometry());

@@ -27,7 +27,7 @@
 #include <QTextStream>
 #include <QDebug>
 
-class MedNUSQuizQuestion : public QWidget
+class MedNUSQuizQuestion
 {
 public:
 
