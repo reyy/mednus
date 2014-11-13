@@ -13,7 +13,7 @@ void MedNUSContentManager::initLessonList(QStringList)
     content.push_back("/mednus/lesson1/videos/Osteology of the Skull- 12 Newborn Skull.mp4");
     content.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
     content.push_back("/mednus/lesson1/models/craniofacial.ply");
-    content.push_back("/mednus/lesson1/quiz/quiz.qiz");//
+    content.push_back("/mednus/lesson1/quiz/Quiz - The Skull.qiz");//
 
     emit callAddLesson("Functional Anatomy of the Skull","Professor Gopal","Anatomy Department",content);
 
