@@ -1,0 +1,6 @@
+syntax: glob
+models/.DS_Store
+mednus_code/mednus.pro.user
+mednus_code/Makefile
+mednus_code/.DS_Store
+.DS_Store
