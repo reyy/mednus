@@ -167,12 +167,11 @@ MedNUSQuiz::MedNUSQuiz(QString filename, QWidget *parent) :
     //_layout->setContentsMargins(5,5,5,5);
 
     _tempWidget->setLayout(_layout);
-    _tempWidget->setStyleSheet("background-color: #ff00ff");
+    _tempWidget->setStyleSheet("background-color: #6894ad");
     _tempWidget->setContentsMargins(20,20,20,20);
     _tempWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     _scrollArea = new QScrollArea(this);
     //_scrollArea->setObjectName(QStringLiteral("_scrollArea"));
-    _scrollArea->setStyleSheet("background-color: #ff0000");
     _scrollArea->setContentsMargins(20,20,20,20);
     _scrollArea->setWidgetResizable(true);
     _scrollArea->setWidget(_tempWidget);
