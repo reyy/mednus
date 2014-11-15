@@ -41,11 +41,11 @@ void MedNUSLessonIcon::updatePosition(float packageX, float packageY, float x, f
     _x=packageX;
     _y=packageY+y;
     qDebug() <<packageX<<" "<<packageY<<" "<<_x<<" "<< _y;
-    _icon->setGeometry(QRect(LESSONPANEL_BORDER+1,1, _directory.width()-2, _directory.height()-2));
-    _text->setGeometry(QRect(LESSONPANEL_BORDER+_directory.width()+5, 1, LESSONPANEL_WIDTH-LESSONPANEL_BORDER*10, 16));
-    _highlight->setGeometry(QRect(LESSONPANEL_BORDER-2, 0, LESSONPANEL_WIDTH-LESSONPANEL_BORDER*11, _directory.height()+2));
+    _icon->setGeometry(QRect(LESSONPANEL_BORDER+1,1, 15, 20));
+    _text->setGeometry(QRect(LESSONPANEL_BORDER+15+5, 1, LESSONPANEL_WIDTH-LESSONPANEL_BORDER*10, 16));
+    _highlight->setGeometry(QRect(LESSONPANEL_BORDER-2, 0, LESSONPANEL_WIDTH-LESSONPANEL_BORDER*11, 20+2));
 
-    this->setGeometry(QRect(x+LESSONPANEL_BORDER-2, y, LESSONPANEL_WIDTH-LESSONPANEL_BORDER*10, _directory.height()+5));
+    this->setGeometry(QRect(x+LESSONPANEL_BORDER-2, y, LESSONPANEL_WIDTH-LESSONPANEL_BORDER*10, 20+5));
 
     QFontMetrics metrics(_text->font());
     _text->setText(metrics.elidedText(_filename, Qt::ElideRight, _text->width()-30));
@@ -73,7 +73,6 @@ void MedNUSLessonIcon::setVisible(bool value) {
 }
 
 void MedNUSLessonIcon::mousePressEvent ( QMouseEvent * event ){
-    //qDebug()<<"Hey" << _text->text();
     setHighlight(true);
     emit emitOpenFile(_path, _text->text(), 0); //todo: pass actual type!
     event->ignore();
@@ -81,7 +80,6 @@ void MedNUSLessonIcon::mousePressEvent ( QMouseEvent * event ){
 
 void MedNUSLessonIcon::tabOpened(QString path)
 {
-
     if(path.contains( _path))
         setHighlight(true);
 }
