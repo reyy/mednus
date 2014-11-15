@@ -90,5 +90,11 @@
         <file>images/lessonLoading_8.png</file>
         <file>images/lessonLoading_9.png</file>
         <file>images/lessonLoading_10.png</file>
+        <file>images/bt_view1.png</file>
+        <file>images/bt_view2.png</file>
+        <file>images/bt_view3.png</file>
+        <file>images/bt_view1_p.png</file>
+        <file>images/bt_view2_p.png</file>
+        <file>images/bt_view3_p.png</file>
     </qresource>
 </RCC>
