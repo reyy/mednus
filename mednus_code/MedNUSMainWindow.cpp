@@ -176,10 +176,7 @@ void MedNUSMainWindow::mousePressEvent ( QMouseEvent * event )
 {
     if(event->buttons() == Qt::LeftButton) {
         if(_widgetsCreated) {
-            if(lp->checkTrayButton(event->x(),event->y())) {
-                _trayOut=!_trayOut;
-            }
-
+            _trayOut=lp->checkTray();
             lp->setTrayOut(_trayOut);
             ub->setTrayOut(_trayOut);
             fb->setTrayOut(_trayOut);

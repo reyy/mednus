@@ -52,7 +52,7 @@ public:
     void clearLesson();
     void updateGUI();
     void setTrayOut(bool value);
-    bool checkTrayButton(float xpos, float ypos);
+    bool checkTray();
     QPixmap getLoadingIcon(int range);
 
 protected:
