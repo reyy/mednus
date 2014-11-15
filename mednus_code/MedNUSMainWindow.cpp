@@ -63,8 +63,6 @@ void MedNUSMainWindow::createWidgets()
         //Add FrontBar (Top bar that has logo)
          fb = new MedNUSFrontBar(this);
          fb->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
-         fb->setName(userName);
-         fb->setAvatar(":/images/ivle_profile.jpg");
          mainLayout->addWidget(fb,0,0);
 
         //Add UserBar (Top right bar that has user info)

@@ -64,7 +64,7 @@ public:
     int getHeight();
     void toggleCollapse();
     void toggleCollapse(bool value);
-    void updateGUI();
+    void updateGUI(bool trayOut);
 
 public slots:
     void callOpenFile(QString str, QString title, int type)
