@@ -33,6 +33,7 @@ private:
     QPixmap _icon_video;
     QPixmap _button_toopen;
     QPixmap _button_toclose;
+    QPixmap _loadingIcon[11];
 
     QLabel *_background;
     QLabel *_dividerBackground;
@@ -52,6 +53,7 @@ public:
     void updateGUI();
     void setTrayOut(bool value);
     bool checkTrayButton(float xpos, float ypos);
+    QPixmap getLoadingIcon(int range);
 
 protected:
     void mousePressEvent ( QMouseEvent * event ) ;

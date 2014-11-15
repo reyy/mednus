@@ -47,6 +47,10 @@ void MedNUSLessonPanel::loadPixmap() {
     _icon_pdf = QPixmap(QString::fromStdString(":/images/icon_pdf.png"));
     _icon_quiz = QPixmap(QString::fromStdString(":/images/icon_quiz.png"));
     _icon_video = QPixmap(QString::fromStdString(":/images/icon_video.png"));
+
+    for(int i=0;i<11;i++) {
+        _loadingIcon[i] = QPixmap(QString::fromStdString(":/images/lessonLoading_")+QString::number(i)+QString::fromStdString(".png"));
+    }
 }
 
 void MedNUSLessonPanel::addLesson(MedNUSLessonPackage * _package) {
@@ -140,6 +144,10 @@ bool MedNUSLessonPanel::checkTrayButton(float xpos, float ypos) {
     return false;
 }
 
+QPixmap MedNUSLessonPanel::getLoadingIcon(int range) {
+    return _loadingIcon[MIN(10,MAX(0,range))];
+}
+
 void MedNUSLessonPanel::mousePressEvent ( QMouseEvent * event )
 {
     if(event->buttons() == Qt::LeftButton) {
@@ -155,13 +163,6 @@ void MedNUSLessonPanel::mousePressEvent ( QMouseEvent * event )
                 collapseEveryoneElse=true;
                 break;
              }
-
-            //For mouse click.
-            if(!temp->getCollapse()) {
-                for(int j=0;j<temp->getContentSize();j++) {
-                    //temp->getContentItem(j)->setHighlight(false);
-                }
-            }
         }
 
         if(collapseEveryoneElse) {

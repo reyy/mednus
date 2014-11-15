@@ -1,4 +1,5 @@
 #include "MedNUSLessonPackage.h"
+#include "MedNUSLessonPanel.h"
 #include "MedNUSAUISettings.h"
 #include <QFontMetrics>
 #include <math.h>
@@ -63,20 +64,23 @@ MedNUSLessonPackage::MedNUSLessonPackage(QWidget *parent) :
 
 
     _background = new QLabel(parent);
-    _background->setGeometry(QRect(_x, _y, LESSONPANEL_WIDTH, LESSONPANEL_CLICKHEIGHT));
     //_background->setPixmap(QPixmap(QString::fromStdString(":/images/copy.png")));
 
+    _loadStatus = new QLabel(parent);
+    _loadStatus->setPixmap(((MedNUSLessonPanel*)parent)->getLoadingIcon(10));
+    _loadStatus->setScaledContents(true);
+
     _moduleTitle = new QLabel(parent);
-    _moduleTitle->setGeometry(QRect(_x+TOPBAR_HEIGHT, _y, LESSONPANEL_WIDTH, 25));
     _moduleTitle->setStyleSheet("color:#FFF;font-size:12px;font-weight:bold;");
+    _moduleTitle->setGeometry(QRect(_x+10+LESSONPANEL_BORDERICON, _y, LESSONPANEL_WIDTH, 24));
 
     _subHeader = new QLabel(parent);
-    _subHeader->setGeometry(QRect(_x+TOPBAR_HEIGHT, _y+22, LESSONPANEL_WIDTH, 20));
     _subHeader->setStyleSheet("color:#FFF;font-size:10px;");
+    _subHeader->setGeometry(QRect(_x+15+LESSONPANEL_BORDERICON, _y+22, LESSONPANEL_WIDTH, 20));
 
     _description = new QLabel(parent);
-    _description->setGeometry(QRect(_x+TOPBAR_HEIGHT, _y+40, LESSONPANEL_WIDTH, 20));
     _description->setStyleSheet("color:#FFF;font-size:10px;");
+    _description->setGeometry(QRect(_x+15+LESSONPANEL_BORDERICON, _y+40, LESSONPANEL_WIDTH, 20));
 
     _contentPanel = new MedNUSLessonPackageContentPanel(_x,_y,parent);
 
@@ -98,12 +102,7 @@ MedNUSLessonPackage::MedNUSLessonPackage(QWidget *parent) :
 }
 
 MedNUSLessonPackage::~MedNUSLessonPackage() {
-    delete _background;
-    delete _moduleTitle;
-    delete _subHeader;
-    delete _description;
     delete _contentPanel;
-    delete _scrollArea;
 }
 
 void MedNUSLessonPackage::setY(int value) {
@@ -201,9 +200,10 @@ void MedNUSLessonPackage::updateGUI() {
         _subHeader->setStyleSheet("color:#FFF;font-size:10px;");
         _description->setStyleSheet("color:#FFF;font-size:10px;");
         _background->setGeometry(QRect(_x, _y, LESSONPANEL_WIDTH, LESSONPANEL_CONTRACTED_CLICKHEIGHT));
-        _moduleTitle->setGeometry(QRect(_x+10, _y, LESSONPANEL_WIDTH, 24));
-        _subHeader->setGeometry(QRect(_x+15, _y+22, LESSONPANEL_WIDTH, 20));
-        _description->setGeometry(QRect(_x+15, _y+40, LESSONPANEL_WIDTH, 20));
+        _loadStatus->setGeometry(QRect(_x+LESSONPANEL_BORDERICON*0.3, _y+LESSONPANEL_BORDERICON*0.3, LESSONPANEL_BORDERICON, LESSONPANEL_BORDERICON));
+        _moduleTitle->setGeometry(QRect(_x+10+LESSONPANEL_BORDERICON, _y, LESSONPANEL_WIDTH, 24));
+        _subHeader->setGeometry(QRect(_x+15+LESSONPANEL_BORDERICON, _y+22, LESSONPANEL_WIDTH, 20));
+        _description->setGeometry(QRect(_x+15+LESSONPANEL_BORDERICON, _y+40, LESSONPANEL_WIDTH, 20));
 
         _scrollArea->setVisible(false);
         _subHeader->setVisible(false);
@@ -213,9 +213,10 @@ void MedNUSLessonPackage::updateGUI() {
         _subHeader->setStyleSheet("color:#FFF;font-size:10px;");
         _description->setStyleSheet("color:#FFF;font-size:10px;");
         _background->setGeometry(QRect(_x, _y, LESSONPANEL_WIDTH, LESSONPANEL_HEIGHT));
-        _moduleTitle->setGeometry(QRect(_x+10, _y, LESSONPANEL_WIDTH, 24));
-        _subHeader->setGeometry(QRect(_x+15, _y+22, LESSONPANEL_WIDTH, 20));
-        _description->setGeometry(QRect(_x+15, _y+40, LESSONPANEL_WIDTH, 20));
+        _loadStatus->setGeometry(QRect(_x+LESSONPANEL_BORDERICON*0.3, _y+LESSONPANEL_BORDERICON*0.3, LESSONPANEL_BORDERICON, LESSONPANEL_BORDERICON));
+        _moduleTitle->setGeometry(QRect(_x+10+LESSONPANEL_BORDERICON, _y, LESSONPANEL_WIDTH, 24));
+        _subHeader->setGeometry(QRect(_x+15+LESSONPANEL_BORDERICON, _y+22, LESSONPANEL_WIDTH, 20));
+        _description->setGeometry(QRect(_x+15+LESSONPANEL_BORDERICON, _y+40, LESSONPANEL_WIDTH, 20));
         _scrollArea->setGeometry(QRect(_x+LESSONPANEL_BORDER, _y+LESSONPANEL_CLICKHEIGHT, LESSONPANEL_WIDTH-LESSONPANEL_BORDER*4, LESSONPANEL_HEIGHT-LESSONPANEL_CLICKHEIGHT-LESSONPANEL_BORDER));
 
         _scrollArea->setVisible(true);
