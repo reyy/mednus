@@ -28,7 +28,7 @@ MedNUSUserBar::MedNUSUserBar(QWidget *parent) :
     _name->setStyleSheet("background-color:rgba(0,0,0,0);font-size:14px;color:#FFFFFF;text-align:right;");
     _name->setGeometry(QRect(this->x()+this->geometry().width()-LESSONPANEL_WIDTH-SIDEBAR_OFFSET+60, this->y()+(TOPBAR_HEIGHT-20)*0.5, LESSONPANEL_WIDTH-100, 20));
 
-    this->setTrayOut(false);
+    this->setTrayOut(true);
 }
 
 MedNUSUserBar::~MedNUSUserBar()

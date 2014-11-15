@@ -94,7 +94,6 @@ void MedNUSMainWindow::createWidgets()
         connect(contentManager, SIGNAL(callAddTab(QWidget*,QString,QString)), tabs, SLOT(addTab(QWidget*,QString,QString)));
         contentManager->initLessonList(QStringList());
 
-
         centralWidget->setLayout(mainLayout);
         setCentralWidget(centralWidget);
 

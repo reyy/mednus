@@ -28,7 +28,7 @@ MedNUSLessonPanel::MedNUSLessonPanel(QWidget *parent) : QWidget(parent) {
     _button->setScaledContents(true);
     _button->setPixmap(_button_toclose);
 
-    _trayOut = false;
+    this->setTrayOut(true);
 }
 
 MedNUSLessonPanel::~MedNUSLessonPanel() {
@@ -79,8 +79,6 @@ void MedNUSLessonPanel::addLesson(QString title,QString subTitle, QString descri
             icon_directory = _icon_video;
         _package->addContent(directory,icon_directory);
     }
-    if(_lessonList.size()==0)
-        _package->toggleCollapse(false);
 
     _lessonList.push_back(_package);
     updateGUI(); 
@@ -162,16 +160,17 @@ QPixmap MedNUSLessonPanel::getLoadingIcon(int range) {
 
 void MedNUSLessonPanel::mousePressEvent ( QMouseEvent * event )
 {
-    if(event->buttons() == Qt::LeftButton&&!_trayOut) {
+    if(event->buttons() == Qt::LeftButton) {
         //qDebug() << "Debug Message";
         bool collapseEveryoneElse=false;
-        MedNUSLessonPackage *temp, *temp2;
+        MedNUSLessonPackage *temp, *selected, *temp2;
 
         for(int i=0;i<(int)_lessonList.size();i++) {
             temp = _lessonList.at(i);
             if(event->pos().x()>10&&event->pos().y()>=temp->getY()&&event->pos().y()<=temp->getY()+temp->getInteractiveHeight()) {
-                temp->toggleCollapse();
-                temp->updateGUI(false);
+                selected=temp;
+                selected->toggleCollapse();
+                selected->updateGUI(false);
                 collapseEveryoneElse=true;
                 break;
              }
@@ -180,11 +179,12 @@ void MedNUSLessonPanel::mousePressEvent ( QMouseEvent * event )
         if(collapseEveryoneElse) {
             for(int i=0;i<(int)_lessonList.size();i++) {
                 temp2 = _lessonList.at(i);
-                if(temp!=temp2) {
+                if(selected!=temp2) {
                     temp2->toggleCollapse(true);
                     temp2->updateGUI(false);
                 }
             }
+            this->setTrayOut(false);
         }
 
         this->updateGUI();
