@@ -33,6 +33,7 @@ private:
     int _tone;
 
     QString _title;
+    QLabel *_loadStatus;
     QLabel *_background;
     QLabel *_moduleTitle;
     QLabel *_subHeader;
