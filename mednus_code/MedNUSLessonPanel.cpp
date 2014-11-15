@@ -136,22 +136,11 @@ void MedNUSLessonPanel::setTrayOut(bool value) {
         this->setMinimumWidth(LESSONPANEL_WIDTH);
         this->setMaximumWidth(LESSONPANEL_WIDTH);
         _button->setPixmap(_button_toclose);
-
-        //Force all to adopt non-collapsed layout
-        for(int i=0;i<(int)_lessonList.size();i++) {
-            _lessonList.at(i)->updateGUI(false);
-        }
     }
 }
 
-bool MedNUSLessonPanel::checkTrayButton(float xpos, float ypos) {
-    xpos-=this->pos().x();
-    ypos-=this->pos().y();
-
-    if(xpos>=0&&xpos<=SIDEBAR_OFFSET&&ypos>=this->height()/2-SIDEBAR_OFFSET*3.2&&ypos<=this->height()/2+SIDEBAR_OFFSET*3.2) {
-        return true;
-    }
-    return false;
+bool MedNUSLessonPanel::checkTray() {
+    return _trayOut;
 }
 
 QPixmap MedNUSLessonPanel::getLoadingIcon(int range) {
@@ -161,9 +150,17 @@ QPixmap MedNUSLessonPanel::getLoadingIcon(int range) {
 void MedNUSLessonPanel::mousePressEvent ( QMouseEvent * event )
 {
     if(event->buttons() == Qt::LeftButton) {
+        if(event->x()>=0&&event->x()<=SIDEBAR_OFFSET&&event->y()>=this->height()/2-SIDEBAR_OFFSET*3.2&&event->y()<=this->height()/2+SIDEBAR_OFFSET*3.2){
+            setTrayOut(!_trayOut);
+        }
+        if(event->x()>SIDEBAR_OFFSET)
+            setTrayOut(false);
+
         //qDebug() << "Debug Message";
         bool collapseEveryoneElse=false;
-        MedNUSLessonPackage *temp, *selected, *temp2;
+        MedNUSLessonPackage *temp=NULL;
+        MedNUSLessonPackage *selected=NULL;
+        MedNUSLessonPackage *temp2=NULL;
 
         for(int i=0;i<(int)_lessonList.size();i++) {
             temp = _lessonList.at(i);
@@ -184,7 +181,6 @@ void MedNUSLessonPanel::mousePressEvent ( QMouseEvent * event )
                     temp2->updateGUI(false);
                 }
             }
-            this->setTrayOut(false);
         }
 
         this->updateGUI();
