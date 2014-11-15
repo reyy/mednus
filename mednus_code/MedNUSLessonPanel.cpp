@@ -28,7 +28,7 @@ MedNUSLessonPanel::MedNUSLessonPanel(QWidget *parent) : QWidget(parent) {
     _button->setScaledContents(true);
     _button->setPixmap(_button_toclose);
 
-    _trayOut = true;
+    _trayOut = false;
 }
 
 MedNUSLessonPanel::~MedNUSLessonPanel() {
@@ -114,7 +114,7 @@ void MedNUSLessonPanel::updateGUI() {
         MedNUSLessonPackage *temp = _lessonList.at(i);
         temp->setTone(i);
         temp->setY(offset);
-        temp->updateGUI();
+        temp->updateGUI(_trayOut);
         offset+=temp->getHeight();
     }
 }
@@ -123,14 +123,26 @@ void MedNUSLessonPanel::setTrayOut(bool value) {
     _trayOut = value;
 
     if(value) {
-        this->setMinimumWidth(SIDEBAR_OFFSET);
-        this->setMaximumWidth(SIDEBAR_OFFSET);
+        this->setMinimumWidth(SIDEBAR_OFFSET+TOPBAR_HEIGHT);
+        this->setMaximumWidth(SIDEBAR_OFFSET+TOPBAR_HEIGHT);
         _button->setPixmap(_button_toopen);
+
+        //Collapsed everything.
+        for(int i=0;i<(int)_lessonList.size();i++) {
+            _lessonList.at(i)->toggleCollapse(true);
+            _lessonList.at(i)->updateGUI(true);
+        }
+        this->updateGUI();
 
     } else {
         this->setMinimumWidth(LESSONPANEL_WIDTH);
         this->setMaximumWidth(LESSONPANEL_WIDTH);
         _button->setPixmap(_button_toclose);
+
+        //Force all to adopt non-collapsed layout
+        for(int i=0;i<(int)_lessonList.size();i++) {
+            _lessonList.at(i)->updateGUI(false);
+        }
     }
 }
 
@@ -150,7 +162,7 @@ QPixmap MedNUSLessonPanel::getLoadingIcon(int range) {
 
 void MedNUSLessonPanel::mousePressEvent ( QMouseEvent * event )
 {
-    if(event->buttons() == Qt::LeftButton) {
+    if(event->buttons() == Qt::LeftButton&&!_trayOut) {
         //qDebug() << "Debug Message";
         bool collapseEveryoneElse=false;
         MedNUSLessonPackage *temp, *temp2;
@@ -159,7 +171,7 @@ void MedNUSLessonPanel::mousePressEvent ( QMouseEvent * event )
             temp = _lessonList.at(i);
             if(event->pos().x()>10&&event->pos().y()>=temp->getY()&&event->pos().y()<=temp->getY()+temp->getInteractiveHeight()) {
                 temp->toggleCollapse();
-                temp->updateGUI();
+                temp->updateGUI(false);
                 collapseEveryoneElse=true;
                 break;
              }
@@ -170,7 +182,7 @@ void MedNUSLessonPanel::mousePressEvent ( QMouseEvent * event )
                 temp2 = _lessonList.at(i);
                 if(temp!=temp2) {
                     temp2->toggleCollapse(true);
-                    temp2->updateGUI();
+                    temp2->updateGUI(false);
                 }
             }
         }

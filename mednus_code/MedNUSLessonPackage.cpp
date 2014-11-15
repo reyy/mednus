@@ -187,8 +187,11 @@ void MedNUSLessonPackage::toggleCollapse(bool value) {
     _contentPanel->updateGUI(_x,_y,_collapse);
 }
 
-void MedNUSLessonPackage::updateGUI() {
-    //_contentPanel->updateGUI(_x,_y,_collapse);
+void MedNUSLessonPackage::updateGUI(bool trayOut) {
+
+    int offset=0;
+    if(trayOut)
+        offset+=LESSONPANEL_BORDERICON;
 
     if(_tone%2==0)
         _background->setStyleSheet("background-color: #286c91;");
@@ -200,10 +203,10 @@ void MedNUSLessonPackage::updateGUI() {
         _subHeader->setStyleSheet("color:#FFF;font-size:10px;");
         _description->setStyleSheet("color:#FFF;font-size:10px;");
         _background->setGeometry(QRect(_x, _y, LESSONPANEL_WIDTH, LESSONPANEL_CONTRACTED_CLICKHEIGHT));
-        _loadStatus->setGeometry(QRect(_x+LESSONPANEL_BORDERICON*0.3, _y+LESSONPANEL_BORDERICON*0.3, LESSONPANEL_BORDERICON, LESSONPANEL_BORDERICON));
-        _moduleTitle->setGeometry(QRect(_x+10+LESSONPANEL_BORDERICON, _y, LESSONPANEL_WIDTH, 24));
-        _subHeader->setGeometry(QRect(_x+15+LESSONPANEL_BORDERICON, _y+22, LESSONPANEL_WIDTH, 20));
-        _description->setGeometry(QRect(_x+15+LESSONPANEL_BORDERICON, _y+40, LESSONPANEL_WIDTH, 20));
+        _loadStatus->setGeometry(QRect(_x+offset*0.5+LESSONPANEL_BORDERICON*0.3, _y+LESSONPANEL_BORDERICON*0.3, LESSONPANEL_BORDERICON, LESSONPANEL_BORDERICON));
+        _moduleTitle->setGeometry(QRect(_x+10+offset+LESSONPANEL_BORDERICON, _y, LESSONPANEL_WIDTH, 24));
+        _subHeader->setGeometry(QRect(_x+15+offset+LESSONPANEL_BORDERICON, _y+22, LESSONPANEL_WIDTH, 20));
+        _description->setGeometry(QRect(_x+15+offset+LESSONPANEL_BORDERICON, _y+40, LESSONPANEL_WIDTH, 20));
 
         _scrollArea->setVisible(false);
         _subHeader->setVisible(false);
@@ -217,7 +220,7 @@ void MedNUSLessonPackage::updateGUI() {
         _moduleTitle->setGeometry(QRect(_x+10+LESSONPANEL_BORDERICON, _y, LESSONPANEL_WIDTH, 24));
         _subHeader->setGeometry(QRect(_x+15+LESSONPANEL_BORDERICON, _y+22, LESSONPANEL_WIDTH, 20));
         _description->setGeometry(QRect(_x+15+LESSONPANEL_BORDERICON, _y+40, LESSONPANEL_WIDTH, 20));
-        _scrollArea->setGeometry(QRect(_x+LESSONPANEL_BORDER, _y+LESSONPANEL_CLICKHEIGHT, LESSONPANEL_WIDTH-LESSONPANEL_BORDER*4, LESSONPANEL_HEIGHT-LESSONPANEL_CLICKHEIGHT-LESSONPANEL_BORDER));
+        _scrollArea->setGeometry(QRect(_x+LESSONPANEL_BORDER, _y+LESSONPANEL_CLICKHEIGHT, LESSONPANEL_WIDTH-LESSONPANEL_BORDER*2-SIDEBAR_OFFSET, LESSONPANEL_HEIGHT-LESSONPANEL_CLICKHEIGHT-LESSONPANEL_BORDER));
 
         _scrollArea->setVisible(true);
         _subHeader->setVisible(true);
