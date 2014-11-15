@@ -21,7 +21,7 @@ MedNUSLessonPanel::MedNUSLessonPanel(QWidget *parent) : QWidget(parent) {
 
     _dividerBackground = new QLabel(this);
     _dividerBackground->setGeometry(QRect(0,0, SIDEBAR_OFFSET, this->height()));
-    _dividerBackground->setStyleSheet("background-color: #162a37;");
+    _dividerBackground->setStyleSheet("background-color: #152d3b;");
 
     _button = new QLabel(this);
     _button->setGeometry(QRect(0,this->height()/2-SIDEBAR_OFFSET*3.2, SIDEBAR_OFFSET, SIDEBAR_OFFSET*6.4));
@@ -42,11 +42,11 @@ void MedNUSLessonPanel::loadPixmap() {
 
     _button_toopen = QPixmap(QString::fromStdString(":/images/button_trayout.png"));
     _button_toclose = QPixmap(QString::fromStdString(":/images/button_trayin.png"));
-    _icon_3d = QPixmap(QString::fromStdString(":/images/icon_3d_small.png"));
-    _icon_image = QPixmap(QString::fromStdString(":/images/icon_image_small.png"));
-    _icon_pdf = QPixmap(QString::fromStdString(":/images/icon_pdf_small.png"));
-    _icon_quiz = QPixmap(QString::fromStdString(":/images/icon_quiz_small.png"));
-    _icon_video = QPixmap(QString::fromStdString(":/images/icon_video_small.png"));
+    _icon_3d = QPixmap(QString::fromStdString(":/images/icon_3d.png"));
+    _icon_image = QPixmap(QString::fromStdString(":/images/icon_image.png"));
+    _icon_pdf = QPixmap(QString::fromStdString(":/images/icon_pdf.png"));
+    _icon_quiz = QPixmap(QString::fromStdString(":/images/icon_quiz.png"));
+    _icon_video = QPixmap(QString::fromStdString(":/images/icon_video.png"));
 }
 
 void MedNUSLessonPanel::addLesson(MedNUSLessonPackage * _package) {

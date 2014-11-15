@@ -8,24 +8,27 @@ MedNUSUserBar::MedNUSUserBar(QWidget *parent) :
     this->setMinimumWidth(LESSONPANEL_WIDTH);
     this->setMinimumHeight(TOPBAR_HEIGHT);
     this->setMaximumHeight(TOPBAR_HEIGHT);
+    this->setStyleSheet("background-color: #152d3b;");
 
     _background = new QLabel(this);
-    _background->setGeometry(QRect(this->x(), this->y(), LESSONPANEL_WIDTH, TOPBAR_HEIGHT));
+    _background->setGeometry(QRect(this->x()+SIDEBAR_OFFSET, this->y(), LESSONPANEL_WIDTH, TOPBAR_HEIGHT));
     _background->setStyleSheet("background-color: #1c4f6e;");
 
     _avatar = new QLabel(this);
     _avatar->setGeometry(QRect(this->x()+LESSONPANEL_WIDTH-TOPBAR_HEIGHT*0.9-SIDEBAR_OFFSET, this->y()+TOPBAR_HEIGHT*0.1, TOPBAR_HEIGHT*0.8, TOPBAR_HEIGHT*0.8));
     _avatar->setPixmap(QPixmap(QString::fromStdString(":/images/ivle_profile.jpg")));
     _avatar->setScaledContents(true);
+    _avatar->setStyleSheet("background-color:rgba(0,0,0,0);");
 
     _cutoutAvatar = new QLabel(this);
     _cutoutAvatar->setGeometry(QRect(this->x()+LESSONPANEL_WIDTH-TOPBAR_HEIGHT*0.9-SIDEBAR_OFFSET, this->y()+TOPBAR_HEIGHT*0.1, TOPBAR_HEIGHT*0.8, TOPBAR_HEIGHT*0.8));
     _cutoutAvatar->setPixmap(QPixmap(QString::fromStdString(":/images/avatar_cutout.png")));
     _cutoutAvatar->setScaledContents(true);
+    _cutoutAvatar->setStyleSheet("background-color:rgba(0,0,0,0);");
 
     _name = new QLabel(this);
-    _name->setStyleSheet("font-size:14px;color:#FFFFFF;text-align:right;");
-    _name->setGeometry(QRect(this->x()+this->geometry().width()-LESSONPANEL_WIDTH-20-10-TOPBAR_HEIGHT-SIDEBAR_OFFSET, this->y()+(TOPBAR_HEIGHT-20)*0.5, LESSONPANEL_WIDTH-20, 20));
+    _name->setStyleSheet("background-color:rgba(0,0,0,0);font-size:14px;color:#FFFFFF;text-align:right;");
+    _name->setGeometry(QRect(this->x()+this->geometry().width()-LESSONPANEL_WIDTH-SIDEBAR_OFFSET+40, this->y()+(TOPBAR_HEIGHT-20)*0.5, LESSONPANEL_WIDTH-100, 20));
 }
 
 MedNUSUserBar::~MedNUSUserBar()
