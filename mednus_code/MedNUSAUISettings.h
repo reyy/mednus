@@ -16,7 +16,10 @@
 #define VIDEO_TIME_LENGTH 50
 #define VIDEO_ICON_SIZE 24
 
- #define MIN(a,b) ((a) < (b) ? (a) : (b))
- #define MAX(a,b) ((a) > (b) ? (a) : (b))
+#define TEXT_QUIZ_INTRO "Select an answer for every question. Unanswered questions will prevent quiz from being submitted. Click on the Submit button at the bottom of the page to have your answers graded."
+#define TEXT_QUIZ_WARNING "Not all questions attempted, please check through and submit again."
+
+#define MIN(a,b) ((a) < (b) ? (a) : (b))
+#define MAX(a,b) ((a) > (b) ? (a) : (b))
 
 #endif // MEDNUSAUISETTINGS_H

@@ -10,11 +10,10 @@ MedNUSContentPanel::MedNUSContentPanel(QWidget *parent) :
     for(int i=0; i<3; i++)
         tabList[i] = new MedNUSTab(this);
     layout->setMargin(0);
-    layout->setContentsMargins(0,0,0,0);
-    layout->setSpacing(1);
-    //this->setAutoFillBackground(true);
+    layout->setContentsMargins(10,10,10,10);
+    layout->setSpacing(5);
     //Tab Bkg Change
-    this->setStyleSheet("background-color:#1c4f6e;color:#ffffff");
+    this->setStyleSheet("background-color:rgba(0,0,0,0);color:#ffffff");
     this->setLayout(layout);
 
 }

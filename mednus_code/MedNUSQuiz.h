@@ -45,6 +45,8 @@ public:
     void highlightAnswer(int correctAnswer, bool showCorrectAnswer) const;
     bool oneOptionSelected() const;
 
+    void setNotice(bool value);
+
     void myForceResize(QRect geometry);
 
     // On Start Quiz
@@ -73,6 +75,8 @@ protected:
 
     QLabel* _titleTextLabel;
     QLabel* _instructionTextLabel;
+    QLabel* _warning;
+    QLabel* _score;
     QVector<QButtonGroup*> _questionOptionGroup;
 
     QPushButton* _markButton;

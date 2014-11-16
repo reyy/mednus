@@ -36,7 +36,6 @@ private:
     QPixmap _loadingIcon[11];
 
     QLabel *_background;
-    QLabel *_dividerBackground;
     QLabel *_button;
     QVector<MedNUSLessonPackage *> _lessonList;
 

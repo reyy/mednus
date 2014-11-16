@@ -24,7 +24,7 @@ MedNUSPdfViewer::MedNUSPdfViewer(QString filename, QWidget *parent) :
 
     imageLabel = new QLabel();
     imageLabel->setPixmap(QPixmap::fromImage(image));
-    imageLabel->setAutoFillBackground(true);
+    //imageLabel->setAutoFillBackground(true);
     imageLabel->setAlignment(Qt::AlignCenter);
 
     scrollArea = new QScrollArea(this);
@@ -34,6 +34,7 @@ MedNUSPdfViewer::MedNUSPdfViewer(QString filename, QWidget *parent) :
     scrollArea->setWidget(imageLabel);
     scrollArea->setGeometry(this->geometry());
     scrollArea->setAutoFillBackground(true);
+
     //Load scrollbar style.
     QFile file(":/images/scrollbar.css");
     if(file.open(QIODevice::ReadOnly|QIODevice::Text)) {

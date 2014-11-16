@@ -10,7 +10,6 @@ class MedNUSFrontBar : public QWidget
 {
     Q_OBJECT
 private:
-    QLabel *_background;
     QLabel *_logo;
     bool _trayOut;
 

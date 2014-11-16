@@ -10,6 +10,16 @@ MedNUSUserBar::MedNUSUserBar(QWidget *parent) :
     this->setMaximumHeight(TOPBAR_HEIGHT);
     this->setStyleSheet("background-color: #152d3b;");
 
+    _background2 = new QLabel(parent);
+    _background2->setGeometry(QRect(this->x(), this->y(), SIDEBAR_OFFSET, TOPBAR_HEIGHT));
+    _background2->setStyleSheet("background-color: rgba(0,0,0,30);");
+    _background2->setVisible(false);
+
+    _backgroundLine = new QLabel(this);
+    _backgroundLine->setGeometry(QRect(this->x(), this->y(), SIDEBAR_OFFSET, TOPBAR_HEIGHT));
+    _backgroundLine->setStyleSheet("QLabel {background-image: url(:/images/login_lines.png);background-repeat: repeat-xy;}");
+_backgroundLine->setVisible(false);
+
     _background = new QLabel(this);
     _background->setGeometry(QRect(this->x()+SIDEBAR_OFFSET, this->y(), LESSONPANEL_WIDTH, TOPBAR_HEIGHT));
     _background->setStyleSheet("background-color: #1c4f6e;");

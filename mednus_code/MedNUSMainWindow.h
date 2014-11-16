@@ -18,6 +18,9 @@ class MedNUSMainWindow : public QMainWindow
 {
     Q_OBJECT
 private:
+
+    QLabel *_background;
+    QLabel *_backgroundLine;
     bool _trayOut;
     bool _widgetsCreated;
     bool _menuCreated;
@@ -42,6 +45,7 @@ protected:
     void createMenus();
     void deleteWidgets();
     void deleteMenus();
+    void resizeEvent(QResizeEvent* event);
 
 signals:
 

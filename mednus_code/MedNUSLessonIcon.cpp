@@ -42,10 +42,10 @@ void MedNUSLessonIcon::updatePosition(float packageX, float packageY, float x, f
     _y=packageY+y;
     qDebug() <<packageX<<" "<<packageY<<" "<<_x<<" "<< _y;
     _icon->setGeometry(QRect(LESSONPANEL_BORDER+1,1, 15, 20));
-    _text->setGeometry(QRect(LESSONPANEL_BORDER+15+5, 1, LESSONPANEL_WIDTH-LESSONPANEL_BORDER*10, 16));
-    _highlight->setGeometry(QRect(LESSONPANEL_BORDER-2, 0, LESSONPANEL_WIDTH-LESSONPANEL_BORDER*11, 20+2));
+    _text->setGeometry(QRect(LESSONPANEL_BORDER+15+5, 1, LESSONPANEL_WIDTH-LESSONPANEL_BORDER*2-SIDEBAR_OFFSET-18, 16));
+    _highlight->setGeometry(QRect(LESSONPANEL_BORDER-2, 0, LESSONPANEL_WIDTH-LESSONPANEL_BORDER*2-SIDEBAR_OFFSET-18, 20+2));
 
-    this->setGeometry(QRect(x+LESSONPANEL_BORDER-2, y, LESSONPANEL_WIDTH-LESSONPANEL_BORDER*10, 20+5));
+    this->setGeometry(QRect(x+LESSONPANEL_BORDER-2, y, LESSONPANEL_WIDTH-LESSONPANEL_BORDER*2-SIDEBAR_OFFSET-16, 20+5));
 
     QFontMetrics metrics(_text->font());
     _text->setText(metrics.elidedText(_filename, Qt::ElideRight, _text->width()-30));
