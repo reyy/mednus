@@ -63,15 +63,18 @@ void MedNUSFrontBar::setTrayOut(bool value) {
 }
 
 void MedNUSFrontBar::changeFullScreenView() {
-    //Todo: Set Screen to fullscreen. pdf only.
+    //Todo: Set Screen to fullscreen.
+    emit toggleLayout(2);
 }
 
 void MedNUSFrontBar::changeLessonView() {
     //Todo: Set Screen to lessonview. Video and pdf.
+    emit toggleLayout(1);
 }
 
 void MedNUSFrontBar::changeDefaultView(){
     //Todo: Set Screen to default 3 screen view.
+    emit toggleLayout(0);
 }
 
 void MedNUSFrontBar::resizeEvent(QResizeEvent* event)

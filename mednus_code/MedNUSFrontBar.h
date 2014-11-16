@@ -25,8 +25,9 @@ public:
     void setTrayOut(bool value);
 
 signals:
+    void toggleLayout(int);
 
-public slots:
+protected slots:
     void changeFullScreenView();
     void changeLessonView();
     void changeDefaultView();

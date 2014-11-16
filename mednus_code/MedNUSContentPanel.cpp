@@ -81,6 +81,28 @@ void MedNUSContentPanel::addTab(QWidget* toAdd,QString title, QString dir)
     emit tabOpenedSignal(dir);
 }
 
+void MedNUSContentPanel::toggleView(int view)
+{
+    if(viewType != view)
+    {
+        tabList[0]->show();
+        tabList[1]->show();
+        tabList[2]->show();
+
+        if(view >= 1)
+            tabList[2]->hide();
+
+        if(view == 2)
+            tabList[1]->hide();
+
+        viewType = view;
+    }
+    else
+    {
+        //layout->
+    }
+}
+
 void MedNUSContentPanel::closeTab(MedNUSTab* index)
 {
 
