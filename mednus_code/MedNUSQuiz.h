@@ -42,7 +42,7 @@ public:
     ~MedNUSQuizQuestion();
 
     int getSelectedAnswer() const;
-    void showCorrectAnswer(int correctAnswer) const;
+    void highlightAnswer(int correctAnswer, bool showCorrectAnswer) const;
     bool oneOptionSelected() const;
 
     void myForceResize(QRect geometry);
@@ -68,11 +68,15 @@ protected:
     QVBoxLayout* _layout;
     QScrollArea* _scrollArea;
 
+    QLabel* _titleTextLabel;
     QLabel* _instructionTextLabel;
     QVector<QButtonGroup*> _questionOptionGroup;
 
     QPushButton* _markButton;
     QVector<int> _correctAnswerList;
+
+    bool _showAnswerFlag;
+    bool _showTeacherCommentFlag;
 
     void resizeEvent(QResizeEvent *event);
 
