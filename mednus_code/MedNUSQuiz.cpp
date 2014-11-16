@@ -90,7 +90,7 @@ void MedNUSQuizQuestion::highlightAnswer(int correctAnswer, bool showCorrectAnsw
             else if (((QRadioButton*)buttonList.at(i))->isChecked())
             {
                 // Bold the selected answer.
-                ((QRadioButton*)buttonList.at(i))->setStyleSheet("QRadioButton::indicator {width: 0px;height: 13px; } QRadioButton {font: bold;}");
+                ((QRadioButton*)buttonList.at(i))->setStyleSheet("QRadioButton::indicator {width: 0px;height: 13px; } QRadioButton {font: bold;color: rgba(255, 0, 0, 255);}");
             }
             else
             {
