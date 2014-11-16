@@ -23,6 +23,19 @@ void MedNUSContentManager::initLessonList(QStringList)
     content2.push_back("/mednus/lesson1/models/craniofacial.ply");
 
     emit callAddLesson("Osteology of the Skull","A/Professor Tan","Anatomy Department",content2);
+
+    content2.clear();
+    content2.push_back("/mednus/lesson2/pdf/axial_lecture_2.pdf");
+    content2.push_back("/mednus/lesson2/videos/Osteology of the Skull- 7 The Face (1).mp4");
+
+    emit callAddLesson("Skull Osteology I","A/Professor Tan","Anatomy Department",content2);
+
+    content2.clear();
+    content2.push_back("/mednus/lesson2/pdf/axial_lecture_2.pdf");
+    content.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
+    content2.push_back("/mednus/lesson1/videos/Osteology of the Skull- 12 Newborn Skull.mp4");
+
+    emit callAddLesson("Skull Osteology II","A/Professor Tan","Anatomy Department",content2);
     openLastView(content);
 }
 
