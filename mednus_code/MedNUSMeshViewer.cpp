@@ -406,7 +406,8 @@ void MedNUSMeshViewer::newProject()
 {
     uninstallPipeline();
     renderer = vtkRenderer::New();
-    renderer->SetBackground(26/255.0, 57/255.0, 74/255.0);
+    //renderer->SetBackground(26/255.0, 57/255.0, 74/255.0);
+    renderer->SetBackground(0/255.0, 0/255.0, 0/255.0);
     renderWindow->AddRenderer(renderer);
     renderWindow->Render();
 }

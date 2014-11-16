@@ -7,7 +7,7 @@
 MedNUSLessonPackageContentPanel::MedNUSLessonPackageContentPanel(int x,int y,QWidget *parent) :
     QWidget(parent) {
 
-    this->setGeometry(QRect(0,0,LESSONPANEL_WIDTH-LESSONPANEL_BORDER*2,_listOfItems.size()*24));
+    this->setGeometry(QRect(0,0,LESSONPANEL_WIDTH-LESSONPANEL_BORDER*2-SIDEBAR_OFFSET,_listOfItems.size()*24+2));
 
     _parent=this;
 }
@@ -37,7 +37,7 @@ void MedNUSLessonPackageContentPanel::clearContent() {
 }
 
 void MedNUSLessonPackageContentPanel::updateGUI(int x, int y, bool collapse) {
-    this->setGeometry(QRect(0,0,LESSONPANEL_WIDTH,_listOfItems.size()*24));
+    this->setGeometry(QRect(0,0,LESSONPANEL_WIDTH-LESSONPANEL_BORDER*2-SIDEBAR_OFFSET,_listOfItems.size()*24+2));
 
     if(collapse) {
         for(int i=0;i<_listOfItems.size();i++)
@@ -88,13 +88,12 @@ MedNUSLessonPackage::MedNUSLessonPackage(QWidget *parent) :
     _scrollArea->setWidgetResizable(false);
     _scrollArea->setContentsMargins(0,0,0,0);
     _scrollArea->setGeometry(_contentPanel->geometry());
-    _scrollArea->setAutoFillBackground(true);
     _scrollArea->setWidget(_contentPanel);
     _scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     _scrollArea->setVerticalScrollBarPolicy( Qt::ScrollBarAsNeeded);
 
     //Load scrollbar style.
-    QFile file(":/images/scrollbar.css");
+    QFile file(":/images/lessonpanel.css");
     if(file.open(QIODevice::ReadOnly|QIODevice::Text)) {
         _scrollArea->setStyleSheet(file.readAll());
         file.close();

@@ -10,12 +10,8 @@ MedNUSLogin::MedNUSLogin(QWidget *parent) :
     this->setMinimumSize(800,600);
 
     _background = new QLabel(this);
-    _background->setPixmap(QPixmap(QString::fromStdString(":/images/login_background.jpg")));
+    _background->setPixmap(QPixmap(QString::fromStdString(":/images/login_overlay.png")));
     _background->setScaledContents(true);
-
-    _background2 = new QLabel(this);
-    _background2->setPixmap(QPixmap(QString::fromStdString(":/images/login_overlay.png")));
-    _background2->setScaledContents(true);
 
     _backgroundLine = new QLabel(this);
     _backgroundLine->setStyleSheet("QLabel {background-image: url(:/images/login_lines.png);background-repeat: repeat-xy;}");
@@ -102,8 +98,7 @@ void MedNUSLogin::loginButtonPress() {
 void MedNUSLogin::resizeEvent(QResizeEvent* event)
 {
     int scale=MIN(1050,this->geometry().width());
-    _background->setGeometry(QRect(0, 0, this->geometry().width(), this->geometry().height()));
-    _background2->setGeometry(QRect(this->geometry().width()*0.6, 0, this->geometry().width()*0.4, this->geometry().height()));
+    _background->setGeometry(QRect(this->geometry().width()*0.6, 0, this->geometry().width()*0.4, this->geometry().height()));
     _backgroundRect->setGeometry(QRect(0, 0, this->geometry().width()*0.6, this->geometry().height()));
     _backgroundLine->setGeometry(QRect(this->geometry().width()*0.6, 0, this->geometry().width()*0.4, this->geometry().height()));
     _logo->setGeometry(QRect(this->geometry().width()*0.04, this->geometry().height()*0.05, LOGO_WIDTH/40*76, LOGO_WIDTH/40*21));

@@ -97,5 +97,6 @@
         <file>images/bt_view3_p.png</file>
         <file>images/about.png</file>
         <file>icon.icns</file>
+        <file>images/lessonpanel.css</file>
     </qresource>
 </RCC>

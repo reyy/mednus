@@ -16,12 +16,8 @@ MedNUSLessonPanel::MedNUSLessonPanel(QWidget *parent) : QWidget(parent) {
 
     loadPixmap();
     _background = new QLabel(this);
-    _background->setGeometry(QRect(0,0, this->width(), this->height()));
+    _background->setGeometry(QRect(SIDEBAR_OFFSET,0, this->width()-SIDEBAR_OFFSET, this->height()));
     _background->setStyleSheet("background-color: #1a394a;");
-
-    _dividerBackground = new QLabel(this);
-    _dividerBackground->setGeometry(QRect(0,0, SIDEBAR_OFFSET, this->height()));
-    _dividerBackground->setStyleSheet("background-color: #152d3b;");
 
     _button = new QLabel(this);
     _button->setGeometry(QRect(0,this->height()/2-SIDEBAR_OFFSET*3.2, SIDEBAR_OFFSET, SIDEBAR_OFFSET*6.4));
@@ -33,9 +29,6 @@ MedNUSLessonPanel::MedNUSLessonPanel(QWidget *parent) : QWidget(parent) {
 
 MedNUSLessonPanel::~MedNUSLessonPanel() {
     clearLesson();
-    delete _background;
-    delete _dividerBackground;
-    delete _button;
 }
 
 void MedNUSLessonPanel::loadPixmap() {
@@ -191,7 +184,6 @@ void MedNUSLessonPanel::mousePressEvent ( QMouseEvent * event )
 
 void MedNUSLessonPanel::resizeEvent(QResizeEvent* event)
 {
-    _background->setGeometry(QRect(0,0, this->width(),this->height()));
-    _dividerBackground->setGeometry(QRect(0,0, SIDEBAR_OFFSET, this->height()));
+    _background->setGeometry(QRect(SIDEBAR_OFFSET,0, this->width()-SIDEBAR_OFFSET,this->height()));
     _button->setGeometry(QRect(0,this->height()/2-32, SIDEBAR_OFFSET, 64));
 }

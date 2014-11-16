@@ -12,7 +12,6 @@ class MedNUSLogin : public QWidget
     Q_OBJECT
 private:
     QLabel *_background;
-    QLabel *_background2;
     QLabel *_backgroundLine;
     QLabel *_backgroundRect;
     QLabel *_logo;

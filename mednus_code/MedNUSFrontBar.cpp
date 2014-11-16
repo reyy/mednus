@@ -7,11 +7,6 @@ MedNUSFrontBar::MedNUSFrontBar(QWidget *parent) :
     this->setMinimumHeight(TOPBAR_HEIGHT);
     this->setMaximumHeight(TOPBAR_HEIGHT);
 
-    _background = new QLabel(parent);
-    _background->setGeometry(QRect(this->x(), this->y(), this->width(), TOPBAR_HEIGHT));
-    _background->setStyleSheet("background-color: #152d3b;");
-    _background->setVisible(true);
-
     _logo = new QLabel(parent);
     int space = (TOPBAR_HEIGHT-TOPBAR_HEIGHT/40*21)/2;
     _logo->setGeometry(QRect(this->x()+space, this->y()+space, TOPBAR_HEIGHT/40*76, TOPBAR_HEIGHT/40*21));
@@ -50,8 +45,6 @@ MedNUSFrontBar::MedNUSFrontBar(QWidget *parent) :
 
 MedNUSFrontBar::~MedNUSFrontBar()
 {
-    delete _background;
-    delete _logo;
 }
 
 void MedNUSFrontBar::setTrayOut(bool value) {
@@ -79,7 +72,6 @@ void MedNUSFrontBar::changeDefaultView(){
 
 void MedNUSFrontBar::resizeEvent(QResizeEvent* event)
 {
-    _background->setGeometry(QRect(this->x(), this->y(), this->geometry().width(), TOPBAR_HEIGHT));
     int space = (TOPBAR_HEIGHT-TOPBAR_HEIGHT/40*21)/2;
     _logo->setGeometry(QRect(this->x()+space, this->y()+space, TOPBAR_HEIGHT/40*76, TOPBAR_HEIGHT/40*21));
     _btView1->setGeometry(QRect(this->x()+this->geometry().width()-30*1, this->y()+space, 24,24));

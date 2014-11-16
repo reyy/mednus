@@ -1,19 +1,15 @@
 #include "MedNUSQuiz.h"
-
-const QString __startScreenText = "Read the instructions before taking the Quiz. When you have finished with the Quiz, click the Submit button.";
+#include "MedNUSAUISettings.h"
 
 MedNUSQuizQuestion::MedNUSQuizQuestion(QWidget *parent, QVBoxLayout *layout, QVector<QString> content, int noOfOptions)
 {
     _optionButtonGroup = new QButtonGroup(parent);
-
+    
     // Initialize the QLabel
     _questionTextLabel = new QLabel(content[0], parent);
     _questionTextLabel->setWordWrap(true);
-    //_questionTextLabel->setStyleSheet("QLabel { color : black; }");
-    //_questionTextLabel->setGeometry(parent->geometry());
-    //_questionTextLabel->setWordWrap(true);
-    _questionTextLabel->setContentsMargins(20,10,10,0);
-    //_questionTextLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    setNotice(false);
+    _questionTextLabel->setFont (QFont ("Helvetica", 12));
     _questionTextLabel->setVisible(false);
     layout->addWidget(_questionTextLabel);
 
@@ -22,8 +18,8 @@ MedNUSQuizQuestion::MedNUSQuizQuestion(QWidget *parent, QVBoxLayout *layout, QVe
     for (int i = 1; i <= noOfOptions; i++)
     {
         tempButton = new QRadioButton(content[i], parent);
-        //tempButton->setStyleSheet("QRadioButton { color : black;}");
-        //tempButton->setContentsMargins(5,0,5,10);
+        tempButton->setStyleSheet("QRadioButton { margin-left:10px;margin-right:10px;}");
+        tempButton->setFont (QFont ("Helvetica", 11));
         tempButton->setVisible(false);
         _optionButtonGroup->addButton(tempButton, i);
         layout->addWidget(tempButton);
@@ -31,7 +27,8 @@ MedNUSQuizQuestion::MedNUSQuizQuestion(QWidget *parent, QVBoxLayout *layout, QVe
     _teacherCommentLabel = new QLabel(parent);
     _teacherCommentLabel->setText(content[noOfOptions+1]);
     _teacherCommentLabel->setWordWrap(true);
-    _teacherCommentLabel->setStyleSheet("QLabel {font:italic}");
+    _teacherCommentLabel->setStyleSheet("QLabel{color:#97d5ee;margin-top:5px;margin-bottom:5px;}");
+    _teacherCommentLabel->setFont (QFont ("Helvetica", 11,QFont::Bold,true));
     //_teacherCommentLabel->setStyleSheet("QLabel { color : black; }");
     //_teacherCommentLabel->setGeometry(parent->geometry());
     //_teacherCommentLabel->setWordWrap(true);
@@ -76,8 +73,7 @@ void MedNUSQuizQuestion::highlightAnswer(int correctAnswer, bool showCorrectAnsw
             }
             else
             {
-                // Set the others opacity 50%.
-                ((QRadioButton*)buttonList.at(i))->setStyleSheet("QRadioButton::indicator {width: 0px;height: 13px; } QRadioButton {color: rgba(0, 0, 0, 50);}");
+                ((QRadioButton*)buttonList.at(i))->setStyleSheet("QRadioButton::indicator {width: 0px;height: 13px; } QRadioButton {color: rgba(128, 128, 128, 255);}");
             }
         }
         else
@@ -94,8 +90,7 @@ void MedNUSQuizQuestion::highlightAnswer(int correctAnswer, bool showCorrectAnsw
             }
             else
             {
-                // Set the others opacity 50%.
-                ((QRadioButton*)buttonList.at(i))->setStyleSheet("QRadioButton::indicator {width: 0px;height: 13px; } QRadioButton {color: rgba(0, 0, 0, 50);}");
+                ((QRadioButton*)buttonList.at(i))->setStyleSheet("QRadioButton::indicator {width: 0px;height: 13px; } QRadioButton {color: rgba(128, 128, 128, 255);}");
             }
         }
     }
@@ -108,6 +103,14 @@ bool MedNUSQuizQuestion::oneOptionSelected() const
         return false;
 
     return true;
+}
+
+void MedNUSQuizQuestion::setNotice(bool value) {
+    if(value) {
+        _questionTextLabel->setStyleSheet("QLabel{margin-top:8px;margin-bottom:4px;padding:10px;background:rgba(229,165,57,255);border-top-left-radius: 16px;border-bottom-right-radius: 16px;}");
+    } else {
+        _questionTextLabel->setStyleSheet("QLabel{margin-top:8px;margin-bottom:4px;padding:10px;background:rgba(0,0,0,50);border-top-left-radius: 16px;border-bottom-right-radius: 16px;}");
+    }
 }
 
 void MedNUSQuizQuestion::myForceResize(QRect geometry)
@@ -133,12 +136,10 @@ MedNUSQuiz::MedNUSQuiz(QString filename, QWidget *parent) :
     this->setAccessibleName(filename);
     _tempWidget = new QWidget(parent);
     _layout = new QVBoxLayout(_tempWidget);
-
     initQuiz(filename);
     initStartScreen();
 
     _tempWidget->setLayout(_layout);
-    _tempWidget->setStyleSheet("background-color: #6894ad");
     _tempWidget->setContentsMargins(10,10,10,10);
     _tempWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     _scrollArea = new QScrollArea(this);
@@ -163,17 +164,22 @@ MedNUSQuiz::~MedNUSQuiz()
 
 void MedNUSQuiz::markQuiz()
 {
+    bool questionAnswered=false;
+    bool isAnswered=true;
+
+    _warning->setVisible(false);
+
     // Check if all the questions have been answered.
-    for (int i = 0; i < _questionList->size(); i++)
-    {
-        if (((MedNUSQuizQuestion*)_questionList->at(i))->oneOptionSelected() == false)
-        {
-            // Create a message box;
-            QMessageBox *warningMessageBox = new QMessageBox();
-            warningMessageBox->setText("Please answer all the questions.");
-            warningMessageBox->exec();
-            return;
+    for (int i = 0; i < _questionList->size(); i++) {
+        questionAnswered=((MedNUSQuizQuestion*)_questionList->at(i))->oneOptionSelected();
+        ((MedNUSQuizQuestion*)_questionList->at(i))->setNotice(!questionAnswered);
+        if (!questionAnswered) {
+           isAnswered=false;
         }
+    }
+    if(!isAnswered) {
+        _warning->setVisible(true);
+        return;
     }
 
     // Start the marking of the quiz.
@@ -193,6 +199,8 @@ void MedNUSQuiz::markQuiz()
         ((MedNUSQuizQuestion*)_questionList->at(i))->highlightAnswer(_correctAnswerList[i], _showAnswerFlag);
     }
     //QTextStream(stdout) << "score=" << score;
+    _score->setText(QString::number(score)+"/"+QString::number(_questionList->size()));
+    _score->setVisible(true);
     _markButton->setVisible(false);
 }
 
@@ -214,11 +222,8 @@ void MedNUSQuiz::startQuiz()
 void MedNUSQuiz::resizeEvent(QResizeEvent *event)
 {
     _scrollArea->setGeometry(this->geometry());
-    //_tempWidget->setGeometry(this->geometry());
 
-    // Go through every QLabel in _layout and setGeomtry accordingly
-    for (int i = 0; i < _questionList->size(); i++)
-    {
+    for (int i = 0; i < _questionList->size(); i++) {
        ((MedNUSQuizQuestion*)_questionList->at(i))->myForceResize(this->geometry());
     }
 }
@@ -226,18 +231,21 @@ void MedNUSQuiz::resizeEvent(QResizeEvent *event)
 bool MedNUSQuiz::initStartScreen()
 {
     //_startScreenLayout = new QVBoxLayout(_tempWidget);
-    _startScreenLabel = new QLabel(__startScreenText, _tempWidget);
+    _startScreenLabel = new QLabel(TEXT_QUIZ_INTRO, _tempWidget);
     _startScreenLabel->setWordWrap(true);
+    _startScreenLabel->setStyleSheet("text-align:justify;");
+    _startScreenLabel->setFont (QFont ("Helvetica", 12));
     _layout->addWidget(_startScreenLabel);
 
     // Start Quiz button
     _startQuizButton = new QPushButton("Start Quiz", _tempWidget);
-    _startQuizButton->setGeometry(QRect(QPoint(100, 100), QSize(50, 50)));
-    //_markButton->setStyleSheet("QPushButton { background-color : rgba(255, 255, 255, 255) }");
+    _startQuizButton->setStyleSheet("");
+    _startQuizButton->setStyleSheet("QPushButton {margin-top:20px;background:rgba(0,0,0,255);border: 5px solid #e5a539;padding:10px;} QPushButton::pressed {background:rgba(30,30,30,255);}");
+    _startQuizButton->setFont (QFont ("Helvetica", 14));
+
     connect(_startQuizButton, SIGNAL(released()), this, SLOT(startQuiz()));
     _layout->addWidget(_startQuizButton);
     _layout->setAlignment(Qt::AlignTop);
-    //_layout->setContentsMargins(5,5,5,5);
 }
 
 bool MedNUSQuiz::initQuiz(QString filename)
@@ -252,6 +260,7 @@ bool MedNUSQuiz::initQuiz(QString filename)
         qWarning() << "Unable to open file.";
 
         // TODO: Add warning message box.
+        //To Miki, Check with Rey to standardise file not found output.
     }
     QByteArray fileValue = file.readAll();
     file.close();
@@ -262,8 +271,15 @@ bool MedNUSQuiz::initQuiz(QString filename)
 
     // Quiz title text label
     _titleTextLabel = new QLabel(quizDetails["title"].toString(), _tempWidget);
-    _titleTextLabel->setStyleSheet("QLabel {font: bold; font-size: 18px}");
+    _titleTextLabel->setFont (QFont ("Helvetica", 18,QFont::Bold,false));
     _layout->addWidget(_titleTextLabel);
+
+    _score = new QLabel(TEXT_QUIZ_WARNING, _tempWidget);
+    _score->setStyleSheet("QLabel{color:#e5a539;margin-top:10px;margin-bottom:10px;padding:5px;background:rgba(0,0,0,100);border-top-left-radius: 30px;border-bottom-right-radius: 30px;}");
+    _score->setFont (QFont ("Helvetica", 90,QFont::Bold,true));
+    _score->setAlignment(Qt::AlignCenter);
+    _score->setVisible(false);
+    _layout->addWidget(_score);
 
     // Quiz flags
     _showAnswerFlag = quizDetails["showAnswer"].toBool();
@@ -274,8 +290,8 @@ bool MedNUSQuiz::initQuiz(QString filename)
     // The instruction text at the top of the quiz.
     _instructionTextLabel = new QLabel(quizDetails["introductionText"].toString(), _tempWidget);
     _instructionTextLabel->setWordWrap(true);
-    _instructionTextLabel->setStyleSheet("QLabel {font: italic}");
-    //_instructionTextLabel->setVisible(false);
+    _instructionTextLabel->setStyleSheet("QLabel {color:#adbfc6;}");
+    _instructionTextLabel->setFont (QFont ("Helvetica", 11,QFont::Normal,true));
     _layout->addWidget(_instructionTextLabel);
 
     // Load the quiz questions.
@@ -312,16 +328,20 @@ bool MedNUSQuiz::initQuiz(QString filename)
         content.clear();
     }
 
+    _warning = new QLabel(TEXT_QUIZ_WARNING, _tempWidget);
+    _warning->setStyleSheet("QLabel { color:#e5a539;margin-top:20px;margin-left:10px;margin-right:10px;}");
+    _warning->setFont (QFont ("Helvetica", 11,QFont::Bold,false));
+    _warning->setVisible(false);
+    _layout->addWidget(_warning);
+
     // Marking button
     _markButton = new QPushButton("Submit", _tempWidget);
-    _markButton->setGeometry(QRect(QPoint(100, 100), QSize(50, 50)));
     _markButton->setVisible(false);
-    _markButton->setContentsMargins(0, 30, 0, 0);
-    //_markButton->setStyleSheet("QPushButton { background-color : rgba(255, 255, 255, 255) }");
+    _markButton->setStyleSheet("QPushButton {margin-top:20px;background:rgba(0,0,0,255);border: 5px solid #e5a539;padding:10px;} QPushButton::pressed {background:rgba(30,30,30,255);}");
+    _markButton->setFont (QFont ("Helvetica", 14));
     connect(_markButton, SIGNAL(released()), this, SLOT(markQuiz()));
     _layout->addWidget(_markButton);
     _layout->setAlignment(Qt::AlignTop);
-    //_layout->setContentsMargins(5,5,5,5);
 
     return true;
 }

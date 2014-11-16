@@ -11,6 +11,8 @@ class MedNUSUserBar : public QWidget
     Q_OBJECT
 private:
     QLabel *_background;
+    QLabel *_background2;
+    QLabel *_backgroundLine;
     QLabel *_avatar;
     QLabel *_cutoutAvatar;
     QLabel *_name;
