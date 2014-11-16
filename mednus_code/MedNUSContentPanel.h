@@ -33,17 +33,21 @@ public:
     explicit MedNUSContentPanel(QWidget *parent = 0);
     ~MedNUSContentPanel();
 
+protected:
     MedNUSTab *tabList[3];
     QGridLayout *layout;
-    int counter =2;
+    int viewType = 0;
+    int rotateCount = 0;
 
 signals:
     void tabClosedSignal(QString);
     void tabOpenedSignal(QString);
 public slots:
-    void tabClosed(QString t){emit tabClosedSignal(t);}\
+    void tabClosed(QString t){emit tabClosedSignal(t);}
     void closeTab(MedNUSTab *index);
     void addTab(QWidget*, QString, QString dir);
+
+    void toggleView(int);
 };
 
 
