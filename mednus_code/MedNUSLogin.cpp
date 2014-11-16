@@ -39,17 +39,14 @@ MedNUSLogin::MedNUSLogin(QWidget *parent) :
     _error->setFont (QFont ("Geneva", 12));
     _error->setVisible(true);
 
-    _title = new QLabel((this));
-    _title->setText("MedNUS");
-    _title->setStyleSheet("color:#a5e4f4;font-size:15px;font-weight:bold;");
-
     _subTitle = new QLabel((this));
     _subTitle->setText("Version 1.0");
     _subTitle->setStyleSheet("color:#a5e4f4;font-size:10px;");
+    _subTitle->setVisible(false);
 
-    _bottomText = new QLabel((this));
-    _bottomText->setText("© 2014 Rey Neo, Jay Chua and Melvyn Qwek.\nAll rights reserved.\n\nProject Supervisors:\n\nAssociate Professor:\nLeow Wee Kheng\nSchool of Computing (Department of Computer Science)\nNational University of Singapore\n\nConsulting Professor:\nGopalakrishnakone P\nDepartment of Anatomy\nYong Loo Lin School of Medicine\nNational University Health System\n\nDeveloped for CS3283 Media Technological Project\n\nNational University of Singapore\n21 Lower Kent Ridge Road\nSingapore 119077\n");
-    _bottomText->setStyleSheet("color:#c3f0fb;font-size:9px;");
+    _aboutText = new QLabel((this));
+    _aboutText->setPixmap(QPixmap(QString::fromStdString(":/images/about.png")));
+    _aboutText->setScaledContents(true);
 
     _message = new QLabel((this));
     _message->setText("Welcome");
@@ -86,25 +83,15 @@ MedNUSLogin::MedNUSLogin(QWidget *parent) :
     _loginButton->setStyleSheet("QPushButton {border-style: outset; border-width: 0px;background-image: url(:/images/icon_login.png);} QPushButton::pressed {background-image: url(:/images/icon_login_pressed.png);}");
 
     connect(_loginButton,SIGNAL(clicked()),this,SLOT(loginButtonPress()));
+
+    _contactUs = new QLabel(this);
+    _contactUs->setText("<html> <a style='text-decoration:none;color:#c4d6db' href='mailto:mednus@hotmail.com'>Contact Us</a>");
+    _contactUs->setFont (QFont ("Geneva", 10));
+    _contactUs->setOpenExternalLinks(true);
+    _contactUs->setAlignment(Qt::AlignRight);
 }
 
 MedNUSLogin::~MedNUSLogin() {
-    delete _background;
-    delete _background2;
-    delete _backgroundLine;
-    delete _backgroundRect;
-    delete _logo;
-    delete _description;
-    delete _error;
-    delete _title;
-    delete _subTitle;
-    delete _sideText;
-    delete _message;
-    delete _bottomText;
-    delete _loginButton;
-    delete _username;
-    delete _password;
-    delete _remember;
 }
 
 void MedNUSLogin::loginButtonPress() {
@@ -114,15 +101,15 @@ void MedNUSLogin::loginButtonPress() {
 
 void MedNUSLogin::resizeEvent(QResizeEvent* event)
 {
+    int scale=MIN(1050,this->geometry().width());
     _background->setGeometry(QRect(0, 0, this->geometry().width(), this->geometry().height()));
     _background2->setGeometry(QRect(this->geometry().width()*0.6, 0, this->geometry().width()*0.4, this->geometry().height()));
     _backgroundRect->setGeometry(QRect(0, 0, this->geometry().width()*0.6, this->geometry().height()));
     _backgroundLine->setGeometry(QRect(this->geometry().width()*0.6, 0, this->geometry().width()*0.4, this->geometry().height()));
     _logo->setGeometry(QRect(this->geometry().width()*0.04, this->geometry().height()*0.05, LOGO_WIDTH/40*76, LOGO_WIDTH/40*21));
     _description->setGeometry(QRect(this->geometry().width()*0.04+40, this->geometry().height()*0.05+LOGO_WIDTH/40*15, 300,50));
-    _title->setGeometry(QRect(this->geometry().width()*0.62, this->geometry().height()*0.1, 100,32));_username->setGeometry(QRect(this->geometry().width()*0.11, this->geometry().height()*0.5-16, 200,24));
     _subTitle->setGeometry(QRect(this->geometry().width()*0.62, this->geometry().height()*0.1+12, 100,32));
-    _bottomText->setGeometry(QRect(this->geometry().width()*0.62, this->geometry().height()*0.1+12+30, 300,250));
+    _aboutText->setGeometry(QRect(this->geometry().width()*0.61, this->geometry().height()*0.1, scale*0.4*0.9, scale*0.56285*0.9));
     _message->setGeometry(QRect(this->geometry().width()*0.08, this->geometry().height()*0.25, 500,100));
     _sideText->setGeometry(QRect(this->geometry().width()*0.08+210+64+10, this->geometry().height()*0.5, 100,64));
     _username->setGeometry(QRect(this->geometry().width()*0.08, this->geometry().height()*0.5, 200,24));
@@ -130,6 +117,7 @@ void MedNUSLogin::resizeEvent(QResizeEvent* event)
     _error->setGeometry(QRect(this->geometry().width()*0.08, this->geometry().height()*0.5+34+32, 300,30));
     _remember->setGeometry(QRect(this->geometry().width()*0.08, this->geometry().height()*0.5+34+22, 300,30));
     _loginButton->setGeometry(QRect(this->geometry().width()*0.08+210, this->geometry().height()*0.5, 64,64));
+    _contactUs->setGeometry(QRect(this->geometry().width()-95, this->geometry().height()-30, 80,20));
 }
 
 void MedNUSLogin::setLoading(bool value) {

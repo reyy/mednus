@@ -16,13 +16,13 @@ private:
     QLabel *_backgroundLine;
     QLabel *_backgroundRect;
     QLabel *_logo;
+    QLabel *_contactUs;
     QLabel *_description;
     QLabel *_error;
-    QLabel *_title;
     QLabel *_subTitle;
     QLabel *_sideText;
     QLabel *_message;
-    QLabel *_bottomText;
+    QLabel *_aboutText;
     QPushButton *_loginButton;
     QLineEdit *_username;
     QLineEdit *_password;

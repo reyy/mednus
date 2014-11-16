@@ -48,10 +48,12 @@ SOURCES += main.cpp \
 
 RESOURCES = panax.qrc
 
+ICON = icon.icns
 
 macx {
     QMAKE_CXXFLAGS = -std=c++11 -stdlib=libstdc++ -mmacosx-version-min=10.9 -ftemplate-depth=1024 -DBUILD_visualization=off
     QMAKE_LFLAGS = -std=c++11 -stdlib=libstdc++ -mmacosx-version-min=10.9 -ftemplate-depth=1024 -DBUILD_visualization=off
+
 
     INCLUDEPATH += /usr/local/include/poppler/qt5/
     INCLUDEPATH += /usr/local/include/vtk-6.1/
