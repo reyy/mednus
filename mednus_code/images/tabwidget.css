@@ -1,0 +1,69 @@
+ /* Style the tab using the tab sub-control. Note that
+     it reads QTabBar _not_ QTabWidget */
+ QTabBar::tab {
+     color:#FFFFFF;
+     background-color:#286c91;
+     border: 0px solid #000000;
+     border-top-left-radius: 0px;
+     border-top-right-radius: 0px;
+     border-bottom-left-radius: 0px;
+     border-bottom-right-radius: 0px;
+     padding-left:10px;
+     padding-right:10px;
+     padding-top:5px;
+     padding-bottom:5px;
+ }
+
+ QTabBar::tab:selected, QTabBar::tab:hover {
+     color:#FFFFFF;
+     background-color:#2d7196;
+     border: 0px solid #000000;
+     border-top-left-radius: 0px;
+     border-top-right-radius: 0px;
+     border-bottom-left-radius: 0px;
+     border-bottom-right-radius: 0px;
+     padding-left:10px;
+     padding-right:10px;
+     padding-top:5px;
+     padding-bottom:5px;
+ }
+
+ QTabBar::tab:selected {
+     color:#FFFFFF;
+     background-color:#338cbd;
+     border: 0px solid #000000;
+     border-top-left-radius: 0px;
+     border-top-right-radius: 0px;
+     border-bottom-left-radius: 0px;
+     border-bottom-right-radius: 0px;
+     padding-left:10px;
+     padding-right:10px;
+     padding-top:5px;
+     padding-bottom:5px;
+ }
+
+ QTabBar::tab:!selected {
+ }
+
+ QTabBar::close-button {
+     image: url(":/images/bt_close.png");
+     subcontrol-position: right;
+ }
+
+ QTabBar::close-button:hover {
+     image: url(":/images/bt_close.png");
+ }
+
+ QTabWidget::tab-bar {
+     background-color:#286c91;
+     color:#FFFFFF;
+     alignment:left;
+ }
+QTabWidget::pane {
+     border: 5px solid #338cbd;
+     background-color:#338cbd;
+     color:#FFFFFF;
+     position: absolute;
+
+     margin-bottom:1px;
+}
