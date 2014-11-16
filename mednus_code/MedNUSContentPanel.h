@@ -36,7 +36,7 @@ public:
 protected:
     MedNUSTab *tabList[3];
     QGridLayout *layout;
-    int viewType = 3;
+    int viewType = 0;
     int rotateCount = 0;
 
 signals:
