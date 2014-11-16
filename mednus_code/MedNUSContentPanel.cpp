@@ -1,5 +1,4 @@
 #include "MedNUSContentPanel.h"
-
 MedNUSContentPanel::MedNUSContentPanel(QWidget *parent) :
     QWidget(parent)
 {
@@ -22,85 +21,98 @@ MedNUSContentPanel::MedNUSContentPanel(QWidget *parent) :
 
 void MedNUSContentPanel::addTab(QWidget* toAdd,QString title, QString dir)
 {
-    //Add by 'default view' rules
+
+    //Determine where to add by 'default view' rules
+    int type;
     if(dynamic_cast<MedNUSVideoViewer*>(toAdd) != NULL)
-    {
-        if(!layout->children().contains(tabList[VIDEO_INDEX]))
-            layout->addWidget(tabList[VIDEO_INDEX],0,0,1,1);
-
-        //Check whether already open anot!
-        for(int i=0 ; i<tabList[VIDEO_INDEX]->count(); i++)
-            if(tabList[VIDEO_INDEX]->widget(i)->accessibleName().compare(dir) == 0)
-            {
-                delete toAdd;
-                tabList[VIDEO_INDEX]->setCurrentIndex(i);
-                return;
-            }
-
-        tabList[VIDEO_INDEX]->addTab(toAdd, title);
-        tabList[VIDEO_INDEX]->setCurrentIndex(tabList[VIDEO_INDEX]->count()-1);
-    }
+        type = VIDEO_INDEX;
     else if(dynamic_cast<MedNUSPdfViewer*>(toAdd) != NULL)
-    {
-        if(!layout->children().contains(tabList[PDF_INDEX]))
-            layout->addWidget(tabList[PDF_INDEX],1,0,1,1);
-
-        //Check whether already open anot!
-        for(int i=0 ; i<tabList[PDF_INDEX]->count(); i++)
-            if(tabList[PDF_INDEX]->widget(i)->accessibleName().compare(dir) == 0)
-            {
-                delete toAdd;
-                tabList[PDF_INDEX]->setCurrentIndex(i);
-                return;
-            }
-
-        tabList[PDF_INDEX]->addTab(toAdd, title);
-        tabList[PDF_INDEX]->setCurrentIndex(tabList[PDF_INDEX]->count()-1);
-    }
+        type = PDF_INDEX;
     else if(dynamic_cast<MedNUSMeshViewer*>(toAdd) != NULL || dynamic_cast<MedNUSQuiz*>(toAdd) != NULL)
-    {
-        if(!layout->children().contains(tabList[MESH_INDEX]))
-            layout->addWidget(tabList[MESH_INDEX],0,1,2,1);
-
-        //Check whether already open anot!
-        for(int i=0 ; i<tabList[MESH_INDEX]->count(); i++)
-            if(tabList[MESH_INDEX]->widget(i)->accessibleName().compare(dir) == 0)
-            {
-                delete toAdd;
-                tabList[MESH_INDEX]->setCurrentIndex(i);
-                return;
-            }
-
-        tabList[MESH_INDEX]->addTab(toAdd, title);
-        tabList[MESH_INDEX]->setCurrentIndex(tabList[MESH_INDEX]->count()-1);
-    }
+        type = MESH_INDEX;
     else
-    {
         throw "Invalid Widget. Cannot add to Tab";
+
+    //Do add tabs
+    if(!layout->children().contains(tabList[type]))
+    {
+        //layout->addWidget(tabList[type],type%2,type==2?1:0,type==2?2:1,1);//1,0,1,1 //0,1,2,1
+        int j = (rotateCount + type) % 3;
+        layout->addWidget(tabList[type],j%2,j==2?1:0,j==2?2:1,1);
     }
+
+    //Check whether already open anot!
+    for(int i=0 ; i<tabList[type]->count(); i++)
+        if(tabList[type]->widget(i)->accessibleName().compare(dir) == 0)
+        {
+            delete toAdd;
+            tabList[type]->setCurrentIndex(i);
+            return;
+        }
+
+    tabList[type]->addTab(toAdd, title);
+    tabList[type]->setCurrentIndex(tabList[type]->count()-1);
+
     emit tabOpenedSignal(dir);
 }
 
 void MedNUSContentPanel::toggleView(int view)
 {
-    if(viewType != view)
+    //de-activate button if
+    if(layout->count() < 3 - view || layout->count() == 1)
+        return;
+
+    //VERY HACKY! MUST REWRITE!
+    int lastOpen = 0;
+    for(int i=0; i<3; i++)
+        if(tabList[i]->isVisible())
+            lastOpen = i;
+
+    tabList[0]->hide();
+    tabList[1]->hide();
+    tabList[2]->hide();
+
+    if(viewType == view)
     {
-        tabList[0]->show();
-        tabList[1]->show();
-        tabList[2]->show();
+        rotateCount = (++rotateCount >= 3) ? 0 : rotateCount;
 
-        if(view >= 1)
-            tabList[2]->hide();
+        for(int i=0; i<3; i++)
+        {
 
-        if(view == 2)
-            tabList[1]->hide();
-
-        viewType = view;
+            if(tabList[i]->parent() != NULL)
+            {
+                int j = (rotateCount + i) % 3;
+                layout->removeWidget(tabList[i]);
+                layout->addWidget(tabList[i],j%2,j==2?1:0,j==2?2:1,1);
+            }
+        }
     }
-    else
+
+    if(layout->count() == 3)
     {
-        //layout->
+        tabList[rotateCount]->show();
+
+        if(view == 0)
+            tabList[(rotateCount + 1) % 3]->show();
+
+        if(view <= 1)
+            tabList[(rotateCount + 2) % 3]->show();
     }
+    else //count = 2
+    {
+        for(int i=0 ;i<3; i++)
+            if(tabList[(rotateCount + i) % 3]->parent() != NULL)
+            {
+                if(view!=2 || (view == 2 && (rotateCount + i) % 3 != lastOpen) )
+                {
+                    tabList[(rotateCount + i) % 3]->show();
+                    if(view == 2)
+                        break;
+                }
+            }
+    }
+
+    viewType = view;
 }
 
 void MedNUSContentPanel::closeTab(MedNUSTab* index)

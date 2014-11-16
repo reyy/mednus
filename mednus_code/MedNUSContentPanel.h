@@ -33,6 +33,7 @@ public:
     explicit MedNUSContentPanel(QWidget *parent = 0);
     ~MedNUSContentPanel();
 
+protected:
     MedNUSTab *tabList[3];
     QGridLayout *layout;
     int viewType = 3;
