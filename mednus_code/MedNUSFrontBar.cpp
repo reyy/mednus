@@ -45,6 +45,10 @@ MedNUSFrontBar::MedNUSFrontBar(QWidget *parent) :
 
 MedNUSFrontBar::~MedNUSFrontBar()
 {
+    delete _btView1;
+    delete _btView2;
+    delete _btView3;
+    delete _logo;
 }
 
 void MedNUSFrontBar::setTrayOut(bool value) {
