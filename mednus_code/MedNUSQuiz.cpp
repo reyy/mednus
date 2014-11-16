@@ -183,16 +183,17 @@ void MedNUSQuiz::markQuiz()
         if (((MedNUSQuizQuestion*)_questionList->at(i))->getSelectedAnswer() == _correctAnswerList[i])
         {
             score++;
-            QTextStream(stdout) << "Q" << i+1 << "=CORRECT";
+           // QTextStream(stdout) << "Q" << i+1 << "=CORRECT";
         }
         else
         {
-            QTextStream(stdout) << "Q" << i+1 << "=WRONG";
+            //QTextStream(stdout) << "Q" << i+1 << "=WRONG";
         }
         // Show the correct answers only if the teacher wants to.
         ((MedNUSQuizQuestion*)_questionList->at(i))->highlightAnswer(_correctAnswerList[i], _showAnswerFlag);
     }
-    QTextStream(stdout) << "score=" << score;
+    //QTextStream(stdout) << "score=" << score;
+    _markButton->setVisible(false);
 }
 
 void MedNUSQuiz::startQuiz()
