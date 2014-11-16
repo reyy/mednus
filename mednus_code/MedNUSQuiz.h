@@ -47,6 +47,9 @@ public:
 
     void myForceResize(QRect geometry);
 
+    // On Start Quiz
+    void showQuestion() const;
+
 protected:
 
 private:
@@ -84,6 +87,16 @@ protected:
     void writeFile();
     void readFile();
 
+    // Start Screen
+    //QVBoxLayout* _startScreenLayout;
+    QLabel* _startScreenLabel;
+    QPushButton* _startQuizButton;
+    bool initStartScreen();
+
+    // Quiz
+    QVBoxLayout* _quizLayout;
+    bool initQuiz(QString filename);
+
 private:
     QVector<MedNUSQuizQuestion*>* _questionList;
 
@@ -91,6 +104,7 @@ signals:
 
 public slots:
     void markQuiz();
+    void startQuiz();
 };
 
 #endif // MEDNUSQUIZ_H
