@@ -126,7 +126,7 @@ void MedNUSMeshViewer::createWidgets(bool withMeshPanel)
 //    main->setStyleSheet("background-color: #285183;");
     grid->setContentsMargins(0,0,0,0);
     this->setLayout(grid);
-    //this->setStyleSheet("background-color: #285183;");
+    //setStyleSheet("background-color: #1a394a;");
     //setCentralWidget(main);
     
     // Create mesh mode box
@@ -406,7 +406,7 @@ void MedNUSMeshViewer::newProject()
 {
     uninstallPipeline();
     renderer = vtkRenderer::New();
-    renderer->SetBackground(0.0, 0.0, 0.0);
+    renderer->SetBackground(26/255.0, 57/255.0, 74/255.0);
     renderWindow->AddRenderer(renderer);
     renderWindow->Render();
 }
@@ -796,7 +796,7 @@ void MedNUSMeshViewer::installPipeline(int startIndex)
     if (!renderer)
     {
         renderer = vtkRenderer::New();  // Camera is also reset.
-        renderer->SetBackground(0.8, 0.8, 0.8);
+        renderer->SetBackground(26/255.0, 57/255.0, 74/255.0);
         renderWindow->AddRenderer(renderer);
     }
     
