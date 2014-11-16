@@ -39,6 +39,7 @@ void MedNUSContentPanel::addTab(QWidget* toAdd,QString title, QString dir)
         //layout->addWidget(tabList[type],type%2,type==2?1:0,type==2?2:1,1);//1,0,1,1 //0,1,2,1
         int j = (rotateCount + type) % 3;
         layout->addWidget(tabList[type],j%2,j==2?1:0,j==2?2:1,1);
+        tabList[type]->show();
     }
 
     //Check whether already open anot!
