@@ -42,10 +42,13 @@ public:
     ~MedNUSQuizQuestion();
 
     int getSelectedAnswer() const;
-    void showCorrectAnswer(int correctAnswer) const;
+    void highlightAnswer(int correctAnswer, bool showCorrectAnswer) const;
     bool oneOptionSelected() const;
 
     void myForceResize(QRect geometry);
+
+    // On Start Quiz
+    void showQuestion() const;
 
 protected:
 
@@ -68,17 +71,31 @@ protected:
     QVBoxLayout* _layout;
     QScrollArea* _scrollArea;
 
+    QLabel* _titleTextLabel;
     QLabel* _instructionTextLabel;
     QVector<QButtonGroup*> _questionOptionGroup;
 
     QPushButton* _markButton;
     QVector<int> _correctAnswerList;
 
+    bool _showAnswerFlag;
+    bool _showTeacherCommentFlag;
+
     void resizeEvent(QResizeEvent *event);
 
     // JSON
     void writeFile();
     void readFile();
+
+    // Start Screen
+    //QVBoxLayout* _startScreenLayout;
+    QLabel* _startScreenLabel;
+    QPushButton* _startQuizButton;
+    bool initStartScreen();
+
+    // Quiz
+    QVBoxLayout* _quizLayout;
+    bool initQuiz(QString filename);
 
 private:
     QVector<MedNUSQuizQuestion*>* _questionList;
@@ -87,6 +104,7 @@ signals:
 
 public slots:
     void markQuiz();
+    void startQuiz();
 };
 
 #endif // MEDNUSQUIZ_H
