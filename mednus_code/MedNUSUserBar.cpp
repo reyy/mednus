@@ -25,7 +25,7 @@ _backgroundLine->setVisible(false);
     _background->setStyleSheet("background-color: #1c4f6e;");
 
     _avatar = new QLabel(this);
-    _avatar->setPixmap(QPixmap(QString::fromStdString(":/images/ivle_profile.jpg")));
+    _avatar->setPixmap(QPixmap(QString::fromStdString(":/images/ivle_profile.png")));
     _avatar->setScaledContents(true);
     _avatar->setStyleSheet("background-color:rgba(0,0,0,0);");
 
