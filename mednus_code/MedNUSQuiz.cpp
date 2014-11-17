@@ -120,7 +120,6 @@ MedNUSQuiz::MedNUSQuiz(QString filename, QWidget *parent) :
     _scrollArea->setContentsMargins(20,20,20,20);
     _scrollArea->setWidgetResizable(true);
     _scrollArea->setWidget(_tempWidget);
-    //_scrollArea->setGeometry(this->geometry());
     _scrollArea->setAutoFillBackground(true);
     _scrollArea->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     //Load scrollbar style.
@@ -138,7 +137,6 @@ MedNUSQuiz::~MedNUSQuiz()
 
 void MedNUSQuiz::markQuiz(bool byTimer)
 {
-    qDebug() << "mark";
     if (_timer) {
         _timer->stop();
         _labelUpdateTimer->stop();
@@ -207,7 +205,7 @@ void MedNUSQuiz::startQuiz()
     _markButton->setVisible(true);
     _timer->start(_timerDuration);
     _timerLabel->setVisible(true);
-    _labelUpdateTimer->start(1000);
+    _labelUpdateTimer->start(500);
     // hack: to force it to start showing from the actual duration instead of -1
     updateTimerLabel();
 }
@@ -307,7 +305,7 @@ bool MedNUSQuiz::initQuiz(QString filename)
 
         _timerLabel = new QLabel(QString::number(_timer->remainingTime()), _tempWidget);
         _timerLabel->setWordWrap(true);
-        _timerLabel->setStyleSheet("QLabel {color:#adbfc6;}");
+        _timerLabel->setStyleSheet("QLabel {color:rgba(229,164,57);margin-top:10px}");
         _timerLabel->setFont (QFont ("Helvetica", 14,QFont::Bold,false));
         _timerLabel->setVisible(false);
         _layout->addWidget(_timerLabel);
