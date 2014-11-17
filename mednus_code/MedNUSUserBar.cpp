@@ -43,10 +43,6 @@ _backgroundLine->setVisible(false);
 
 MedNUSUserBar::~MedNUSUserBar()
 {
-    delete _background;
-    delete _avatar;
-    delete _cutoutAvatar;
-    delete _name;
 }
 
 void MedNUSUserBar::setName(QString value) {

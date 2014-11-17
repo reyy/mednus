@@ -33,8 +33,6 @@ MedNUSLessonIcon::MedNUSLessonIcon(QString path, QPixmap directory, QWidget *par
 }
 
 MedNUSLessonIcon::~MedNUSLessonIcon() {
-    delete _icon;
-    delete _text;
 }
 
 void MedNUSLessonIcon::updatePosition(float packageX, float packageY, float x, float y) {
