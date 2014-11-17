@@ -14,6 +14,7 @@
 #include <QButtonGroup>
 #include <QPushButton>
 #include <QScrollArea>
+#include <QScrollBar>
 #include <QResizeEvent>
 
 // For JSON

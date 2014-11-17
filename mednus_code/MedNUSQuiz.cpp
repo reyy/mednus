@@ -202,6 +202,9 @@ void MedNUSQuiz::markQuiz()
     _score->setText(QString::number(score)+"/"+QString::number(_questionList->size()));
     _score->setVisible(true);
     _markButton->setVisible(false);
+
+    // Make the quiz scroll to the top once the quiz has been marked.
+    _scrollArea->verticalScrollBar()->setSliderPosition(0);
 }
 
 void MedNUSQuiz::startQuiz()
