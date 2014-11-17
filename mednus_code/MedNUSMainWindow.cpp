@@ -16,10 +16,6 @@ MedNUSMainWindow::MedNUSMainWindow(QWidget *parent) :
     _widgetsCreated=false;
     _menuCreated=false;
 
-    _backgroundLine = new QLabel(this);
-    _backgroundLine->setStyleSheet("background-image: url(:/images/login_lines.png);background-repeat: repeat-xy;");
-    _backgroundLine->setVisible(false);
-
     network = new MedNUSNetwork();
 
     if(!SKIP_LOGIN)
@@ -42,6 +38,8 @@ MedNUSMainWindow::MedNUSMainWindow(QWidget *parent) :
 
     //Tab Bkg Change
     this->setStyleSheet("MedNUSMainWindow{border-image: url(:/images/login_background.jpg) 0 0 0 0 stretch stretch;}");
+
+    _image.load(":/images/login_lines.png");
 }
 
 MedNUSMainWindow::~MedNUSMainWindow() {
@@ -162,7 +160,6 @@ void MedNUSMainWindow::loginCompleted(bool success, QString matric, QString name
 
         layout()->removeWidget(login);
         delete login;
-        _backgroundLine->setVisible(true);
 
         login = NULL;
 
@@ -177,7 +174,6 @@ void MedNUSMainWindow::logout()
     deleteWidgets();
     deleteMenus();
     login = new MedNUSLogin(this);
-    _backgroundLine->setVisible(false);
     setCentralWidget(login);
     connect(login, SIGNAL(callLogin(QString,QString,bool)), network, SLOT(login(QString,QString,bool)));
     connect(network,SIGNAL(loginResults(bool,QString,QString)),this,SLOT(loginCompleted(bool,QString,QString)));
@@ -196,8 +192,9 @@ void MedNUSMainWindow::mousePressEvent ( QMouseEvent * event )
     event->ignore();
 }
 
-void MedNUSMainWindow::resizeEvent(QResizeEvent* event) {
-    _backgroundLine->setGeometry(QRect(0, 0, this->geometry().width(), this->geometry().height()));
+void MedNUSMainWindow::paintEvent(QPaintEvent *) {
+    if(_widgetsCreated) {
+        QPainter painter(this);
+        painter.drawTiledPixmap(QRect(0,0,this->width(),this->height()),_image);
+    }
 }
-
-

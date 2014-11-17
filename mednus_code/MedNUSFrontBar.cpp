@@ -45,10 +45,10 @@ MedNUSFrontBar::MedNUSFrontBar(QWidget *parent) :
 
 MedNUSFrontBar::~MedNUSFrontBar()
 {
-    delete _btView1;
-    delete _btView2;
-    delete _btView3;
-    delete _logo;
+    _btView1->setVisible(false);
+    _btView2->setVisible(false);
+    _btView3->setVisible(false);
+    _logo->setVisible(false);
 }
 
 void MedNUSFrontBar::setTrayOut(bool value) {
@@ -84,4 +84,5 @@ void MedNUSFrontBar::resizeEvent(QResizeEvent* event)
     _btView1->setVisible(true);
     _btView2->setVisible(true);
     _btView3->setVisible(true);
+    _logo->setVisible(true);
 }

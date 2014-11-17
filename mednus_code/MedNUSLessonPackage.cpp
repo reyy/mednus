@@ -101,7 +101,6 @@ MedNUSLessonPackage::MedNUSLessonPackage(QWidget *parent) :
 }
 
 MedNUSLessonPackage::~MedNUSLessonPackage() {
-    delete _contentPanel;
 }
 
 void MedNUSLessonPackage::setY(int value) {
