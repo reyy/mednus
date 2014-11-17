@@ -136,7 +136,7 @@ MedNUSQuiz::~MedNUSQuiz()
     //TODO: Clean up
 }
 
-void MedNUSQuiz::markQuiz()
+void MedNUSQuiz::markQuiz(bool byTimer)
 {
     bool questionAnswered=false;
     bool isAnswered=true;
@@ -144,16 +144,18 @@ void MedNUSQuiz::markQuiz()
     _warning->setVisible(false);
 
     // Check if all the questions have been answered.
-    for (int i = 0; i < _questionList->size(); i++) {
-        questionAnswered=((MedNUSQuizQuestion*)_questionList->at(i))->oneOptionSelected();
-        ((MedNUSQuizQuestion*)_questionList->at(i))->setNotice(!questionAnswered);
-        if (!questionAnswered) {
-           isAnswered=false;
+    if (!byTimer) {
+        for (int i = 0; i < _questionList->size(); i++) {
+            questionAnswered=((MedNUSQuizQuestion*)_questionList->at(i))->oneOptionSelected();
+            ((MedNUSQuizQuestion*)_questionList->at(i))->setNotice(!questionAnswered);
+            if (!questionAnswered) {
+               isAnswered=false;
+            }
         }
-    }
-    if(!isAnswered) {
-        _warning->setVisible(true);
-        return;
+        if(!isAnswered) {
+            _warning->setVisible(true);
+            return;
+        }
     }
 
     // Start the marking of the quiz.
@@ -174,6 +176,16 @@ void MedNUSQuiz::markQuiz()
     _scrollArea->verticalScrollBar()->setSliderPosition(0);
 }
 
+void MedNUSQuiz::callMarkQuiz_byButton()
+{
+    markQuiz(false);
+}
+
+void MedNUSQuiz::callMarkQuiz_byTimer()
+{
+    markQuiz(true);
+}
+
 void MedNUSQuiz::startQuiz()
 {
     // Remove all of the start screen elements.
@@ -187,6 +199,7 @@ void MedNUSQuiz::startQuiz()
        ((MedNUSQuizQuestion*)_questionList->at(i))->showQuestion();
     }
     _markButton->setVisible(true);
+    _timer->start(_timerDuration);
 }
 
 void MedNUSQuiz::resizeEvent(QResizeEvent *event)
@@ -260,6 +273,19 @@ bool MedNUSQuiz::initQuiz(QString filename)
     _instructionTextLabel->setFont (QFont ("Helvetica", 11,QFont::Normal,true));
     _layout->addWidget(_instructionTextLabel);
 
+    // Load the timer
+    _hasTimeLimit = quizDetails["hasTimeLimit"].toBool();
+    if (_hasTimeLimit) {
+        _timer = new QTimer(this);
+        connect(_timer, SIGNAL(timeout()), this, SLOT(callMarkQuiz_byTimer()));
+        _timerDuration = quizDetails["timerDuration"].toInt();
+        _timer->setSingleShot(true);
+        qDebug() << "timerduration="<<_timerDuration;
+
+        // Alternative way:
+        //QTimer::singleShot(quizDetails["timerDuration"].toInt(), this, SLOT(callMarkQuiz_byTimer()));
+    }
+
     // Load the quiz questions.
     QString questionLabelString = "question_";
     QVector<QString> content;
@@ -305,7 +331,7 @@ bool MedNUSQuiz::initQuiz(QString filename)
     _markButton->setVisible(false);
     _markButton->setStyleSheet("QPushButton {margin-top:20px;background:rgba(0,0,0,255);border: 5px solid #e5a539;padding:10px;} QPushButton::pressed {background:rgba(30,30,30,255);}");
     _markButton->setFont (QFont ("Helvetica", 14));
-    connect(_markButton, SIGNAL(released()), this, SLOT(markQuiz()));
+    connect(_markButton, SIGNAL(released()), this, SLOT(callMarkQuiz_byButton()));
     _layout->addWidget(_markButton);
     _layout->setAlignment(Qt::AlignTop);
 

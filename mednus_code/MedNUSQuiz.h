@@ -7,6 +7,7 @@
 #include <QVector>
 #include <QString>
 #include <QMessageBox>
+#include <QTimer>
 
 // For Graphics
 #include <QVBoxLayout>
@@ -99,13 +100,20 @@ protected:
     QVBoxLayout* _quizLayout;
     bool initQuiz(QString filename);
 
+    // Timer
+    bool _hasTimeLimit;
+    QTimer* _timer;
+    int _timerDuration;
+
 private:
     QVector<MedNUSQuizQuestion*>* _questionList;
+    void markQuiz(bool byTimer);
 
 signals:
 
 public slots:
-    void markQuiz();
+    void callMarkQuiz_byButton();
+    void callMarkQuiz_byTimer();
     void startQuiz();
 };
 
