@@ -138,6 +138,12 @@ MedNUSQuiz::~MedNUSQuiz()
 
 void MedNUSQuiz::markQuiz(bool byTimer)
 {
+    qDebug() << "mark";
+    if (_timer) {
+        _timer->stop();
+        _labelUpdateTimer->stop();
+        _timerLabel->setVisible(false);
+    }
     bool questionAnswered=false;
     bool isAnswered=true;
 
@@ -200,6 +206,24 @@ void MedNUSQuiz::startQuiz()
     }
     _markButton->setVisible(true);
     _timer->start(_timerDuration);
+    _timerLabel->setVisible(true);
+    _labelUpdateTimer->start(1000);
+    // hack: to force it to start showing from the actual duration instead of -1
+    updateTimerLabel();
+}
+
+void MedNUSQuiz::updateTimerLabel()
+{
+    if (_timer->isActive()) {
+        // Update the timer label.
+        int time = _timer->remainingTime()/1000;
+        int min = time/60;
+        int sec = time%60;
+        _timerLabel->setText("Time Left: "+QString::number(min)+":"+QString::number(sec));
+    } else {
+        // Stop the label update timer.
+        _labelUpdateTimer->stop();
+    }
 }
 
 void MedNUSQuiz::resizeEvent(QResizeEvent *event)
@@ -276,11 +300,20 @@ bool MedNUSQuiz::initQuiz(QString filename)
     // Load the timer
     _hasTimeLimit = quizDetails["hasTimeLimit"].toBool();
     if (_hasTimeLimit) {
-        _timer = new QTimer(this);
+        _timer = new QTimer(_tempWidget);
         connect(_timer, SIGNAL(timeout()), this, SLOT(callMarkQuiz_byTimer()));
         _timerDuration = quizDetails["timerDuration"].toInt();
         _timer->setSingleShot(true);
-        qDebug() << "timerduration="<<_timerDuration;
+
+        _timerLabel = new QLabel(QString::number(_timer->remainingTime()), _tempWidget);
+        _timerLabel->setWordWrap(true);
+        _timerLabel->setStyleSheet("QLabel {color:#adbfc6;}");
+        _timerLabel->setFont (QFont ("Helvetica", 14,QFont::Bold,false));
+        _timerLabel->setVisible(false);
+        _layout->addWidget(_timerLabel);
+
+        _labelUpdateTimer = new QTimer(_tempWidget);
+        connect(_labelUpdateTimer, SIGNAL(timeout()), this, SLOT(updateTimerLabel()));
 
         // Alternative way:
         //QTimer::singleShot(quizDetails["timerDuration"].toInt(), this, SLOT(callMarkQuiz_byTimer()));

@@ -104,6 +104,8 @@ protected:
     bool _hasTimeLimit;
     QTimer* _timer;
     int _timerDuration;
+    QLabel* _timerLabel;
+    QTimer* _labelUpdateTimer;
 
 private:
     QVector<MedNUSQuizQuestion*>* _questionList;
@@ -115,6 +117,7 @@ public slots:
     void callMarkQuiz_byButton();
     void callMarkQuiz_byTimer();
     void startQuiz();
+    void updateTimerLabel();
 };
 
 #endif // MEDNUSQUIZ_H
