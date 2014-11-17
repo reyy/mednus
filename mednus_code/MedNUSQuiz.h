@@ -48,8 +48,6 @@ public:
 
     void setNotice(bool value);
 
-    void myForceResize(QRect geometry);
-
     // On Start Quiz
     void showQuestion() const;
 
@@ -93,7 +91,6 @@ protected:
     void readFile();
 
     // Start Screen
-    //QVBoxLayout* _startScreenLayout;
     QLabel* _startScreenLabel;
     QPushButton* _startQuizButton;
     bool initStartScreen();
