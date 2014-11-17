@@ -29,11 +29,6 @@ MedNUSQuizQuestion::MedNUSQuizQuestion(QWidget *parent, QVBoxLayout *layout, QVe
     _teacherCommentLabel->setWordWrap(true);
     _teacherCommentLabel->setStyleSheet("QLabel{color:#97d5ee;margin-top:5px;margin-bottom:5px;}");
     _teacherCommentLabel->setFont (QFont ("Helvetica", 11,QFont::Bold,true));
-    //_teacherCommentLabel->setStyleSheet("QLabel { color : black; }");
-    //_teacherCommentLabel->setGeometry(parent->geometry());
-    //_teacherCommentLabel->setWordWrap(true);
-    //_teacherCommentLabel->setContentsMargins(5,5,5,5);
-    //_teacherCommentLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     layout->addWidget(_teacherCommentLabel);
     _teacherCommentLabel->setVisible(false);
 }
@@ -59,37 +54,22 @@ void MedNUSQuizQuestion::highlightAnswer(int correctAnswer, bool showCorrectAnsw
     QList<QAbstractButton*> buttonList = _optionButtonGroup->buttons();
     for (int i = 0; i < buttonList.size(); i++)
     {
-        if (showCorrectAnswer)
-        {
-            if (i+1 == correctAnswer)
-            {
-                // Set the correct answer green.
+        if (((QRadioButton*)buttonList.at(i))->isChecked()) {
+            // Am I the correct answer?
+            if (i+1 == correctAnswer) {
+                // Set me to green.
                 ((QRadioButton*)buttonList.at(i))->setStyleSheet("QRadioButton::indicator {width: 0px;height: 13px; } QRadioButton {font: bold;color: rgba(50, 255, 50, 255);}");
-            }
-            else if (((QRadioButton*)buttonList.at(i))->isChecked())
-            {
-                // Set the wrong answer red.
-                ((QRadioButton*)buttonList.at(i))->setStyleSheet("QRadioButton::indicator {width: 0px;height: 13px; } QRadioButton {color: rgba(255, 0, 0, 255);}");
-            }
-            else
-            {
-                ((QRadioButton*)buttonList.at(i))->setStyleSheet("QRadioButton::indicator {width: 0px;height: 13px; } QRadioButton {color: rgba(128, 128, 128, 255);}");
-            }
-        }
-        else
-        {
-            if (((QRadioButton*)buttonList.at(i))->isChecked() && i+1 == correctAnswer)
-            {
-                // Set the correct answer green.
-                ((QRadioButton*)buttonList.at(i))->setStyleSheet("QRadioButton::indicator {width: 0px;height: 13px; } QRadioButton {font: bold;color: rgba(50, 255, 50, 255);}");
-            }
-            else if (((QRadioButton*)buttonList.at(i))->isChecked())
-            {
-                // Bold the selected answer.
+            } else {
+                // Set me to red.
                 ((QRadioButton*)buttonList.at(i))->setStyleSheet("QRadioButton::indicator {width: 0px;height: 13px; } QRadioButton {font: bold;color: rgba(255, 0, 0, 255);}");
             }
-            else
-            {
+        } else {
+            // Check if I should be revealing the correct answer.
+            if (showCorrectAnswer && i+1 == correctAnswer) {
+                // Set me to green.
+                ((QRadioButton*)buttonList.at(i))->setStyleSheet("QRadioButton::indicator {width: 0px;height: 13px; } QRadioButton {font: bold;color: rgba(50, 255, 50, 255);}");
+            } else {
+                // Set me to translucent.
                 ((QRadioButton*)buttonList.at(i))->setStyleSheet("QRadioButton::indicator {width: 0px;height: 13px; } QRadioButton {color: rgba(128, 128, 128, 255);}");
             }
         }
@@ -106,17 +86,11 @@ bool MedNUSQuizQuestion::oneOptionSelected() const
 }
 
 void MedNUSQuizQuestion::setNotice(bool value) {
-    if(value) {
+    if (value) {
         _questionTextLabel->setStyleSheet("QLabel{margin-top:8px;margin-bottom:4px;padding:10px;background:rgba(229,165,57,255);border-top-left-radius: 16px;border-bottom-right-radius: 16px;}");
     } else {
         _questionTextLabel->setStyleSheet("QLabel{margin-top:8px;margin-bottom:4px;padding:10px;background:rgba(0,0,0,50);border-top-left-radius: 16px;border-bottom-right-radius: 16px;}");
     }
-}
-
-void MedNUSQuizQuestion::myForceResize(QRect geometry)
-{
-    //TODO: Fix this
-    //_questionTextLabel->setGeometry(QRect(_questionTextLabel->geometry().left(), _questionTextLabel->geometry().top(), geometry.width(), _questionTextLabel->geometry().height()));
 }
 
 void MedNUSQuizQuestion::showQuestion() const
@@ -187,18 +161,11 @@ void MedNUSQuiz::markQuiz()
     for (int i = 0; i < _questionList->size(); i++)
     {
         if (((MedNUSQuizQuestion*)_questionList->at(i))->getSelectedAnswer() == _correctAnswerList[i])
-        {
             score++;
-           // QTextStream(stdout) << "Q" << i+1 << "=CORRECT";
-        }
-        else
-        {
-            //QTextStream(stdout) << "Q" << i+1 << "=WRONG";
-        }
+
         // Show the correct answers only if the teacher wants to.
         ((MedNUSQuizQuestion*)_questionList->at(i))->highlightAnswer(_correctAnswerList[i], _showAnswerFlag);
     }
-    //QTextStream(stdout) << "score=" << score;
     _score->setText(QString::number(score)+"/"+QString::number(_questionList->size()));
     _score->setVisible(true);
     _markButton->setVisible(false);
@@ -225,10 +192,6 @@ void MedNUSQuiz::startQuiz()
 void MedNUSQuiz::resizeEvent(QResizeEvent *event)
 {
     _scrollArea->setGeometry(this->geometry());
-
-    for (int i = 0; i < _questionList->size(); i++) {
-       ((MedNUSQuizQuestion*)_questionList->at(i))->myForceResize(this->geometry());
-    }
 }
 
 bool MedNUSQuiz::initStartScreen()
