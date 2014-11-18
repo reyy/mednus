@@ -18,7 +18,8 @@ class MedNUSMainWindow : public QMainWindow
 {
     Q_OBJECT
 private:
-    QPixmap _image;
+    QPixmap _imageLine;
+    QPixmap _imageBar;
     bool _trayOut;
     bool _widgetsCreated;
     bool _menuCreated;

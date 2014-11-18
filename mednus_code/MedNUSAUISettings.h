@@ -10,6 +10,7 @@
 #define TOPBAR_HEIGHT 40
 #define SIDEBAR_OFFSET 14
 #define LOGO_WIDTH 160
+#define LOGO_LIMIT 4
 
 #define VIDEO_BORDER 10
 #define VIDEO_SEP_LENGTH 7
