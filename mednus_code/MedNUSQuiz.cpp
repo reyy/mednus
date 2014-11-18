@@ -1,35 +1,46 @@
 #include "MedNUSQuiz.h"
 #include "MedNUSAUISettings.h"
 
-MedNUSQuizQuestion::MedNUSQuizQuestion(QWidget *parent, QVBoxLayout *layout, QVector<QString> content, int noOfOptions)
+MedNUSQuizQuestion::MedNUSQuizQuestion(QWidget *parent, QGridLayout *layout, int& row, QVector<QString> content, int noOfOptions, bool hasImage, QString imageUrl)
 {
     _optionButtonGroup = new QButtonGroup(parent);
     
-    // Initialize the QLabel
+    // Initialize the question's text.
     _questionTextLabel = new QLabel(content[0], parent);
     _questionTextLabel->setWordWrap(true);
     setNotice(false);
     _questionTextLabel->setFont (QFont ("Helvetica", 12));
     _questionTextLabel->setVisible(false);
-    layout->addWidget(_questionTextLabel);
+    layout->addWidget(_questionTextLabel, row++, 0, 1, 2);
+
+    // Initialize the question's image (if any).
+    if (hasImage) {
+        qDebug() << imageUrl;
+        _questionImageLabel = new QLabel(parent);
+        _questionImageLabel->setPixmap(QPixmap(QDir::homePath()+imageUrl));
+        _questionImageLabel->setVisible(false);
+        layout->addWidget(_questionImageLabel, row++, 0, 1, 2);
+    } else {
+        _questionImageLabel = NULL;
+    }
 
     // Initialize the buttons
     QRadioButton* tempButton;
-    for (int i = 1; i <= noOfOptions; i++)
+    for (int i = 1, j = 0; i <= noOfOptions; i++, j++)
     {
         tempButton = new QRadioButton(content[i], parent);
-        tempButton->setStyleSheet("QRadioButton { margin-left:10px;margin-right:10px;}");
+        tempButton->setStyleSheet("QRadioButton { margin-left:10px;margin-right:10px;margin-top:2px;margin-bottom:2px;} QRadioButton::indicator{margin-right:10px;}QRadioButton::indicator::unchecked{image:url(:/images/check_default.png)} QRadioButton::indicator::unchecked:pressed{image:url(:/images/check_default.png)} QRadioButton::indicator::unchecked:hover{image:url(:/images/check_default_hover.png)} QRadioButton::indicator::checked{image:url(:/images/check_filled.png)} QRadioButton::indicator::checked:pressed{image:url(:/images/check_filled.png)} QRadioButton::indicator::checked:hover{image:url(:/images/check_filled_hover.png)}");
         tempButton->setFont (QFont ("Helvetica", 11));
         tempButton->setVisible(false);
         _optionButtonGroup->addButton(tempButton, i);
-        layout->addWidget(tempButton);
+        layout->addWidget(tempButton, j%2==1?row++:row, j%2, 1, 1);
     }
     _teacherCommentLabel = new QLabel(parent);
     _teacherCommentLabel->setText(content[noOfOptions+1]);
     _teacherCommentLabel->setWordWrap(true);
     _teacherCommentLabel->setStyleSheet("QLabel{color:#97d5ee;margin-top:5px;margin-bottom:5px;}");
     _teacherCommentLabel->setFont (QFont ("Helvetica", 11,QFont::Bold,true));
-    layout->addWidget(_teacherCommentLabel);
+    layout->addWidget(_teacherCommentLabel, row++, 0, 1, 2);
     _teacherCommentLabel->setVisible(false);
 }
 
@@ -97,6 +108,10 @@ void MedNUSQuizQuestion::showQuestion() const
 {
     _questionTextLabel->setVisible(true);
 
+    if (_questionImageLabel != NULL) {
+        _questionImageLabel->setVisible(true);
+    }
+
     QList<QAbstractButton*> buttonList = _optionButtonGroup->buttons();
     for (int i = 0; i < buttonList.size(); i++)
     {
@@ -109,9 +124,150 @@ MedNUSQuiz::MedNUSQuiz(QString filename, QWidget *parent) :
 {
     this->setAccessibleName(filename);
     _tempWidget = new QWidget(parent);
-    _layout = new QVBoxLayout(_tempWidget);
-    initQuiz(filename);
-    initStartScreen();
+    _layout = new QGridLayout(_tempWidget);
+    _layout->setContentsMargins(0,0,0,0);
+
+    int row = 0;
+    // Add questions here //
+    _questionList = new QVector<MedNUSQuizQuestion*>();
+
+    // Read Json file
+    QFile file(filename);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        qWarning() << "Unable to open file.";
+
+        // TODO: Add warning message box.
+        //To Miki, Check with Rey to standardise file not found output.
+    }
+    QByteArray fileValue = file.readAll();
+    file.close();
+    QJsonDocument doc = QJsonDocument::fromJson(fileValue);
+    QJsonObject obj = doc.object();
+    QJsonValue v = obj.value(QString("details"));
+    QJsonObject quizDetails = v.toObject();
+
+    // Quiz title text label
+    _titleTextLabel = new QLabel(quizDetails["title"].toString(), _tempWidget);
+    _titleTextLabel->setFont (QFont ("Helvetica", 18,QFont::Bold,false));
+    _layout->addWidget(_titleTextLabel, row++, 0, 1, 2);
+
+    _authorTextLabel = new QLabel("by "+quizDetails["author"].toString(), _tempWidget);
+    _authorTextLabel->setFont(QFont("Helvetica", 9, QFont::Normal, true));
+    _layout->addWidget(_authorTextLabel, row++, 0, 1, 1);
+
+    // The instruction text at the top of the quiz.
+    _instructionTextLabel = new QLabel(quizDetails["introductionText"].toString(), _tempWidget);
+    _instructionTextLabel->setWordWrap(true);
+    _instructionTextLabel->setStyleSheet("QLabel {color:#adbfc6;}");
+    _instructionTextLabel->setFont (QFont ("Helvetica", 11,QFont::Normal,true));
+    _layout->addWidget(_instructionTextLabel, row++, 0, 1, 2);
+
+    _score = new QLabel(TEXT_QUIZ_WARNING, _tempWidget);
+    _score->setStyleSheet("QLabel{color:#e5a539;margin-top:10px;margin-bottom:10px;padding:5px;background:rgba(0,0,0,100);border-top-left-radius: 30px;border-bottom-right-radius: 30px;}");
+    _score->setFont (QFont ("Helvetica", 90,QFont::Bold,true));
+    _score->setAlignment(Qt::AlignCenter);
+    _score->setVisible(false);
+    _layout->addWidget(_score, row++, 0, 1, 2);
+
+    //_startScreenLayout = new QVBoxLayout(_tempWidget);
+    _startScreenLabel = new QLabel(TEXT_QUIZ_INTRO, _tempWidget);
+    _startScreenLabel->setWordWrap(true);
+    _startScreenLabel->setStyleSheet("text-align:justify;");
+    _startScreenLabel->setFont (QFont ("Helvetica", 12));
+    _layout->addWidget(_startScreenLabel, row++, 0, 1, 2);
+
+    // Quiz flags
+    _showAnswerFlag = quizDetails["showAnswer"].toBool();
+    _showTeacherCommentFlag = quizDetails["showTeacherComment"].toBool();
+
+    int noOfQuestions = quizDetails["noOfQuestions"].toInt();
+
+    // Load the timer
+    _hasTimeLimit = quizDetails["hasTimeLimit"].toBool();
+    if (_hasTimeLimit) {
+        _timer = new QTimer(_tempWidget);
+        connect(_timer, SIGNAL(timeout()), this, SLOT(callMarkQuiz_byTimer()));
+        _timerDuration = quizDetails["timerDuration"].toInt();
+        _timer->setSingleShot(true);
+
+        _timerLabel = new QLabel(QString::number(_timer->remainingTime()), _tempWidget);
+        _timerLabel->setWordWrap(true);
+        _timerLabel->setStyleSheet("QLabel {color:rgba(229,164,57);margin-top:10px}");
+        _timerLabel->setFont (QFont ("Helvetica", 14,QFont::Bold,false));
+        _timerLabel->setVisible(false);
+        _layout->addWidget(_timerLabel, row++, 0, 1, 2);
+
+        _labelUpdateTimer = new QTimer(_tempWidget);
+        connect(_labelUpdateTimer, SIGNAL(timeout()), this, SLOT(updateTimerLabel()));
+
+        _timedQuizWarningTextLabel = new QLabel(TEXT_QUIZ_TIMED_QUIZ_WARNING, _tempWidget);
+        _timedQuizWarningTextLabel->setStyleSheet("QLabel{color:#e5a539;margin-top:10px;margin-bottom:10px;padding:5px;background:rgba(0,0,0,100);border-top-left-radius: 30px;border-bottom-right-radius: 30px;}");
+        _timedQuizWarningTextLabel->setFont (QFont ("Helvetica", 18,QFont::Bold,true));
+        _timedQuizWarningTextLabel->setWordWrap(true);
+        _layout->addWidget(_timedQuizWarningTextLabel, row++, 0, 1, 2);
+
+        // Alternative way:
+        //QTimer::singleShot(quizDetails["timerDuration"].toInt(), this, SLOT(callMarkQuiz_byTimer()));
+    }
+
+    // Start Quiz button
+    _startQuizButton = new QPushButton("Start Quiz", _tempWidget);
+    _startQuizButton->setStyleSheet("");
+    _startQuizButton->setStyleSheet("QPushButton {margin-top:20px;background:rgba(0,0,0,255);border: 5px solid #e5a539;padding:10px;} QPushButton::pressed {background:rgba(30,30,30,255);}");
+    _startQuizButton->setFont (QFont ("Helvetica", 14));
+    connect(_startQuizButton, SIGNAL(released()), this, SLOT(startQuiz()));
+    _layout->addWidget(_startQuizButton, row++, 0, 1, 2);
+    _layout->setAlignment(Qt::AlignTop);
+
+    _warning = new QLabel(TEXT_QUIZ_WARNING, _tempWidget);
+    _warning->setStyleSheet("QLabel { color:#e5a539;margin-top:20px;margin-left:10px;margin-right:10px;}");
+    _warning->setFont (QFont ("Helvetica", 11,QFont::Bold,false));
+    _warning->setVisible(false);
+    _layout->addWidget(_warning, row++, 0, 1, 2);
+
+    // Load the quiz questions.
+    QString questionLabelString = "question_";
+    QVector<QString> content;
+    for (int i = 1; i <= noOfQuestions; i++)
+    {
+        // Construct the QJsonObject for the particular question first.
+        QJsonObject jsonQuestion = obj.value(questionLabelString+QString::number(i)).toObject();
+
+        // Check the number of options for the question.
+        int noOfOptions = jsonQuestion["noOfOptions"].toInt();
+
+        // Load the question.
+        content.append(QString(jsonQuestion["question"].toString()));
+
+        // Load the options.
+        QJsonArray optionArray = jsonQuestion["options"].toArray();
+
+        for (int j = 0; j < optionArray.size(); j++)
+            content.append(QString(optionArray[j].toString()));
+
+        // Load the teacher comment.
+        content.append(QString(jsonQuestion["teacherComment"].toString()));
+
+        // Load the correct answers.
+        _correctAnswerList.append(jsonQuestion["correctAnswer"].toInt());
+
+        // Create the question.
+        MedNUSQuizQuestion *question = new MedNUSQuizQuestion(_tempWidget, _layout, row, content, noOfOptions, jsonQuestion["hasImage"].toBool(), QString(jsonQuestion["imageUrl"].toString()));
+
+        // Push the question into the question vector.
+        _questionList->append(question);
+        content.clear();
+    }
+
+    // Marking button
+    _markButton = new QPushButton("Submit", _tempWidget);
+    _markButton->setVisible(false);
+    _markButton->setStyleSheet("QPushButton {margin-top:20px;background:rgba(0,0,0,255);border: 5px solid #e5a539;padding:10px;} QPushButton::pressed {background:rgba(30,30,30,255);}");
+    _markButton->setFont (QFont ("Helvetica", 14));
+    connect(_markButton, SIGNAL(released()), this, SLOT(callMarkQuiz_byButton()));
+    _layout->addWidget(_markButton, row++, 0, 1, 2);
+    //_layout->setAlignment(Qt::AlignTop);
 
     _tempWidget->setLayout(_layout);
     _tempWidget->setContentsMargins(10,10,10,10);
@@ -196,6 +352,7 @@ void MedNUSQuiz::startQuiz()
     _startScreenLabel->setVisible(false);
     _startQuizButton->setVisible(false);
     _instructionTextLabel->setVisible(false);
+    _timedQuizWarningTextLabel->setVisible(false);
 
     // Show all the quiz elements.
     for (int i = 0; i < _questionList->size(); i++)
@@ -217,7 +374,18 @@ void MedNUSQuiz::updateTimerLabel()
         int time = _timer->remainingTime()/1000;
         int min = time/60;
         int sec = time%60;
-        _timerLabel->setText("Time Left: "+QString::number(min)+":"+QString::number(sec));
+        QString timeText = "Time Left: ";
+        if (min < 10) {
+            timeText += "0" + QString::number(min) +":";
+        } else {
+            timeText += QString::number(min) + ":";
+        }
+        if (sec < 10) {
+            timeText += "0" + QString::number(sec);
+        } else {
+            timeText += QString::number(sec);
+        }
+        _timerLabel->setText(timeText);
     } else {
         // Stop the label update timer.
         _labelUpdateTimer->stop();
@@ -227,144 +395,4 @@ void MedNUSQuiz::updateTimerLabel()
 void MedNUSQuiz::resizeEvent(QResizeEvent *event)
 {
     _scrollArea->setGeometry(this->geometry());
-}
-
-bool MedNUSQuiz::initStartScreen()
-{
-    //_startScreenLayout = new QVBoxLayout(_tempWidget);
-    _startScreenLabel = new QLabel(TEXT_QUIZ_INTRO, _tempWidget);
-    _startScreenLabel->setWordWrap(true);
-    _startScreenLabel->setStyleSheet("text-align:justify;");
-    _startScreenLabel->setFont (QFont ("Helvetica", 12));
-    _layout->addWidget(_startScreenLabel);
-
-    // Start Quiz button
-    _startQuizButton = new QPushButton("Start Quiz", _tempWidget);
-    _startQuizButton->setStyleSheet("");
-    _startQuizButton->setStyleSheet("QPushButton {margin-top:20px;background:rgba(0,0,0,255);border: 5px solid #e5a539;padding:10px;} QPushButton::pressed {background:rgba(30,30,30,255);}");
-    _startQuizButton->setFont (QFont ("Helvetica", 14));
-
-    connect(_startQuizButton, SIGNAL(released()), this, SLOT(startQuiz()));
-    _layout->addWidget(_startQuizButton);
-    _layout->setAlignment(Qt::AlignTop);
-}
-
-bool MedNUSQuiz::initQuiz(QString filename)
-{
-    // Add questions here //
-    _questionList = new QVector<MedNUSQuizQuestion*>();
-
-    // Read Json file
-    QFile file(filename);
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
-    {
-        qWarning() << "Unable to open file.";
-
-        // TODO: Add warning message box.
-        //To Miki, Check with Rey to standardise file not found output.
-    }
-    QByteArray fileValue = file.readAll();
-    file.close();
-    QJsonDocument doc = QJsonDocument::fromJson(fileValue);
-    QJsonObject obj = doc.object();
-    QJsonValue v = obj.value(QString("details"));
-    QJsonObject quizDetails = v.toObject();
-
-    // Quiz title text label
-    _titleTextLabel = new QLabel(quizDetails["title"].toString(), _tempWidget);
-    _titleTextLabel->setFont (QFont ("Helvetica", 18,QFont::Bold,false));
-    _layout->addWidget(_titleTextLabel);
-
-    _score = new QLabel(TEXT_QUIZ_WARNING, _tempWidget);
-    _score->setStyleSheet("QLabel{color:#e5a539;margin-top:10px;margin-bottom:10px;padding:5px;background:rgba(0,0,0,100);border-top-left-radius: 30px;border-bottom-right-radius: 30px;}");
-    _score->setFont (QFont ("Helvetica", 90,QFont::Bold,true));
-    _score->setAlignment(Qt::AlignCenter);
-    _score->setVisible(false);
-    _layout->addWidget(_score);
-
-    // Quiz flags
-    _showAnswerFlag = quizDetails["showAnswer"].toBool();
-    _showTeacherCommentFlag = quizDetails["showTeacherComment"].toBool();
-
-    int noOfQuestions = quizDetails["noOfQuestions"].toInt();
-
-    // The instruction text at the top of the quiz.
-    _instructionTextLabel = new QLabel(quizDetails["introductionText"].toString(), _tempWidget);
-    _instructionTextLabel->setWordWrap(true);
-    _instructionTextLabel->setStyleSheet("QLabel {color:#adbfc6;}");
-    _instructionTextLabel->setFont (QFont ("Helvetica", 11,QFont::Normal,true));
-    _layout->addWidget(_instructionTextLabel);
-
-    // Load the timer
-    _hasTimeLimit = quizDetails["hasTimeLimit"].toBool();
-    if (_hasTimeLimit) {
-        _timer = new QTimer(_tempWidget);
-        connect(_timer, SIGNAL(timeout()), this, SLOT(callMarkQuiz_byTimer()));
-        _timerDuration = quizDetails["timerDuration"].toInt();
-        _timer->setSingleShot(true);
-
-        _timerLabel = new QLabel(QString::number(_timer->remainingTime()), _tempWidget);
-        _timerLabel->setWordWrap(true);
-        _timerLabel->setStyleSheet("QLabel {color:rgba(229,164,57);margin-top:10px}");
-        _timerLabel->setFont (QFont ("Helvetica", 14,QFont::Bold,false));
-        _timerLabel->setVisible(false);
-        _layout->addWidget(_timerLabel);
-
-        _labelUpdateTimer = new QTimer(_tempWidget);
-        connect(_labelUpdateTimer, SIGNAL(timeout()), this, SLOT(updateTimerLabel()));
-
-        // Alternative way:
-        //QTimer::singleShot(quizDetails["timerDuration"].toInt(), this, SLOT(callMarkQuiz_byTimer()));
-    }
-
-    // Load the quiz questions.
-    QString questionLabelString = "question_";
-    QVector<QString> content;
-    for (int i = 1; i <= noOfQuestions; i++)
-    {
-        // Construct the QJsonObject for the particular question first.
-        QJsonObject jsonQuestion = obj.value(questionLabelString+QString::number(i)).toObject();
-
-        // Check the number of options for the question.
-        int noOfOptions = jsonQuestion["noOfOptions"].toInt();
-
-        // Load the question.
-        content.append(QString(jsonQuestion["question"].toString()));
-
-        // Load the options.
-        QJsonArray optionArray = jsonQuestion["options"].toArray();
-
-        for (int j = 0; j < optionArray.size(); j++)
-            content.append(QString(optionArray[j].toString()));
-
-        // Load the teacher comment.
-        content.append(QString(jsonQuestion["teacherComment"].toString()));
-
-        // Load the correct answers.
-        _correctAnswerList.append(jsonQuestion["correctAnswer"].toInt());
-
-        // Create the question.
-        MedNUSQuizQuestion *question = new MedNUSQuizQuestion(_tempWidget, _layout, content, noOfOptions);
-
-        // Push the question into the question vector.
-        _questionList->append(question);
-        content.clear();
-    }
-
-    _warning = new QLabel(TEXT_QUIZ_WARNING, _tempWidget);
-    _warning->setStyleSheet("QLabel { color:#e5a539;margin-top:20px;margin-left:10px;margin-right:10px;}");
-    _warning->setFont (QFont ("Helvetica", 11,QFont::Bold,false));
-    _warning->setVisible(false);
-    _layout->addWidget(_warning);
-
-    // Marking button
-    _markButton = new QPushButton("Submit", _tempWidget);
-    _markButton->setVisible(false);
-    _markButton->setStyleSheet("QPushButton {margin-top:20px;background:rgba(0,0,0,255);border: 5px solid #e5a539;padding:10px;} QPushButton::pressed {background:rgba(30,30,30,255);}");
-    _markButton->setFont (QFont ("Helvetica", 14));
-    connect(_markButton, SIGNAL(released()), this, SLOT(callMarkQuiz_byButton()));
-    _layout->addWidget(_markButton);
-    _layout->setAlignment(Qt::AlignTop);
-
-    return true;
 }
