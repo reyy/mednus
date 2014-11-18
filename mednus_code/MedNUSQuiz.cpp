@@ -400,6 +400,7 @@ void MedNUSQuiz::startQuiz()
     _instructionTextLabel->setVisible(false);
     _timedQuizWarningTextLabel->setVisible(false);
     _attemptLabel->setVisible(false);
+    _dummySpace1->setVisible(false);
 
     // Show all the quiz elements.
     for (int i = 0; i < _questionList->size(); i++)
