@@ -8,6 +8,7 @@ class MedNUSLessonIcon : public QWidget
 {
     Q_OBJECT
 private:
+    bool _scrollBarExist;
     bool _selected;
     QLabel *_highlight;
     QLabel *_icon;
@@ -26,6 +27,7 @@ public:
      void updatePosition(float packageX, float packageY, float x, float y);
      void setSelected(bool value);
      void setVisible(bool value);
+     void setScrollBarSpace(bool value);
 
 protected:
     void setHighlight(bool status);
