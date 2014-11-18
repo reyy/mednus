@@ -37,7 +37,7 @@ MedNUSMainWindow::MedNUSMainWindow(QWidget *parent) :
     }
 
     //Tab Bkg Change
-    this->setStyleSheet("MedNUSMainWindow{border-image: url(:/images/login_background.jpg) 0 0 0 0 stretch stretch;}");
+    this->setStyleSheet("MedNUSMainWindow{border-image: url(:/images/login_background.png) 0 0 0 0 stretch stretch;}");
 
     _image.load(":/images/login_lines.png");
 }
