@@ -15,7 +15,6 @@ MedNUSQuizQuestion::MedNUSQuizQuestion(QWidget *parent, QGridLayout *layout, int
 
     // Initialize the question's image (if any).
     if (hasImage) {
-        qDebug() << imageUrl;
         _questionImageLabel = new QLabel(parent);
         _questionImageLabel->setPixmap(QPixmap(QDir::homePath()+imageUrl));
         _questionImageLabel->setVisible(false);
@@ -140,6 +139,8 @@ MedNUSQuiz::MedNUSQuiz(QString filename, QWidget *parent) :
         // TODO: Add warning message box.
         //To Miki, Check with Rey to standardise file not found output.
     }
+    QString lastModifiedDate = QFileInfo(file).lastModified().toString();
+    qDebug() << lastModifiedDate;
     QByteArray fileValue = file.readAll();
     file.close();
     QJsonDocument doc = QJsonDocument::fromJson(fileValue);
@@ -156,12 +157,22 @@ MedNUSQuiz::MedNUSQuiz(QString filename, QWidget *parent) :
     _authorTextLabel->setFont(QFont("Helvetica", 9, QFont::Normal, true));
     _layout->addWidget(_authorTextLabel, row++, 0, 1, 1);
 
+    _lastModifiedLabel = new QLabel("last modified on: "+lastModifiedDate, _tempWidget);
+    _lastModifiedLabel->setFont(QFont("Helvetica", 9, QFont::Normal, true));
+    _lastModifiedLabel->setAlignment(Qt::AlignRight);
+    _layout->addWidget(_lastModifiedLabel, row-1, 1, 1, 1);
+
     // The instruction text at the top of the quiz.
     _instructionTextLabel = new QLabel(quizDetails["introductionText"].toString(), _tempWidget);
     _instructionTextLabel->setWordWrap(true);
     _instructionTextLabel->setStyleSheet("QLabel {color:#adbfc6;}");
     _instructionTextLabel->setFont (QFont ("Helvetica", 11,QFont::Normal,true));
     _layout->addWidget(_instructionTextLabel, row++, 0, 1, 2);
+
+    _dummySpace1 = new QLabel("-", _tempWidget);
+    _dummySpace1->setStyleSheet("QLabel {color:#e5a539;}");
+    _dummySpace1->setFont (QFont ("Helvetica", 14, QFont::Bold));
+    _layout->addWidget(_dummySpace1, row++, 0, 1, 2, Qt::AlignCenter);
 
     _score = new QLabel(TEXT_QUIZ_WARNING, _tempWidget);
     _score->setStyleSheet("QLabel{color:#e5a539;margin-top:10px;margin-bottom:10px;padding:5px;background:rgba(0,0,0,100);border-top-left-radius: 30px;border-bottom-right-radius: 30px;}");
@@ -201,20 +212,28 @@ MedNUSQuiz::MedNUSQuiz(QString filename, QWidget *parent) :
         _labelUpdateTimer = new QTimer(_tempWidget);
         connect(_labelUpdateTimer, SIGNAL(timeout()), this, SLOT(updateTimerLabel()));
 
-        _timedQuizWarningTextLabel = new QLabel(TEXT_QUIZ_TIMED_QUIZ_WARNING, _tempWidget);
-        _timedQuizWarningTextLabel->setStyleSheet("QLabel{color:#e5a539;margin-top:10px;margin-bottom:10px;padding:5px;background:rgba(0,0,0,100);border-top-left-radius: 30px;border-bottom-right-radius: 30px;}");
-        _timedQuizWarningTextLabel->setFont (QFont ("Helvetica", 18,QFont::Bold,true));
+        _timedQuizWarningTextLabel = new QLabel(TEXT_QUIZ_TIMED_QUIZ_WARNING + QString("\n") + convertTimeToString(quizDetails["timerDuration"].toInt()), _tempWidget);
+        _timedQuizWarningTextLabel->setStyleSheet("QLabel{color:#e5a539;margin-top:10px;margin-bottom:10px;}");
+        _timedQuizWarningTextLabel->setFont (QFont ("Helvetica", 12));
         _timedQuizWarningTextLabel->setWordWrap(true);
-        _layout->addWidget(_timedQuizWarningTextLabel, row++, 0, 1, 2);
+        _layout->addWidget(_timedQuizWarningTextLabel, row++, 0, 1, 1);
 
         // Alternative way:
         //QTimer::singleShot(quizDetails["timerDuration"].toInt(), this, SLOT(callMarkQuiz_byTimer()));
     }
 
+    // Attempts
+    _attemptLabel = new QLabel("Attempts Left:\n3/5", _tempWidget);
+    _attemptLabel->setStyleSheet("QLabel{color:#e5a539;margin-top:10px;margin-bottom:10px;}");
+    _attemptLabel->setAlignment(Qt::AlignRight);
+    _attemptLabel->setFont (QFont ("Helvetica", 12));
+    _attemptLabel->setWordWrap(true);
+    _layout->addWidget(_attemptLabel, _hasTimeLimit?row-1:row, 1, 1, 1);
+
     // Start Quiz button
     _startQuizButton = new QPushButton("Start Quiz", _tempWidget);
     _startQuizButton->setStyleSheet("");
-    _startQuizButton->setStyleSheet("QPushButton {margin-top:20px;background:rgba(0,0,0,255);border: 5px solid #e5a539;padding:10px;} QPushButton::pressed {background:rgba(30,30,30,255);}");
+    _startQuizButton->setStyleSheet("QPushButton {margin-top:5px;background:rgba(0,0,0,255);border: 5px solid #e5a539;padding:10px;} QPushButton::pressed {background:rgba(30,30,30,255);}");
     _startQuizButton->setFont (QFont ("Helvetica", 14));
     connect(_startQuizButton, SIGNAL(released()), this, SLOT(startQuiz()));
     _layout->addWidget(_startQuizButton, row++, 0, 1, 2);
@@ -336,6 +355,33 @@ void MedNUSQuiz::markQuiz(bool byTimer)
     _scrollArea->verticalScrollBar()->setSliderPosition(0);
 }
 
+QString MedNUSQuiz::convertTimeToString(int ms)
+{
+    QString timeString = "";
+
+    int time = ms/1000;
+    int hr = time/3600;
+    int min = time/60;
+    int sec = time%60;
+
+    if (hr < 10) {
+        timeString += "0" + QString::number(hr) + ":";
+    } else {
+        timeString += QString::number(hr) + ":";
+    }
+    if (min < 10) {
+        timeString += "0" + QString::number(min) + ":";
+    } else {
+        timeString += QString::number(min) + ":";
+    }
+    if (sec < 10) {
+        timeString += "0" + QString::number(sec);
+    } else {
+        timeString += QString::number(sec);
+    }
+    return timeString;
+}
+
 void MedNUSQuiz::callMarkQuiz_byButton()
 {
     markQuiz(false);
@@ -353,6 +399,7 @@ void MedNUSQuiz::startQuiz()
     _startQuizButton->setVisible(false);
     _instructionTextLabel->setVisible(false);
     _timedQuizWarningTextLabel->setVisible(false);
+    _attemptLabel->setVisible(false);
 
     // Show all the quiz elements.
     for (int i = 0; i < _questionList->size(); i++)
@@ -372,11 +419,17 @@ void MedNUSQuiz::updateTimerLabel()
     if (_timer->isActive()) {
         // Update the timer label.
         int time = _timer->remainingTime()/1000;
+        int hr = time/3600;
         int min = time/60;
         int sec = time%60;
         QString timeText = "Time Left: ";
+        if (hr < 10) {
+            timeText += "0" + QString::number(hr) + ":";
+        } else {
+            timeText += QString::number(hr) + ":";
+        }
         if (min < 10) {
-            timeText += "0" + QString::number(min) +":";
+            timeText += "0" + QString::number(min) + ":";
         } else {
             timeText += QString::number(min) + ":";
         }

@@ -9,6 +9,8 @@
 #include <QMessageBox>
 #include <QTimer>
 #include <QDir>
+#include <QFileInfo>
+#include <QDateTime>
 
 // For Graphics
 #include <QGridLayout>
@@ -106,9 +108,17 @@ protected:
     QLabel* _timerLabel;
     QTimer* _labelUpdateTimer;
 
+    // Attempts
+    QLabel* _attemptLabel;
+
+    QLabel* _lastModifiedLabel;
+    QLabel* _dummySpace1;
+
 private:
     QVector<MedNUSQuizQuestion*>* _questionList;
     void markQuiz(bool byTimer);
+
+    QString convertTimeToString(int ms);
 
 signals:
 
