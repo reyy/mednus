@@ -17,7 +17,7 @@ MedNUSLessonPanel::MedNUSLessonPanel(QWidget *parent) : QWidget(parent) {
     loadPixmap();
     _background = new QLabel(this);
     _background->setGeometry(QRect(SIDEBAR_OFFSET,0, this->width()-SIDEBAR_OFFSET, this->height()));
-    _background->setStyleSheet("background-color: #1a394a;");
+    _background->setStyleSheet("background-color: #13181b;");
 
     _button = new QLabel(this);
     _button->setGeometry(QRect(0,this->height()/2-SIDEBAR_OFFSET*3.2, SIDEBAR_OFFSET, SIDEBAR_OFFSET*6.4));
