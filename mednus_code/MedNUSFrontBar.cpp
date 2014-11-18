@@ -19,21 +19,21 @@ MedNUSFrontBar::MedNUSFrontBar(QWidget *parent) :
     _btView1->setIconSize(QSize(24,24));
     _btView1->setFlat(true);
     _btView1->setStyleSheet("QPushButton {border-style: outset; border-width: 0px;background-image: url(:/images/bt_view1.png);} QPushButton::pressed {background-image: url(:/images/bt_view1_p.png);}");
-    _btView1->setGeometry(QRect(this->x()+this->geometry().width()-10-30*1, this->y()+space, 24,24));
+    _btView1->setGeometry(QRect(this->x()+this->geometry().width()-36*1, this->y()+space, 32,24));
     _btView1->setVisible(false);
 
     _btView2 = new QPushButton(parent);
     _btView2->setIconSize(QSize(24,24));
     _btView2->setFlat(true);
     _btView2->setStyleSheet("QPushButton {border-style: outset; border-width: 0px;background-image: url(:/images/bt_view2.png);} QPushButton::pressed {background-image: url(:/images/bt_view2_p.png);}");
-    _btView2->setGeometry(QRect(this->x()+this->geometry().width()-10-30*2, this->y()+space, 24,24));
+    _btView2->setGeometry(QRect(this->x()+this->geometry().width()-36*2, this->y()+space, 32,24));
     _btView2->setVisible(false);
 
     _btView3 = new QPushButton(parent);
     _btView3->setIconSize(QSize(24,24));
     _btView3->setFlat(true);
     _btView3->setStyleSheet("QPushButton {border-style: outset; border-width: 0px;background-image: url(:/images/bt_view3.png);} QPushButton::pressed {background-image: url(:/images/bt_view3_p.png);}");
-    _btView3->setGeometry(QRect(this->x()+this->geometry().width()-10-30*3, this->y()+space, 24,24));
+    _btView3->setGeometry(QRect(this->x()+this->geometry().width()-36*3, this->y()+space, 32,24));
     _btView3->setVisible(false);
 
     connect(_btView1,SIGNAL(clicked()),this,SLOT(changeFullScreenView()));
@@ -76,11 +76,11 @@ void MedNUSFrontBar::changeDefaultView(){
 
 void MedNUSFrontBar::resizeEvent(QResizeEvent* event)
 {
-    int space = (TOPBAR_HEIGHT-TOPBAR_HEIGHT/40*21)/2;
+    int space = (TOPBAR_HEIGHT-24)/2;
     _logo->setGeometry(QRect(this->x()+space, this->y()+space, TOPBAR_HEIGHT/40*76, TOPBAR_HEIGHT/40*21));
-    _btView1->setGeometry(QRect(this->x()+this->geometry().width()-30*1, this->y()+space, 24,24));
-    _btView2->setGeometry(QRect(this->x()+this->geometry().width()-30*2, this->y()+space, 24,24));
-    _btView3->setGeometry(QRect(this->x()+this->geometry().width()-30*3, this->y()+space, 24,24));
+    _btView1->setGeometry(QRect(this->x()+this->geometry().width()-36*1, this->y()+space, 32,24));
+    _btView2->setGeometry(QRect(this->x()+this->geometry().width()-36*2, this->y()+space, 32,24));
+    _btView3->setGeometry(QRect(this->x()+this->geometry().width()-36*3, this->y()+space, 32,24));
     _btView1->setVisible(true);
     _btView2->setVisible(true);
     _btView3->setVisible(true);
