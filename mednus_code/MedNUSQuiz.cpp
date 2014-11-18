@@ -170,7 +170,7 @@ MedNUSQuiz::MedNUSQuiz(QString filename, QWidget *parent) :
     _layout->addWidget(_instructionTextLabel, row++, 0, 1, 2);
 
     _dummySpace1 = new QLabel("-", _tempWidget);
-    _dummySpace1->setStyleSheet("QLabel {color:#e5a539;}");
+    _dummySpace1->setStyleSheet("QLabel {color:#FFFFFF;}");
     _dummySpace1->setFont (QFont ("Helvetica", 14, QFont::Bold));
     _layout->addWidget(_dummySpace1, row++, 0, 1, 2, Qt::AlignCenter);
 

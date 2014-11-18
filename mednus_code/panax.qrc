@@ -102,5 +102,9 @@
         <file>images/screentop.png</file>
         <file>images/bt_close_h.png</file>
         <file>images/panel_lines.png</file>
+        <file>images/check_default_hover.png</file>
+        <file>images/check_default.png</file>
+        <file>images/check_filled_hover.png</file>
+        <file>images/check_filled.png</file>
     </qresource>
 </RCC>
