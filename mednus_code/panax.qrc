@@ -98,5 +98,7 @@
         <file>images/about.png</file>
         <file>icon.icns</file>
         <file>images/lessonpanel.css</file>
+        <file>images/login_background.png</file>
+        <file>images/ivle_profile.png</file>
     </qresource>
 </RCC>
