@@ -8,9 +8,12 @@
 #include <QString>
 #include <QMessageBox>
 #include <QTimer>
+#include <QDir>
+#include <QFileInfo>
+#include <QDateTime>
 
 // For Graphics
-#include <QVBoxLayout>
+#include <QGridLayout>
 #include <QRadioButton>
 #include <QButtonGroup>
 #include <QPushButton>
@@ -40,7 +43,7 @@ public:
      *          content[1..noOfOptions] = options
      *          content[noOfOptions+1]  = teacher's comment
      */
-    MedNUSQuizQuestion(QWidget *parent, QVBoxLayout *layout, QVector<QString> content, int noOfOptions);
+    MedNUSQuizQuestion(QWidget *parent, QGridLayout *layout, int& row, QVector<QString> content, int noOfOptions, bool hasImage = false, QString imageUrl = "");
     ~MedNUSQuizQuestion();
 
     int getSelectedAnswer() const;
@@ -55,6 +58,7 @@ public:
 protected:
 
 private:
+    QLabel* _questionImageLabel;
     QLabel* _questionTextLabel;
     QLabel* _teacherCommentLabel;
     QButtonGroup* _optionButtonGroup;
@@ -70,11 +74,13 @@ public:
 
 protected:
     QWidget* _tempWidget;
-    QVBoxLayout* _layout;
+    QGridLayout* _layout;
     QScrollArea* _scrollArea;
 
     QLabel* _titleTextLabel;
+    QLabel* _authorTextLabel;
     QLabel* _instructionTextLabel;
+    QLabel* _timedQuizWarningTextLabel;
     QLabel* _warning;
     QLabel* _score;
     QVector<QButtonGroup*> _questionOptionGroup;
@@ -94,11 +100,6 @@ protected:
     // Start Screen
     QLabel* _startScreenLabel;
     QPushButton* _startQuizButton;
-    bool initStartScreen();
-
-    // Quiz
-    QVBoxLayout* _quizLayout;
-    bool initQuiz(QString filename);
 
     // Timer
     bool _hasTimeLimit;
@@ -107,9 +108,17 @@ protected:
     QLabel* _timerLabel;
     QTimer* _labelUpdateTimer;
 
+    // Attempts
+    QLabel* _attemptLabel;
+
+    QLabel* _lastModifiedLabel;
+    QLabel* _dummySpace1;
+
 private:
     QVector<MedNUSQuizQuestion*>* _questionList;
     void markQuiz(bool byTimer);
+
+    QString convertTimeToString(int ms);
 
 signals:
 

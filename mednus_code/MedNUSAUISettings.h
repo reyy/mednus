@@ -10,6 +10,7 @@
 #define TOPBAR_HEIGHT 40
 #define SIDEBAR_OFFSET 14
 #define LOGO_WIDTH 160
+#define LOGO_LIMIT 4
 
 #define VIDEO_BORDER 10
 #define VIDEO_SEP_LENGTH 7
@@ -18,6 +19,7 @@
 
 #define TEXT_QUIZ_INTRO "Select an answer for every question. Unanswered questions will prevent quiz from being submitted. Click on the Submit button at the bottom of the page to have your answers graded."
 #define TEXT_QUIZ_WARNING "Not all questions attempted, please check through and submit again."
+#define TEXT_QUIZ_TIMED_QUIZ_WARNING "Time Given: "
 
 #define MIN(a,b) ((a) < (b) ? (a) : (b))
 #define MAX(a,b) ((a) > (b) ? (a) : (b))

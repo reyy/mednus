@@ -11,15 +11,16 @@ MedNUSLessonIcon::MedNUSLessonIcon(QString path, QPixmap directory, QWidget *par
     _parent = parent;
 
     _highlight = new QLabel(this);
-    _highlight->setStyleSheet("background-color: #4e698a;border-color:#ffffff;border-style: dotted;border-width: 1px;");
+    _highlight->setStyleSheet("background: rgba(229,165,57,50);");
 
     _icon = new QLabel(this);
     _icon->setPixmap(directory);
-    _icon->setStyleSheet("background-color:rgba(0,0,0,0);color:#FFFFFF;");
+    _icon->setStyleSheet("background:rgba(0,0,0,0);color:#FFFFFF;");
     _icon->setScaledContents(true);
 
     _text = new QLabel(this);
-    _text->setStyleSheet("background-color:rgba(0,0,0,0);color:#FFFFFF;font-size:10px;");
+    _text->setStyleSheet("background:rgba(0,0,0,0);color:#FFFFFF;");
+    _text->setFont (QFont ("Helvetica", 10,QFont::Normal,false));
 
     int startIndex=_path.lastIndexOf("/");
     int nameLength=_path.size()-startIndex;
@@ -39,11 +40,19 @@ void MedNUSLessonIcon::updatePosition(float packageX, float packageY, float x, f
     _x=packageX;
     _y=packageY+y;
     qDebug() <<packageX<<" "<<packageY<<" "<<_x<<" "<< _y;
-    _icon->setGeometry(QRect(LESSONPANEL_BORDER+1,1, 15, 20));
-    _text->setGeometry(QRect(LESSONPANEL_BORDER+15+5, 1, LESSONPANEL_WIDTH-LESSONPANEL_BORDER*2-SIDEBAR_OFFSET-18, 16));
-    _highlight->setGeometry(QRect(LESSONPANEL_BORDER-2, 0, LESSONPANEL_WIDTH-LESSONPANEL_BORDER*2-SIDEBAR_OFFSET-18, 20+2));
+    _icon->setGeometry(QRect(LESSONPANEL_BORDER+1,3, 12, 16));
 
-    this->setGeometry(QRect(x+LESSONPANEL_BORDER-2, y, LESSONPANEL_WIDTH-LESSONPANEL_BORDER*2-SIDEBAR_OFFSET-16, 20+5));
+    if(_scrollBarExist) {
+        _text->setGeometry(QRect(LESSONPANEL_BORDER+15+5, 3, LESSONPANEL_WIDTH-LESSONPANEL_BORDER*2-SIDEBAR_OFFSET-18+1, 16));
+        _highlight->setGeometry(QRect(LESSONPANEL_BORDER-2, 0, LESSONPANEL_WIDTH-LESSONPANEL_BORDER*2-SIDEBAR_OFFSET-18+1, 20+2));
+
+        this->setGeometry(QRect(x+LESSONPANEL_BORDER-2, y, LESSONPANEL_WIDTH-LESSONPANEL_BORDER*2-SIDEBAR_OFFSET-16+1, 20+5));
+    } else {
+        _text->setGeometry(QRect(LESSONPANEL_BORDER+15+5, 3, LESSONPANEL_WIDTH-LESSONPANEL_BORDER*2-SIDEBAR_OFFSET-12+1, 16));
+        _highlight->setGeometry(QRect(LESSONPANEL_BORDER-2, 0, LESSONPANEL_WIDTH-LESSONPANEL_BORDER*2-SIDEBAR_OFFSET-12+1, 20+2));
+
+        this->setGeometry(QRect(x+LESSONPANEL_BORDER-2, y, LESSONPANEL_WIDTH-LESSONPANEL_BORDER*2-SIDEBAR_OFFSET-10+1, 20+5));
+    }
 
     QFontMetrics metrics(_text->font());
     _text->setText(metrics.elidedText(_filename, Qt::ElideRight, _text->width()-30));
@@ -86,4 +95,8 @@ void MedNUSLessonIcon::tabClosed(QString path)
 {
     if(path.contains( _path))
         setHighlight(false);
+}
+
+void MedNUSLessonIcon::setScrollBarSpace(bool value) {
+    _scrollBarExist = value;
 }

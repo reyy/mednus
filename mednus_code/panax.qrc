@@ -61,7 +61,6 @@
         <file>images/button_trayout.png</file>
         <file>images/avatar_cutout.png</file>
         <file>images/ivle_profile.jpg</file>
-        <file>images/avatar_cutout_dark.png</file>
         <file>images/tabwidget.css</file>
         <file>images/login_background.jpg</file>
         <file>images/login_overlay.png</file>
@@ -100,5 +99,12 @@
         <file>images/lessonpanel.css</file>
         <file>images/login_background.png</file>
         <file>images/ivle_profile.png</file>
+        <file>images/screentop.png</file>
+        <file>images/bt_close_h.png</file>
+        <file>images/panel_lines.png</file>
+        <file>images/check_default_hover.png</file>
+        <file>images/check_default.png</file>
+        <file>images/check_filled_hover.png</file>
+        <file>images/check_filled.png</file>
     </qresource>
 </RCC>
