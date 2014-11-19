@@ -39,13 +39,19 @@ void MedNUSLessonPackageContentPanel::clearContent() {
 void MedNUSLessonPackageContentPanel::updateGUI(int x, int y, bool collapse) {
     this->setGeometry(QRect(0,0,LESSONPANEL_WIDTH-LESSONPANEL_BORDER*2-SIDEBAR_OFFSET,_listOfItems.size()*24+2));
 
+
     if(collapse) {
         for(int i=0;i<_listOfItems.size();i++)
             _listOfItems.at(i)->setVisible(false);
     } else {
+        bool exceedLimit=false;
+        if(_listOfItems.size()>LOGO_LIMIT) {
+            exceedLimit=true;
+        }
         for(int i=0;i<_listOfItems.size();i++) {
             _listOfItems.at(i)->setVisible(true);
             _listOfItems.at(i)->updatePosition(x,y,0,5+i*24);
+            _listOfItems.at(i)->setScrollBarSpace(exceedLimit);
         }
     }
 }
@@ -69,17 +75,21 @@ MedNUSLessonPackage::MedNUSLessonPackage(QWidget *parent) :
     _loadStatus = new QLabel(parent);
     _loadStatus->setPixmap(((MedNUSLessonPanel*)parent)->getLoadingIcon(10));
     _loadStatus->setScaledContents(true);
+    //To Do: Tag the value to load state, set the existing text to 50% opacity.
 
     _moduleTitle = new QLabel(parent);
-    _moduleTitle->setStyleSheet("color:#FFF;font-size:12px;font-weight:bold;");
+    _moduleTitle->setStyleSheet("color:#FFFFFF;");
+    _moduleTitle->setFont (QFont ("Helvetica", 12,QFont::Bold,false));
     _moduleTitle->setGeometry(QRect(_x+10+LESSONPANEL_BORDERICON, _y, LESSONPANEL_WIDTH, 24));
 
     _subHeader = new QLabel(parent);
-    _subHeader->setStyleSheet("color:#FFF;font-size:10px;");
+    _subHeader->setStyleSheet("color:#e5a539;");
+    _subHeader->setFont (QFont ("Helvetica", 10,QFont::Bold,false));
     _subHeader->setGeometry(QRect(_x+15+LESSONPANEL_BORDERICON, _y+22, LESSONPANEL_WIDTH, 20));
 
     _description = new QLabel(parent);
-    _description->setStyleSheet("color:#FFF;font-size:10px;");
+    _description->setStyleSheet("color:#bacdda;");
+    _description->setFont (QFont ("Helvetica", 10,QFont::Normal,true));
     _description->setGeometry(QRect(_x+15+LESSONPANEL_BORDERICON, _y+40, LESSONPANEL_WIDTH, 20));
 
     _contentPanel = new MedNUSLessonPackageContentPanel(_x,_y,parent);
@@ -187,19 +197,18 @@ void MedNUSLessonPackage::toggleCollapse(bool value) {
 
 void MedNUSLessonPackage::updateGUI(bool trayOut) {
 
+    _contentPanel->updateGUI(_x,_y,_collapse);
+
     int offset=0;
     if(trayOut)
         offset+=LESSONPANEL_BORDERICON;
 
     if(_tone%2==0)
-        _background->setStyleSheet("background-color: #286c91;");
+        _background->setStyleSheet("background-color: #1c262c;");
     else
-        _background->setStyleSheet("background-color: #245570;");
+        _background->setStyleSheet("background-color: #23313a;");
 
     if(_collapse) {
-        _moduleTitle->setStyleSheet("color:#FFF;font-size:12px;font-weight:bold;");
-        _subHeader->setStyleSheet("color:#FFF;font-size:10px;");
-        _description->setStyleSheet("color:#FFF;font-size:10px;");
         _background->setGeometry(QRect(_x, _y, LESSONPANEL_WIDTH, LESSONPANEL_CONTRACTED_CLICKHEIGHT));
         _loadStatus->setGeometry(QRect(_x+offset*0.5+LESSONPANEL_BORDERICON*0.3, _y+LESSONPANEL_BORDERICON*0.3, LESSONPANEL_BORDERICON, LESSONPANEL_BORDERICON));
         _moduleTitle->setGeometry(QRect(_x+10+offset+LESSONPANEL_BORDERICON, _y, LESSONPANEL_WIDTH, 24));
@@ -210,9 +219,6 @@ void MedNUSLessonPackage::updateGUI(bool trayOut) {
         _subHeader->setVisible(false);
         _description->setVisible(false);
     } else {
-        _moduleTitle->setStyleSheet("color:#FFF;font-size:12px;font-weight:bold;");
-        _subHeader->setStyleSheet("color:#FFF;font-size:10px;");
-        _description->setStyleSheet("color:#FFF;font-size:10px;");
         _background->setGeometry(QRect(_x, _y, LESSONPANEL_WIDTH, LESSONPANEL_HEIGHT));
         _loadStatus->setGeometry(QRect(_x+LESSONPANEL_BORDERICON*0.3, _y+LESSONPANEL_BORDERICON*0.3, LESSONPANEL_BORDERICON, LESSONPANEL_BORDERICON));
         _moduleTitle->setGeometry(QRect(_x+10+LESSONPANEL_BORDERICON, _y, LESSONPANEL_WIDTH, 24));

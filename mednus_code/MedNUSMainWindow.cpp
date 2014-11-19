@@ -1,4 +1,5 @@
 #include "MedNUSMainWindow.h"
+#include "MedNUSAUISettings.h"
 #include <QDir>
 #define SKIP_LOGIN 0
 
@@ -39,7 +40,8 @@ MedNUSMainWindow::MedNUSMainWindow(QWidget *parent) :
     //Tab Bkg Change
     this->setStyleSheet("MedNUSMainWindow{border-image: url(:/images/login_background.png) 0 0 0 0 stretch stretch;}");
 
-    _image.load(":/images/login_lines.png");
+    _imageLine.load(":/images/login_lines.png");
+    _imageBar.load(":/images/screentop.png");
 }
 
 MedNUSMainWindow::~MedNUSMainWindow() {
@@ -195,6 +197,7 @@ void MedNUSMainWindow::mousePressEvent ( QMouseEvent * event )
 void MedNUSMainWindow::paintEvent(QPaintEvent *) {
     if(_widgetsCreated) {
         QPainter painter(this);
-        painter.drawTiledPixmap(QRect(0,0,this->width(),this->height()),_image);
+        painter.drawTiledPixmap(QRect(0,0,this->width(),this->height()),_imageLine);
+        painter.drawTiledPixmap(QRect(0,0,this->width(),TOPBAR_HEIGHT),_imageBar);
     }
 }
