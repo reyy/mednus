@@ -7,7 +7,16 @@ MedNUSVideoViewer::MedNUSVideoViewer(QString filename, QWidget *parent) :
 {
     this->setAccessibleName(filename);
 
-    videoView = new QGraphicsView();
+    videoView = new QGraphicsView(this);
+//    QGridLayout *layout = new QGridLayout;
+//    layout->addWidget(videoView);
+//    layout->setSpacing(0);
+//    layout->setMargin(0);
+
+//    this->setLayout(layout);
+    this->setFocusPolicy(Qt::StrongFocus);
+    this->installEventFilter(this);
+
     scene = new QGraphicsScene(videoView);
     videoView->setScene(scene);
     videoView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -15,24 +24,12 @@ MedNUSVideoViewer::MedNUSVideoViewer(QString filename, QWidget *parent) :
     videoItem = new QGraphicsVideoItem;
 
     mediaPlayer.setVideoOutput(videoItem);
-    mediaPlayer.setMedia(QUrl::fromLocalFile(filename));
-    mediaPlayer.play();
-    mediaPlayer.pause();
 
     scene->addItem(videoItem);
 
     videoView->setAutoFillBackground(true);
     videoView->setBackgroundBrush(QBrush(Qt::black, Qt::SolidPattern));
     videoView->setStyleSheet( "QGraphicsView { border-style: none; background-color:black}" );
-
-    QGridLayout *layout = new QGridLayout;
-    layout->addWidget(videoView);
-    layout->setSpacing(0);
-    layout->setMargin(0);
-
-    this->setLayout(layout);
-    this->setFocusPolicy(Qt::StrongFocus);
-    this->installEventFilter(this);
 
     control = new MedNUSVideoControl(videoView);
 
@@ -41,6 +38,10 @@ MedNUSVideoViewer::MedNUSVideoViewer(QString filename, QWidget *parent) :
     connect(&mediaPlayer, SIGNAL(positionChanged(qint64)), control, SLOT(positionChanged(qint64)));
     connect(&mediaPlayer, SIGNAL(durationChanged(qint64)), control, SLOT(durationChanged(qint64)));
     connect(control, SIGNAL(changeVolume(int)), &mediaPlayer, SLOT(setVolume(int)));
+    //static QString fi = filename;
+    mediaPlayer.setMedia(QUrl::fromLocalFile(filename));
+    //mediaPlayer.play();
+    mediaPlayer.pause();
 }
 
 MedNUSVideoViewer::~MedNUSVideoViewer()
@@ -48,7 +49,7 @@ MedNUSVideoViewer::~MedNUSVideoViewer()
     mediaPlayer.stop();
     removeEventFilter(this);
 
-    layout()->removeWidget(videoView);
+    //layout()->removeWidget(videoView);
     delete control;
     delete videoView;
 }

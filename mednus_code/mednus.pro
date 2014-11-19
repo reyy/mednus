@@ -3,9 +3,11 @@
 # Project created by QtCreator 2014-09-14T14:37:29
 #
 #-------------------------------------------------
-QT       += core gui widgets multimedia multimediawidgets
+QT += multimediawidgets
+QT += core gui widgets
 TARGET = MedNUS
 TEMPLATE = app
+ICON = icon.icns
 
 HEADERS += \
     PMeshModel.h \
@@ -48,12 +50,6 @@ SOURCES += main.cpp \
 
 RESOURCES = panax.qrc
 
-ICON = icon.icns
-
-build_all:!build_pass {
-    CONFIG -= build_all
-    CONFIG += release
-}
 
 macx {
     QMAKE_CXXFLAGS = -std=c++11 -stdlib=libstdc++ -mmacosx-version-min=10.9 -ftemplate-depth=1024 -DBUILD_visualization=off

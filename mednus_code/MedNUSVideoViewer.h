@@ -26,7 +26,7 @@ protected:
     QGraphicsVideoItem *videoItem;
     QGraphicsScene *scene;
     MedNUSVideoControl *control;
-
+QString fi;
     void keyPressEvent(QKeyEvent *event);
     void resizeEvent(QResizeEvent *);
     bool eventFilter(QObject* obj, QEvent* e);
