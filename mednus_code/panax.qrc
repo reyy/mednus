@@ -106,5 +106,6 @@
         <file>images/check_default.png</file>
         <file>images/check_filled_hover.png</file>
         <file>images/check_filled.png</file>
+        <file>images/login_background2.png</file>
     </qresource>
 </RCC>

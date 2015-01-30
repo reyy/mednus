@@ -16,7 +16,7 @@ MedNUSMainWindow::MedNUSMainWindow(QWidget *parent) :
     _trayOut=false;
     _widgetsCreated=false;
     _menuCreated=false;
-
+    _currentMode = NONE;
     network = new MedNUSNetwork();
 
     if(!SKIP_LOGIN)
@@ -54,6 +54,8 @@ MedNUSMainWindow::~MedNUSMainWindow() {
 void MedNUSMainWindow::createWidgets()
 {
     if(!_widgetsCreated) {
+         if(_currentMode==LECTURER)
+             this->setStyleSheet("MedNUSMainWindow{border-image: url(:/images/login_background2.png) 0 0 0 0 stretch stretch;}");
          QWidget *centralWidget = new QWidget(this);
          QGridLayout *mainLayout = new QGridLayout();
          mainLayout->setColumnStretch(0,1);
@@ -164,6 +166,10 @@ void MedNUSMainWindow::loginCompleted(bool success, QString matric, QString name
         delete login;
 
         login = NULL;
+
+        //Todo: Determined if its student or a staff.
+
+        _currentMode=LECTURER;
 
         createMenus();
         createWidgets();
