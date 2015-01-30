@@ -14,6 +14,12 @@
 #include "MedNUSLogin.h"
 #include "MedNUSNetwork.h"
 
+enum interfaceMode {
+    NONE,
+    STUDENT,
+    LECTURER
+};
+
 class MedNUSMainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -23,6 +29,8 @@ private:
     bool _trayOut;
     bool _widgetsCreated;
     bool _menuCreated;
+    bool _teacherMode;
+    interfaceMode _currentMode;
 
 public:
     explicit MedNUSMainWindow(QWidget *parent = 0);
