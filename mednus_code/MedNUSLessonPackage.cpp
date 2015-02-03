@@ -1,6 +1,5 @@
 #include "MedNUSLessonPackage.h"
 #include "MedNUSLessonPanel.h"
-#include "MedNUSAUISettings.h"
 #include <QFontMetrics>
 #include <math.h>
 
@@ -13,6 +12,10 @@ MedNUSLessonPackageContentPanel::MedNUSLessonPackageContentPanel(int x,int y,QWi
 }
 
 MedNUSLessonPackageContentPanel::~MedNUSLessonPackageContentPanel(){
+}
+
+void MedNUSLessonPackageContentPanel::setMode(interfaceMode mode) {
+    _currentMode=mode;
 }
 
 MedNUSLessonIcon* MedNUSLessonPackageContentPanel::getContentItem(int value) {
@@ -68,6 +71,7 @@ MedNUSLessonPackage::MedNUSLessonPackage(QWidget *parent) :
     this->setMinimumWidth(LESSONPANEL_WIDTH);
     this->setStyleSheet("background-color: #1c4f6e;");
 
+    _currentMode = NONE;
 
     _background = new QLabel(parent);
     //_background->setPixmap(QPixmap(QString::fromStdString(":/images/copy.png")));
@@ -111,6 +115,25 @@ MedNUSLessonPackage::MedNUSLessonPackage(QWidget *parent) :
 }
 
 MedNUSLessonPackage::~MedNUSLessonPackage() {
+}
+
+
+void MedNUSLessonPackage::setMode(interfaceMode mode) {
+    _currentMode=mode;
+
+    if(_currentMode==STUDENT) {
+        QFile file(":/images/lessonpanel.css");
+        if(file.open(QIODevice::ReadOnly|QIODevice::Text)) {
+            _scrollArea->setStyleSheet(file.readAll());
+            file.close();
+        }
+    } else {
+        QFile file(":/images/lessonpanel2.css");
+        if(file.open(QIODevice::ReadOnly|QIODevice::Text)) {
+            _scrollArea->setStyleSheet(file.readAll());
+            file.close();
+        }
+    }
 }
 
 void MedNUSLessonPackage::setY(int value) {
@@ -203,29 +226,53 @@ void MedNUSLessonPackage::updateGUI(bool trayOut) {
     if(trayOut)
         offset+=LESSONPANEL_BORDERICON;
 
-    if(_tone%2==0)
-        _background->setStyleSheet("background-color: #1c262c;");
-    else
-        _background->setStyleSheet("background-color: #23313a;");
+
+    if(_currentMode==STUDENT) {
+        if(_tone%2==0)
+            _background->setStyleSheet("background-color: #1c262c;");
+        else
+            _background->setStyleSheet("background-color: #23313a;");
+    } else {
+        if(_tone%2==0)
+            _background->setStyleSheet("background-color: #493a14;");
+        else
+            _background->setStyleSheet("background-color: #2f250c;");
+    }
 
     if(_collapse) {
-        _background->setGeometry(QRect(_x, _y, LESSONPANEL_WIDTH, LESSONPANEL_CONTRACTED_CLICKHEIGHT));
-        _loadStatus->setGeometry(QRect(_x+offset*0.5+LESSONPANEL_BORDERICON*0.3, _y+LESSONPANEL_BORDERICON*0.3, LESSONPANEL_BORDERICON, LESSONPANEL_BORDERICON));
-        _moduleTitle->setGeometry(QRect(_x+10+offset+LESSONPANEL_BORDERICON, _y, LESSONPANEL_WIDTH, 24));
-        _subHeader->setGeometry(QRect(_x+15+offset+LESSONPANEL_BORDERICON, _y+22, LESSONPANEL_WIDTH, 20));
-        _description->setGeometry(QRect(_x+15+offset+LESSONPANEL_BORDERICON, _y+40, LESSONPANEL_WIDTH, 20));
+        if(_currentMode==STUDENT) {
+            _background->setGeometry(QRect(_x, _y, LESSONPANEL_WIDTH, LESSONPANEL_CONTRACTED_CLICKHEIGHT));
+            _loadStatus->setGeometry(QRect(_x+offset*0.5+LESSONPANEL_BORDERICON*0.3, _y+LESSONPANEL_BORDERICON*0.3, LESSONPANEL_BORDERICON, LESSONPANEL_BORDERICON));
+            _moduleTitle->setGeometry(QRect(_x+10+offset+LESSONPANEL_BORDERICON, _y, LESSONPANEL_WIDTH, 24));
+            _subHeader->setGeometry(QRect(_x+15+offset+LESSONPANEL_BORDERICON, _y+22, LESSONPANEL_WIDTH, 20));
+            _description->setGeometry(QRect(_x+15+offset+LESSONPANEL_BORDERICON, _y+40, LESSONPANEL_WIDTH, 20));
+        } else {
+            _background->setGeometry(QRect(_x, _y, LESSONPANEL_WIDTH_L, LESSONPANEL_CONTRACTED_CLICKHEIGHT));
+            _loadStatus->setGeometry(QRect(_x+offset*0.5+LESSONPANEL_BORDERICON*0.3, _y+LESSONPANEL_BORDERICON*0.3, LESSONPANEL_BORDERICON, LESSONPANEL_BORDERICON));
+            _moduleTitle->setGeometry(QRect(_x+10+offset+LESSONPANEL_BORDERICON, _y, LESSONPANEL_WIDTH_L, 24));
+            _subHeader->setGeometry(QRect(_x+15+offset+LESSONPANEL_BORDERICON, _y+22, LESSONPANEL_WIDTH_L, 20));
+            _description->setGeometry(QRect(_x+15+offset+LESSONPANEL_BORDERICON, _y+40, LESSONPANEL_WIDTH_L, 20));
+        }
 
         _scrollArea->setVisible(false);
         _subHeader->setVisible(false);
         _description->setVisible(false);
     } else {
-        _background->setGeometry(QRect(_x, _y, LESSONPANEL_WIDTH, LESSONPANEL_HEIGHT));
-        _loadStatus->setGeometry(QRect(_x+LESSONPANEL_BORDERICON*0.3, _y+LESSONPANEL_BORDERICON*0.3, LESSONPANEL_BORDERICON, LESSONPANEL_BORDERICON));
-        _moduleTitle->setGeometry(QRect(_x+10+LESSONPANEL_BORDERICON, _y, LESSONPANEL_WIDTH, 24));
-        _subHeader->setGeometry(QRect(_x+15+LESSONPANEL_BORDERICON, _y+22, LESSONPANEL_WIDTH, 20));
-        _description->setGeometry(QRect(_x+15+LESSONPANEL_BORDERICON, _y+40, LESSONPANEL_WIDTH, 20));
-        _scrollArea->setGeometry(QRect(_x+LESSONPANEL_BORDER, _y+LESSONPANEL_CLICKHEIGHT, LESSONPANEL_WIDTH-LESSONPANEL_BORDER*2-SIDEBAR_OFFSET, LESSONPANEL_HEIGHT-LESSONPANEL_CLICKHEIGHT-LESSONPANEL_BORDER));
-
+        if(_currentMode==STUDENT) {
+            _background->setGeometry(QRect(_x, _y, LESSONPANEL_WIDTH, LESSONPANEL_HEIGHT));
+            _loadStatus->setGeometry(QRect(_x+LESSONPANEL_BORDERICON*0.3, _y+LESSONPANEL_BORDERICON*0.3, LESSONPANEL_BORDERICON, LESSONPANEL_BORDERICON));
+            _moduleTitle->setGeometry(QRect(_x+10+LESSONPANEL_BORDERICON, _y, LESSONPANEL_WIDTH, 24));
+            _subHeader->setGeometry(QRect(_x+15+LESSONPANEL_BORDERICON, _y+22, LESSONPANEL_WIDTH, 20));
+            _description->setGeometry(QRect(_x+15+LESSONPANEL_BORDERICON, _y+40, LESSONPANEL_WIDTH, 20));
+            _scrollArea->setGeometry(QRect(_x+LESSONPANEL_BORDER, _y+LESSONPANEL_CLICKHEIGHT, LESSONPANEL_WIDTH-LESSONPANEL_BORDER*2-SIDEBAR_OFFSET, LESSONPANEL_HEIGHT-LESSONPANEL_CLICKHEIGHT-LESSONPANEL_BORDER));
+        } else  {
+            _background->setGeometry(QRect(_x, _y, LESSONPANEL_WIDTH_L, LESSONPANEL_HEIGHT));
+            _loadStatus->setGeometry(QRect(_x+LESSONPANEL_BORDERICON*0.3, _y+LESSONPANEL_BORDERICON*0.3, LESSONPANEL_BORDERICON, LESSONPANEL_BORDERICON));
+            _moduleTitle->setGeometry(QRect(_x+10+LESSONPANEL_BORDERICON, _y, LESSONPANEL_WIDTH_L, 24));
+            _subHeader->setGeometry(QRect(_x+15+LESSONPANEL_BORDERICON, _y+22, LESSONPANEL_WIDTH_L, 20));
+            _description->setGeometry(QRect(_x+15+LESSONPANEL_BORDERICON, _y+40, LESSONPANEL_WIDTH_L, 20));
+            _scrollArea->setGeometry(QRect(_x+LESSONPANEL_BORDER, _y+LESSONPANEL_CLICKHEIGHT, LESSONPANEL_WIDTH_L-LESSONPANEL_BORDER*2-SIDEBAR_OFFSET, LESSONPANEL_HEIGHT-LESSONPANEL_CLICKHEIGHT-LESSONPANEL_BORDER));
+        }
         _scrollArea->setVisible(true);
         _subHeader->setVisible(true);
         _description->setVisible(true);

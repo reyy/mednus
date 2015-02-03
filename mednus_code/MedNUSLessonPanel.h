@@ -21,6 +21,7 @@
 #include <QWidget>
 #include <QVector>
 #include "MedNUSLessonPackage.h"
+#include "MedNUSAUISettings.h"
 
 class MedNUSLessonPanel : public QWidget
 {
@@ -33,6 +34,8 @@ private:
     QPixmap _icon_video;
     QPixmap _button_toopen;
     QPixmap _button_toclose;
+    QPixmap _button_toopen2;
+    QPixmap _button_toclose2;
     QPixmap _loadingIcon[11];
 
     QLabel *_background;
@@ -42,6 +45,7 @@ private:
     bool _trayOut;
 
     void loadPixmap();
+    interfaceMode _currentMode;
 
 public:
     MedNUSLessonPanel(QWidget *parent);
@@ -53,6 +57,7 @@ public:
     void setTrayOut(bool value);
     bool checkTray();
     QPixmap getLoadingIcon(int range);
+    void setMode(interfaceMode mode);
 
 protected:
     void mousePressEvent ( QMouseEvent * event ) ;

@@ -14,12 +14,6 @@
 #include "MedNUSLogin.h"
 #include "MedNUSNetwork.h"
 
-enum interfaceMode {
-    NONE,
-    STUDENT,
-    LECTURER
-};
-
 class MedNUSMainWindow : public QMainWindow
 {
     Q_OBJECT

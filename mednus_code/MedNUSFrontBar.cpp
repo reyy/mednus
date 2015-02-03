@@ -1,11 +1,13 @@
 #include "MedNUSFrontBar.h"
-#include "MedNUSAUISettings.h"
 
 MedNUSFrontBar::MedNUSFrontBar(QWidget *parent) :
     QWidget(parent)
 {
     this->setMinimumHeight(TOPBAR_HEIGHT);
     this->setMaximumHeight(TOPBAR_HEIGHT);
+    this->setMinimumWidth(800-LESSONPANEL_WIDTH);
+
+    _currentMode=NONE;
 
     _logo = new QLabel(parent);
     int space = (TOPBAR_HEIGHT-TOPBAR_HEIGHT/40*21)/2;
@@ -50,14 +52,24 @@ MedNUSFrontBar::~MedNUSFrontBar()
     _btView3->setVisible(false);
     _logo->setVisible(false);
 }
-
 void MedNUSFrontBar::setTrayOut(bool value) {
     _trayOut = value;
+
+    if(_currentMode==STUDENT) {
+        this->setMinimumWidth(800-LESSONPANEL_WIDTH);
+    } else {
+        this->setMinimumWidth(800-LESSONPANEL_WIDTH_L);
+    }
 
     if(!value) {
     } else {
     }
 }
+
+void MedNUSFrontBar::setMode(interfaceMode mode) {
+    _currentMode=mode;
+}
+
 
 void MedNUSFrontBar::changeFullScreenView() {
     //Todo: Set Screen to fullscreen.
@@ -81,8 +93,14 @@ void MedNUSFrontBar::resizeEvent(QResizeEvent* event)
     _btView1->setGeometry(QRect(this->x()+this->geometry().width()-36*1, this->y()+space, 32,24));
     _btView2->setGeometry(QRect(this->x()+this->geometry().width()-36*2, this->y()+space, 32,24));
     _btView3->setGeometry(QRect(this->x()+this->geometry().width()-36*3, this->y()+space, 32,24));
-    _btView1->setVisible(true);
-    _btView2->setVisible(true);
-    _btView3->setVisible(true);
     _logo->setVisible(true);
+    if(_currentMode==STUDENT) {
+        _btView1->setVisible(true);
+        _btView2->setVisible(true);
+        _btView3->setVisible(true);
+    } else {
+        _btView1->setVisible(false);
+        _btView2->setVisible(false);
+        _btView3->setVisible(false);
+    }
 }

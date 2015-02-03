@@ -3,6 +3,7 @@
 
 #include <QLabel>
 #include <QMouseEvent>
+#include "MedNUSAUISettings.h"
 
 class MedNUSLessonIcon : public QWidget
 {
@@ -21,9 +22,12 @@ private:
     float _x;
     float _y;
 
+    interfaceMode _currentMode;
+
 public:
      MedNUSLessonIcon(QString path, QPixmap directory, QWidget *parent);
     ~MedNUSLessonIcon();
+     void setMode(interfaceMode mode);
      void updatePosition(float packageX, float packageY, float x, float y);
      void setSelected(bool value);
      void setVisible(bool value);

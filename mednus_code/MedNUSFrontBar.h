@@ -5,6 +5,7 @@
 #include <QLabel>
 #include <QDebug>
 #include <QPushButton>
+#include "MedNUSAUISettings.h"
 
 class MedNUSFrontBar : public QWidget
 {
@@ -12,6 +13,7 @@ class MedNUSFrontBar : public QWidget
 private:
     QLabel *_logo;
     bool _trayOut;
+    interfaceMode _currentMode;
 
     QPushButton *_btView1;
     QPushButton *_btView2;
@@ -22,6 +24,7 @@ public:
     ~MedNUSFrontBar();
 
     void setTrayOut(bool value);
+    void setMode(interfaceMode mode);
 
 signals:
     void toggleLayout(int);

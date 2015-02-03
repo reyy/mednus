@@ -1,5 +1,4 @@
 #include "MedNUSUserBar.h"
-#include "MedNUSAUISettings.h"
 #include <QMenu>
 
 MedNUSUserBar::MedNUSUserBar(QWidget *parent) :
@@ -9,6 +8,8 @@ MedNUSUserBar::MedNUSUserBar(QWidget *parent) :
     this->setMinimumHeight(TOPBAR_HEIGHT);
     this->setMaximumHeight(TOPBAR_HEIGHT);
     this->setStyleSheet("background-color: #152d3b;");
+
+    _currentMode=NONE;
 
     _backgroundLine = new QLabel(this);
     _backgroundLine->setGeometry(QRect(this->x(), this->y(), SIDEBAR_OFFSET, TOPBAR_HEIGHT));
@@ -52,7 +53,6 @@ void MedNUSUserBar::setAvatar(QString path) {
 
 void MedNUSUserBar::setTrayOut(bool value) {
     _trayOut = value;
-
     if(value) {
         this->setMinimumWidth(SIDEBAR_OFFSET);
         this->setMinimumHeight(TOPBAR_HEIGHT);
@@ -62,15 +62,42 @@ void MedNUSUserBar::setTrayOut(bool value) {
          _avatar->setVisible(true);
         _name->setVisible(false);
     } else {
-        this->setMinimumWidth(LESSONPANEL_WIDTH);
-        this->setMinimumHeight(TOPBAR_HEIGHT);
-        this->setMaximumHeight(TOPBAR_HEIGHT);
-        _avatar->setGeometry(QRect(LESSONPANEL_WIDTH-TOPBAR_HEIGHT*0.9, this->y()+TOPBAR_HEIGHT*0.1, TOPBAR_HEIGHT*0.8, TOPBAR_HEIGHT*0.8));
-        _cutoutAvatar->setGeometry(QRect(LESSONPANEL_WIDTH-TOPBAR_HEIGHT*0.9, this->y()+TOPBAR_HEIGHT*0.1, TOPBAR_HEIGHT*0.8, TOPBAR_HEIGHT*0.8));
+        if(_currentMode==STUDENT) {
+            this->setMinimumWidth(LESSONPANEL_WIDTH);
+            this->setMaximumWidth(LESSONPANEL_WIDTH);
+            this->setMinimumHeight(TOPBAR_HEIGHT);
+            this->setMaximumHeight(TOPBAR_HEIGHT);
+            _avatar->setGeometry(QRect(LESSONPANEL_WIDTH-TOPBAR_HEIGHT*0.9, TOPBAR_HEIGHT*0.1, TOPBAR_HEIGHT*0.8, TOPBAR_HEIGHT*0.8));
+            _cutoutAvatar->setGeometry(QRect(LESSONPANEL_WIDTH-TOPBAR_HEIGHT*0.9, TOPBAR_HEIGHT*0.1, TOPBAR_HEIGHT*0.8, TOPBAR_HEIGHT*0.8));
+            _background->setGeometry(QRect(SIDEBAR_OFFSET, 0.0, LESSONPANEL_WIDTH, TOPBAR_HEIGHT));
+            _name->setGeometry(QRect(this->geometry().width()-LESSONPANEL_WIDTH-SIDEBAR_OFFSET+70, this->y()+(TOPBAR_HEIGHT-20)*0.5+3, LESSONPANEL_WIDTH-100, 20));
+        } else {
+            this->setMinimumWidth(LESSONPANEL_WIDTH_L);
+            this->setMaximumWidth(LESSONPANEL_WIDTH_L);
+            this->setMinimumHeight(TOPBAR_HEIGHT);
+            this->setMaximumHeight(TOPBAR_HEIGHT);
+            _avatar->setGeometry(QRect(LESSONPANEL_WIDTH_L-TOPBAR_HEIGHT*0.9, TOPBAR_HEIGHT*0.1, TOPBAR_HEIGHT*0.8, TOPBAR_HEIGHT*0.8));
+            _cutoutAvatar->setGeometry(QRect(LESSONPANEL_WIDTH_L-TOPBAR_HEIGHT*0.9, TOPBAR_HEIGHT*0.1, TOPBAR_HEIGHT*0.8, TOPBAR_HEIGHT*0.8));
+            _background->setGeometry(QRect(SIDEBAR_OFFSET, 0.0, LESSONPANEL_WIDTH_L, TOPBAR_HEIGHT));
+            _name->setGeometry(QRect(this->geometry().width()-LESSONPANEL_WIDTH_L-SIDEBAR_OFFSET+70, (TOPBAR_HEIGHT-20)*0.5+3, LESSONPANEL_WIDTH_L-100, 20));
+        }
         _avatar->setVisible(true);
         _name->setVisible(true);
     }
+
+    if(_currentMode==STUDENT) {
+        _cutoutAvatar->setPixmap(QPixmap(QString::fromStdString(":/images/avatar_cutout.png")));
+        _background->setStyleSheet("background-color: #13181b;");
+    } else {
+        _cutoutAvatar->setPixmap(QPixmap(QString::fromStdString(":/images/avatar_cutout2.png")));
+        _background->setStyleSheet("background-color: #392d0f;");
+    }
 }
+
+void MedNUSUserBar::setMode(interfaceMode mode) {
+    _currentMode=mode;
+}
+
 
 void MedNUSUserBar::resizeEvent(QResizeEvent* event)
 {
