@@ -1,10 +1,13 @@
 #include "MedNUSContentPanel.h"
+
 MedNUSContentPanel::MedNUSContentPanel(QWidget *parent) :
     QWidget(parent)
 {
-    this->setMinimumWidth(800-300);
+    this->setMinimumWidth(800-LESSONPANEL_WIDTH);
     this->setMinimumHeight(600-32);
     this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+    _currentMode=NONE;
 
     layout = new QGridLayout();
     for(int i=0; i<3; i++)
@@ -18,9 +21,18 @@ MedNUSContentPanel::MedNUSContentPanel(QWidget *parent) :
 
 }
 
+void MedNUSContentPanel::setMode(interfaceMode mode) {
+    _currentMode=mode;
+
+    if(mode==STUDENT) {
+        this->setMinimumWidth(800-LESSONPANEL_WIDTH);
+    } else {
+        this->setMinimumWidth(800-LESSONPANEL_WIDTH_L);
+    }
+}
+
 void MedNUSContentPanel::addTab(QWidget* toAdd,QString title, QString dir)
 {
-
     //Determine where to add by 'default view' rules
     int type;
     if(dynamic_cast<MedNUSVideoViewer*>(toAdd) != NULL)
@@ -147,11 +159,20 @@ MedNUSTab::MedNUSTab(QWidget *parent)
     this->tabBar()->setUsesScrollButtons(true);
     this->tabBar()->setElideMode(Qt::ElideLeft);
     this->tabBar()->setAutoFillBackground(true);
-    QFile file(":/images/tabwidget.css");
+
+    QString tempDirectory = ":/images/tabwidget.css";
+    /*if(_currentMode != STUDENT) {
+        tempDirectory = ":/images/tabwidget2.css";
+    }*/
+    //To do, make MedNUSTab recognise current mode.
+
+    QFile file(tempDirectory);
+
     if(file.open(QIODevice::ReadOnly|QIODevice::Text)) {
         this->setStyleSheet(file.readAll());
         file.close();
     }
+
     connect(this,SIGNAL(noMoreTabs(MedNUSTab*)),parent,SLOT(closeTab(MedNUSTab*)));
     connect(this,SIGNAL(tabClosedSignal(QString)),parent,SLOT(tabClosed(QString)));
 }

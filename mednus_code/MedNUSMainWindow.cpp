@@ -17,6 +17,7 @@ MedNUSMainWindow::MedNUSMainWindow(QWidget *parent) :
     _widgetsCreated=false;
     _menuCreated=false;
     _currentMode = NONE;
+
     network = new MedNUSNetwork();
 
     if(!SKIP_LOGIN)
@@ -68,14 +69,16 @@ void MedNUSMainWindow::createWidgets()
 
         //Add FrontBar (Top bar that has logo)
          fb = new MedNUSFrontBar(this);
+         fb->setMode(_currentMode);
          fb->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
          mainLayout->addWidget(fb,0,0);
 
         //Add UserBar (Top right bar that has user info)
          ub = new MedNUSUserBar(this);
+         ub->setMode(_currentMode);
          ub->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
          ub->setName(userName);
-         ub->setAvatar(":/images/ivle_profile.jpg");
+         ub->setAvatar(":/images/ivle_profile.png");
          mainLayout->addWidget(ub,0,1);
 
          //connect ub to logout
@@ -83,10 +86,12 @@ void MedNUSMainWindow::createWidgets()
 
         //Add Content View
         tabs = new MedNUSContentPanel();
+        tabs->setMode(_currentMode);
         mainLayout->addWidget(tabs,1,0);
 
         // Create lesson table
         lp = new MedNUSLessonPanel(this);
+        lp->setMode(_currentMode);
         lp->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
         mainLayout->addWidget(lp,1,1);
         connect(tabs, SIGNAL(tabClosedSignal(QString)), lp, SLOT(tabClosed(QString)));
@@ -108,6 +113,11 @@ void MedNUSMainWindow::createWidgets()
         setCentralWidget(centralWidget);
 
         _widgetsCreated = true;
+
+        //Update GUI
+        lp->setTrayOut(true);
+        ub->setTrayOut(true);
+        fb->setTrayOut(true);
     }
 }
 
@@ -170,6 +180,7 @@ void MedNUSMainWindow::loginCompleted(bool success, QString matric, QString name
         //Todo: Determined if its student or a staff.
 
         _currentMode=LECTURER;
+        qDebug() << "Set mode to  " << _currentMode;
 
         createMenus();
         createWidgets();

@@ -8,15 +8,18 @@
 #include <QDebug>
 #include <QScrollArea>
 #include "MedNUSLessonIcon.h"
+#include "MedNUSAUISettings.h"
 
 class MedNUSLessonPackageContentPanel : public QWidget
 {
     QWidget *_parent;
     QVector<MedNUSLessonIcon*> _listOfItems;
+    interfaceMode _currentMode;
 
 public:
     explicit MedNUSLessonPackageContentPanel(int x, int y,QWidget *parent = 0);
     ~MedNUSLessonPackageContentPanel();
+    void setMode(interfaceMode mode);
     MedNUSLessonIcon* getContentItem(int value);
     int getContentSize();
     MedNUSLessonIcon* addContent(QString filename, QPixmap directory);
@@ -42,10 +45,13 @@ private:
     QWidget *_parent;
     QScrollArea *_scrollArea;
     MedNUSLessonPackageContentPanel *_contentPanel;
+    interfaceMode _currentMode;
 
 public:
     explicit MedNUSLessonPackage(QWidget *parent = 0);
     ~MedNUSLessonPackage();
+
+    void setMode(interfaceMode mode);
     void setY(int value);
     int getY();
 
