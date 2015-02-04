@@ -112,6 +112,24 @@ MedNUSLessonPackage::MedNUSLessonPackage(QWidget *parent) :
         _scrollArea->setStyleSheet(file.readAll());
         file.close();
     }
+
+    _btUpload = new QPushButton(parent);
+    _btUpload->setIconSize(QSize(24,24));
+    _btUpload->setFlat(true);
+    _btUpload->setStyleSheet("QPushButton {border-style: outset; border-width: 0px;background-image: url(:/images/bt_upload.png);} QPushButton::pressed {background-image: url(:/images/bt_upload_p.png);}");
+    _btUpload->setVisible(false);
+
+    _btNewQuiz = new QPushButton(parent);
+    _btNewQuiz->setIconSize(QSize(24,24));
+    _btNewQuiz->setFlat(true);
+    _btNewQuiz->setStyleSheet("QPushButton {border-style: outset; border-width: 0px;background-image: url(:/images/bt_addquiz.png);} QPushButton::pressed {background-image: url(:/images/bt_addquiz_p.png);}");
+    _btNewQuiz->setVisible(false);
+
+    _btDelete = new QPushButton(parent);
+    _btDelete->setIconSize(QSize(24,24));
+    _btDelete->setFlat(true);
+    _btDelete->setStyleSheet("QPushButton {border-style: outset; border-width: 0px;background-image: url(:/images/bt_delete.png);} QPushButton::pressed {background-image: url(:/images/bt_delete_p.png);}");
+    _btDelete->setVisible(false);
 }
 
 MedNUSLessonPackage::~MedNUSLessonPackage() {
@@ -257,6 +275,9 @@ void MedNUSLessonPackage::updateGUI(bool trayOut) {
         _scrollArea->setVisible(false);
         _subHeader->setVisible(false);
         _description->setVisible(false);
+        _btUpload->setVisible(false);
+        _btNewQuiz->setVisible(false);
+        _btDelete->setVisible(false);
     } else {
         if(_currentMode==STUDENT) {
             _background->setGeometry(QRect(_x, _y, LESSONPANEL_WIDTH, LESSONPANEL_HEIGHT));
@@ -272,6 +293,12 @@ void MedNUSLessonPackage::updateGUI(bool trayOut) {
             _subHeader->setGeometry(QRect(_x+15+LESSONPANEL_BORDERICON, _y+22, LESSONPANEL_WIDTH_L, 20));
             _description->setGeometry(QRect(_x+15+LESSONPANEL_BORDERICON, _y+40, LESSONPANEL_WIDTH_L, 20));
             _scrollArea->setGeometry(QRect(_x+LESSONPANEL_BORDER, _y+LESSONPANEL_CLICKHEIGHT, LESSONPANEL_WIDTH_L-LESSONPANEL_BORDER*2-SIDEBAR_OFFSET, LESSONPANEL_HEIGHT-LESSONPANEL_CLICKHEIGHT-LESSONPANEL_BORDER));
+            _btUpload->setGeometry(QRect(_x+LESSONPANEL_WIDTH_L-(32+5)*3-16-10, _y+LESSONPANEL_CLICKHEIGHT*0.5-12, 32,24));
+            _btNewQuiz->setGeometry(QRect(_x+LESSONPANEL_WIDTH_L-(32+5)*2-16-10, _y+LESSONPANEL_CLICKHEIGHT*0.5-12, 32,24));
+            _btDelete->setGeometry(QRect(_x+LESSONPANEL_WIDTH_L-(32+5)*1-16-10, _y+LESSONPANEL_CLICKHEIGHT*0.5-12, 32,24));
+            _btUpload->setVisible(true);
+            _btNewQuiz->setVisible(true);
+            _btDelete->setVisible(true);
         }
         _scrollArea->setVisible(true);
         _subHeader->setVisible(true);

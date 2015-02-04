@@ -190,11 +190,13 @@ void MedNUSLessonPanel::mousePressEvent ( QMouseEvent * event )
         for(int i=0;i<(int)_lessonList.size();i++) {
             temp = _lessonList.at(i);
             if(event->pos().x()>10&&event->pos().y()>=temp->getY()&&event->pos().y()<=temp->getY()+temp->getInteractiveHeight()) {
-                selected=temp;
-                selected->toggleCollapse();
-                selected->updateGUI(false);
-                collapseEveryoneElse=true;
-                break;
+                if(event->pos().x()<LESSONPANEL_WIDTH_L-(32+5)*3-16-10) {
+                    selected=temp;
+                    selected->toggleCollapse();
+                    selected->updateGUI(false);
+                    collapseEveryoneElse=true;
+                    break;
+                }
              }
         }
 

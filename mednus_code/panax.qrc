@@ -111,5 +111,17 @@
         <file>images/lessonpanel2.css</file>
         <file>images/panel_lines2.png</file>
         <file>images/tabwidget2.css</file>
+        <file>images/bt_add_p.png</file>
+        <file>images/bt_add.png</file>
+        <file>images/bt_addquiz_p.png</file>
+        <file>images/bt_addquiz.png</file>
+        <file>images/bt_upload_p.png</file>
+        <file>images/bt_upload.png</file>
+        <file>images/bt_delete_p.png</file>
+        <file>images/bt_delete.png</file>
+        <file>images/bt_newlesson_p.png</file>
+        <file>images/bt_newlesson.png</file>
+        <file>images/bt_viewstats_p.png</file>
+        <file>images/bt_viewstats.png</file>
     </qresource>
 </RCC>

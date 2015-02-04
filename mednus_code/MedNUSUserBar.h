@@ -5,6 +5,7 @@
 #include <QLabel>
 #include <QDebug>
 #include <QMouseEvent>
+#include <QPushButton>
 #include "MedNUSAUISettings.h"
 
 class MedNUSUserBar : public QWidget
@@ -18,6 +19,9 @@ private:
     QLabel *_name;
     bool _trayOut;
     interfaceMode _currentMode;
+
+    QPushButton *_btNewLesson;
+    QPushButton *_btViewStats;
 
 public:
     explicit MedNUSUserBar(QWidget *parent = 0);
