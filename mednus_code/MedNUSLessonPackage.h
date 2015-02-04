@@ -47,6 +47,10 @@ private:
     MedNUSLessonPackageContentPanel *_contentPanel;
     interfaceMode _currentMode;
 
+    QPushButton *_btUpload;
+    QPushButton *_btNewQuiz;
+    QPushButton *_btDelete;
+
 public:
     explicit MedNUSLessonPackage(QWidget *parent = 0);
     ~MedNUSLessonPackage();

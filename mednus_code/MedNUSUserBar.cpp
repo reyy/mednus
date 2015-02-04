@@ -35,6 +35,20 @@ MedNUSUserBar::MedNUSUserBar(QWidget *parent) :
     _name->setGeometry(QRect(this->x()+this->geometry().width()-LESSONPANEL_WIDTH-SIDEBAR_OFFSET+70, this->y()+(TOPBAR_HEIGHT-20)*0.5+3, LESSONPANEL_WIDTH-100, 20));
     _name->setFont (QFont ("Helvetica", 14,QFont::Bold,false));
     this->setTrayOut(true);
+
+    _btNewLesson = new QPushButton(this);
+    _btNewLesson->setIconSize(QSize(24,24));
+    _btNewLesson->setFlat(true);
+    _btNewLesson->setStyleSheet("QPushButton {border-style: outset; border-width: 0px;background-image: url(:/images/bt_newlesson.png);} QPushButton::pressed {background-image: url(:/images/bt_newlesson_p.png);}");
+    _btNewLesson->setGeometry(QRect(24.0,8.0, 60,24));
+    _btNewLesson->setVisible(true);
+
+    _btViewStats = new QPushButton(this);
+    _btViewStats->setIconSize(QSize(24,24));
+    _btViewStats->setFlat(true);
+    _btViewStats->setStyleSheet("QPushButton {border-style: outset; border-width: 0px;background-image: url(:/images/bt_viewstats.png);} QPushButton::pressed {background-image: url(:/images/bt_viewstats_p.png);}");
+    _btViewStats->setGeometry(QRect(24.0+65.0,8.0, 60,24));
+    _btViewStats->setVisible(true);
 }
 
 MedNUSUserBar::~MedNUSUserBar()
@@ -80,10 +94,12 @@ void MedNUSUserBar::setTrayOut(bool value) {
             _cutoutAvatar->setGeometry(QRect(LESSONPANEL_WIDTH_L-TOPBAR_HEIGHT*0.9, TOPBAR_HEIGHT*0.1, TOPBAR_HEIGHT*0.8, TOPBAR_HEIGHT*0.8));
             _background->setGeometry(QRect(SIDEBAR_OFFSET, 0.0, LESSONPANEL_WIDTH_L, TOPBAR_HEIGHT));
             _name->setGeometry(QRect(this->geometry().width()-LESSONPANEL_WIDTH_L-SIDEBAR_OFFSET+70, (TOPBAR_HEIGHT-20)*0.5+3, LESSONPANEL_WIDTH_L-100, 20));
+
         }
         _avatar->setVisible(true);
         _name->setVisible(true);
     }
+
 
     if(_currentMode==STUDENT) {
         _cutoutAvatar->setPixmap(QPixmap(QString::fromStdString(":/images/avatar_cutout.png")));
@@ -101,6 +117,11 @@ void MedNUSUserBar::setMode(interfaceMode mode) {
 
 void MedNUSUserBar::resizeEvent(QResizeEvent* event)
 {
+    bool toShow=!_trayOut;
+    if(_currentMode==STUDENT)
+        toShow=false;
+    _btNewLesson->setVisible(toShow);
+    _btViewStats->setVisible(toShow);
 }
 
 void MedNUSUserBar::mousePressEvent(QMouseEvent *event)
