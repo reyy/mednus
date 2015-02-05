@@ -133,8 +133,6 @@ void MedNUSLessonPanel::updateGUI() {
 void MedNUSLessonPanel::setTrayOut(bool value) {
     _trayOut = value;
 
-    qDebug() << "LP mode is " << _currentMode;
-
     if(value) {
         this->setMinimumWidth(SIDEBAR_OFFSET+TOPBAR_HEIGHT);
         this->setMaximumWidth(SIDEBAR_OFFSET+TOPBAR_HEIGHT);
@@ -181,7 +179,6 @@ void MedNUSLessonPanel::mousePressEvent ( QMouseEvent * event )
         if(event->x()>SIDEBAR_OFFSET)
             setTrayOut(false);
 
-        //qDebug() << "Debug Message";
         bool collapseEveryoneElse=false;
         MedNUSLessonPackage *temp=NULL;
         MedNUSLessonPackage *selected=NULL;
