@@ -123,5 +123,7 @@
         <file>images/bt_newlesson.png</file>
         <file>images/bt_viewstats_p.png</file>
         <file>images/bt_viewstats.png</file>
+        <file>images/bt_edit_p.png</file>
+        <file>images/bt_edit.png</file>
     </qresource>
 </RCC>

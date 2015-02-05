@@ -47,6 +47,10 @@ private:
     MedNUSLessonPackageContentPanel *_contentPanel;
     interfaceMode _currentMode;
 
+    QPushButton *_btEditTitle;
+    QPushButton *_btEditSubHeader;
+    QPushButton *_btEditDescription;
+
     QPushButton *_btUpload;
     QPushButton *_btNewQuiz;
     QPushButton *_btDelete;
@@ -75,10 +79,19 @@ public:
     void toggleCollapse();
     void toggleCollapse(bool value);
     void updateGUI(bool trayOut);
+    QString dialogGetString(QString message,QString defaultString);
 
 public slots:
     void callOpenFile(QString str, QString title, int type)
     {emit emitOpenFile(str, title, type);}
+protected slots:
+    void editTitle();
+    void editSubHeader();
+    void editDescription();
+
+    void locateNewFile();
+    void addNewQuiz();
+    void deleteLesson();
 signals:
     void emitOpenFile(QString, QString, int);
 };
