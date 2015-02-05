@@ -189,6 +189,7 @@ void MedNUSMainWindow::loginCompleted(bool success, QString matric, QString name
 
 void MedNUSMainWindow::logout()
 {
+    this->setStyleSheet("MedNUSMainWindow{border-image: url(:/images/login_background.png) 0 0 0 0 stretch stretch;}");
     network->logout();
     deleteWidgets();
     deleteMenus();
