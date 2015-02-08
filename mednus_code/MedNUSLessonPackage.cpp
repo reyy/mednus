@@ -1,7 +1,8 @@
 #include "MedNUSLessonPackage.h"
 #include "MedNUSLessonPanel.h"
-#include "MedNUSAUISettings.h"
 #include <QFontMetrics>
+#include <QMessageBox>
+#include <QInputDialog>
 #include <math.h>
 
 MedNUSLessonPackageContentPanel::MedNUSLessonPackageContentPanel(int x,int y,QWidget *parent) :
@@ -13,6 +14,10 @@ MedNUSLessonPackageContentPanel::MedNUSLessonPackageContentPanel(int x,int y,QWi
 }
 
 MedNUSLessonPackageContentPanel::~MedNUSLessonPackageContentPanel(){
+}
+
+void MedNUSLessonPackageContentPanel::setMode(interfaceMode mode) {
+    _currentMode=mode;
 }
 
 MedNUSLessonIcon* MedNUSLessonPackageContentPanel::getContentItem(int value) {
@@ -66,8 +71,9 @@ MedNUSLessonPackage::MedNUSLessonPackage(QWidget *parent) :
 
     this->setBaseSize(LESSONPANEL_WIDTH,LESSONPANEL_HEIGHT);
     this->setMinimumWidth(LESSONPANEL_WIDTH);
-    this->setStyleSheet("background-color: #1c4f6e;");
+    this->setStyleSheet("background-color: #ededed;");
 
+    _currentMode = NONE;
 
     _background = new QLabel(parent);
     //_background->setPixmap(QPixmap(QString::fromStdString(":/images/copy.png")));
@@ -78,19 +84,31 @@ MedNUSLessonPackage::MedNUSLessonPackage(QWidget *parent) :
     //To Do: Tag the value to load state, set the existing text to 50% opacity.
 
     _moduleTitle = new QLabel(parent);
-    _moduleTitle->setStyleSheet("color:#FFFFFF;");
+    if(_currentMode == STUDENT) {
+        _moduleTitle->setStyleSheet("color:#FFFFFF;padding-left: 2px;padding-top: 2px;");
+    } else {
+        _moduleTitle->setStyleSheet("color:#FFFFFF;padding-left: 2px;padding-top: 2px;background-color:#2e240d;");
+    }
     _moduleTitle->setFont (QFont ("Helvetica", 12,QFont::Bold,false));
-    _moduleTitle->setGeometry(QRect(_x+10+LESSONPANEL_BORDERICON, _y, LESSONPANEL_WIDTH, 24));
+    _moduleTitle->setGeometry(QRect(_x+9+LESSONPANEL_BORDERICON, _y, LESSONPANEL_WIDTH, 16));
 
     _subHeader = new QLabel(parent);
-    _subHeader->setStyleSheet("color:#e5a539;");
+    if(_currentMode == STUDENT) {
+        _subHeader->setStyleSheet("color:#e5a539;padding-left: 2px;padding-top: 1px;");
+    } else {
+        _subHeader->setStyleSheet("color:#e5a539;padding-left: 2px;padding-top: 1px;background-color:#2e240d;");
+    }
     _subHeader->setFont (QFont ("Helvetica", 10,QFont::Bold,false));
-    _subHeader->setGeometry(QRect(_x+15+LESSONPANEL_BORDERICON, _y+22, LESSONPANEL_WIDTH, 20));
+    _subHeader->setGeometry(QRect(_x+9+5+LESSONPANEL_BORDERICON, _y+22+3, LESSONPANEL_WIDTH, 15));
 
     _description = new QLabel(parent);
-    _description->setStyleSheet("color:#bacdda;");
+    if(_currentMode == STUDENT) {
+        _description->setStyleSheet("color:#bacdda;padding-left: 2px;padding-top: 1px;");
+    } else {
+        _description->setStyleSheet("color:#bacdda;padding-left: 2px;padding-top: 1px;background-color:#2e240d;");
+    }
     _description->setFont (QFont ("Helvetica", 10,QFont::Normal,true));
-    _description->setGeometry(QRect(_x+15+LESSONPANEL_BORDERICON, _y+40, LESSONPANEL_WIDTH, 20));
+    _description->setGeometry(QRect(_x+9+5+LESSONPANEL_BORDERICON, _y+40+3, LESSONPANEL_WIDTH, 15));
 
     _contentPanel = new MedNUSLessonPackageContentPanel(_x,_y,parent);
 
@@ -107,10 +125,73 @@ MedNUSLessonPackage::MedNUSLessonPackage(QWidget *parent) :
     if(file.open(QIODevice::ReadOnly|QIODevice::Text)) {
         _scrollArea->setStyleSheet(file.readAll());
         file.close();
-    }
+    } 
+
+    _btEditTitle = new QPushButton(parent);
+    _btEditTitle->setIconSize(QSize(16,16));
+    _btEditTitle->setFlat(true);
+    _btEditTitle->setStyleSheet("QPushButton {border-style: outset; border-width: 0px;background-image: url(:/images/bt_edit.png);} QPushButton::pressed {background-image: url(:/images/bt_edit_p.png);}");
+    _btEditTitle->setVisible(false);
+
+    _btEditSubHeader = new QPushButton(parent);
+    _btEditSubHeader->setIconSize(QSize(16,16));
+    _btEditSubHeader->setFlat(true);
+    _btEditSubHeader->setStyleSheet("QPushButton {border-style: outset; border-width: 0px;background-image: url(:/images/bt_edit.png);} QPushButton::pressed {background-image: url(:/images/bt_edit_p.png);}");
+    _btEditSubHeader->setVisible(false);
+
+    _btEditDescription = new QPushButton(parent);
+    _btEditDescription->setIconSize(QSize(16,16));
+    _btEditDescription->setFlat(true);
+    _btEditDescription->setStyleSheet("QPushButton {border-style: outset; border-width: 0px;background-image: url(:/images/bt_edit.png);} QPushButton::pressed {background-image: url(:/images/bt_edit_p.png);}");
+    _btEditDescription->setVisible(false);
+
+    connect(_btEditTitle,SIGNAL(clicked()),this,SLOT(editTitle()));
+    connect(_btEditSubHeader,SIGNAL(clicked()),this,SLOT(editSubHeader()));
+    connect(_btEditDescription,SIGNAL(clicked()),this,SLOT(editDescription()));
+
+    _btUpload = new QPushButton(parent);
+    _btUpload->setIconSize(QSize(24,24));
+    _btUpload->setFlat(true);
+    _btUpload->setStyleSheet("QPushButton {border-style: outset; border-width: 0px;background-image: url(:/images/bt_upload.png);} QPushButton::pressed {background-image: url(:/images/bt_upload_p.png);}");
+    _btUpload->setVisible(false);
+
+    _btNewQuiz = new QPushButton(parent);
+    _btNewQuiz->setIconSize(QSize(24,24));
+    _btNewQuiz->setFlat(true);
+    _btNewQuiz->setStyleSheet("QPushButton {border-style: outset; border-width: 0px;background-image: url(:/images/bt_addquiz.png);} QPushButton::pressed {background-image: url(:/images/bt_addquiz_p.png);}");
+    _btNewQuiz->setVisible(false);
+
+    _btDelete = new QPushButton(parent);
+    _btDelete->setIconSize(QSize(24,24));
+    _btDelete->setFlat(true);
+    _btDelete->setStyleSheet("QPushButton {border-style: outset; border-width: 0px;background-image: url(:/images/bt_delete.png);} QPushButton::pressed {background-image: url(:/images/bt_delete_p.png);}");
+    _btDelete->setVisible(false);
+
+    connect(_btUpload,SIGNAL(clicked()),this,SLOT(locateNewFile()));
+    connect(_btNewQuiz,SIGNAL(clicked()),this,SLOT(addNewQuiz()));
+    connect(_btDelete,SIGNAL(clicked()),this,SLOT(deleteLesson()));
 }
 
 MedNUSLessonPackage::~MedNUSLessonPackage() {
+}
+
+
+void MedNUSLessonPackage::setMode(interfaceMode mode) {
+    _currentMode=mode;
+
+    if(_currentMode==STUDENT) {
+        QFile file(":/images/lessonpanel.css");
+        if(file.open(QIODevice::ReadOnly|QIODevice::Text)) {
+            _scrollArea->setStyleSheet(file.readAll());
+            file.close();
+        }
+    } else {
+        QFile file(":/images/lessonpanel2.css");
+        if(file.open(QIODevice::ReadOnly|QIODevice::Text)) {
+            _scrollArea->setStyleSheet(file.readAll());
+            file.close();
+        }
+    }
 }
 
 void MedNUSLessonPackage::setY(int value) {
@@ -203,32 +284,123 @@ void MedNUSLessonPackage::updateGUI(bool trayOut) {
     if(trayOut)
         offset+=LESSONPANEL_BORDERICON;
 
-    if(_tone%2==0)
-        _background->setStyleSheet("background-color: #1c262c;");
-    else
-        _background->setStyleSheet("background-color: #23313a;");
+
+    if(_currentMode==STUDENT) {
+        if(_tone%2==0)
+            _background->setStyleSheet("background-color: #1c262c;");
+        else
+            _background->setStyleSheet("background-color: #23313a;");
+    } else {
+        if(_tone%2==0)
+            _background->setStyleSheet("background-color: #493a14;");
+        else
+            _background->setStyleSheet("background-color: #3f3211;");
+    }
 
     if(_collapse) {
-        _background->setGeometry(QRect(_x, _y, LESSONPANEL_WIDTH, LESSONPANEL_CONTRACTED_CLICKHEIGHT));
-        _loadStatus->setGeometry(QRect(_x+offset*0.5+LESSONPANEL_BORDERICON*0.3, _y+LESSONPANEL_BORDERICON*0.3, LESSONPANEL_BORDERICON, LESSONPANEL_BORDERICON));
-        _moduleTitle->setGeometry(QRect(_x+10+offset+LESSONPANEL_BORDERICON, _y, LESSONPANEL_WIDTH, 24));
-        _subHeader->setGeometry(QRect(_x+15+offset+LESSONPANEL_BORDERICON, _y+22, LESSONPANEL_WIDTH, 20));
-        _description->setGeometry(QRect(_x+15+offset+LESSONPANEL_BORDERICON, _y+40, LESSONPANEL_WIDTH, 20));
+        if(_currentMode==STUDENT) {
+            _background->setGeometry(QRect(_x, _y, LESSONPANEL_WIDTH, LESSONPANEL_CONTRACTED_CLICKHEIGHT));
+            _loadStatus->setGeometry(QRect(_x+offset*0.5+LESSONPANEL_BORDERICON*0.3, _y+LESSONPANEL_BORDERICON*0.3, LESSONPANEL_BORDERICON, LESSONPANEL_BORDERICON));
+            _moduleTitle->setGeometry(QRect(_x+9+offset+LESSONPANEL_BORDERICON, _y+4, LESSONPANEL_WIDTH, 16));
+        } else {
+            _background->setGeometry(QRect(_x, _y, LESSONPANEL_WIDTH_L, LESSONPANEL_CONTRACTED_CLICKHEIGHT));
+            _loadStatus->setGeometry(QRect(_x+offset*0.5+LESSONPANEL_BORDERICON*0.3, _y+LESSONPANEL_BORDERICON*0.3, LESSONPANEL_BORDERICON, LESSONPANEL_BORDERICON));
+            _moduleTitle->setGeometry(QRect(_x+9+offset+LESSONPANEL_BORDERICON, _y+4, LESSONPANEL_WIDTH_L, 16));
+        }
+        _moduleTitle->setStyleSheet("color:#FFFFFF;padding-left: 2px;padding-top: 2px;");
 
         _scrollArea->setVisible(false);
         _subHeader->setVisible(false);
         _description->setVisible(false);
+        _btUpload->setVisible(false);
+        _btNewQuiz->setVisible(false);
+        _btDelete->setVisible(false);
+        _btEditTitle->setVisible(false);
+        _btEditSubHeader->setVisible(false);
+        _btEditDescription->setVisible(false);
     } else {
-        _background->setGeometry(QRect(_x, _y, LESSONPANEL_WIDTH, LESSONPANEL_HEIGHT));
-        _loadStatus->setGeometry(QRect(_x+LESSONPANEL_BORDERICON*0.3, _y+LESSONPANEL_BORDERICON*0.3, LESSONPANEL_BORDERICON, LESSONPANEL_BORDERICON));
-        _moduleTitle->setGeometry(QRect(_x+10+LESSONPANEL_BORDERICON, _y, LESSONPANEL_WIDTH, 24));
-        _subHeader->setGeometry(QRect(_x+15+LESSONPANEL_BORDERICON, _y+22, LESSONPANEL_WIDTH, 20));
-        _description->setGeometry(QRect(_x+15+LESSONPANEL_BORDERICON, _y+40, LESSONPANEL_WIDTH, 20));
-        _scrollArea->setGeometry(QRect(_x+LESSONPANEL_BORDER, _y+LESSONPANEL_CLICKHEIGHT, LESSONPANEL_WIDTH-LESSONPANEL_BORDER*2-SIDEBAR_OFFSET, LESSONPANEL_HEIGHT-LESSONPANEL_CLICKHEIGHT-LESSONPANEL_BORDER));
+        if(_currentMode==STUDENT) {
+            _background->setGeometry(QRect(_x, _y, LESSONPANEL_WIDTH, LESSONPANEL_HEIGHT));
+            _loadStatus->setGeometry(QRect(_x+LESSONPANEL_BORDERICON*0.3, _y+LESSONPANEL_BORDERICON*0.3, LESSONPANEL_BORDERICON, LESSONPANEL_BORDERICON));
+            _scrollArea->setGeometry(QRect(_x+LESSONPANEL_BORDER, _y+LESSONPANEL_CLICKHEIGHT, LESSONPANEL_WIDTH-LESSONPANEL_BORDER*2-SIDEBAR_OFFSET, LESSONPANEL_HEIGHT-LESSONPANEL_CLICKHEIGHT-LESSONPANEL_BORDER));
+        } else  {
+            _background->setGeometry(QRect(_x, _y, LESSONPANEL_WIDTH_L, LESSONPANEL_HEIGHT));
+            _loadStatus->setGeometry(QRect(_x+LESSONPANEL_BORDERICON*0.3, _y+LESSONPANEL_BORDERICON*0.3, LESSONPANEL_BORDERICON, LESSONPANEL_BORDERICON));
+            _scrollArea->setGeometry(QRect(_x+LESSONPANEL_BORDER, _y+LESSONPANEL_CLICKHEIGHT, LESSONPANEL_WIDTH_L-LESSONPANEL_BORDER*2-SIDEBAR_OFFSET, LESSONPANEL_HEIGHT-LESSONPANEL_CLICKHEIGHT-LESSONPANEL_BORDER));
+            _btUpload->setGeometry(QRect(_x+LESSONPANEL_WIDTH_L-(32+5)*3-16-10, _y+LESSONPANEL_CLICKHEIGHT*0.5-12, 32,24));
+            _btNewQuiz->setGeometry(QRect(_x+LESSONPANEL_WIDTH_L-(32+5)*2-16-10, _y+LESSONPANEL_CLICKHEIGHT*0.5-12, 32,24));
+            _btDelete->setGeometry(QRect(_x+LESSONPANEL_WIDTH_L-(32+5)*1-16-10, _y+LESSONPANEL_CLICKHEIGHT*0.5-12, 32,24));
+            _scrollArea->setGeometry(QRect(_x+LESSONPANEL_BORDER, _y+LESSONPANEL_CLICKHEIGHT, LESSONPANEL_WIDTH_L-LESSONPANEL_BORDER*2-SIDEBAR_OFFSET, LESSONPANEL_HEIGHT-LESSONPANEL_CLICKHEIGHT-LESSONPANEL_BORDER));
+            _btEditTitle->setGeometry(QRect(_x+LESSONPANEL_WIDTH+7, _y+4, 16,16));
+            _btEditSubHeader->setGeometry(QRect(_x+LESSONPANEL_WIDTH+7, _y+25, 16,16));
+            _btEditDescription->setGeometry(QRect(_x+LESSONPANEL_WIDTH+7, _y+43, 16,16));
+            _btUpload->setVisible(true);
+            _btNewQuiz->setVisible(true);
+            _btDelete->setVisible(true);
+            _btEditTitle->setVisible(true);
+            _btEditSubHeader->setVisible(true);
+            _btEditDescription->setVisible(true);
+        }
+        _moduleTitle->setStyleSheet("color:#FFFFFF;padding-left: 2px;padding-top: 2px;background-color:#2e240d;");
 
+        _moduleTitle->setGeometry(QRect(_x+9+LESSONPANEL_BORDERICON, _y+4, LESSONPANEL_WIDTH+5-9-LESSONPANEL_BORDERICON, 16));
+        _subHeader->setGeometry(QRect(_x+9+5+LESSONPANEL_BORDERICON, _y+22+3, LESSONPANEL_WIDTH-9-LESSONPANEL_BORDERICON, 15));
+        _description->setGeometry(QRect(_x+9+5+LESSONPANEL_BORDERICON, _y+40+3, LESSONPANEL_WIDTH-9-LESSONPANEL_BORDERICON, 15));
         _scrollArea->setVisible(true);
         _subHeader->setVisible(true);
         _description->setVisible(true);
     }
+}
+
+QString MedNUSLessonPackage::dialogGetString(QString message,QString defaultString) {
+    bool ok;
+    QString toReturn = QInputDialog::getText(this, tr(""),
+                                      message, QLineEdit::Normal,
+                                      defaultString, &ok);
+    if(ok)
+        return toReturn;
+    else
+        return defaultString;
+}
+
+void MedNUSLessonPackage::editTitle() {
+    _moduleTitle->setText(dialogGetString("Enter the new title :",_moduleTitle->text()));
+}
+
+void MedNUSLessonPackage::editSubHeader() {
+    _subHeader->setText(dialogGetString("Enter the new sub-header :",_subHeader->text()));
+}
+
+void MedNUSLessonPackage::editDescription() {
+    _description->setText(dialogGetString("Enter the new description :",_description->text()));
+}
+
+void MedNUSLessonPackage::locateNewFile() {
+    //To do: Select new file.
+}
+
+void MedNUSLessonPackage::addNewQuiz() {
+    //Add new quiz.
+}
+
+void MedNUSLessonPackage::deleteLesson() {
+    //Show dialog and delete.
+
+    QMessageBox msgBox;
+    msgBox.setText("Lesson will be deleted permanently.");
+    msgBox.setInformativeText("Are you sure?");
+    msgBox.setStandardButtons(QMessageBox::No | QMessageBox::Yes );
+    msgBox.setDefaultButton(QMessageBox::No);
+    int ret = msgBox.exec();
+    switch (ret) {
+       case QMessageBox::Yes:
+           //To do: Delete the lesson.
+           break;
+       case QMessageBox::No:
+           break;
+       default:
+           // should never be reached
+           break;
+     }
 }
 
