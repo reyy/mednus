@@ -7,7 +7,9 @@
 #include "MedNUSQuiz.h"
 #include <QTabWidget>
 #include <QGridLayout>
+#include "MedNUSAUISettings.h"
 
+//TODO: Enum this thing to AUISettings.
 #define VIDEO_INDEX 0
 #define PDF_INDEX 1
 #define MESH_INDEX 2
@@ -15,9 +17,11 @@
 class MedNUSTab : public QTabWidget
 {
     Q_OBJECT
+
 public:
     explicit MedNUSTab(QWidget *parent = 0);
-    ~MedNUSTab(){}
+    ~MedNUSTab() {}
+
 signals:
     void noMoreTabs(MedNUSTab*);
     void tabClosedSignal(QString);
@@ -29,9 +33,12 @@ signals:
 class MedNUSContentPanel : public QWidget
 {
     Q_OBJECT
+private:
+    interfaceMode _currentMode;
 public:
     explicit MedNUSContentPanel(QWidget *parent = 0);
     ~MedNUSContentPanel();
+    void setMode(interfaceMode mode);
 
 protected:
     MedNUSTab *tabList[3];

@@ -1,6 +1,6 @@
 QWidget {
 border: 0px solid white;
-
+background: url(":/images/panel_lines2.png") repeat;
 }
 
 QScrollBar:horizontal {

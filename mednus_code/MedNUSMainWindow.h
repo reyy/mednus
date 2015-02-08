@@ -23,6 +23,8 @@ private:
     bool _trayOut;
     bool _widgetsCreated;
     bool _menuCreated;
+    bool _teacherMode;
+    interfaceMode _currentMode;
 
 public:
     explicit MedNUSMainWindow(QWidget *parent = 0);

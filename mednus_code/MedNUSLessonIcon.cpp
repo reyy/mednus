@@ -1,5 +1,4 @@
 #include "MedNUSLessonIcon.h"
-#include "MedNUSAUISettings.h"
 #include <QDebug>
 
 MedNUSLessonIcon::MedNUSLessonIcon(QString path, QPixmap directory, QWidget *parent) : QWidget(parent)
@@ -36,22 +35,32 @@ MedNUSLessonIcon::MedNUSLessonIcon(QString path, QPixmap directory, QWidget *par
 MedNUSLessonIcon::~MedNUSLessonIcon() {
 }
 
+void MedNUSLessonIcon::setMode(interfaceMode mode) {
+    _currentMode=mode;
+}
+
 void MedNUSLessonIcon::updatePosition(float packageX, float packageY, float x, float y) {
     _x=packageX;
     _y=packageY+y;
     qDebug() <<packageX<<" "<<packageY<<" "<<_x<<" "<< _y;
     _icon->setGeometry(QRect(LESSONPANEL_BORDER+1,3, 12, 16));
+    float tempWidth = 0.0;
+
+    if(_currentMode==STUDENT)
+        tempWidth = LESSONPANEL_WIDTH;
+    else
+        tempWidth = LESSONPANEL_WIDTH_L;
 
     if(_scrollBarExist) {
-        _text->setGeometry(QRect(LESSONPANEL_BORDER+15+5, 3, LESSONPANEL_WIDTH-LESSONPANEL_BORDER*2-SIDEBAR_OFFSET-18+1, 16));
-        _highlight->setGeometry(QRect(LESSONPANEL_BORDER-2, 0, LESSONPANEL_WIDTH-LESSONPANEL_BORDER*2-SIDEBAR_OFFSET-18+1, 20+2));
+        _text->setGeometry(QRect(LESSONPANEL_BORDER+15+5, 3, tempWidth-LESSONPANEL_BORDER*2-SIDEBAR_OFFSET-18+1, 16));
+        _highlight->setGeometry(QRect(LESSONPANEL_BORDER-2, 0, tempWidth-LESSONPANEL_BORDER*2-SIDEBAR_OFFSET-18+1, 20+2));
 
-        this->setGeometry(QRect(x+LESSONPANEL_BORDER-2, y, LESSONPANEL_WIDTH-LESSONPANEL_BORDER*2-SIDEBAR_OFFSET-16+1, 20+5));
+        this->setGeometry(QRect(x+LESSONPANEL_BORDER-2, y, tempWidth-LESSONPANEL_BORDER*2-SIDEBAR_OFFSET-16+1, 20+5));
     } else {
-        _text->setGeometry(QRect(LESSONPANEL_BORDER+15+5, 3, LESSONPANEL_WIDTH-LESSONPANEL_BORDER*2-SIDEBAR_OFFSET-12+1, 16));
-        _highlight->setGeometry(QRect(LESSONPANEL_BORDER-2, 0, LESSONPANEL_WIDTH-LESSONPANEL_BORDER*2-SIDEBAR_OFFSET-12+1, 20+2));
+        _text->setGeometry(QRect(LESSONPANEL_BORDER+15+5, 3, tempWidth-LESSONPANEL_BORDER*2-SIDEBAR_OFFSET-12+1, 16));
+        _highlight->setGeometry(QRect(LESSONPANEL_BORDER-2, 0, tempWidth-LESSONPANEL_BORDER*2-SIDEBAR_OFFSET-12+1, 20+2));
 
-        this->setGeometry(QRect(x+LESSONPANEL_BORDER-2, y, LESSONPANEL_WIDTH-LESSONPANEL_BORDER*2-SIDEBAR_OFFSET-10+1, 20+5));
+        this->setGeometry(QRect(x+LESSONPANEL_BORDER-2, y, tempWidth-LESSONPANEL_BORDER*2-SIDEBAR_OFFSET-10+1, 20+5));
     }
 
     QFontMetrics metrics(_text->font());

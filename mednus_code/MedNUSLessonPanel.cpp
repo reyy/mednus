@@ -6,13 +6,14 @@
 */
 
 #include "MedNUSLessonPanel.h"
-#include "MedNUSAUISettings.h"
 #include <QtGui>
 #include <QPalette>
 
 MedNUSLessonPanel::MedNUSLessonPanel(QWidget *parent) : QWidget(parent) {
     this->setMinimumWidth(LESSONPANEL_WIDTH);
     this->setMaximumWidth(LESSONPANEL_WIDTH);
+
+    _currentMode=NONE;
 
     loadPixmap();
     _background = new QLabel(this);
@@ -31,10 +32,27 @@ MedNUSLessonPanel::~MedNUSLessonPanel() {
     clearLesson();
 }
 
-void MedNUSLessonPanel::loadPixmap() {
+void MedNUSLessonPanel::setMode(interfaceMode mode) {
+    _currentMode=mode;
 
+    if(mode==STUDENT) {
+        this->setMinimumWidth(LESSONPANEL_WIDTH);
+        this->setMaximumWidth(LESSONPANEL_WIDTH);
+        _background->setGeometry(QRect(SIDEBAR_OFFSET,0, this->width()-SIDEBAR_OFFSET, this->height()));
+        _background->setStyleSheet("background-color: #13181b;");
+    } else  {
+        this->setMinimumWidth(LESSONPANEL_WIDTH_L);
+        this->setMaximumWidth(LESSONPANEL_WIDTH_L);
+        _background->setGeometry(QRect(SIDEBAR_OFFSET,0, this->width()-SIDEBAR_OFFSET, this->height()));
+        _background->setStyleSheet("background-color: #392d0f;");
+    }
+}
+
+void MedNUSLessonPanel::loadPixmap() {
     _button_toopen = QPixmap(QString::fromStdString(":/images/button_trayout.png"));
     _button_toclose = QPixmap(QString::fromStdString(":/images/button_trayin.png"));
+    _button_toopen2 = QPixmap(QString::fromStdString(":/images/button_trayout2.png"));
+    _button_toclose2 = QPixmap(QString::fromStdString(":/images/button_trayin2.png"));
     _icon_3d = QPixmap(QString::fromStdString(":/images/icon_3d.png"));
     _icon_image = QPixmap(QString::fromStdString(":/images/icon_image.png"));
     _icon_pdf = QPixmap(QString::fromStdString(":/images/icon_pdf.png"));
@@ -47,6 +65,7 @@ void MedNUSLessonPanel::loadPixmap() {
 }
 
 void MedNUSLessonPanel::addLesson(MedNUSLessonPackage * _package) {
+    _package->setMode(_currentMode);
     _lessonList.push_back(_package);
     updateGUI();
 }
@@ -56,6 +75,7 @@ void MedNUSLessonPanel::addLesson(QString title,QString subTitle, QString descri
     _package->setTitle(title);
     _package->setSubHeader(subTitle);
     _package->setDescription(description);
+    _package->setMode(_currentMode);
 
     for(int i=0;i<directories.size();i++) {
         QString directory = directories.at(i);
@@ -116,7 +136,11 @@ void MedNUSLessonPanel::setTrayOut(bool value) {
     if(value) {
         this->setMinimumWidth(SIDEBAR_OFFSET+TOPBAR_HEIGHT);
         this->setMaximumWidth(SIDEBAR_OFFSET+TOPBAR_HEIGHT);
-        _button->setPixmap(_button_toopen);
+        if(_currentMode==STUDENT) {
+            _button->setPixmap(_button_toopen);
+        } else {
+            _button->setPixmap(_button_toopen2);
+        }
 
         //Collapsed everything.
         for(int i=0;i<(int)_lessonList.size();i++) {
@@ -126,9 +150,15 @@ void MedNUSLessonPanel::setTrayOut(bool value) {
         this->updateGUI();
 
     } else {
-        this->setMinimumWidth(LESSONPANEL_WIDTH);
-        this->setMaximumWidth(LESSONPANEL_WIDTH);
-        _button->setPixmap(_button_toclose);
+        if(_currentMode==STUDENT) {
+            this->setMinimumWidth(LESSONPANEL_WIDTH);
+            this->setMaximumWidth(LESSONPANEL_WIDTH);
+            _button->setPixmap(_button_toclose);
+        } else {
+            this->setMinimumWidth(LESSONPANEL_WIDTH_L);
+            this->setMaximumWidth(LESSONPANEL_WIDTH_L);
+            _button->setPixmap(_button_toclose2);
+        }
     }
 }
 
@@ -149,7 +179,6 @@ void MedNUSLessonPanel::mousePressEvent ( QMouseEvent * event )
         if(event->x()>SIDEBAR_OFFSET)
             setTrayOut(false);
 
-        //qDebug() << "Debug Message";
         bool collapseEveryoneElse=false;
         MedNUSLessonPackage *temp=NULL;
         MedNUSLessonPackage *selected=NULL;
@@ -158,11 +187,13 @@ void MedNUSLessonPanel::mousePressEvent ( QMouseEvent * event )
         for(int i=0;i<(int)_lessonList.size();i++) {
             temp = _lessonList.at(i);
             if(event->pos().x()>10&&event->pos().y()>=temp->getY()&&event->pos().y()<=temp->getY()+temp->getInteractiveHeight()) {
-                selected=temp;
-                selected->toggleCollapse();
-                selected->updateGUI(false);
-                collapseEveryoneElse=true;
-                break;
+                if(event->pos().x()<LESSONPANEL_WIDTH_L) {
+                    selected=temp;
+                    selected->toggleCollapse();
+                    selected->updateGUI(false);
+                    collapseEveryoneElse=true;
+                    break;
+                }
              }
         }
 

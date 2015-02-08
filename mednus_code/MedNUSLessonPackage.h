@@ -8,15 +8,18 @@
 #include <QDebug>
 #include <QScrollArea>
 #include "MedNUSLessonIcon.h"
+#include "MedNUSAUISettings.h"
 
 class MedNUSLessonPackageContentPanel : public QWidget
 {
     QWidget *_parent;
     QVector<MedNUSLessonIcon*> _listOfItems;
+    interfaceMode _currentMode;
 
 public:
     explicit MedNUSLessonPackageContentPanel(int x, int y,QWidget *parent = 0);
     ~MedNUSLessonPackageContentPanel();
+    void setMode(interfaceMode mode);
     MedNUSLessonIcon* getContentItem(int value);
     int getContentSize();
     MedNUSLessonIcon* addContent(QString filename, QPixmap directory);
@@ -42,10 +45,21 @@ private:
     QWidget *_parent;
     QScrollArea *_scrollArea;
     MedNUSLessonPackageContentPanel *_contentPanel;
+    interfaceMode _currentMode;
+
+    QPushButton *_btEditTitle;
+    QPushButton *_btEditSubHeader;
+    QPushButton *_btEditDescription;
+
+    QPushButton *_btUpload;
+    QPushButton *_btNewQuiz;
+    QPushButton *_btDelete;
 
 public:
     explicit MedNUSLessonPackage(QWidget *parent = 0);
     ~MedNUSLessonPackage();
+
+    void setMode(interfaceMode mode);
     void setY(int value);
     int getY();
 
@@ -65,10 +79,19 @@ public:
     void toggleCollapse();
     void toggleCollapse(bool value);
     void updateGUI(bool trayOut);
+    QString dialogGetString(QString message,QString defaultString);
 
 public slots:
     void callOpenFile(QString str, QString title, int type)
     {emit emitOpenFile(str, title, type);}
+protected slots:
+    void editTitle();
+    void editSubHeader();
+    void editDescription();
+
+    void locateNewFile();
+    void addNewQuiz();
+    void deleteLesson();
 signals:
     void emitOpenFile(QString, QString, int);
 };

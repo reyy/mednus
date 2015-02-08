@@ -8,6 +8,7 @@ MedNUSContentManager::MedNUSContentManager(QObject *parent)
 void MedNUSContentManager::initLessonList(QStringList)
 {
     //STUB For future Network I/O connection!
+
     QStringList content;
     content.push_back("/mednus/lesson1/videos/Skull Anatomy (1 of 5)- Superior, Posterior and Lateral Views -- Head and Neck Anatomy 101.mp4");
     content.push_back("/mednus/lesson1/videos/Osteology of the Skull- 12 Newborn Skull.mp4");
@@ -36,7 +37,7 @@ void MedNUSContentManager::initLessonList(QStringList)
     content2.push_back("/mednus/lesson1/videos/Osteology of the Skull- 12 Newborn Skull.mp4");
 
     emit callAddLesson("Skull Osteology II","A/Professor Tan","Anatomy Department",content2);
-    openLastView(content);
+    //openLastView(content);
 }
 
 void MedNUSContentManager::openLastView(QStringList content)

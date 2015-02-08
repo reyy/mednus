@@ -2,6 +2,7 @@
 #define MEDNUSAUISETTINGS_H
 
 #define LESSONPANEL_WIDTH 300
+#define LESSONPANEL_WIDTH_L 500
 #define LESSONPANEL_BORDER 5
 #define LESSONPANEL_BORDERICON 15
 #define LESSONPANEL_HEIGHT 176
@@ -23,5 +24,11 @@
 
 #define MIN(a,b) ((a) < (b) ? (a) : (b))
 #define MAX(a,b) ((a) > (b) ? (a) : (b))
+
+enum interfaceMode {
+    NONE,
+    STUDENT,
+    LECTURER
+};
 
 #endif // MEDNUSAUISETTINGS_H
