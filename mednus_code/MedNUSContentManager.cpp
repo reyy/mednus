@@ -14,7 +14,9 @@ void MedNUSContentManager::initLessonList(QStringList)
     content.push_back("/mednus/lesson1/videos/Osteology of the Skull- 12 Newborn Skull.mp4");
     content.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
     content.push_back("/mednus/lesson1/models/craniofacial.ply");
-    content.push_back("/mednus/lesson1/quiz/Quiz - The Skull.qiz");//
+    content.push_back("/mednus/lesson1/quiz/Quiz - The Skull.qiz");
+    content.push_back("/mednus/lesson1/models/face.ply");
+    content.push_back("/mednus/lesson1/models/skull.ply");
 
     emit callAddLesson("Functional Anatomy of the Skull","Professor Gopal","Anatomy Department",content);
 
@@ -59,6 +61,9 @@ void MedNUSContentManager::openFile(QString fileDir, QString title, int type)
     QString dir = QDir::homePath();
     dir.append(fileDir);
 
+    //TODO: load several models into the same instance of the meshviewer
+    //      via a load folder functionality.
+
     if(isFileExist(dir))
     {
         //Create MedNUSVideo/Mesh/PDF instance
@@ -67,7 +72,7 @@ void MedNUSContentManager::openFile(QString fileDir, QString title, int type)
         if(fileDir.contains(".pdf", Qt::CaseInsensitive))
             toAdd = new MedNUSPdfViewer(dir);
         else if(fileDir.contains(".ply", Qt::CaseInsensitive))
-            toAdd = new MedNUSMeshViewer(dir,false);
+            toAdd = new MedNUSMeshViewer(dir,true);
         else if(fileDir.contains(".mp4", Qt::CaseInsensitive) || fileDir.contains(".mov", Qt::CaseInsensitive))
             toAdd = new MedNUSVideoViewer(dir);
         else if(fileDir.contains(".qiz", Qt::CaseInsensitive))
