@@ -6,6 +6,10 @@
 #include <QDebug>
 #include <vtkSphereSource.h>
 #include <vtkProperty.h>
+#include <vtkVectorText.h>
+#include <vtkLinearExtrusionFilter.h>
+#include <vtkElevationFilter.h>
+#include <vtkSmartPointer.h>
 
 class MedNUSMeshAnnotation
 {
@@ -33,5 +37,7 @@ public:
 protected:
     MedNUSMeshViewerCallback();
     ~MedNUSMeshViewerCallback();
+
+    void CreateAnnotationText(QString text, double x, double y, double z);
 };
 #endif // MedNUSMeshViewerCALLBACK_H

@@ -66,4 +66,23 @@ void MedNUSMeshViewerCallback::AddAnnotation(double x, double y, double z)
     toAdd.actor->SetVisibility(true);
 
     viewer->getRenderer()->AddActor(toAdd.actor);
+
+    CreateAnnotationText("point", x, y, z);
+}
+
+void MedNUSMeshViewerCallback::CreateAnnotationText(QString text, double x, double y, double z)
+{
+    vtkSmartPointer<vtkVectorText> annotationText = vtkSmartPointer<vtkVectorText>::New();
+    annotationText->SetText( text.toStdString().c_str() );
+
+    vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+    mapper->SetInputConnection(annotationText->GetOutputPort());
+
+    vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
+    actor->SetMapper(mapper);
+    actor->SetScale(3,3,3);
+    actor->SetPosition(x,y,z);
+    actor->GetProperty()->SetColor(255, 0, 0);
+
+    viewer->getRenderer()->AddActor(actor);
 }
