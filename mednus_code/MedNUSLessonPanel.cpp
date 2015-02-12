@@ -53,11 +53,6 @@ void MedNUSLessonPanel::loadPixmap() {
     _button_toclose = QPixmap(QString::fromStdString(":/images/button_trayin.png"));
     _button_toopen2 = QPixmap(QString::fromStdString(":/images/button_trayout2.png"));
     _button_toclose2 = QPixmap(QString::fromStdString(":/images/button_trayin2.png"));
-    _icon_3d = QPixmap(QString::fromStdString(":/images/icon_3d.png"));
-    _icon_image = QPixmap(QString::fromStdString(":/images/icon_image.png"));
-    _icon_pdf = QPixmap(QString::fromStdString(":/images/icon_pdf.png"));
-    _icon_quiz = QPixmap(QString::fromStdString(":/images/icon_quiz.png"));
-    _icon_video = QPixmap(QString::fromStdString(":/images/icon_video.png"));
 
     for(int i=0;i<11;i++) {
         _loadingIcon[i] = QPixmap(QString::fromStdString(":/images/lessonLoading_")+QString::number(i)+QString::fromStdString(".png"));
@@ -79,18 +74,19 @@ void MedNUSLessonPanel::addLesson(QString title,QString subTitle, QString descri
 
     for(int i=0;i<directories.size();i++) {
         QString directory = directories.at(i);
-        QPixmap icon_directory;
+        fileType filetype;
         if(directory.contains(".png", Qt::CaseInsensitive))
-            icon_directory = _icon_image;
+            filetype = fileType::IMAGE;
         if(directory.contains(".ply", Qt::CaseInsensitive))
-            icon_directory = _icon_3d;
+            filetype = fileType::MODEL;
         if(directory.contains(".pdf", Qt::CaseInsensitive))
-            icon_directory = _icon_pdf;
+            filetype = fileType::PDF;
         if(directory.contains(".qiz", Qt::CaseInsensitive))
-            icon_directory = _icon_quiz;
+            filetype = fileType::QUIZ;
         if(directory.contains(".mp4", Qt::CaseInsensitive))
-            icon_directory = _icon_video;
-        _package->addContent(directory,icon_directory);
+            filetype = fileType::VIDEO;
+
+        _package->addContent(directory,filetype);
     }
 
     _lessonList.push_back(_package);
