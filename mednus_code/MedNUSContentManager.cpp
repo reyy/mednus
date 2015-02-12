@@ -2,6 +2,7 @@
 
 MedNUSContentManager::MedNUSContentManager(QObject *parent)
 {
+    _meshViewerInstance = NULL;
 }
 
 
@@ -72,7 +73,20 @@ void MedNUSContentManager::openFile(QString fileDir, QString title, int type)
         if(fileDir.contains(".pdf", Qt::CaseInsensitive))
             toAdd = new MedNUSPdfViewer(dir);
         else if(fileDir.contains(".ply", Qt::CaseInsensitive))
-            toAdd = new MedNUSMeshViewer(dir,true);
+            //toAdd = new MedNUSMeshViewer(dir,true);
+        {
+            if (_meshViewerInstance == NULL)
+            {
+                toAdd = new MedNUSMeshViewer(dir, true);
+                _meshViewerInstance = toAdd;
+                qDebug()<<"pew";
+            }
+            else
+            {
+                ((MedNUSMeshViewer*)(_meshViewerInstance))->forceAddMesh(dir);
+                return;
+            }
+        }
         else if(fileDir.contains(".mp4", Qt::CaseInsensitive) || fileDir.contains(".mov", Qt::CaseInsensitive))
             toAdd = new MedNUSVideoViewer(dir);
         else if(fileDir.contains(".qiz", Qt::CaseInsensitive))

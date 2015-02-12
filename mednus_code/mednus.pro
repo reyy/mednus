@@ -87,7 +87,7 @@ macx {
 #    LIBS += -lvtkzlib-6.1.1
 #    LIBS += -lvtkfreetype-6.1.1
 #    LIBS += -lvtkftgl-6.1.1
-#    LIBS += -lvtkRenderingFreeType-6.1.1
+    LIBS += -lvtkRenderingFreeType-6.1.1
 #    LIBS += -lvtkDICOMParser-6.1.1
     LIBS += -lvtkIOCore-6.1.1
 #    LIBS += -lvtkmetaio-6.1.1

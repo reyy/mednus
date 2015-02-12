@@ -25,6 +25,9 @@ signals:
 
 private:
     bool isFileExist(QString);
+
+    // hack: allow only one instance of MedNUSMeshViewer to exist
+    QWidget* _meshViewerInstance;
 };
 
 

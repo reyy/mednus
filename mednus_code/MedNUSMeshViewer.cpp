@@ -29,6 +29,11 @@
 #include <vtkOutlineFilter.h>
 #include <vtkOutlineSource.h>
 
+#include <vtkTextActor3D.h>
+#include <vtkTextProperty.h>
+
+#include <vtkCaptionActor2D.h>
+
 #include <unistd.h>
 using namespace std;
 
@@ -70,6 +75,14 @@ MedNUSMeshViewer::~MedNUSMeshViewer()
     style->Delete();
 }
 
+void MedNUSMeshViewer::forceAddMesh(const QString &fileName)
+{
+    try {
+        QStringList list;
+        list.append(fileName);
+        addMesh(list);
+    } catch (int a) {}
+}
 
 // Event handling
 
@@ -171,6 +184,9 @@ void MedNUSMeshViewer::createWidgets(bool withMeshPanel)
         meshTable = NULL;
         meshPanel = NULL;
     }
+
+    //Hack: temp add an annotation.
+    addAnnotation("hello");
     
 
     vtkWidget->updateGeometry();
@@ -809,7 +825,7 @@ void MedNUSMeshViewer::installPipeline(int startIndex)
 
 
     //drawSphere(0.5,-1,-1,-1);
-    //drawBoundingBox();
+    drawBoundingBox();
 
     //****END OF CRAPPY CODE
 
@@ -990,6 +1006,33 @@ bool MedNUSMeshViewer::saveImage(const QString &fileName)
     writer->Delete();
     filter->Delete();
     return true;
+}
+
+void MedNUSMeshViewer::addAnnotation(const QString text)
+{
+    // add an annotation
+    /*vtkTextActor3D *textActor = vtkTextActor3D::New();
+
+    qWarning() << "added string";
+
+    textActor->GetTextProperty()->SetFontSize(72);
+    textActor->SetPosition(0.0, 0.0, 0.0);
+    renderer->AddActor(textActor);
+    textActor->SetInput("text");
+    textActor->GetTextProperty()->SetColor(1.0, 0.0, 0.0);*/
+
+    /*vtkSmartPointer<vtkTextActor> textActor =
+        vtkSmartPointer<vtkTextActor>::New();
+      textActor->GetTextProperty()->SetFontSize ( 24 );
+      textActor->SetPosition2 ( 10, 40 );
+      renderer->AddActor2D ( textActor );
+      textActor->SetInput ( "Hello world" );
+      textActor->GetTextProperty()->SetColor ( 1.0,0.0,0.0 );*/
+
+    vtkSmartPointer<vtkCaptionActor2D> captionActor = vtkSmartPointer<vtkCaptionActor2D>::New();
+    captionActor->SetCaption("hello");
+    captionActor->SetAttachmentPoint(0, 0, 0);
+    renderer->AddViewProp(captionActor);
 }
 
 
