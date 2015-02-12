@@ -22,8 +22,11 @@ void MedNUSMeshViewerCallback::Execute( vtkObject *caller,
     vtkPropPicker *picker = vtkPropPicker::New();
     int found = picker->PickProp(pos[0], pos[1], renderer);
 
+    qDebug()<<"prefound";
+
     if (found)
     {
+        qDebug() << "found=" << pos[0] << "," << pos[1];
         vtkProp *prop = picker->GetViewProp();
         viewer->highlight(vtkActor::SafeDownCast(prop));
     }

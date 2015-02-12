@@ -25,6 +25,7 @@
 #include <QTranslator>
 #include <QObject>
 #include <QString>
+#include <QStringList>
 #include "PMeshTableWidget.h"
 #include "PMeshModel.h"
 
@@ -39,6 +40,7 @@ class QPushButton;
 #include "vtkPolyDataMapper.h"
 #include "vtkActor.h"
 #include "vtkRenderer.h"
+#include "vtkTextRenderer.h"
 #include "vtkRenderWindow.h"
 #include "vtkRenderWindowInteractor.h"
 #include "vtkInteractorStyleTrackballCamera.h"
@@ -61,6 +63,7 @@ class QPushButton;
 // };
 
 
+
 class MedNUSMeshViewer: public QWidget
 {
     Q_OBJECT
@@ -74,6 +77,10 @@ public:
     vtkRenderWindowInteractor *getInteractor();
     vtkRenderer *getRenderer();
     void highlight(vtkActor *actor);
+
+    // Hack: Allow load mesh to be called externally.
+    void forceAddMesh(const QString &fileName);
+    //ENDHACK
     
 protected:
     void closeEvent(QCloseEvent *event);
@@ -160,6 +167,7 @@ protected:
 
     // VTK objects
     vtkRenderer *renderer;
+    vtkTextRenderer *textRenderer;
     vtkRenderWindow *renderWindow;
     vtkRenderWindowInteractor *interactor;
     vtkInteractorStyleTrackballCamera *style;
@@ -179,6 +187,8 @@ protected:
     bool loadMesh(const QStringList &fileNames);
     bool addMesh(const QStringList &fileNames);
     bool saveImage(const QString &fileName);
+
+    void addAnnotation(const QString text);
 };
 
  //Callback class

@@ -3,6 +3,7 @@
 #include <vtkCommand.h>
 #include <vtkObjectBase.h>
 #include "MedNUSMeshViewer.h"
+#include <QDebug>
 
 class MedNUSMeshViewerCallback: public vtkCommand
 {
