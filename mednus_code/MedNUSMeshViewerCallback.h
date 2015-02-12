@@ -7,8 +7,6 @@
 #include <vtkSphereSource.h>
 #include <vtkProperty.h>
 #include <vtkVectorText.h>
-#include <vtkLinearExtrusionFilter.h>
-#include <vtkElevationFilter.h>
 #include <vtkSmartPointer.h>
 
 class MedNUSMeshAnnotation
