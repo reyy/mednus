@@ -9,7 +9,6 @@ MedNUSLessonIcon::MedNUSLessonIcon(QString path, fileType filetype, QWidget *par
     _parent = parent;
 
     _highlight = new QLabel(this);
-    _highlight->setStyleSheet("background: rgba(229,165,57,50);");
 
     _icon = new QLabel(this);
     switch(filetype) {
@@ -81,7 +80,7 @@ void MedNUSLessonIcon::updatePosition(float packageX, float packageY, float x, f
     _btDelete->setGeometry(QRect(tempWidth-LESSONPACKAGEBUTTON_OFFSET+24+5, 2, 16,16));
     _btMisc->setGeometry(QRect(tempWidth-LESSONPACKAGEBUTTON_OFFSET-24, 2, 48,16));
     _text->setGeometry(QRect(LESSONPANEL_BORDER+15+5, 3, tempWidth-LESSONPANEL_BORDER*2-SIDEBAR_OFFSET-12+1-LESSONPACKAGEBUTTON_OFFSET, 16));
-    _highlight->setGeometry(QRect(LESSONPANEL_BORDER-2, 0, tempWidth-LESSONPANEL_BORDER*2-SIDEBAR_OFFSET-12+1-LESSONPACKAGEBUTTON_OFFSET, 20+2));
+    _highlight->setGeometry(QRect(LESSONPANEL_BORDER-2, 0, tempWidth-LESSONPANEL_BORDER*2-SIDEBAR_OFFSET-12+1, 20+2));
     QFontMetrics metrics(_text->font());
     _text->setText(metrics.elidedText(_filename, Qt::ElideRight, _text->width()-30));
     this->setGeometry(QRect(x+LESSONPANEL_BORDER-2, y, tempWidth-LESSONPANEL_BORDER*2-SIDEBAR_OFFSET-10+1, 20+5));
@@ -112,10 +111,17 @@ void MedNUSLessonIcon::setVisible(bool value) {
             _btMisc->setVisible(false);
     }
 
+    _highlight->setStyleSheet("background: rgba(229,165,57,50);");
     if(_selected&&value)
         _highlight->setVisible(true);
-    else
-        _highlight->setVisible(false);
+    else {
+        if(_currentMode==STUDENT) {
+            _highlight->setVisible(false);
+        } else {
+            _highlight->setVisible(true);
+            _highlight->setStyleSheet("background: rgba(229,165,57,20);");
+        }
+    }
 }
 
 void MedNUSLessonIcon::mousePressEvent ( QMouseEvent * event ){
