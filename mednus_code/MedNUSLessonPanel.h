@@ -27,11 +27,6 @@ class MedNUSLessonPanel : public QWidget
 {
     Q_OBJECT
 private:
-    QPixmap _icon_3d;
-    QPixmap _icon_image;
-    QPixmap _icon_pdf;
-    QPixmap _icon_quiz;
-    QPixmap _icon_video;
     QPixmap _button_toopen;
     QPixmap _button_toclose;
     QPixmap _button_toopen2;
