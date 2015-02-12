@@ -22,7 +22,7 @@ public:
     void setMode(interfaceMode mode);
     MedNUSLessonIcon* getContentItem(int value);
     int getContentSize();
-    MedNUSLessonIcon* addContent(QString filename, QPixmap directory);
+    MedNUSLessonIcon* addContent(QString filename, fileType filetype);
     void clearContent();
     void updateGUI(int x, int y, bool collapse);
 };
@@ -63,7 +63,7 @@ public:
     void setY(int value);
     int getY();
 
-    void addContent(QString filename, QPixmap directory);
+    void addContent(QString filename, fileType filetype);
     void clearContent();
     int getContentSize();
     MedNUSLessonIcon* getContentItem(int value);

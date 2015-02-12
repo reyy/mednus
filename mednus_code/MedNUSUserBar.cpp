@@ -41,14 +41,9 @@ MedNUSUserBar::MedNUSUserBar(QWidget *parent) :
     _btNewLesson->setFlat(true);
     _btNewLesson->setStyleSheet("QPushButton {border-style: outset; border-width: 0px;background-image: url(:/images/bt_newlesson.png);} QPushButton::pressed {background-image: url(:/images/bt_newlesson_p.png);}");
     _btNewLesson->setGeometry(QRect(24.0,8.0, 60,24));
-    _btNewLesson->setVisible(true);
+    _btNewLesson->setVisible(false);
 
-    _btViewStats = new QPushButton(this);
-    _btViewStats->setIconSize(QSize(24,24));
-    _btViewStats->setFlat(true);
-    _btViewStats->setStyleSheet("QPushButton {border-style: outset; border-width: 0px;background-image: url(:/images/bt_viewstats.png);} QPushButton::pressed {background-image: url(:/images/bt_viewstats_p.png);}");
-    _btViewStats->setGeometry(QRect(24.0+65.0,8.0, 60,24));
-    _btViewStats->setVisible(true);
+    connect(_btNewLesson,SIGNAL(clicked()),this,SLOT(createNewLesson()));
 }
 
 MedNUSUserBar::~MedNUSUserBar()
@@ -121,7 +116,6 @@ void MedNUSUserBar::resizeEvent(QResizeEvent* event)
     if(_currentMode==STUDENT)
         toShow=false;
     _btNewLesson->setVisible(toShow);
-    _btViewStats->setVisible(toShow);
 }
 
 void MedNUSUserBar::mousePressEvent(QMouseEvent *event)
@@ -135,8 +129,13 @@ void MedNUSUserBar::mousePressEvent(QMouseEvent *event)
     }
 }
 
-void MedNUSUserBar::showContextMenu(const QPoint& pos)
-{
+
+void MedNUSUserBar::createNewLesson() {
+    qDebug() <<"ToDo: Create New Lesson";
+//    emit emitOpenFile(_path, _text->text(), 0);
+}
+
+void MedNUSUserBar::showContextMenu(const QPoint& pos) {
     QPoint globalPos = this->mapToGlobal(pos);
     QMenu myMenu;
     myMenu.addAction("Logout");

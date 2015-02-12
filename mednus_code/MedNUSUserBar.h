@@ -21,7 +21,6 @@ private:
     interfaceMode _currentMode;
 
     QPushButton *_btNewLesson;
-    QPushButton *_btViewStats;
 
 public:
     explicit MedNUSUserBar(QWidget *parent = 0);
@@ -35,6 +34,9 @@ public:
 protected:
     void resizeEvent(QResizeEvent* event);
     void mousePressEvent ( QMouseEvent * event ) ;
+
+protected slots:
+    void createNewLesson();
 
 public slots:
     void showContextMenu(const QPoint& pos);
