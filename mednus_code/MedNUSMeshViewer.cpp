@@ -824,9 +824,9 @@ void MedNUSMeshViewer::installPipeline(int startIndex)
     //****CRAPPY TEST CODE
 
 
-    drawSphere(20,-1,-1,-1);
-    drawSphere(20,1,1,1);
-    drawBoundingBox();
+    //drawSphere(20,-1,-1,-1);
+    //drawSphere(20,1,1,1);
+    //drawBoundingBox();
 
     //****END OF CRAPPY CODE
 

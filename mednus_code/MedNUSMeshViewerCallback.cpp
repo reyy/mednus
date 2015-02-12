@@ -22,8 +22,6 @@ void MedNUSMeshViewerCallback::Execute( vtkObject *caller,
     vtkPropPicker *picker = vtkPropPicker::New();
     int found = picker->PickProp(pos[0], pos[1], renderer);
 
-    qDebug()<<"prefound";
-
     if (found)
     {
         vtkProp *prop = picker->GetViewProp();
@@ -33,7 +31,6 @@ void MedNUSMeshViewerCallback::Execute( vtkObject *caller,
         picker->Pick(pos[0], pos[1], 0, viewer->getRenderer());
         double* worldpos = picker->GetPickPosition();
         AddAnnotation(worldpos[0], worldpos[1], worldpos[2]);
-        qDebug() << "found=" << worldpos[0] << "," << worldpos[1] << "," << worldpos[2];
     }
     else
         viewer->highlight(NULL);
