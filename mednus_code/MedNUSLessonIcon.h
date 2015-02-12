@@ -18,6 +18,7 @@ private:
     QString _path;
     QString _filename;
     QWidget *_parent;
+    fileType _filetype;
 
     float _x;
     float _y;
@@ -41,6 +42,10 @@ protected:
 
 signals:
     void emitOpenFile(QString, QString, int);
+
+protected slots:
+    void activateMISC();
+    void deleteSelection();
 
 public slots:
     void tabOpened(QString);
