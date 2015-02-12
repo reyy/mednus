@@ -26,11 +26,44 @@ void MedNUSMeshViewerCallback::Execute( vtkObject *caller,
 
     if (found)
     {
-        qDebug() << "found=" << pos[0] << "," << pos[1];
         vtkProp *prop = picker->GetViewProp();
         viewer->highlight(vtkActor::SafeDownCast(prop));
+
+        // hack
+        picker->Pick(pos[0], pos[1], 0, viewer->getRenderer());
+        double* worldpos = picker->GetPickPosition();
+        AddAnnotation(worldpos[0], worldpos[1], worldpos[2]);
+        qDebug() << "found=" << worldpos[0] << "," << worldpos[1] << "," << worldpos[2];
     }
     else
         viewer->highlight(NULL);
 }
 
+void MedNUSMeshViewerCallback::AddAnnotation(double x, double y, double z)
+{
+    MedNUSMeshAnnotation toAdd;
+
+    toAdd.x = x;
+    toAdd.y = y;
+    toAdd.z = z;
+
+    toAdd.source = vtkSphereSource::New();
+    toAdd.source->SetCenter(x, y, z);
+    toAdd.source->SetRadius(10);
+    toAdd.source->Update();
+
+    toAdd.normals = vtkPolyDataNormals::New();
+    toAdd.normals->SetInputConnection(toAdd.source->GetOutputPort());
+
+    toAdd.mapper = vtkPolyDataMapper::New();
+    toAdd.mapper->SetInputConnection(toAdd.normals->GetOutputPort());
+    toAdd.mapper->Update();
+
+    toAdd.actor = vtkActor::New();
+    toAdd.actor->SetMapper(toAdd.mapper);
+    toAdd.actor->SetPosition(x, y, z);
+    toAdd.actor->GetProperty()->SetColor(255, 0, 0);
+    toAdd.actor->SetVisibility(true);
+
+    viewer->getRenderer()->AddActor(toAdd.actor);
+}
