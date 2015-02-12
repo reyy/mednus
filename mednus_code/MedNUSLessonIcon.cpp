@@ -1,10 +1,9 @@
 #include "MedNUSLessonIcon.h"
 #include <QDebug>
 
-MedNUSLessonIcon::MedNUSLessonIcon(QString path, QPixmap directory, QWidget *parent) : QWidget(parent)
+MedNUSLessonIcon::MedNUSLessonIcon(QString path, fileType filetype, QWidget *parent) : QWidget(parent)
 {
     _selected = false;
-    _directory = directory;
 
     _path = path;
     _parent = parent;
@@ -13,7 +12,14 @@ MedNUSLessonIcon::MedNUSLessonIcon(QString path, QPixmap directory, QWidget *par
     _highlight->setStyleSheet("background: rgba(229,165,57,50);");
 
     _icon = new QLabel(this);
-    _icon->setPixmap(directory);
+    switch(filetype) {
+    case MODEL:_icon->setPixmap(QPixmap(QString::fromStdString(":/images/icon_3d.png")));break;
+    case IMAGE:_icon->setPixmap(QPixmap(QString::fromStdString(":/images/icon_image.png")));break;
+    case PDF:_icon->setPixmap(QPixmap(QString::fromStdString(":/images/icon_pdf.png")));break;
+    case QUIZ:_icon->setPixmap(QPixmap(QString::fromStdString(":/images/icon_quiz.png")));break;
+    case VIDEO:_icon->setPixmap(QPixmap(QString::fromStdString(":/images/icon_video.png")));break;
+    default:break;
+    }
     _icon->setStyleSheet("background:rgba(0,0,0,0);color:#FFFFFF;");
     _icon->setScaledContents(true);
 
@@ -30,6 +36,8 @@ MedNUSLessonIcon::MedNUSLessonIcon(QString path, QPixmap directory, QWidget *par
 
     _x=0;
     _y=0;
+
+    _currentMode=NONE;
 }
 
 MedNUSLessonIcon::~MedNUSLessonIcon() {
@@ -42,14 +50,16 @@ void MedNUSLessonIcon::setMode(interfaceMode mode) {
 void MedNUSLessonIcon::updatePosition(float packageX, float packageY, float x, float y) {
     _x=packageX;
     _y=packageY+y;
-    qDebug() <<packageX<<" "<<packageY<<" "<<_x<<" "<< _y;
     _icon->setGeometry(QRect(LESSONPANEL_BORDER+1,3, 12, 16));
     float tempWidth = 0.0;
 
-    if(_currentMode==STUDENT)
+    if(_currentMode==STUDENT) {
         tempWidth = LESSONPANEL_WIDTH;
-    else
+        qDebug() << "STUDENT";
+    } else {
         tempWidth = LESSONPANEL_WIDTH_L;
+        qDebug() << "NON-STUDENT";
+    }
 
     if(_scrollBarExist) {
         _text->setGeometry(QRect(LESSONPANEL_BORDER+15+5, 3, tempWidth-LESSONPANEL_BORDER*2-SIDEBAR_OFFSET-18+1, 16));

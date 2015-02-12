@@ -125,5 +125,9 @@
         <file>images/bt_viewstats.png</file>
         <file>images/bt_edit_p.png</file>
         <file>images/bt_edit.png</file>
+        <file>images/bt_sDelete.png</file>
+        <file>images/bt_stats_p.png</file>
+        <file>images/bt_stats.png</file>
+        <file>images/bt_sDelete_p.png</file>
     </qresource>
 </RCC>

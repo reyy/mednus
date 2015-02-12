@@ -8,6 +8,7 @@
 MedNUSLessonPackageContentPanel::MedNUSLessonPackageContentPanel(int x,int y,QWidget *parent) :
     QWidget(parent) {
 
+    _currentMode = NONE;
     this->setGeometry(QRect(0,0,LESSONPANEL_WIDTH-LESSONPANEL_BORDER*2-SIDEBAR_OFFSET,_listOfItems.size()*24+2));
 
     _parent=this;
@@ -28,8 +29,9 @@ int MedNUSLessonPackageContentPanel::getContentSize() {
     return _listOfItems.size();
 }
 
-MedNUSLessonIcon* MedNUSLessonPackageContentPanel::addContent(QString filename, QPixmap directory) {
-    MedNUSLessonIcon *item = new MedNUSLessonIcon(filename,directory,_parent);
+MedNUSLessonIcon* MedNUSLessonPackageContentPanel::addContent(QString filename, fileType filetype) {
+    MedNUSLessonIcon *item = new MedNUSLessonIcon(filename,filetype,_parent);
+    item->setMode(_currentMode);
     _listOfItems.push_back(item);
     return item;
 }
@@ -42,7 +44,11 @@ void MedNUSLessonPackageContentPanel::clearContent() {
 }
 
 void MedNUSLessonPackageContentPanel::updateGUI(int x, int y, bool collapse) {
-    this->setGeometry(QRect(0,0,LESSONPANEL_WIDTH-LESSONPANEL_BORDER*2-SIDEBAR_OFFSET,_listOfItems.size()*24+2));
+    if(_currentMode==STUDENT) {
+        this->setGeometry(QRect(0,0,LESSONPANEL_WIDTH-LESSONPANEL_BORDER*2-SIDEBAR_OFFSET,_listOfItems.size()*24+2));
+    } else {
+        this->setGeometry(QRect(0,0,LESSONPANEL_WIDTH_L-LESSONPANEL_BORDER*2-SIDEBAR_OFFSET,_listOfItems.size()*24+2));
+    }
 
 
     if(collapse) {
@@ -178,6 +184,7 @@ MedNUSLessonPackage::~MedNUSLessonPackage() {
 
 void MedNUSLessonPackage::setMode(interfaceMode mode) {
     _currentMode=mode;
+    _contentPanel->setMode(_currentMode);
 
     if(_currentMode==STUDENT) {
         QFile file(":/images/lessonpanel.css");
@@ -202,8 +209,8 @@ int MedNUSLessonPackage::getY() {
     return _y;
 }
 
-void MedNUSLessonPackage::addContent(QString filename, QPixmap directory) {
-    MedNUSLessonIcon *item = _contentPanel->addContent(filename,directory);
+void MedNUSLessonPackage::addContent(QString filename, fileType filetype) {
+    MedNUSLessonIcon *item = _contentPanel->addContent(filename,filetype);
     connect(this->parent(), SIGNAL(tabClosedSignal(QString)), item, SLOT(tabClosed(QString)));
     connect(this->parent(), SIGNAL(tabOpenedSignal(QString)), item, SLOT(tabOpened(QString)));
     connect(item, SIGNAL(emitOpenFile(QString,QString,int)), this, SLOT(callOpenFile(QString,QString,int)));

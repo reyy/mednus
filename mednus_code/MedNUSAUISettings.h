@@ -31,4 +31,13 @@ enum interfaceMode {
     LECTURER
 };
 
+enum fileType {
+    GENERIC,
+    PDF,
+    VIDEO,
+    MODEL,
+    QUIZ,
+    IMAGE
+};
+
 #endif // MEDNUSAUISETTINGS_H
