@@ -117,10 +117,12 @@ void MedNUSLessonPanel::clearLesson() {
 
 void MedNUSLessonPanel::updateGUI() {
     int offset=0;
-    for(int i=0;i<(int)_lessonList.size();i++) {
+    int listSize=(int)_lessonList.size();
+    for(int i=0;i<listSize;i++) {
         MedNUSLessonPackage *temp = _lessonList.at(i);
         temp->setTone(i);
         temp->setY(offset);
+        temp->updateAmtOfLesson(listSize);
         temp->updateGUI(_trayOut);
         offset+=temp->getHeight();
     }

@@ -24,7 +24,7 @@ public:
     int getContentSize();
     MedNUSLessonIcon* addContent(QString filename, fileType filetype);
     void clearContent();
-    void updateGUI(int x, int y, bool collapse);
+    void updateGUI(int x, int y, bool collapse,int amtOfLesson);
 };
 
 class MedNUSLessonPackage : public QWidget
@@ -34,6 +34,9 @@ private:
     int _x;
     int _y;
     int _tone;
+    int _amtOfLesson;
+    float _height;
+
 
     QString _title;
     QLabel *_loadStatus;
@@ -78,6 +81,7 @@ public:
     int getHeight();
     void toggleCollapse();
     void toggleCollapse(bool value);
+    void updateAmtOfLesson(int amtOfLesson);
     void updateGUI(bool trayOut);
     QString dialogGetString(QString message,QString defaultString);
 

@@ -14,6 +14,11 @@ void MedNUSContentManager::initLessonList(QStringList)
     content.push_back("/mednus/lesson1/videos/Skull Anatomy (1 of 5)- Superior, Posterior and Lateral Views -- Head and Neck Anatomy 101.mp4");
     content.push_back("/mednus/lesson1/videos/Osteology of the Skull- 12 Newborn Skull.mp4");
     content.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
+    content.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
+    content.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
+    content.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
+    content.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
+    content.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
     content.push_back("/mednus/lesson1/models/craniofacial.ply");
     content.push_back("/mednus/lesson1/quiz/Quiz - The Skull.qiz");
     content.push_back("/mednus/lesson1/models/face.ply");
@@ -30,8 +35,43 @@ void MedNUSContentManager::initLessonList(QStringList)
 
     content2.clear();
     content2.push_back("/mednus/lesson2/pdf/axial_lecture_2.pdf");
+    content2.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
+    content2.push_back("/mednus/lesson2/pdf/axial_lecture_2.pdf");
+    content2.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
+    content2.push_back("/mednus/lesson2/pdf/axial_lecture_2.pdf");
+    content2.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
+    content2.push_back("/mednus/lesson2/pdf/axial_lecture_2.pdf");
+    content2.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
+    content2.push_back("/mednus/lesson2/pdf/axial_lecture_2.pdf");
+    content2.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
+    content2.push_back("/mednus/lesson2/pdf/axial_lecture_2.pdf");
+    content2.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
+    content2.push_back("/mednus/lesson2/pdf/axial_lecture_2.pdf");
+    content2.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
+    content2.push_back("/mednus/lesson2/pdf/axial_lecture_2.pdf");
+    content2.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
+    content2.push_back("/mednus/lesson2/pdf/axial_lecture_2.pdf");
+    content2.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
+    content2.push_back("/mednus/lesson2/pdf/axial_lecture_2.pdf");
+    content2.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
+    content2.push_back("/mednus/lesson2/pdf/axial_lecture_2.pdf");
+    content2.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
+    content2.push_back("/mednus/lesson2/pdf/axial_lecture_2.pdf");
+    content2.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
+    content2.push_back("/mednus/lesson2/pdf/axial_lecture_2.pdf");
+    content2.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
+    content2.push_back("/mednus/lesson2/pdf/axial_lecture_2.pdf");
+    content2.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
+    content2.push_back("/mednus/lesson2/pdf/axial_lecture_2.pdf");
+    content2.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
+    content2.push_back("/mednus/lesson2/pdf/axial_lecture_2.pdf");
+    content2.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
+    content2.push_back("/mednus/lesson2/pdf/axial_lecture_2.pdf");
+    content2.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
+    content2.push_back("/mednus/lesson2/pdf/axial_lecture_2.pdf");
+    content2.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
+    content2.push_back("/mednus/lesson2/pdf/axial_lecture_2.pdf");
     content2.push_back("/mednus/lesson2/videos/Osteology of the Skull- 7 The Face (1).mp4");
-
     emit callAddLesson("Skull Osteology I","A/Professor Tan","Anatomy Department",content2);
 
     content2.clear();
