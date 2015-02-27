@@ -5,6 +5,24 @@ MedNUSNetwork::MedNUSNetwork(QObject *parent) :
     QObject(parent)
 {
     QObject::connect(&mgr, SIGNAL(finished(QNetworkReply*)), this, SLOT(getReply(QNetworkReply*)));
+
+    QObject::connect(&mgr,
+                SIGNAL(sslErrors(QNetworkReply*, const QList<QSslError> & )),
+                this,
+                SLOT(handleSslErrors(QNetworkReply*, const QList<QSslError> & )));
+
+    //Initialize SSL Certs
+    QFile file(":/ssl/bluebell.crt");
+    file.open(QIODevice::ReadOnly);
+    const QByteArray bytes = file.readAll();
+
+    //Add as default crt
+    const QSslCertificate certificate(bytes);
+    QSslSocket::addDefaultCaCertificate(certificate);
+
+    //this->fileDownload();
+
+
 }
 
 void MedNUSNetwork::tryAutoLogin()
@@ -111,6 +129,17 @@ void MedNUSNetwork::getReply(QNetworkReply *reply)
     isLocked = false;
 }
 
+void MedNUSNetwork::handleSslErrors(QNetworkReply *reply, const QList<QSslError> &errors)
+{
+    qDebug() << "handleSslErrors: ";
+        foreach (QSslError e, errors)
+        {
+            qDebug() << "ssl error: " << e;
+        }
+
+        //reply->ignoreSslErrors();
+}
+
 
 void MedNUSNetwork::checkTokenReply(QJsonObject jsonObj)
 {
@@ -149,3 +178,15 @@ void MedNUSNetwork::profileReply(QJsonObject jsonObj)
 {
     emit loginResults(true,jsonObj["UserID"].toString(),jsonObj["Name"].toString());
 }
+
+void MedNUSNetwork::fileDownload()
+{
+    //connect(&mgr, SIGNAL(finished(QNetworkReply*)),
+    //                SLOT(fileDownloadReply(QNetworkReply*)));
+
+    QNetworkRequest request(QUrl("https://bluebell.d1.comp.nus.edu.sg/~anatomy/index.php"));
+
+    mgr.get(request);
+
+}
+

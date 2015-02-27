@@ -14,6 +14,9 @@
 #include <QJsonObject>
 #include <QVariantMap>
 #include <QJsonArray>
+#include <QFile>
+#include <QSslCertificate>
+#include <QSslSocket>
 
 class MedNUSNetwork : public QObject
 {
@@ -31,6 +34,8 @@ protected:
     void checkTokenReply(QJsonObject);
     void loginReply(QJsonObject);
     void profileReply(QJsonObject);
+
+    void fileDownload();
 public:
     explicit MedNUSNetwork(QObject *parent = 0);
     void tryAutoLogin();
@@ -43,6 +48,7 @@ public slots:
     void logout();
 protected slots:
     void getReply(QNetworkReply*);
+    void handleSslErrors(QNetworkReply*reply, const QList<QSslError> &errors);
 };
 
 #endif // MEDNUSNETWORK_H
