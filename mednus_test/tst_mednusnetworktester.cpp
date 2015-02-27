@@ -1,6 +1,7 @@
 #include <QString>
 #include <QtTest>
 #include <QCoreApplication>
+#define protected public
 #include "MedNUSNetwork.h"
 
 class MedNUSNetworkTester : public QObject
@@ -16,6 +17,7 @@ private:
 private Q_SLOTS:
     void initTestCase();
     void loginTest();
+    void BluebellHTTPSTest();
     void cleanupTestCase();
 };
 
@@ -36,6 +38,28 @@ void MedNUSNetworkTester::initTestCase()
 void MedNUSNetworkTester::cleanupTestCase()
 {
 
+}
+
+void MedNUSNetworkTester::BluebellHTTPSTest()
+{
+    QSignalSpy m_pSignalSpy(&(network->mgr), SIGNAL(finished(QNetworkReply*)));
+    network->fileDownload();
+    m_pSignalSpy.wait();
+
+    for(int index = 0; index<m_pSignalSpy.size(); index++)
+          {
+        QList<QVariant> listItem = m_pSignalSpy.value(index);
+
+        for(int index2 = 0;index2 < listItem.size();index2++)
+        {
+          qDebug(listItem[index2].toString().toStdString().c_str());
+        }
+          }
+
+//    QNetworkReply* temp  = static_cast<QNetworkReply*>(&(spy.takeFirst()[0]));
+//    char *c;
+//    temp->getChar(c);
+//    qDebug(c);
 }
 
 void MedNUSNetworkTester::loginTest()

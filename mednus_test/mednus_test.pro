@@ -21,3 +21,9 @@ INCLUDEPATH += ../mednus_code/
 HEADERS += ../mednus_code/MedNUSNetwork.h
 
 SOURCES += ../mednus_code/MedNUSNetwork.cpp
+
+RESOURCES += \
+    Res.qrc
+
+OTHER_FILES += \
+    ssl/bluebell.d1.comp.nus.edu.sg.crt

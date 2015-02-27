@@ -129,5 +129,6 @@
         <file>images/bt_stats_p.png</file>
         <file>images/bt_stats.png</file>
         <file>images/bt_sDelete_p.png</file>
+        <file>ssl/bluebell.crt</file>
     </qresource>
 </RCC>
