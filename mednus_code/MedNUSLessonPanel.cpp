@@ -6,6 +6,7 @@
 */
 
 #include "MedNUSLessonPanel.h"
+
 #include <QtGui>
 #include <QPalette>
 

@@ -36,6 +36,7 @@ void MedNUSMeshViewerCallback::Execute( vtkObject *caller,
         viewer->highlight(NULL);
 }
 
+
 void MedNUSMeshViewerCallback::AddAnnotation(double x, double y, double z)
 {
     MedNUSMeshAnnotation toAdd;
@@ -66,6 +67,7 @@ void MedNUSMeshViewerCallback::AddAnnotation(double x, double y, double z)
 
     CreateAnnotationText("point", x, y, z);
 }
+
 
 void MedNUSMeshViewerCallback::CreateAnnotationText(QString text, double x, double y, double z)
 {
