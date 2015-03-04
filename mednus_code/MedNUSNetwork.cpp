@@ -1,6 +1,5 @@
 #include "MedNUSNetwork.h"
 
-
 MedNUSNetwork::MedNUSNetwork(QObject *parent) :
     QObject(parent)
 {
@@ -21,9 +20,8 @@ MedNUSNetwork::MedNUSNetwork(QObject *parent) :
     QSslSocket::addDefaultCaCertificate(certificate);
 
     //this->fileDownload();
-
-
 }
+
 
 void MedNUSNetwork::tryAutoLogin()
 {
@@ -42,6 +40,7 @@ void MedNUSNetwork::tryAutoLogin()
     }
 }
 
+
 void MedNUSNetwork::verifyToken()
 {
     QUrl temp = QUrl( QString("https://ivle.nus.edu.sg/api/Lapi.svc/Validate"));
@@ -55,6 +54,7 @@ void MedNUSNetwork::verifyToken()
 
     mgr.get(req);
 }
+
 
 void MedNUSNetwork::getProfile()
 {
@@ -95,12 +95,14 @@ void MedNUSNetwork::login(QString matric, QString password, bool remember)
     mgr.post(req, postData.toString(QUrl::FullyEncoded).toUtf8());
 }
 
+
 void MedNUSNetwork::logout()
 {
     QSettings settings("nus.edu", "MedNUS");
     QSettings::setDefaultFormat(QSettings::NativeFormat);
     settings.setValue("Token","");
 }
+
 
 void MedNUSNetwork::getReply(QNetworkReply *reply)
 {
@@ -129,6 +131,7 @@ void MedNUSNetwork::getReply(QNetworkReply *reply)
     isLocked = false;
 }
 
+
 void MedNUSNetwork::handleSslErrors(QNetworkReply *reply, const QList<QSslError> &errors)
 {
     qDebug() << "handleSslErrors: ";
@@ -146,12 +149,11 @@ void MedNUSNetwork::checkTokenReply(QJsonObject jsonObj)
     bool success = jsonObj["Success"].toBool();
 
     if(success)
-    {
         getProfile();
-    }
     else
         emit loginResults(false,"","");
 }
+
 
 void MedNUSNetwork::loginReply(QJsonObject jsonObj)
 {
@@ -174,10 +176,12 @@ void MedNUSNetwork::loginReply(QJsonObject jsonObj)
         emit loginResults(false,"","");
 }
 
+
 void MedNUSNetwork::profileReply(QJsonObject jsonObj)
 {
     emit loginResults(true,jsonObj["UserID"].toString(),jsonObj["Name"].toString());
 }
+
 
 void MedNUSNetwork::fileDownload()
 {
@@ -187,6 +191,5 @@ void MedNUSNetwork::fileDownload()
     QNetworkRequest request(QUrl("https://bluebell.d1.comp.nus.edu.sg/~anatomy/index.php"));
 
     mgr.get(request);
-
 }
 

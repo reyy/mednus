@@ -1,5 +1,6 @@
 #include "MedNUSLessonPackage.h"
 #include "MedNUSLessonPanel.h"
+
 #include <QFontMetrics>
 #include <QMessageBox>
 #include <QInputDialog>
@@ -14,20 +15,25 @@ MedNUSLessonPackageContentPanel::MedNUSLessonPackageContentPanel(int x,int y,QWi
     _parent=this;
 }
 
+
 MedNUSLessonPackageContentPanel::~MedNUSLessonPackageContentPanel(){
 }
+
 
 void MedNUSLessonPackageContentPanel::setMode(interfaceMode mode) {
     _currentMode=mode;
 }
 
+
 MedNUSLessonIcon* MedNUSLessonPackageContentPanel::getContentItem(int value) {
     return _listOfItems.at(value);
 }
 
+
 int MedNUSLessonPackageContentPanel::getContentSize() {
     return _listOfItems.size();
 }
+
 
 MedNUSLessonIcon* MedNUSLessonPackageContentPanel::addContent(QString filename, fileType filetype) {
     MedNUSLessonIcon *item = new MedNUSLessonIcon(filename,filetype,_parent);
@@ -36,12 +42,14 @@ MedNUSLessonIcon* MedNUSLessonPackageContentPanel::addContent(QString filename, 
     return item;
 }
 
+
 void MedNUSLessonPackageContentPanel::clearContent() {
     while(_listOfItems.size()>0) {
         delete _listOfItems.front();
         _listOfItems.pop_front();
     }
 }
+
 
 void MedNUSLessonPackageContentPanel::updateGUI(int x, int y, bool collapse,int amtOfLesson) {
     if(_currentMode==STUDENT) {
@@ -69,6 +77,7 @@ void MedNUSLessonPackageContentPanel::updateGUI(int x, int y, bool collapse,int 
         }
     }
 }
+
 
 MedNUSLessonPackage::MedNUSLessonPackage(QWidget *parent) :
     QWidget(parent) {
@@ -183,6 +192,7 @@ MedNUSLessonPackage::MedNUSLessonPackage(QWidget *parent) :
     connect(_btDelete,SIGNAL(clicked()),this,SLOT(deleteLesson()));
 }
 
+
 MedNUSLessonPackage::~MedNUSLessonPackage() {
 }
 
@@ -206,13 +216,16 @@ void MedNUSLessonPackage::setMode(interfaceMode mode) {
     }
 }
 
+
 void MedNUSLessonPackage::setY(int value) {
     _y=value;
 }
 
+
 int MedNUSLessonPackage::getY() {
     return _y;
 }
+
 
 void MedNUSLessonPackage::addContent(QString filename, fileType filetype) {
     MedNUSLessonIcon *item = _contentPanel->addContent(filename,filetype);
@@ -221,17 +234,21 @@ void MedNUSLessonPackage::addContent(QString filename, fileType filetype) {
     connect(item, SIGNAL(emitOpenFile(QString,QString,int)), this, SLOT(callOpenFile(QString,QString,int)));
 }
 
+
 void MedNUSLessonPackage::clearContent() {
     _contentPanel->clearContent();
 }
+
 
 int MedNUSLessonPackage::getContentSize() {
     return _contentPanel->getContentSize();
 }
 
+
 MedNUSLessonIcon* MedNUSLessonPackage::getContentItem(int value) {
     return _contentPanel->getContentItem(value);
 }
+
 
 void MedNUSLessonPackage::setTitle(QString value) {
     _title = value;
@@ -239,14 +256,17 @@ void MedNUSLessonPackage::setTitle(QString value) {
     _moduleTitle->setText(metrics1.elidedText(value, Qt::ElideRight, _moduleTitle->width()));
 }
 
+
 QString MedNUSLessonPackage::getTitle() {
     return _title;
 }
+
 
 void MedNUSLessonPackage::setSubHeader(QString value) {
     QFontMetrics metrics2(_subHeader->font());
     _subHeader->setText(metrics2.elidedText(value, Qt::ElideRight, _subHeader->width()));
 }
+
 
 void MedNUSLessonPackage::setDescription(QString value) {
 
@@ -254,13 +274,16 @@ void MedNUSLessonPackage::setDescription(QString value) {
     _description->setText(metrics3.elidedText(value, Qt::ElideRight, _description->width()));
 }
 
+
 void MedNUSLessonPackage::setTone(int value) {
     _tone=value;
 }
 
+
 bool MedNUSLessonPackage::getCollapse() {
     return _collapse;
 }
+
 
 int MedNUSLessonPackage::getHeight(){
     if(_collapse)
@@ -269,12 +292,14 @@ int MedNUSLessonPackage::getHeight(){
         return _height;
 }
 
+
 int MedNUSLessonPackage::getInteractiveHeight(){
     if(_collapse)
         return LESSONPANEL_CONTRACTED_CLICKHEIGHT;
     else
         return LESSONPANEL_CLICKHEIGHT;
 }
+
 
 void MedNUSLessonPackage::toggleCollapse() {
     _collapse=!_collapse;
@@ -283,14 +308,17 @@ void MedNUSLessonPackage::toggleCollapse() {
     _contentPanel->updateGUI(_x,_y,_collapse,_amtOfLesson);
 }
 
+
 void MedNUSLessonPackage::toggleCollapse(bool value) {
     _collapse=value;
     _contentPanel->updateGUI(_x,_y,_collapse,_amtOfLesson);
 }
 
+
 void MedNUSLessonPackage::updateAmtOfLesson(int amtOfLesson) {
     _amtOfLesson=amtOfLesson;
 }
+
 
 void MedNUSLessonPackage::updateGUI(bool trayOut) {
 
@@ -368,6 +396,7 @@ void MedNUSLessonPackage::updateGUI(bool trayOut) {
     }
 }
 
+
 QString MedNUSLessonPackage::dialogGetString(QString message,QString defaultString) {
     bool ok;
     QString toReturn = QInputDialog::getText(this, tr(""),
@@ -379,25 +408,36 @@ QString MedNUSLessonPackage::dialogGetString(QString message,QString defaultStri
         return defaultString;
 }
 
+
+void MedNUSLessonPackage::callOpenFile(QString str, QString title, int type) {
+    emit emitOpenFile(str, title, type);
+}
+
+
 void MedNUSLessonPackage::editTitle() {
     _moduleTitle->setText(dialogGetString("Enter the new title :",_moduleTitle->text()));
 }
+
 
 void MedNUSLessonPackage::editSubHeader() {
     _subHeader->setText(dialogGetString("Enter the new sub-header :",_subHeader->text()));
 }
 
+
 void MedNUSLessonPackage::editDescription() {
     _description->setText(dialogGetString("Enter the new description :",_description->text()));
 }
+
 
 void MedNUSLessonPackage::locateNewFile() {
     //To do: Select new file.
 }
 
+
 void MedNUSLessonPackage::addNewQuiz() {
     //Add new quiz.
 }
+
 
 void MedNUSLessonPackage::deleteLesson() {
     //Show dialog and delete.
@@ -407,6 +447,7 @@ void MedNUSLessonPackage::deleteLesson() {
     msgBox.setInformativeText("Are you sure?");
     msgBox.setStandardButtons(QMessageBox::No | QMessageBox::Yes );
     msgBox.setDefaultButton(QMessageBox::No);
+
     int ret = msgBox.exec();
     switch (ret) {
        case QMessageBox::Yes:

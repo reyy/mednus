@@ -28,9 +28,11 @@ MedNUSLessonPanel::MedNUSLessonPanel(QWidget *parent) : QWidget(parent) {
     this->setTrayOut(true);
 }
 
+
 MedNUSLessonPanel::~MedNUSLessonPanel() {
     clearLesson();
 }
+
 
 void MedNUSLessonPanel::setMode(interfaceMode mode) {
     _currentMode=mode;
@@ -48,6 +50,7 @@ void MedNUSLessonPanel::setMode(interfaceMode mode) {
     }
 }
 
+
 void MedNUSLessonPanel::loadPixmap() {
     _button_toopen = QPixmap(QString::fromStdString(":/images/button_trayout.png"));
     _button_toclose = QPixmap(QString::fromStdString(":/images/button_trayin.png"));
@@ -59,11 +62,13 @@ void MedNUSLessonPanel::loadPixmap() {
     }
 }
 
+
 void MedNUSLessonPanel::addLesson(MedNUSLessonPackage * _package) {
     _package->setMode(_currentMode);
     _lessonList.push_back(_package);
     updateGUI();
 }
+
 
 void MedNUSLessonPanel::addLesson(QString title,QString subTitle, QString description, QStringList directories) {
     MedNUSLessonPackage *_package = new MedNUSLessonPackage(this);
@@ -95,6 +100,7 @@ void MedNUSLessonPanel::addLesson(QString title,QString subTitle, QString descri
     connect(_package, SIGNAL(emitOpenFile(QString,QString,int)), this, SLOT(callOpenFile(QString,QString,int)));
 }
 
+
 bool MedNUSLessonPanel::removeLesson(QString title) {
     for(int i=0;i<(int)_lessonList.size();i++) {
         MedNUSLessonPackage *temp = _lessonList.at(i);
@@ -107,6 +113,7 @@ bool MedNUSLessonPanel::removeLesson(QString title) {
     return false;
 }
 
+
 void MedNUSLessonPanel::clearLesson() {
     while(_lessonList.size()>0) {
         delete _lessonList.back();
@@ -114,6 +121,7 @@ void MedNUSLessonPanel::clearLesson() {
     }
     updateGUI();
 }
+
 
 void MedNUSLessonPanel::updateGUI() {
     int offset=0;
@@ -127,6 +135,7 @@ void MedNUSLessonPanel::updateGUI() {
         offset+=temp->getHeight();
     }
 }
+
 
 void MedNUSLessonPanel::setTrayOut(bool value) {
     _trayOut = value;
@@ -160,13 +169,16 @@ void MedNUSLessonPanel::setTrayOut(bool value) {
     }
 }
 
+
 bool MedNUSLessonPanel::checkTray() {
     return _trayOut;
 }
 
+
 QPixmap MedNUSLessonPanel::getLoadingIcon(int range) {
     return _loadingIcon[MIN(10,MAX(0,range))];
 }
+
 
 void MedNUSLessonPanel::mousePressEvent ( QMouseEvent * event )
 {
@@ -211,8 +223,23 @@ void MedNUSLessonPanel::mousePressEvent ( QMouseEvent * event )
     event->ignore();
 }
 
-void MedNUSLessonPanel::resizeEvent(QResizeEvent* event)
-{
+
+void MedNUSLessonPanel::callOpenFile(QString str, QString title, int type) {
+    emit emitOpenFile(str, title, type);
+}
+
+
+void MedNUSLessonPanel::tabOpened(QString t) {
+    emit tabOpenedSignal(t);
+}
+
+
+void MedNUSLessonPanel::tabClosed(QString t) {
+    emit tabClosedSignal(t);
+}
+
+
+void MedNUSLessonPanel::resizeEvent(QResizeEvent* event) {
     _background->setGeometry(QRect(SIDEBAR_OFFSET,0, this->width()-SIDEBAR_OFFSET,this->height()));
     _button->setGeometry(QRect(0,this->height()/2-32, SIDEBAR_OFFSET, 64));
 }

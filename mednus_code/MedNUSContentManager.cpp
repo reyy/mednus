@@ -83,10 +83,11 @@ void MedNUSContentManager::initLessonList(QStringList)
     //openLastView(content);
 }
 
+
 void MedNUSContentManager::openLastView(QStringList content)
 {
     //Stub: Future use of QSettings to determine last open tabs
-    for(int i=content.size()-1; i>=0; i--)
+    for (int i=content.size()-1; i>=0; i--)
     {
         //DUPLICATED EFFORT FOR FILE NAME! MUST REFACTOR!
         int startIndex=content[i].lastIndexOf("/");
@@ -96,6 +97,7 @@ void MedNUSContentManager::openLastView(QStringList content)
         openFile(content[i],title,0);
     }
 }
+
 
 void MedNUSContentManager::openFile(QString fileDir, QString title, int type)
 {
@@ -115,11 +117,11 @@ void MedNUSContentManager::openFile(QString fileDir, QString title, int type)
         else if(fileDir.contains(".ply", Qt::CaseInsensitive))
             //toAdd = new MedNUSMeshViewer(dir,true);
         {
+            //HACK: To only allow one instance of MedNUSMeshViewer
             if (_meshViewerInstance == NULL)
             {
                 toAdd = new MedNUSMeshViewer(dir, true);
-                _meshViewerInstance = toAdd;
-                qDebug()<<"pew";
+                _meshViewerInstance = toAdd;\
             }
             else
             {
@@ -133,7 +135,7 @@ void MedNUSContentManager::openFile(QString fileDir, QString title, int type)
             toAdd = new MedNUSQuiz(dir);
 
         //Todo: Temp fix for too long titles
-        if(title.length()>10)
+        if (title.length()>10)
         {
             title.truncate(10);
             title.append("...");
@@ -145,6 +147,7 @@ void MedNUSContentManager::openFile(QString fileDir, QString title, int type)
         //Future Call Network to D/L
     }
 }
+
 
 bool MedNUSContentManager::isFileExist(QString)
 {

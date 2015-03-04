@@ -1,13 +1,15 @@
-#ifndef MedNUSMeshViewerCALLBACK_H
-#define MedNUSMeshViewerCALLBACK_H
+#ifndef MEDNUSMESHVIEWERCALLBACK_H
+#define MEDNUSMESHVIEWERCALLBACK_H
+
 #include <vtkCommand.h>
 #include <vtkObjectBase.h>
-#include "MedNUSMeshViewer.h"
 #include <QDebug>
 #include <vtkSphereSource.h>
 #include <vtkProperty.h>
 #include <vtkVectorText.h>
 #include <vtkSmartPointer.h>
+
+#include "MedNUSMeshViewer.h"
 
 class MedNUSMeshAnnotation
 {
@@ -26,9 +28,9 @@ public:
 
     static MedNUSMeshViewerCallback *New() { return new MedNUSMeshViewerCallback(); }
     void Execute(vtkObject *caller, unsigned long eventId, void *callData);
-    void PrintSelf(ostream& os, vtkIndent indent){};
-    void PrintHeader(ostream& os, vtkIndent indent){};
-    void PrintTrailer(ostream& os, vtkIndent indent){};
+    void PrintSelf(ostream& os, vtkIndent indent) {}
+    void PrintHeader(ostream& os, vtkIndent indent) {}
+    void PrintTrailer(ostream& os, vtkIndent indent) {}
 
     void AddAnnotation(double x, double y, double z);
 
@@ -38,4 +40,6 @@ protected:
 
     void CreateAnnotationText(QString text, double x, double y, double z);
 };
-#endif // MedNUSMeshViewerCALLBACK_H
+
+
+#endif // MEDNUSMESHVIEWERCALLBACK_H

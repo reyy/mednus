@@ -46,9 +46,11 @@ MedNUSUserBar::MedNUSUserBar(QWidget *parent) :
     connect(_btNewLesson,SIGNAL(clicked()),this,SLOT(createNewLesson()));
 }
 
+
 MedNUSUserBar::~MedNUSUserBar()
 {
 }
+
 
 void MedNUSUserBar::setName(QString value) {
     QFontMetrics metrics(_name->font());
@@ -56,9 +58,11 @@ void MedNUSUserBar::setName(QString value) {
     _name->setAlignment(Qt::AlignRight);
 }
 
+
 void MedNUSUserBar::setAvatar(QString path) {
     _avatar->setPixmap(QPixmap(path));
 }
+
 
 void MedNUSUserBar::setTrayOut(bool value) {
     _trayOut = value;
@@ -105,6 +109,7 @@ void MedNUSUserBar::setTrayOut(bool value) {
     }
 }
 
+
 void MedNUSUserBar::setMode(interfaceMode mode) {
     _currentMode=mode;
 }
@@ -117,6 +122,7 @@ void MedNUSUserBar::resizeEvent(QResizeEvent* event)
         toShow=false;
     _btNewLesson->setVisible(toShow);
 }
+
 
 void MedNUSUserBar::mousePressEvent(QMouseEvent *event)
 {
@@ -134,6 +140,7 @@ void MedNUSUserBar::createNewLesson() {
     qDebug() <<"ToDo: Create New Lesson";
 //    emit emitOpenFile(_path, _text->text(), 0);
 }
+
 
 void MedNUSUserBar::showContextMenu(const QPoint& pos) {
     QPoint globalPos = this->mapToGlobal(pos);

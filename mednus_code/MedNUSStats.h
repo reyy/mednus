@@ -35,13 +35,10 @@
 class MedNUSStats : public QWidget
 {
     Q_OBJECT
-
 public:
     explicit MedNUSStats(QString filename, QWidget *parent = 0);
     ~MedNUSStats();
-
-protected:
-
 };
+
 
 #endif // MEDNUSSTATS_H

@@ -43,6 +43,7 @@ MedNUSQuizQuestion::MedNUSQuizQuestion(QWidget *parent, QGridLayout *layout, int
     _teacherCommentLabel->setVisible(false);
 }
 
+
 MedNUSQuizQuestion::~MedNUSQuizQuestion()
 {
     // Clean up the label
@@ -54,10 +55,12 @@ MedNUSQuizQuestion::~MedNUSQuizQuestion()
     _optionButtonGroup = NULL;
 }
 
+
 int MedNUSQuizQuestion::getSelectedAnswer() const
 {
     return _optionButtonGroup->checkedId();
 }
+
 
 void MedNUSQuizQuestion::highlightAnswer(int correctAnswer, bool showCorrectAnswer) const
 {
@@ -87,6 +90,7 @@ void MedNUSQuizQuestion::highlightAnswer(int correctAnswer, bool showCorrectAnsw
     _teacherCommentLabel->setVisible(true);
 }
 
+
 bool MedNUSQuizQuestion::oneOptionSelected() const
 {
     if (_optionButtonGroup->checkedId() == -1)
@@ -95,6 +99,7 @@ bool MedNUSQuizQuestion::oneOptionSelected() const
     return true;
 }
 
+
 void MedNUSQuizQuestion::setNotice(bool value) {
     if (value) {
         _questionTextLabel->setStyleSheet("QLabel{margin-top:8px;margin-bottom:4px;padding:10px;background:rgba(229,165,57,255);border-top-left-radius: 16px;border-bottom-right-radius: 16px;}");
@@ -102,6 +107,7 @@ void MedNUSQuizQuestion::setNotice(bool value) {
         _questionTextLabel->setStyleSheet("QLabel{margin-top:8px;margin-bottom:4px;padding:10px;background:rgba(0,0,0,50);border-top-left-radius: 16px;border-bottom-right-radius: 16px;}");
     }
 }
+
 
 void MedNUSQuizQuestion::showQuestion() const
 {
@@ -117,6 +123,7 @@ void MedNUSQuizQuestion::showQuestion() const
         ((QRadioButton*)buttonList.at(i))->setVisible(true);
     }
 }
+
 
 MedNUSQuiz::MedNUSQuiz(QString filename, QWidget *parent) :
     QWidget(parent)
@@ -305,10 +312,12 @@ MedNUSQuiz::MedNUSQuiz(QString filename, QWidget *parent) :
     }
 }
 
+
 MedNUSQuiz::~MedNUSQuiz()
 {
     //TODO: Clean up
 }
+
 
 void MedNUSQuiz::markQuiz(bool byTimer)
 {
@@ -355,6 +364,7 @@ void MedNUSQuiz::markQuiz(bool byTimer)
     _scrollArea->verticalScrollBar()->setSliderPosition(0);
 }
 
+
 QString MedNUSQuiz::convertTimeToString(int ms)
 {
     QString timeString = "";
@@ -382,15 +392,18 @@ QString MedNUSQuiz::convertTimeToString(int ms)
     return timeString;
 }
 
+
 void MedNUSQuiz::callMarkQuiz_byButton()
 {
     markQuiz(false);
 }
 
+
 void MedNUSQuiz::callMarkQuiz_byTimer()
 {
     markQuiz(true);
 }
+
 
 void MedNUSQuiz::startQuiz()
 {
@@ -414,6 +427,7 @@ void MedNUSQuiz::startQuiz()
     // hack: to force it to start showing from the actual duration instead of -1
     updateTimerLabel();
 }
+
 
 void MedNUSQuiz::updateTimerLabel()
 {
@@ -445,6 +459,7 @@ void MedNUSQuiz::updateTimerLabel()
         _labelUpdateTimer->stop();
     }
 }
+
 
 void MedNUSQuiz::resizeEvent(QResizeEvent *event)
 {

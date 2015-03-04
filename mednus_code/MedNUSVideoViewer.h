@@ -20,13 +20,15 @@ class MedNUSVideoViewer : public QWidget
 public:
     explicit MedNUSVideoViewer(QString filename, QWidget *parent = 0);
     ~MedNUSVideoViewer();
+
 protected:
     QMediaPlayer mediaPlayer;
     QGraphicsView *videoView;
     QGraphicsVideoItem *videoItem;
     QGraphicsScene *scene;
     MedNUSVideoControl *control;
-QString fi;
+    QString fi;
+
     void keyPressEvent(QKeyEvent *event);
     void resizeEvent(QResizeEvent *);
     bool eventFilter(QObject* obj, QEvent* e);
@@ -40,11 +42,12 @@ protected slots:
 class MedNUSVideoControl : public QWidget
 {
     Q_OBJECT
-
 public:
     explicit MedNUSVideoControl(QWidget *parent = 0);
     ~MedNUSVideoControl();
+
     void updateUI();
+
 protected:
     QPushButton *_playButton;
     QPushButton *_volumeButton;
@@ -52,15 +55,19 @@ protected:
     QLabel *_videoTimer;
     QString _durationText;
     int _volume;
+
     QString timeConvert(qint64);
+
 signals:
     void seekTo(int millisecond);
     void changeVolume(int);
+
 protected slots:
     void mediaStateChanged(QMediaPlayer::State state);
     void positionChanged(qint64 position);
     void durationChanged(qint64 duration);
     void volumeClicked();
 };
+
 
 #endif // MEDNUSVIDEOVIEWER_H

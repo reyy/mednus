@@ -15,21 +15,23 @@ MedNUSContentPanel::MedNUSContentPanel(QWidget *parent) :
     layout->setMargin(0);
     layout->setContentsMargins(10,10,10,10);
     layout->setSpacing(5);
+
     //Tab Bkg Change
     this->setStyleSheet("background-color:rgba(0,0,0,0);color:#ffffff");
     this->setLayout(layout);
-
 }
+
 
 void MedNUSContentPanel::setMode(interfaceMode mode) {
     _currentMode=mode;
 
-    if(mode==STUDENT) {
+    if (mode==STUDENT) {
         this->setMinimumWidth(800-LESSONPANEL_WIDTH);
     } else {
         this->setMinimumWidth(800-LESSONPANEL_WIDTH_L);
     }
 }
+
 
 void MedNUSContentPanel::addTab(QWidget* toAdd,QString title, QString dir)
 {
@@ -67,6 +69,7 @@ void MedNUSContentPanel::addTab(QWidget* toAdd,QString title, QString dir)
 
     emit tabOpenedSignal(dir);
 }
+
 
 void MedNUSContentPanel::toggleView(int view)
 {
@@ -127,9 +130,9 @@ void MedNUSContentPanel::toggleView(int view)
     viewType = view;
 }
 
+
 void MedNUSContentPanel::closeTab(MedNUSTab* index)
 {
-
     for(int i=0; i<3; i++)
         if(tabList[i] == index)
         {
@@ -140,10 +143,12 @@ void MedNUSContentPanel::closeTab(MedNUSTab* index)
         }
 }
 
+
 MedNUSContentPanel::~MedNUSContentPanel()
 {
     delete layout;
 }
+
 
 MedNUSTab::MedNUSTab(QWidget *parent)
 {
@@ -176,6 +181,7 @@ MedNUSTab::MedNUSTab(QWidget *parent)
     connect(this,SIGNAL(noMoreTabs(MedNUSTab*)),parent,SLOT(closeTab(MedNUSTab*)));
     connect(this,SIGNAL(tabClosedSignal(QString)),parent,SLOT(tabClosed(QString)));
 }
+
 
 void MedNUSTab::closeTab(int index)
 {

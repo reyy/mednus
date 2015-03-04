@@ -20,6 +20,10 @@
 #define VIDEO_TIME_LENGTH 50
 #define VIDEO_ICON_SIZE 24
 
+#define VIDEO_INDEX 0
+#define PDF_INDEX 1
+#define MESH_INDEX 2
+
 #define TEXT_QUIZ_INTRO "Select an answer for every question. Unanswered questions will prevent quiz from being submitted. Click on the Submit button at the bottom of the page to have your answers graded."
 #define TEXT_QUIZ_WARNING "Not all questions attempted, please check through and submit again."
 #define TEXT_QUIZ_TIMED_QUIZ_WARNING "Time Given: "

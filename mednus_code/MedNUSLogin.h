@@ -10,6 +10,16 @@
 class MedNUSLogin : public QWidget
 {
     Q_OBJECT
+public:
+    explicit MedNUSLogin(QWidget *parent = 0);
+    ~MedNUSLogin();
+
+    void setErrorMessage(QString value);
+
+protected:
+    void resizeEvent(QResizeEvent* event);
+    void keyReleaseEvent(QKeyEvent *event);
+
 private:
     QLabel *_background;
     QLabel *_backgroundLine;
@@ -27,21 +37,13 @@ private:
     QLineEdit *_password;
     QCheckBox *_remember;
 
-protected:
-    void resizeEvent(QResizeEvent* event);
-    void keyReleaseEvent(QKeyEvent *event);
-
-public:
-    explicit MedNUSLogin(QWidget *parent = 0);
-    ~MedNUSLogin();
-
-
-    void setErrorMessage(QString value);
 signals:
-    void callLogin(QString,QString,bool);
+    void callLogin(QString, QString, bool);
+
 public slots:
     void loginButtonPress();
     void setLoading(bool value);
 };
+
 
 #endif // MEDNUSLOGIN_H

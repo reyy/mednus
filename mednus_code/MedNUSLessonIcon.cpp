@@ -1,4 +1,5 @@
 #include "MedNUSLessonIcon.h"
+
 #include <QDebug>
 
 MedNUSLessonIcon::MedNUSLessonIcon(QString path, fileType filetype, QWidget *parent) : QWidget(parent)
@@ -12,12 +13,12 @@ MedNUSLessonIcon::MedNUSLessonIcon(QString path, fileType filetype, QWidget *par
 
     _icon = new QLabel(this);
     switch(filetype) {
-    case MODEL:_icon->setPixmap(QPixmap(QString::fromStdString(":/images/icon_3d.png")));break;
-    case IMAGE:_icon->setPixmap(QPixmap(QString::fromStdString(":/images/icon_image.png")));break;
-    case PDF:_icon->setPixmap(QPixmap(QString::fromStdString(":/images/icon_pdf.png")));break;
-    case QUIZ:_icon->setPixmap(QPixmap(QString::fromStdString(":/images/icon_quiz.png")));break;
-    case VIDEO:_icon->setPixmap(QPixmap(QString::fromStdString(":/images/icon_video.png")));break;
-    default:break;
+        case MODEL:     _icon->setPixmap(QPixmap(QString::fromStdString(":/images/icon_3d.png")));break;
+        case IMAGE:     _icon->setPixmap(QPixmap(QString::fromStdString(":/images/icon_image.png")));break;
+        case PDF:       _icon->setPixmap(QPixmap(QString::fromStdString(":/images/icon_pdf.png")));break;
+        case QUIZ:      _icon->setPixmap(QPixmap(QString::fromStdString(":/images/icon_quiz.png")));break;
+        case VIDEO:     _icon->setPixmap(QPixmap(QString::fromStdString(":/images/icon_video.png")));break;
+        default:break;
     }
     _icon->setStyleSheet("background:rgba(0,0,0,0);color:#FFFFFF;");
     _icon->setScaledContents(true);
@@ -86,6 +87,7 @@ void MedNUSLessonIcon::updatePosition(float packageX, float packageY, float x, f
     this->setGeometry(QRect(x+LESSONPANEL_BORDER-2, y, tempWidth-LESSONPANEL_BORDER*2-SIDEBAR_OFFSET-10+1, 20+5));
 }
 
+
 void MedNUSLessonIcon::setHighlight(bool status) {
     _selected = status;
     _highlight->setVisible(status);
@@ -93,9 +95,11 @@ void MedNUSLessonIcon::setHighlight(bool status) {
     _parent->repaint();
 }
 
+
 void MedNUSLessonIcon::setSelected(bool value) {
     _selected=value;
 }
+
 
 void MedNUSLessonIcon::setVisible(bool value) {
     _icon->setVisible(value);
@@ -124,11 +128,13 @@ void MedNUSLessonIcon::setVisible(bool value) {
     }
 }
 
+
 void MedNUSLessonIcon::mousePressEvent ( QMouseEvent * event ){
     setHighlight(true);
     emit emitOpenFile(_path, _text->text(), 0); //todo: pass actual type!
     event->ignore();
 }
+
 
 void MedNUSLessonIcon::tabOpened(QString path)
 {
@@ -136,19 +142,23 @@ void MedNUSLessonIcon::tabOpened(QString path)
         setHighlight(true);
 }
 
+
 void MedNUSLessonIcon::tabClosed(QString path)
 {
     if(path.contains( _path))
         setHighlight(false);
 }
 
+
 void MedNUSLessonIcon::setScrollBarSpace(bool value) {
     _scrollBarExist = value;
 }
 
+
 void MedNUSLessonIcon::activateMISC() {
     qDebug() << "test";
 }
+
 
 void MedNUSLessonIcon::deleteSelection() {
     qDebug() << "test2";
