@@ -32,6 +32,8 @@
 #include <QTextStream>
 #include <QDebug>
 
+#include "MedNUSQuizStylesheet.h"
+
 class MedNUSQuizQuestion
 {
 public:

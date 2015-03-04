@@ -28,7 +28,8 @@ HEADERS += \
     MedNUSAUISettings.h \
     MedNUSNetwork.h \
     MedNUSQuiz.h \
-    MedNUSStats.h
+    MedNUSStats.h \
+    MedNUSQuizStylesheet.h
 
 SOURCES += main.cpp \
     PMeshModel.cpp \
