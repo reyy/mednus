@@ -44,6 +44,7 @@ MedNUSVideoViewer::MedNUSVideoViewer(QString filename, QWidget *parent) :
     mediaPlayer.pause();
 }
 
+
 MedNUSVideoViewer::~MedNUSVideoViewer()
 {
     mediaPlayer.stop();
@@ -63,6 +64,7 @@ void MedNUSVideoViewer::keyPressEvent(QKeyEvent *event)
         event->ignore();
 }
 
+
 void MedNUSVideoViewer::resizeEvent(QResizeEvent *event)
 {
     videoView->setGeometry(this->geometry());
@@ -75,6 +77,7 @@ void MedNUSVideoViewer::resizeEvent(QResizeEvent *event)
     control->updateUI();
 }
 
+
 bool MedNUSVideoViewer::eventFilter(QObject *obj, QEvent *e)
 {
     if(e->type() == QEvent::Enter)
@@ -82,6 +85,7 @@ bool MedNUSVideoViewer::eventFilter(QObject *obj, QEvent *e)
     if(e->type() == QEvent::Leave)
         control->hide();
 }
+
 
 void MedNUSVideoViewer::togglePlay()
 {
@@ -91,10 +95,12 @@ void MedNUSVideoViewer::togglePlay()
         mediaPlayer.play();
 }
 
+
 void MedNUSVideoViewer::setPosition(int position)
 {
     mediaPlayer.setPosition(position);
 }
+
 
 void MedNUSVideoViewer::setVolume(int volume)
 {
@@ -129,6 +135,7 @@ MedNUSVideoControl::MedNUSVideoControl(QWidget *parent):
     connect(_positionSlider, SIGNAL(sliderMoved(int)),parent->parentWidget(), SLOT(setPosition(int)));
 }
 
+
 MedNUSVideoControl::~MedNUSVideoControl()
 {
     delete _playButton;
@@ -137,14 +144,15 @@ MedNUSVideoControl::~MedNUSVideoControl()
     delete _volumeButton;
 }
 
+
 void MedNUSVideoControl::updateUI() {
     int playerHeight = this->height()-VIDEO_ICON_SIZE-VIDEO_BORDER;
     _playButton->setGeometry(QRect(VIDEO_BORDER,playerHeight,VIDEO_ICON_SIZE,VIDEO_ICON_SIZE));
     _volumeButton->setGeometry(QRect(VIDEO_BORDER+VIDEO_ICON_SIZE+VIDEO_SEP_LENGTH,playerHeight,VIDEO_ICON_SIZE,VIDEO_ICON_SIZE));
     _positionSlider->setGeometry(QRect(VIDEO_BORDER+VIDEO_ICON_SIZE*2+VIDEO_SEP_LENGTH*2,playerHeight,this->width()-(VIDEO_BORDER*2+VIDEO_ICON_SIZE*2+VIDEO_SEP_LENGTH*3)-VIDEO_TIME_LENGTH,VIDEO_ICON_SIZE));
     _videoTimer->setGeometry(QRect(this->width()-VIDEO_BORDER-VIDEO_TIME_LENGTH,playerHeight,VIDEO_TIME_LENGTH,VIDEO_ICON_SIZE));
-
 }
+
 
 QString MedNUSVideoControl::timeConvert(qint64 msecs)
 {
@@ -164,6 +172,7 @@ QString MedNUSVideoControl::timeConvert(qint64 msecs)
 
 }
 
+
 void MedNUSVideoControl::mediaStateChanged(QMediaPlayer::State state)
 {
     switch(state) {
@@ -176,11 +185,13 @@ void MedNUSVideoControl::mediaStateChanged(QMediaPlayer::State state)
     }
 }
 
+
 void MedNUSVideoControl::positionChanged(qint64 position)
 {
     _positionSlider->setValue(position);
     _videoTimer->setText(timeConvert(position) +"/" + _durationText);
 }
+
 
 void MedNUSVideoControl::durationChanged(qint64 duration)
 {
@@ -188,6 +199,7 @@ void MedNUSVideoControl::durationChanged(qint64 duration)
     _durationText = timeConvert(duration);
     _videoTimer->setText("00:00/" + _durationText);
 }
+
 
 void MedNUSVideoControl::volumeClicked() {
     if(++_volume>3)

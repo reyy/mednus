@@ -4,6 +4,13 @@
    
    Copyright 2012, 2103, 2014 National University of Singapore
    Author: Leow Wee Kheng
+
+   Note: This file was originally written by Prof Leow Wee Kheng,
+         as such parts of the code have been commented out to temporarily
+         disable these features.
+
+         Also, the MedNUS team is currently in the midst of converting it
+         to use the MedNUS naming conventions.
 */
 
 

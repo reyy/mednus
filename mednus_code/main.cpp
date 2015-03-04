@@ -1,6 +1,6 @@
 #include <QApplication>
 #include <vtkAutoInit.h>
-//#include "PMeshViewer.h"
+
 #include "MedNUSMainWindow.h"
 
 int main(int argc, char *argv[])
@@ -14,8 +14,6 @@ int main(int argc, char *argv[])
 
     MedNUSMainWindow win;
     win.show();
-    //PMeshViewer viewer(true);
-    //viewer.show();
+
     return app.exec();
 }
-

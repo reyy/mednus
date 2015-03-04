@@ -45,6 +45,7 @@ MedNUSFrontBar::MedNUSFrontBar(QWidget *parent) :
     _trayOut = true;
 }
 
+
 MedNUSFrontBar::~MedNUSFrontBar()
 {
     _btView1->setVisible(false);
@@ -52,19 +53,18 @@ MedNUSFrontBar::~MedNUSFrontBar()
     _btView3->setVisible(false);
     _logo->setVisible(false);
 }
+
+
 void MedNUSFrontBar::setTrayOut(bool value) {
     _trayOut = value;
 
-    if(_currentMode==STUDENT) {
+    if (_currentMode==STUDENT) {
         this->setMinimumWidth(800-LESSONPANEL_WIDTH);
     } else {
         this->setMinimumWidth(800-LESSONPANEL_WIDTH_L);
     }
-
-    if(!value) {
-    } else {
-    }
 }
+
 
 void MedNUSFrontBar::setMode(interfaceMode mode) {
     _currentMode=mode;
@@ -76,15 +76,18 @@ void MedNUSFrontBar::changeFullScreenView() {
     emit toggleLayout(2);
 }
 
+
 void MedNUSFrontBar::changeLessonView() {
     //Todo: Set Screen to lessonview. Video and pdf.
     emit toggleLayout(1);
 }
 
+
 void MedNUSFrontBar::changeDefaultView(){
     //Todo: Set Screen to default 3 screen view.
     emit toggleLayout(0);
 }
+
 
 void MedNUSFrontBar::resizeEvent(QResizeEvent* event)
 {
@@ -94,6 +97,7 @@ void MedNUSFrontBar::resizeEvent(QResizeEvent* event)
     _btView2->setGeometry(QRect(this->x()+this->geometry().width()-36*2, this->y()+space, 32,24));
     _btView3->setGeometry(QRect(this->x()+this->geometry().width()-36*3, this->y()+space, 32,24));
     _logo->setVisible(true);
+
     if(_currentMode==STUDENT) {
         _btView1->setVisible(true);
         _btView2->setVisible(true);

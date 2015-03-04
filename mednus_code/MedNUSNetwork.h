@@ -21,6 +21,10 @@
 class MedNUSNetwork : public QObject
 {
     Q_OBJECT
+public:
+    explicit MedNUSNetwork(QObject *parent = 0);
+    void tryAutoLogin();
+
 protected:
     const static QString _baseURL;
     QString token;
@@ -36,19 +40,19 @@ protected:
     void profileReply(QJsonObject);
 
     void fileDownload();
-public:
-    explicit MedNUSNetwork(QObject *parent = 0);
-    void tryAutoLogin();
 
 signals:
     void showLoadingScreen(bool);
-    void loginResults(bool,QString,QString);
+    void loginResults(bool, QString, QString);
+
 public slots:
     void login(QString matric, QString password, bool r);
     void logout();
+
 protected slots:
     void getReply(QNetworkReply*);
-    void handleSslErrors(QNetworkReply*reply, const QList<QSslError> &errors);
+    void handleSslErrors(QNetworkReply* reply, const QList<QSslError> &errors);
 };
+
 
 #endif // MEDNUSNETWORK_H

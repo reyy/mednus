@@ -4,10 +4,18 @@
 
    Copyright 2012, 2103, 2014 National University of Singapore
    Author: Leow Wee Kheng
+
+   Note: This file was originally written by Prof Leow Wee Kheng,
+         as such parts of the code have been commented out to temporarily
+         disable these features.
+
+         Also, the MedNUS team is currently in the midst of converting it
+         to use the MedNUS naming conventions.
 */
 
-#ifndef MedNUSMeshViewer_H
-#define MedNUSMeshViewer_H
+#ifndef MEDNUSMESHVIEWER_H
+#define MEDNUSMESHVIEWER_H
+
 #include <QApplication>
 #include <QMainWindow>
 #include <QTabBar>
@@ -26,6 +34,7 @@
 #include <QObject>
 #include <QString>
 #include <QStringList>
+
 #include "PMeshTableWidget.h"
 #include "PMeshModel.h"
 
@@ -62,8 +71,6 @@ class QPushButton;
 //     float transparency;
 // };
 
-
-
 class MedNUSMeshViewer: public QWidget
 {
     Q_OBJECT
@@ -80,41 +87,13 @@ public:
 
     // Hack: Allow load mesh to be called externally.
     void forceAddMesh(const QString &fileName);
-    //ENDHACK
-    
+
 protected:
     void closeEvent(QCloseEvent *event);
+
     //Test Code Below
     void drawSphere(double radius, double xpos, double ypos, double zpos);
     void drawBoundingBox();
-    
-protected slots:
-    void newProject();
-    void openProject();
-    void saveProject();
-    void saveProjectAs();
-    void loadDir();
-    void loadMesh();
-    void addMesh();
-    void saveDirPly();
-    void saveDirStl();
-    void saveView();
-    void toggleFrontFace();
-    void setMeshMode(int);
-    void setSmoothSurface();
-    void setFlatSurface();
-    void setFlatLines();
-    void setWireFrame();
-    void setMeshPoint();
-    void info();
-    void help();
-    void about();
-
-    void setVisibility(int row, bool visible);
-    void setColor(int row, QColor color);
-    void setTransparency(int row, float value);
-    void blink(int row);
-    void deleteMesh(int row);
 
 protected:
     void createWidgets(bool withMeshPanel);
@@ -162,7 +141,7 @@ protected:
     QComboBox *meshModeBox;
     QDockWidget *meshPanel;
     PMeshTableWidget *meshTable;
-//     QList<PMeshPart> meshList;
+    //QList<PMeshPart> meshList;
     PMeshModel meshModel;
 
     // VTK objects
@@ -189,11 +168,35 @@ protected:
     bool saveImage(const QString &fileName);
 
     void addAnnotation(const QString text);
+
+protected slots:
+    void newProject();
+    void openProject();
+    void saveProject();
+    void saveProjectAs();
+    void loadDir();
+    void loadMesh();
+    void addMesh();
+    void saveDirPly();
+    void saveDirStl();
+    void saveView();
+    void toggleFrontFace();
+    void setMeshMode(int);
+    void setSmoothSurface();
+    void setFlatSurface();
+    void setFlatLines();
+    void setWireFrame();
+    void setMeshPoint();
+    void info();
+    void help();
+    void about();
+
+    void setVisibility(int row, bool visible);
+    void setColor(int row, QColor color);
+    void setTransparency(int row, float value);
+    void blink(int row);
+    void deleteMesh(int row);
 };
 
- //Callback class
 
-
-
-
-#endif
+#endif // MEDNUSMESHVIEWER_H

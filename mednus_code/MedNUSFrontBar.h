@@ -5,11 +5,22 @@
 #include <QLabel>
 #include <QDebug>
 #include <QPushButton>
+
 #include "MedNUSAUISettings.h"
 
 class MedNUSFrontBar : public QWidget
 {
     Q_OBJECT
+public:
+    explicit MedNUSFrontBar(QWidget *parent = 0);
+    ~MedNUSFrontBar();
+
+    void setTrayOut(bool value);
+    void setMode(interfaceMode mode);
+
+protected:
+    void resizeEvent(QResizeEvent* event);
+
 private:
     QLabel *_logo;
     bool _trayOut;
@@ -19,13 +30,6 @@ private:
     QPushButton *_btView2;
     QPushButton *_btView3;
 
-public:
-    explicit MedNUSFrontBar(QWidget *parent = 0);
-    ~MedNUSFrontBar();
-
-    void setTrayOut(bool value);
-    void setMode(interfaceMode mode);
-
 signals:
     void toggleLayout(int);
 
@@ -33,9 +37,7 @@ protected slots:
     void changeFullScreenView();
     void changeLessonView();
     void changeDefaultView();
-
-protected:
-    void resizeEvent(QResizeEvent* event);
 };
+
 
 #endif // MEDNUSFRONTBAR_H

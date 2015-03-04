@@ -2,6 +2,7 @@
 #define MEDNUSMAINWINDOW_H
 
 #include <QMainWindow>
+
 #include "MedNUSMeshViewer.h"
 #include "MedNUSLessonPanel.h"
 #include "MedNUSVideoViewer.h"
@@ -17,15 +18,6 @@
 class MedNUSMainWindow : public QMainWindow
 {
     Q_OBJECT
-private:
-    QPixmap _imageLine;
-    QPixmap _imageBar;
-    bool _trayOut;
-    bool _widgetsCreated;
-    bool _menuCreated;
-    bool _teacherMode;
-    interfaceMode _currentMode;
-
 public:
     explicit MedNUSMainWindow(QWidget *parent = 0);
     ~MedNUSMainWindow();
@@ -48,15 +40,24 @@ protected:
     void deleteMenus();
 
     void paintEvent(QPaintEvent *);
+    void mousePressEvent(QMouseEvent *event);
+
+private:
+    QPixmap _imageLine;
+    QPixmap _imageBar;
+    bool _trayOut;
+    bool _widgetsCreated;
+    bool _menuCreated;
+    bool _teacherMode;
+    interfaceMode _currentMode;
 
 signals:
+    // No signals as of yet.
 
 public slots:
     void loginCompleted(bool,QString,QString);
     void logout();
-protected:
-    void mousePressEvent ( QMouseEvent * event ) ;
-
 };
+
 
 #endif // MEDNUSMAINWINDOW_H

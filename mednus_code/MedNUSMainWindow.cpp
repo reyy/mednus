@@ -1,6 +1,8 @@
 #include "MedNUSMainWindow.h"
 #include "MedNUSAUISettings.h"
+
 #include <QDir>
+
 #define SKIP_LOGIN 0
 
 MedNUSMainWindow::MedNUSMainWindow(QWidget *parent) :
@@ -45,12 +47,14 @@ MedNUSMainWindow::MedNUSMainWindow(QWidget *parent) :
     _imageBar.load(":/images/screentop.png");
 }
 
+
 MedNUSMainWindow::~MedNUSMainWindow() {
     deleteWidgets();
     deleteMenus();
     if(login!=NULL)
         delete login;
 }
+
 
 void MedNUSMainWindow::createWidgets()
 {
@@ -121,12 +125,14 @@ void MedNUSMainWindow::createWidgets()
     }
 }
 
+
 void MedNUSMainWindow::createMenus()
 {
     if(!_menuCreated) {
         _menuCreated=true;
     }
 }
+
 
 void MedNUSMainWindow::deleteWidgets() {
     if(_widgetsCreated) {
@@ -139,11 +145,13 @@ void MedNUSMainWindow::deleteWidgets() {
     }
 }
 
+
 void MedNUSMainWindow::deleteMenus() {
     if(_menuCreated) {
         _menuCreated=false;
     }
 }
+
 
 void MedNUSMainWindow::loginCompleted(bool success, QString matric, QString name)
 {
@@ -187,6 +195,7 @@ void MedNUSMainWindow::loginCompleted(bool success, QString matric, QString name
     }
 }
 
+
 void MedNUSMainWindow::logout()
 {
     this->setStyleSheet("MedNUSMainWindow{border-image: url(:/images/login_background.png) 0 0 0 0 stretch stretch;}");
@@ -199,7 +208,8 @@ void MedNUSMainWindow::logout()
     connect(network,SIGNAL(loginResults(bool,QString,QString)),this,SLOT(loginCompleted(bool,QString,QString)));
 }
 
-void MedNUSMainWindow::mousePressEvent ( QMouseEvent * event )
+
+void MedNUSMainWindow::mousePressEvent(QMouseEvent* event)
 {
     if(event->buttons() == Qt::LeftButton) {
         if(_widgetsCreated) {
@@ -211,6 +221,7 @@ void MedNUSMainWindow::mousePressEvent ( QMouseEvent * event )
     }
     event->ignore();
 }
+
 
 void MedNUSMainWindow::paintEvent(QPaintEvent *) {
     if(_widgetsCreated) {

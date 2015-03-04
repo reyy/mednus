@@ -55,8 +55,6 @@ public:
     // On Start Quiz
     void showQuestion() const;
 
-protected:
-
 private:
     QLabel* _questionImageLabel;
     QLabel* _questionTextLabel;
@@ -67,7 +65,6 @@ private:
 class MedNUSQuiz : public QWidget
 {
     Q_OBJECT
-
 public:
     explicit MedNUSQuiz(QString filename, QWidget *parent = 0);
     ~MedNUSQuiz();
@@ -91,8 +88,6 @@ protected:
     bool _showAnswerFlag;
     bool _showTeacherCommentFlag;
 
-    void resizeEvent(QResizeEvent *event);
-
     // JSON
     void writeFile();
     void readFile();
@@ -114,6 +109,8 @@ protected:
     QLabel* _lastModifiedLabel;
     QLabel* _dummySpace1;
 
+    void resizeEvent(QResizeEvent *event);
+
 private:
     QVector<MedNUSQuizQuestion*>* _questionList;
     void markQuiz(bool byTimer);
@@ -121,6 +118,7 @@ private:
     QString convertTimeToString(int ms);
 
 signals:
+    // No signals as of yet.
 
 public slots:
     void callMarkQuiz_byButton();
@@ -128,5 +126,6 @@ public slots:
     void startQuiz();
     void updateTimerLabel();
 };
+
 
 #endif // MEDNUSQUIZ_H

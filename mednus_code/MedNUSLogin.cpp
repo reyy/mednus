@@ -1,5 +1,6 @@
 #include "MedNUSLogin.h"
 #include "MedNUSAUISettings.h"
+
 #include <QFileDialog>
 #include <QDebug>
 #include <QKeyEvent>
@@ -87,13 +88,16 @@ MedNUSLogin::MedNUSLogin(QWidget *parent) :
     _contactUs->setAlignment(Qt::AlignRight);
 }
 
+
 MedNUSLogin::~MedNUSLogin() {
 }
+
 
 void MedNUSLogin::loginButtonPress() {
     setLoading(true);
     emit callLogin(_username->text(),_password->text(),_remember->isChecked());
 }
+
 
 void MedNUSLogin::resizeEvent(QResizeEvent* event)
 {
@@ -115,6 +119,7 @@ void MedNUSLogin::resizeEvent(QResizeEvent* event)
     _contactUs->setGeometry(QRect(this->geometry().width()-95, this->geometry().height()-30, 80,20));
 }
 
+
 void MedNUSLogin::setLoading(bool value) {
     if(value) {
         _message->setText("Loading");
@@ -134,16 +139,16 @@ void MedNUSLogin::setLoading(bool value) {
     }
 }
 
-void MedNUSLogin::setErrorMessage(QString value) {
-   // _error->setText(value);
+
+void MedNUSLogin::setErrorMessage(QString value) {\
     _message->setText(value);
 }
 
+
 void MedNUSLogin::keyReleaseEvent(QKeyEvent *event)
 {
-    if(event->key() == Qt::Key_Return)
-    {
+    if (event->key() == Qt::Key_Return)
         loginButtonPress();
-    }
+
     event->ignore();
 }
