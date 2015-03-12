@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>ssl/bluebell.d1.comp.nus.edu.sg.crt</file>
+    </qresource>
+</RCC>
