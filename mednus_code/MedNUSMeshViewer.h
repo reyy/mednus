@@ -87,6 +87,7 @@ public:
 
     // Hack: Allow load mesh to be called externally.
     void forceAddMesh(const QString &fileName);
+    void forceLoadMesh(const QString &fileName);
 
 protected:
     void closeEvent(QCloseEvent *event);
@@ -166,8 +167,6 @@ protected:
     bool loadMesh(const QStringList &fileNames);
     bool addMesh(const QStringList &fileNames);
     bool saveImage(const QString &fileName);
-
-    void addAnnotation(const QString text);
 
 protected slots:
     void newProject();

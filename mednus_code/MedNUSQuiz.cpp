@@ -310,12 +310,19 @@ MedNUSQuiz::MedNUSQuiz(QString filename, QWidget *parent) :
         _scrollArea->setStyleSheet(file2.readAll());
         file2.close();
     }
+
+    _noOfCorrectAnswers = 0;
 }
 
 
 MedNUSQuiz::~MedNUSQuiz()
 {
     //TODO: Clean up
+}
+
+
+int MedNUSQuiz::getNoOfCorrectAnswers() const {
+    return _noOfCorrectAnswers;
 }
 
 
@@ -347,16 +354,16 @@ void MedNUSQuiz::markQuiz(bool byTimer)
     }
 
     // Start the marking of the quiz.
-    int score = 0;
     for (int i = 0; i < _questionList->size(); i++)
     {
-        if (((MedNUSQuizQuestion*)_questionList->at(i))->getSelectedAnswer() == _correctAnswerList[i])
-            score++;
+        if (((MedNUSQuizQuestion*)_questionList->at(i))->getSelectedAnswer() == _correctAnswerList[i]) {
+            _noOfCorrectAnswers++;
+        }
 
         // Show the correct answers only if the teacher wants to.
         ((MedNUSQuizQuestion*)_questionList->at(i))->highlightAnswer(_correctAnswerList[i], _showAnswerFlag);
     }
-    _score->setText(QString::number(score)+"/"+QString::number(_questionList->size()));
+    _score->setText(QString::number(_noOfCorrectAnswers)+"/"+QString::number(_questionList->size()));
     _score->setVisible(true);
     _markButton->setVisible(false);
 

@@ -71,6 +71,9 @@ public:
     explicit MedNUSQuiz(QString filename, QWidget *parent = 0);
     ~MedNUSQuiz();
 
+    int getNoOfCorrectAnswers() const;
+    void markQuiz(bool byTimer);
+
 protected:
     QWidget* _tempWidget;
     QGridLayout* _layout;
@@ -115,9 +118,10 @@ protected:
 
 private:
     QVector<MedNUSQuizQuestion*>* _questionList;
-    void markQuiz(bool byTimer);
 
     QString convertTimeToString(int ms);
+
+    int _noOfCorrectAnswers;
 
 signals:
     // No signals as of yet.

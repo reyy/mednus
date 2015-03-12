@@ -75,6 +75,6 @@ void MedNUSNetworkTester::loginTest()
     QVERIFY(arguments.at(2).type() == QVariant::String);
 }
 
-QTEST_MAIN(MedNUSNetworkTester)
+//QTEST_MAIN(MedNUSNetworkTester)
 
 #include "tst_mednusnetworktester.moc"

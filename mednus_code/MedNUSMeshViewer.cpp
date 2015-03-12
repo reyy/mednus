@@ -91,6 +91,15 @@ void MedNUSMeshViewer::forceAddMesh(const QString &fileName)
     } catch (int a) {}
 }
 
+void MedNUSMeshViewer::forceLoadMesh(const QString &fileName)
+{
+    try {
+        QStringList list;
+        list.append(fileName);
+        loadMesh(list);
+    } catch (int a) {}
+}
+
 // Event handling
 
 void MedNUSMeshViewer::closeEvent(QCloseEvent *event)
@@ -191,10 +200,6 @@ void MedNUSMeshViewer::createWidgets(bool withMeshPanel)
         meshTable = NULL;
         meshPanel = NULL;
     }
-
-    //Hack: temp add an annotation.
-    addAnnotation("hello");
-    
 
     vtkWidget->updateGeometry();
 }
@@ -453,12 +458,14 @@ void MedNUSMeshViewer::saveProjectAs()
 
 void MedNUSMeshViewer::loadDir()
 {
+    //TODO: remove dialog
     QString dirName = QFileDialog::getExistingDirectory(this,
         QObject::tr("Load all mesh files in a directory"), readDir);
         
+    //TODO: replace dirName and pass it in
     if (!dirName.isEmpty())
     {
-        QDir dir(dirName);
+        QDir dir(dirName/*here*/);
         QStringList filters;
         filters << "*.obj" << "*.ply" << "*.stl";
         QStringList list = dir.entryList(filters);
@@ -1015,34 +1022,6 @@ bool MedNUSMeshViewer::saveImage(const QString &fileName)
     filter->Delete();
     return true;
 }
-
-void MedNUSMeshViewer::addAnnotation(const QString text)
-{
-    // add an annotation
-    /*vtkTextActor3D *textActor = vtkTextActor3D::New();
-
-    qWarning() << "added string";
-
-    textActor->GetTextProperty()->SetFontSize(72);
-    textActor->SetPosition(0.0, 0.0, 0.0);
-    renderer->AddActor(textActor);
-    textActor->SetInput("text");
-    textActor->GetTextProperty()->SetColor(1.0, 0.0, 0.0);*/
-
-    /*vtkSmartPointer<vtkTextActor> textActor =
-        vtkSmartPointer<vtkTextActor>::New();
-      textActor->GetTextProperty()->SetFontSize ( 24 );
-      textActor->SetPosition2 ( 10, 40 );
-      renderer->AddActor2D ( textActor );
-      textActor->SetInput ( "Hello world" );
-      textActor->GetTextProperty()->SetColor ( 1.0,0.0,0.0 );*/
-
-    vtkSmartPointer<vtkCaptionActor2D> captionActor = vtkSmartPointer<vtkCaptionActor2D>::New();
-    captionActor->SetCaption("hello");
-    captionActor->SetAttachmentPoint(0, 0, 0);
-    renderer->AddViewProp(captionActor);
-}
-
 
 // For callback
 
