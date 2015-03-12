@@ -32,7 +32,14 @@ MedNUSNetworkTester::~MedNUSNetworkTester()
 
 void MedNUSNetworkTester::initTestCase()
 {
+    //Initialize SSL Certs
+    QFile file(":/ssl/bluebell.crt");
+    file.open(QIODevice::ReadOnly);
+    const QByteArray bytes = file.readAll();
 
+    //Add as default crt
+    const QSslCertificate certificate(bytes);
+    QSslSocket::addDefaultCaCertificate(certificate);
 }
 
 void MedNUSNetworkTester::cleanupTestCase()
@@ -47,19 +54,14 @@ void MedNUSNetworkTester::BluebellHTTPSTest()
     m_pSignalSpy.wait();
 
     for(int index = 0; index<m_pSignalSpy.size(); index++)
-          {
+    {
         QList<QVariant> listItem = m_pSignalSpy.value(index);
 
         for(int index2 = 0;index2 < listItem.size();index2++)
         {
-          qDebug(listItem[index2].toString().toStdString().c_str());
+            qDebug(listItem[index2].toString().toStdString().c_str());
         }
-          }
-
-//    QNetworkReply* temp  = static_cast<QNetworkReply*>(&(spy.takeFirst()[0]));
-//    char *c;
-//    temp->getChar(c);
-//    qDebug(c);
+    }
 }
 
 void MedNUSNetworkTester::loginTest()
@@ -75,6 +77,6 @@ void MedNUSNetworkTester::loginTest()
     QVERIFY(arguments.at(2).type() == QVariant::String);
 }
 
-//QTEST_MAIN(MedNUSNetworkTester)
+QTEST_MAIN(MedNUSNetworkTester)
 
 #include "tst_mednusnetworktester.moc"
