@@ -49,6 +49,6 @@ void MedNUSQuizTester::helloTestCase() {
 
 }
 
-QTEST_MAIN(MedNUSQuizTester)
+//QTEST_MAIN(MedNUSQuizTester)
 
 #include "tst_mednusquiztester.moc"
