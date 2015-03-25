@@ -67,7 +67,9 @@ MedNUSMeshViewer::MedNUSMeshViewer(QString dir, bool withMeshPanel)
     try{
        QStringList list;
        list.append(dir);
-       loadMesh(list);
+       //loadMesh(list);
+       //loadMeshDir(dir);
+       loadDir();
     }
     catch(int a){ loadMesh(); }
     //drawSphere(0.5,-1,-1,-1);
@@ -458,14 +460,12 @@ void MedNUSMeshViewer::saveProjectAs()
 
 void MedNUSMeshViewer::loadDir()
 {
-    //TODO: remove dialog
     QString dirName = QFileDialog::getExistingDirectory(this,
         QObject::tr("Load all mesh files in a directory"), readDir);
-        
-    //TODO: replace dirName and pass it in
+
     if (!dirName.isEmpty())
     {
-        QDir dir(dirName/*here*/);
+        QDir dir(dirName);
         QStringList filters;
         filters << "*.obj" << "*.ply" << "*.stl";
         QStringList list = dir.entryList(filters);
@@ -497,6 +497,30 @@ void MedNUSMeshViewer::loadMesh()
         if (loadMesh(fileNames))
             readDir = QFileInfo(fileNames[fileNames.size()-1]).path();
         QApplication::restoreOverrideCursor();
+    }
+}
+
+
+void MedNUSMeshViewer::loadMeshDir(const QString &dirName) {
+
+    if (!dirName.isEmpty())
+    {
+        QDir dir(dirName);
+        QStringList filters;
+        filters << "*.obj" << "*.ply" << "*.stl";
+        QStringList list = dir.entryList(filters);
+
+        if (!list.isEmpty())
+        {
+            QStringList fileNames;
+            for (int i = 0; i < list.size(); ++i)
+                fileNames.append(dirName + "/" + list[i]);
+
+            QApplication::setOverrideCursor(Qt::WaitCursor);
+            if (loadMesh(fileNames))
+                readDir = dirName;
+            QApplication::restoreOverrideCursor();
+        }
     }
 }
 
