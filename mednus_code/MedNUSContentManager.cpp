@@ -5,9 +5,22 @@ MedNUSContentManager::MedNUSContentManager(QObject *parent)
 }
 
 
-void MedNUSContentManager::initLessonList(QStringList)
+void MedNUSContentManager::initLessonList(QJsonDocument jsonResponse)
 {
     //STUB For future Network I/O connection!
+    QJsonArray *jsonObj2 = new QJsonArray(jsonResponse.array());
+    //
+    QJsonArray::ConstIterator i = jsonObj2->begin();
+    while(i!=jsonObj2->end()) {
+        QStringList content;
+        QJsonObject o = (*i).toObject();
+        content.push_back("abc.pdf");
+        emit callAddLesson(o["lesson_title"].toString(),"Const","",content);
+
+        qDebug() << o["lesson_id"].toString().toInt();
+        qDebug() << o["file_list"].toString();
+        i++;
+    }
 
     QStringList content;
     content.push_back("/mednus/lesson1/videos/Skull Anatomy (1 of 5)- Superior, Posterior and Lateral Views -- Head and Neck Anatomy 101.mp4");

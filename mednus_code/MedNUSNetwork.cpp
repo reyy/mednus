@@ -19,7 +19,7 @@ MedNUSNetwork::MedNUSNetwork(QObject *parent) :
     const QSslCertificate certificate(bytes);
     QSslSocket::addDefaultCaCertificate(certificate);
 
-    //this->fileDownload();
+    this->fileDownload();
 }
 
 
@@ -121,6 +121,12 @@ void MedNUSNetwork::getReply(QNetworkReply *reply)
             checkTokenReply(jsonObj);
         else if(jsonObj["Results"].isArray()) //todo: MUST CHANGE THIS!
             profileReply(jsonObj["Results"].toArray()[0].toObject());
+        else
+        {
+            emit receivedLessonList(jsonResponse);
+
+
+        }
 
     }
     else {
@@ -188,8 +194,15 @@ void MedNUSNetwork::fileDownload()
     //connect(&mgr, SIGNAL(finished(QNetworkReply*)),
     //                SLOT(fileDownloadReply(QNetworkReply*)));
 
-    QNetworkRequest request(QUrl("https://bluebell.d1.comp.nus.edu.sg/~anatomy/index.php"));
+//    QNetworkRequest request(QUrl("https://bluebell.d1.comp.nus.edu.sg/~anatomy/getLessons.php"));
 
+//    mgr.get(request);
+}
+
+void MedNUSNetwork::downloadLessonList()
+{
+    QNetworkRequest request(QUrl("https://bluebell.d1.comp.nus.edu.sg/~anatomy/getLessons.php"));
     mgr.get(request);
 }
+
 

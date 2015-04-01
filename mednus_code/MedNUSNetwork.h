@@ -24,6 +24,7 @@ class MedNUSNetwork : public QObject
 public:
     explicit MedNUSNetwork(QObject *parent = 0);
     void tryAutoLogin();
+    void downloadLessonList();
 
 protected:
     const static QString _baseURL;
@@ -44,6 +45,7 @@ protected:
 signals:
     void showLoadingScreen(bool);
     void loginResults(bool, QString, QString);
+    void receivedLessonList(QJsonDocument);
 
 public slots:
     void login(QString matric, QString password, bool r);
