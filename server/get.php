@@ -1,48 +1,54 @@
 <?php
-//
-$type = htmlspecialchars($_GET["type"]);
-//echo $GET['type2'];
 
-// if(!($type == 'model' || $type == 'pdf' || $type == 'video'))
-// 	die("Invalid Request.");
+//Check isset
+if(!isset($_GET["type"]) || !isset($_GET["lessonid"]) || !isset($_GET["fileid"]))
+	die("Invalid Paramters");
 
-//$dbconn = pg_connect("host=localhost port=5432 dbname=anatomy user=anatomy password=foo connect_timeout=10");
+$lessonid = $_GET["lessonid"];
+$fileid = $_GET["fileid"];
+$type = $_GET["type"];
 
-$filename = "craniofacial.ply";
-$filepath = "resource_files/mednus/lesson1/".$type."/".$filename;
-echo $filepath;
+//Valid Type Check
+if(!($type == 'model' || $type == 'pdf' || $type == 'video') ||
+	!(is_int($fileid) && is_int($lessionid)))
+	die("Invalid Request.");
+
+
+
+include("settings.php");
+include("utility.php");
+//include("auth.php");
+
+//Do Query
+$result = pg_prepare($dbconn, "get_pdf" ,'SELECT get_pdf($1,$2,$3);');
+$result = pg_execute($dbconn, "get_pdf", array('pdf',$lessonid, $fileid));
+
+$rows = pg_num_rows($result);
+$cols = pg_num_fields($result);
+
+if($rows == 0)
+	die("Invalid File Error.");
+else if($rows > 1 || $cols > 1)
+	die("Database Error. Please contact Admin.");
+else
+	$filename = pg_fetch_result($result, 0);
+
+//echo $filename;
+
+//Cleanup
+pg_free_result($result);
+
+
+
+//Download File
+$filepath = "resource_files/mednus/".$lessonid."/".$type."/".$filename;
+//$filepath = "resource_files/mednus/lesson1/models/craniofacial.ply";
+//echo $filepath;
+
 // make sure it's a file before doing anything!
-if(file_exists($filepath)) {
+if(file_exists($filepath))
+	downloadFile($filepath);
+else
+	die("Lost File Error. Please contact Admin.");
 
-	//$dbconn = pg_connect("host=localhost port=5432 dbname=anatomy user=anatomy password=foo connect_timeout=10");
-
-
-	// required for IE
-	if(ini_get('zlib.output_compression')) { ini_set('zlib.output_compression', 'Off');	}
-
-	// get the file mime type using the file extension
-	switch(strtolower(substr(strrchr($filename, '.'), 1))) {
-		case 'pdf': $mime = 'application/pdf'; break;
-		case 'zip': $mime = 'application/zip'; break;
-		case 'jpeg':
-		case 'jpg': $mime = 'image/jpg'; break;
-		default: $mime = 'application/force-download';
-	}
-	header('Pragma: public'); 	// required
-	header('Expires: 0');		// no cache
-	header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-	header('Last-Modified: '.gmdate ('D, d M Y H:i:s', filemtime ($filepath)).' GMT');
-	header('Cache-Control: private',false);
-	header('Content-Type: '.$mime);
-	header('Content-Disposition: attachment; filename="'.basename($filepath).'"');
-	header('Content-Transfer-Encoding: binary');
-	header('Content-Length: '.filesize($filepath));	// provide file size
-	header('Connection: close');
-	readfile($filepath);		// push it out
-	exit();
-
-}
-else {
-die("Invalid Request.2");
-}
 ?>
