@@ -52,11 +52,11 @@ private:
     interfaceMode _currentMode;
 
 signals:
-    // No signals as of yet.
 
 public slots:
     void loginCompleted(bool,QString,QString);
     void logout();
+    void finalizeWidgets();
 };
 
 

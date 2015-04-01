@@ -102,26 +102,33 @@ void MedNUSMainWindow::createWidgets()
         connect(tabs, SIGNAL(tabOpenedSignal(QString)), lp, SLOT(tabOpened(QString)));
 
         //Content Manager
-        MedNUSContentManager *contentManager;
-        contentManager = new MedNUSContentManager();
+        MedNUSContentManager *contentManager = new MedNUSContentManager();
 
         //Connections
         connect(contentManager, SIGNAL(callAddLesson(QString,QString,QString,QStringList)), lp, SLOT(addLesson(QString,QString,QString,QStringList)));
         connect(lp, SIGNAL(emitOpenFile(QString,QString,int)), contentManager, SLOT(openFile(QString,QString,int)));
         connect(contentManager, SIGNAL(callAddTab(QWidget*,QString,QString)), tabs, SLOT(addTab(QWidget*,QString,QString)));
         connect(fb,SIGNAL(toggleLayout(int)),tabs,SLOT(toggleView(int)));
+        connect(network, SIGNAL(receivedLessonList(QJsonDocument)), contentManager, SLOT(initLessonList(QJsonDocument)));
+        connect(network, &MedNUSNetwork::receivedLessonList, [=](){
+            //Hacky Fix!
+            //TODO: Find out why cannot add lessons to UI properly
+            qDebug()<<"HI";
+            centralWidget->setLayout(mainLayout);
+            setCentralWidget(centralWidget);
 
-        contentManager->initLessonList(QStringList());
+            _widgetsCreated = true;
 
-        centralWidget->setLayout(mainLayout);
-        setCentralWidget(centralWidget);
 
-        _widgetsCreated = true;
+            lp->setTrayOut(true);
+            ub->setTrayOut(true);
+            fb->setTrayOut(true);
 
-        //Update GUI
-        lp->setTrayOut(true);
-        ub->setTrayOut(true);
-        fb->setTrayOut(true);
+        });
+
+        //Fetch Lesson List
+        network->downloadLessonList();
+        //contentManager->initLessonList(NULL);
     }
 }
 
@@ -229,4 +236,11 @@ void MedNUSMainWindow::paintEvent(QPaintEvent *) {
         painter.drawTiledPixmap(QRect(0,0,this->width(),this->height()),_imageLine);
         painter.drawTiledPixmap(QRect(0,0,this->width(),TOPBAR_HEIGHT),_imageBar);
     }
+}
+
+void MedNUSMainWindow::finalizeWidgets() {
+
+
+
+
 }

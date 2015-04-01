@@ -17,7 +17,6 @@ class MedNUSContentManager : public QObject
 public:
     explicit MedNUSContentManager(QObject *parent = 0);
 
-    void initLessonList(QStringList);
     void openLastView(QStringList);
 
 private:
@@ -29,6 +28,7 @@ signals:
 
 public slots:
     void openFile(QString fileDir, QString title, int type);
+    void initLessonList(QJsonDocument jsonResponse);
 };
 
 
