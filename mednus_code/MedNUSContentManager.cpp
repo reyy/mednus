@@ -2,7 +2,6 @@
 
 MedNUSContentManager::MedNUSContentManager(QObject *parent)
 {
-    _meshViewerInstance = NULL;
 }
 
 
@@ -104,9 +103,6 @@ void MedNUSContentManager::openFile(QString fileDir, QString title, int type)
     QString dir = QDir::homePath();
     dir.append(fileDir);
 
-    //TODO: load several models into the same instance of the meshviewer
-    //      via a load folder functionality.
-
     if(isFileExist(dir))
     {
         //Create MedNUSVideo/Mesh/PDF instance
@@ -115,20 +111,7 @@ void MedNUSContentManager::openFile(QString fileDir, QString title, int type)
         if(fileDir.contains(".pdf", Qt::CaseInsensitive))
             toAdd = new MedNUSPdfViewer(dir);
         else if(fileDir.contains(".ply", Qt::CaseInsensitive))
-            //toAdd = new MedNUSMeshViewer(dir,true);
-        {
-            //HACK: To only allow one instance of MedNUSMeshViewer
-            if (_meshViewerInstance == NULL)
-            {
-                toAdd = new MedNUSMeshViewer(dir, true);
-                _meshViewerInstance = toAdd;\
-            }
-            else
-            {
-                ((MedNUSMeshViewer*)(_meshViewerInstance))->forceAddMesh(dir);
-                return;
-            }
-        }
+            toAdd = new MedNUSMeshViewer(dir, true);
         else if(fileDir.contains(".mp4", Qt::CaseInsensitive) || fileDir.contains(".mov", Qt::CaseInsensitive))
             toAdd = new MedNUSVideoViewer(dir);
         else if(fileDir.contains(".qiz", Qt::CaseInsensitive))

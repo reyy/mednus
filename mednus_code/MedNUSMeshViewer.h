@@ -165,6 +165,7 @@ protected:
     void installPipeline(int startIndex);
     void uninstallPipeline();
     bool loadMesh(const QStringList &fileNames);
+    void loadMeshDir(const QString &dirName);
     bool addMesh(const QStringList &fileNames);
     bool saveImage(const QString &fileName);
 
