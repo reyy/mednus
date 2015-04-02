@@ -436,6 +436,24 @@ void MedNUSLessonPackage::locateNewFile() {
 
 void MedNUSLessonPackage::addNewQuiz() {
     //Add new quiz.
+    QMessageBox msgBox;
+    msgBox.setText("Create a quiz");
+    msgBox.setInformativeText("Are you sure?");
+    msgBox.setStandardButtons(QMessageBox::No | QMessageBox::Yes );
+    msgBox.setDefaultButton(QMessageBox::No);
+
+    int ret = msgBox.exec();
+    switch (ret) {
+       case QMessageBox::Yes:
+           //HACK: Opening a dummy file.
+        emit emitOpenFile("/mednus/lesson1/makequiz/maker.json", "Quiz Maker", 1);
+           break;
+       case QMessageBox::No:
+           break;
+       default:
+           // should never be reached
+           break;
+     }
 }
 
 
