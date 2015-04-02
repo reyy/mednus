@@ -487,6 +487,7 @@ void MedNUSQuiz::loadQuizFileToEditor(QString filename, int &row) {
                                        jsonQuestion["hasImage"].toBool(),
                 QString(jsonQuestion["imageUrl"].toString()));
 
+        // Force the question to be shown.
         question->showQuestion();
 
         // Push the question into the question vector.

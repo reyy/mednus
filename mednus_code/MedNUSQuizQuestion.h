@@ -23,6 +23,12 @@ public:
     MedNUSQuizQuestion(QWidget *parent, QGridLayout *layout, int& row,
                        QVector<QString> content, int noOfOptions,
                        bool hasImage = false, QString imageUrl = "");
+
+    /*  MedNUSQuizQuestion constructor:
+     *      This constructor is meant to be used by the quiz editor to
+     *      create questions.
+     */
+    MedNUSQuizQuestion(QWidget *parent, QGridLayout *layout, int &row);
     ~MedNUSQuizQuestion();
 
     int getSelectedAnswer() const;
