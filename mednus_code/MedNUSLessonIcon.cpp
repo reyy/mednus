@@ -131,7 +131,7 @@ void MedNUSLessonIcon::setVisible(bool value) {
 
 void MedNUSLessonIcon::mousePressEvent ( QMouseEvent * event ){
     setHighlight(true);
-    emit emitOpenFile(_path, _text->text(), 0); //todo: pass actual type!
+    emit emitOpenFile(_path, _text->text(), _filetype); //todo: pass actual type!
     event->ignore();
 }
 
