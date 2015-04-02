@@ -33,36 +33,8 @@
 #include <QDebug>
 
 #include "MedNUSQuizStylesheet.h"
+#include "MedNUSQuizQuestion.h"
 
-class MedNUSQuizQuestion
-{
-public:
-
-    /*  MedNUSQuizQuestion constructor:
-     *      The content that is being passed in contains the question text,
-     *      options, and the teacher's comment. It is stored in this format:
-     *          content[0]              = question text
-     *          content[1..noOfOptions] = options
-     *          content[noOfOptions+1]  = teacher's comment
-     */
-    MedNUSQuizQuestion(QWidget *parent, QGridLayout *layout, int& row, QVector<QString> content, int noOfOptions, bool hasImage = false, QString imageUrl = "");
-    ~MedNUSQuizQuestion();
-
-    int getSelectedAnswer() const;
-    void highlightAnswer(int correctAnswer, bool showCorrectAnswer) const;
-    bool oneOptionSelected() const;
-
-    void setNotice(bool value);
-
-    // On Start Quiz
-    void showQuestion() const;
-
-private:
-    QLabel* _questionImageLabel;
-    QLabel* _questionTextLabel;
-    QLabel* _teacherCommentLabel;
-    QButtonGroup* _optionButtonGroup;
-};
 
 class MedNUSQuiz : public QWidget
 {
@@ -72,7 +44,7 @@ public:
     ~MedNUSQuiz();
 
     int getNoOfCorrectAnswers() const;
-    void markQuiz(bool byTimer);
+    void markQuiz(bool calledByTimer);
 
 protected:
     QWidget* _tempWidget;
@@ -95,7 +67,7 @@ protected:
 
     // JSON
     void writeFile();
-    void readFile();
+    void loadQuizFile(QString filename, int &row);
 
     // Start Screen
     QLabel* _startScreenLabel;
@@ -122,6 +94,8 @@ private:
     QString convertTimeToString(int ms);
 
     int _noOfCorrectAnswers;
+
+    void scrollScreenToTop();
 
 signals:
     // No signals as of yet.
