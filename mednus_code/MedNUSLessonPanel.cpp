@@ -71,7 +71,8 @@ void MedNUSLessonPanel::addLesson(MedNUSLessonPackage * _package) {
 }
 
 
-void MedNUSLessonPanel::addLesson(QString title,QString subTitle, QString description, QStringList directories) {
+void MedNUSLessonPanel::addLesson(QString title,QString subTitle,
+                                  QString description, QStringList directories) {
     MedNUSLessonPackage *_package = new MedNUSLessonPackage(this);
     _package->setTitle(title);
     _package->setSubHeader(subTitle);
@@ -91,6 +92,8 @@ void MedNUSLessonPanel::addLesson(QString title,QString subTitle, QString descri
             filetype = fileType::QUIZ;
         if(directory.contains(".mp4", Qt::CaseInsensitive))
             filetype = fileType::VIDEO;
+        //if(directory.contains(".mqiz", Qt::CaseInsensitive))
+            //filetype = fileType::
 
         _package->addContent(directory,filetype);
     }
@@ -98,7 +101,8 @@ void MedNUSLessonPanel::addLesson(QString title,QString subTitle, QString descri
     _lessonList.push_back(_package);
     updateGUI(); 
 
-    connect(_package, SIGNAL(emitOpenFile(QString,QString,int)), this, SLOT(callOpenFile(QString,QString,int)));
+    connect(_package, SIGNAL(emitOpenFile(QString,QString,int)),
+            this, SLOT(callOpenFile(QString,QString,int)));
 }
 
 
