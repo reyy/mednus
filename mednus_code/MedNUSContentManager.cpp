@@ -1,4 +1,5 @@
 #include "MedNUSContentManager.h"
+using namespace std;
 
 MedNUSContentManager::MedNUSContentManager(QObject *parent)
 {
@@ -7,19 +8,18 @@ MedNUSContentManager::MedNUSContentManager(QObject *parent)
 
 void MedNUSContentManager::initLessonList(QJsonDocument jsonResponse)
 {
-    //STUB For future Network I/O connection!
-    QJsonArray *jsonObj2 = new QJsonArray(jsonResponse.array());
-    //
-    QJsonArray::ConstIterator i = jsonObj2->begin();
-    while(i!=jsonObj2->end()) {
-        QStringList content;
-        QJsonObject o = (*i).toObject();
-        content.push_back("abc.pdf");
-        emit callAddLesson(o["lesson_title"].toString(),"Const","",content);
+    //Receive Stuff from Network I/O
+    QJsonArray *lessonArray = new QJsonArray(jsonResponse.array());
+    QJsonArray::ConstIterator curLesson = lessonArray->begin();
 
-        qDebug() << o["lesson_id"].toString().toInt();
-        qDebug() << o["file_list"].toString();
-        i++;
+    while(curLesson!=lessonArray->end()) {
+        QJsonObject fileItem = (*curLesson).toObject();
+        QStringList content = fileItem["file_list"].toString().split(QRegExp("[{}\",]"),
+                                                                     QString::SplitBehavior::SkipEmptyParts);
+        //TODO: Account for NULL cases
+        emit callAddLesson(fileItem["lesson_title"].toString(),"Const","",content);
+
+        curLesson++;
     }
 
     QStringList content;
