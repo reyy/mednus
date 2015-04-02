@@ -10,6 +10,7 @@
 #include "MedNUSMeshViewer.h"
 #include "MedNUSVideoViewer.h"
 #include "MedNUSQuiz.h"
+#include "MedNUSAUISettings.h"
 
 class MedNUSContentManager : public QObject
 {
