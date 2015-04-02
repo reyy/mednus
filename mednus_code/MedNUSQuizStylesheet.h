@@ -4,6 +4,8 @@
 #define RADIO_BUTTON_STYLESHEET "QRadioButton { margin-left:10px;margin-right:10px;margin-top:2px;margin-bottom:2px;} QRadioButton::indicator{margin-right:10px;}QRadioButton::indicator::unchecked{image:url(:/images/check_default.png)} QRadioButton::indicator::unchecked:pressed{image:url(:/images/check_default.png)} QRadioButton::indicator::unchecked:hover{image:url(:/images/check_default_hover.png)} QRadioButton::indicator::checked{image:url(:/images/check_filled.png)} QRadioButton::indicator::checked:pressed{image:url(:/images/check_filled.png)} QRadioButton::indicator::checked:hover{image:url(:/images/check_filled_hover.png)}"
 #define TEACHER_COMMENT_STYLESHEET "QLabel{color:#97d5ee;margin-top:5px;margin-bottom:5px;}"
 #define MARK_BUTTON_STYLESHEET "QPushButton {margin-top:20px;background:rgba(0,0,0,255);border: 5px solid #e5a539;padding:10px;} QPushButton::pressed {background:rgba(30,30,30,255);}"
+#define EDIT_BUTTON_STYLESHEET "QPushButton {margin-top:20px;background:rgba(0,0,0,255);border: 5px solid #e5a539;padding:10px;} QPushButton::pressed {background:rgba(30,30,30,255);}"
+#define VIEW_QUIZ_BUTTON_STYLESHEET "QPushButton {margin-top:20px;background:rgba(0,0,0,255);border: 5px solid #e5a539;padding:10px;} QPushButton::pressed {background:rgba(30,30,30,255);}"
 #define INSTRUCTION_TEXT_LABEL_STYLESHEET "QLabel {color:#adbfc6;}"
 #define SCORE_TEXT_LABEL_STYLESHEET "QLabel{color:#e5a539;margin-top:10px;margin-bottom:10px;padding:5px;background:rgba(0,0,0,100);border-top-left-radius: 30px;border-bottom-right-radius: 30px;}"
 #define DUMMY_SPACE_STYLESHEET "QLabel {color:#FFFFFF;}"

@@ -32,6 +32,10 @@
 #include <QTextStream>
 #include <QDebug>
 
+// For editor
+#include <QComboBox>
+#include <QListView>
+
 #include "MedNUSQuizStylesheet.h"
 #include "MedNUSQuizQuestion.h"
 
@@ -39,63 +43,81 @@
 class MedNUSQuiz : public QWidget
 {
     Q_OBJECT
+
 public:
     explicit MedNUSQuiz(QString filename, QWidget *parent = 0);
     ~MedNUSQuiz();
 
-    int getNoOfCorrectAnswers() const;
-    void markQuiz(bool calledByTimer);
-
 protected:
+// Widget Stuff
     QWidget* _tempWidget;
     QGridLayout* _layout;
     QScrollArea* _scrollArea;
 
+    QVector<MedNUSQuizQuestion*>* _questionList;
+    bool _isEditorView;
+
+    QWidget* _parent;
+    QString _filename;
+
+
+// Quiz Viewer
+
+public:
+    int getNoOfCorrectAnswers() const;
+    void markQuiz(bool calledByTimer);
+
+private:
+    // General
+    QVector<int> _correctAnswerList;
+    bool _showAnswerFlag;
+    bool _showTeacherCommentFlag;
+
+    void loadQuizFileToViewer(QString filename, int &row);
+    void resizeEvent(QResizeEvent *event);
+    void initViewerView();
+    void deinitViewerView();
+
+    // Start Quiz Screen
     QLabel* _titleTextLabel;
     QLabel* _authorTextLabel;
     QLabel* _instructionTextLabel;
     QLabel* _timedQuizWarningTextLabel;
     QLabel* _warning;
-    QLabel* _score;
-    QVector<QButtonGroup*> _questionOptionGroup;
-
-    QPushButton* _markButton;
-    QVector<int> _correctAnswerList;
-
-    bool _showAnswerFlag;
-    bool _showTeacherCommentFlag;
-
-    // JSON
-    void writeFile();
-    void loadQuizFile(QString filename, int &row);
-
-    // Start Screen
     QLabel* _startScreenLabel;
+    QLabel* _attemptLabel;
+    QLabel* _lastModifiedLabel;
+    QLabel* _dummySpace1;
     QPushButton* _startQuizButton;
+    QPushButton* _editQuizButton;
 
-    // Timer
+    // Quiz Screen
+    QPushButton* _markButton;
+    QVector<QButtonGroup*> _questionOptionGroup;
     bool _hasTimeLimit;
     QTimer* _timer;
     int _timerDuration;
     QLabel* _timerLabel;
     QTimer* _labelUpdateTimer;
 
-    // Attempts
-    QLabel* _attemptLabel;
-
-    QLabel* _lastModifiedLabel;
-    QLabel* _dummySpace1;
-
-    void resizeEvent(QResizeEvent *event);
-
-private:
-    QVector<MedNUSQuizQuestion*>* _questionList;
-
     QString convertTimeToString(int ms);
 
+    // Results Screen
+    QLabel* _score;
     int _noOfCorrectAnswers;
 
     void scrollScreenToTop();
+
+
+// Quiz Editor
+    QPushButton* _viewQuizButton;
+    QComboBox* _test;
+    QListView* _listView;
+
+    void writeFile();
+    void initEditorView();
+    void deinitEditorView();
+    void loadQuizFileToEditor(QString filename, int &row);
 
 signals:
     // No signals as of yet.
@@ -105,6 +127,8 @@ public slots:
     void callMarkQuiz_byTimer();
     void startQuiz();
     void updateTimerLabel();
+    void goToEditorView();
+    void goToViewerView();
 };
 
 
