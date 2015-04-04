@@ -108,17 +108,6 @@ private:
 
     void scrollScreenToTop();
 
-
-// Quiz Editor
-    QPushButton* _viewQuizButton;
-    QComboBox* _test;
-    QListView* _listView;
-
-    void writeFile();
-    void initEditorView();
-    void deinitEditorView();
-    void loadQuizFileToEditor(QString filename, int &row);
-
 signals:
     // No signals as of yet.
 
@@ -129,6 +118,25 @@ public slots:
     void updateTimerLabel();
     void goToEditorView();
     void goToViewerView();
+
+
+// Quiz Editor
+private:
+    QPushButton* _viewQuizButton;
+    QComboBox* _noOfQuestionsDropDownBox;
+    QListView* _listView;
+    int _noOfQuestions;
+
+    void writeFile();
+    void initEditorView();
+    void deinitEditorView();
+    void loadQuizFileToEditor(QString filename, int &row);
+
+signals:
+    // No signals as of yet.
+
+public slots:
+    void updateNoOfQuestions();
 };
 
 
