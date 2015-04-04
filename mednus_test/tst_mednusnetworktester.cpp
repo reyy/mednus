@@ -1,25 +1,4 @@
-#include <QString>
-#include <QtTest>
-#include <QCoreApplication>
-#define protected public
-#include "MedNUSNetwork.h"
-
-class MedNUSNetworkTester : public QObject
-{
-public:
-    MedNUSNetworkTester();
-    ~MedNUSNetworkTester();
-
-private:
-    Q_OBJECT
-    MedNUSNetwork *network;
-
-private Q_SLOTS:
-    void initTestCase();
-    void loginTest();
-    void BluebellHTTPSTest();
-    void cleanupTestCase();
-};
+#include "tst_mednusnetworktester.h"
 
 MedNUSNetworkTester::MedNUSNetworkTester()
 {
@@ -76,7 +55,3 @@ void MedNUSNetworkTester::loginTest()
     QVERIFY(arguments.at(1).type() == QVariant::String);
     QVERIFY(arguments.at(2).type() == QVariant::String);
 }
-
-QTEST_MAIN(MedNUSNetworkTester)
-
-#include "tst_mednusnetworktester.moc"

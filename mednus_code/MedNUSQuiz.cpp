@@ -1,6 +1,8 @@
 #include "MedNUSQuiz.h"
 #include "MedNUSAUISettings.h"
 
+const int MAX_NO_OF_QUIZ_QUESTIONS = 100;
+
 MedNUSQuiz::MedNUSQuiz(QString filename, QWidget *parent) :
     QWidget(parent)
 {
@@ -95,15 +97,19 @@ void MedNUSQuiz::initEditorView() {
     connect(_viewQuizButton, SIGNAL(released()), this, SLOT(goToViewerView()));
     _layout->addWidget(_viewQuizButton, row++, 0, 1, 2);
 
-    // Test
-    _test = new QComboBox(_tempWidget);
-    _test->addItem("1");
-    _test->addItem("2");
-    _test->addItem("3");
-    _test->setVisible(true);
-    _listView = new QListView(_test);
-    _test->setView(_listView);
+    // Number of Questions for quiz.
+    _noOfQuestionsDropDownBox = new QComboBox(_tempWidget);
+    for (int i = 1; i <= MAX_NO_OF_QUIZ_QUESTIONS; i++) {
+        _noOfQuestionsDropDownBox->addItem(QString::number(i));
+    }
+    _noOfQuestionsDropDownBox->setMaxVisibleItems(MAX_NO_OF_QUIZ_QUESTIONS/2);
+    _noOfQuestionsDropDownBox->setVisible(true);
+    _listView = new QListView(_noOfQuestionsDropDownBox);
+    _noOfQuestionsDropDownBox->setView(_listView);
+    connect(_noOfQuestionsDropDownBox, SIGNAL(currentIndexChanged(int)), this,
+            SLOT(updateNoOfQuestions()));
 
+    // Load the quiz into the editor.
     loadQuizFileToEditor(_filename, row);
 
     _tempWidget->setLayout(_layout);
@@ -494,6 +500,13 @@ void MedNUSQuiz::loadQuizFileToEditor(QString filename, int &row) {
         _questionList->append(question);
         content.clear();
     }
+}
+
+void MedNUSQuiz::updateNoOfQuestions()
+{
+    qDebug() << _noOfQuestionsDropDownBox->currentIndex() + 1;
+
+    _noOfQuestions = _noOfQuestionsDropDownBox->currentIndex() + 1;
 }
 
 
