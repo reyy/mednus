@@ -92,6 +92,9 @@ MedNUSMeshViewer::MedNUSMeshViewer(QString dir, bool withMeshPanel)
     //drawSphere(0.5,-1,-1,-1);
     //drawSphere(0.8,2,2,2);
     //drawBoundingBox();
+
+    //Loaded sucessfully!
+    this->setProperty("Loaded",true);
 }
 
 
