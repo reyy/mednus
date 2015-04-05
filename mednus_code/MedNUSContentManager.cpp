@@ -26,67 +26,15 @@ void MedNUSContentManager::initLessonList(QJsonDocument jsonResponse)
     content.push_back("/mednus/lesson1/videos/Skull Anatomy (1 of 5)- Superior, Posterior and Lateral Views -- Head and Neck Anatomy 101.mp4");
     content.push_back("/mednus/lesson1/videos/Osteology of the Skull- 12 Newborn Skull.mp4");
     content.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
-    content.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
-    content.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
-    content.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
-    content.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
-    content.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
     content.push_back("/mednus/lesson1/models/model1");
-    content.push_back("/mednus/lesson1/models/model2");
-    content.push_back("/mednus/lesson1/models/benchmarktest_1");
-    content.push_back("/mednus/lesson1/models/benchmarktest_2");
-    content.push_back("/mednus/lesson1/models/benchmarktest_3");
-    content.push_back("/mednus/lesson1/models/benchmarktest_4");
-    content.push_back("/mednus/lesson1/models/benchmarktest_5");
     content.push_back("/mednus/lesson1/quiz/Quiz - The Skull.qiz");
     emit callAddLesson("Functional Anatomy of the Skull","Professor Gopal","Anatomy Department",content);
 
     QStringList content2;
     content2.push_back("/mednus/lesson2/pdf/axial_lecture_2.pdf");
     content2.push_back("/mednus/lesson2/videos/Osteology of the Skull- 7 The Face (1).mp4");
-    content2.push_back("/mednus/lesson1/models/craniofacial.ply");
+    content2.push_back("/mednus/lesson1/models/model2");
     emit callAddLesson("Osteology of the Skull","A/Professor Tan","Anatomy Department",content2);
-
-    content2.clear();
-    content2.push_back("/mednus/lesson2/pdf/axial_lecture_2.pdf");
-    content2.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
-    content2.push_back("/mednus/lesson2/pdf/axial_lecture_2.pdf");
-    content2.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
-    content2.push_back("/mednus/lesson2/pdf/axial_lecture_2.pdf");
-    content2.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
-    content2.push_back("/mednus/lesson2/pdf/axial_lecture_2.pdf");
-    content2.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
-    content2.push_back("/mednus/lesson2/pdf/axial_lecture_2.pdf");
-    content2.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
-    content2.push_back("/mednus/lesson2/pdf/axial_lecture_2.pdf");
-    content2.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
-    content2.push_back("/mednus/lesson2/pdf/axial_lecture_2.pdf");
-    content2.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
-    content2.push_back("/mednus/lesson2/pdf/axial_lecture_2.pdf");
-    content2.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
-    content2.push_back("/mednus/lesson2/pdf/axial_lecture_2.pdf");
-    content2.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
-    content2.push_back("/mednus/lesson2/pdf/axial_lecture_2.pdf");
-    content2.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
-    content2.push_back("/mednus/lesson2/pdf/axial_lecture_2.pdf");
-    content2.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
-    content2.push_back("/mednus/lesson2/pdf/axial_lecture_2.pdf");
-    content2.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
-    content2.push_back("/mednus/lesson2/pdf/axial_lecture_2.pdf");
-    content2.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
-    content2.push_back("/mednus/lesson2/pdf/axial_lecture_2.pdf");
-    content2.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
-    content2.push_back("/mednus/lesson2/pdf/axial_lecture_2.pdf");
-    content2.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
-    content2.push_back("/mednus/lesson2/pdf/axial_lecture_2.pdf");
-    content2.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
-    content2.push_back("/mednus/lesson2/pdf/axial_lecture_2.pdf");
-    content2.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
-    content2.push_back("/mednus/lesson2/pdf/axial_lecture_2.pdf");
-    content2.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
-    content2.push_back("/mednus/lesson2/pdf/axial_lecture_2.pdf");
-    content2.push_back("/mednus/lesson2/videos/Osteology of the Skull- 7 The Face (1).mp4");
-    emit callAddLesson("Skull Osteology I","A/Professor Tan","Anatomy Department",content2);
 
     content2.clear();
     content2.push_back("/mednus/lesson2/pdf/axial_lecture_2.pdf");
@@ -149,16 +97,27 @@ void MedNUSContentManager::openFile(QString fileDir, QString title, int type)
             title.truncate(10);
             title.append("...");
         }
-        emit callAddTab(toAdd,title,dir);
+
+        //Catch Corrupted File
+        if(toAdd->property("Loaded").isValid())
+            emit callAddTab(toAdd,title,dir);
+        else
+            QMessageBox::information(NULL, "", "File could not be opened. It might be corrupted or be used by another process.");
     }
     else
     {
         //Future Call Network to D/L
+        QMessageBox::information(NULL, "File Not Downloaded", "File not found! Network implementation to download missing file is not completed yet.");
     }
 }
 
 
-bool MedNUSContentManager::isFileExist(QString)
+bool MedNUSContentManager::isFileExist(QString path)
 {
-    return true;
+    QFileInfo checkFile(path);
+
+    if (checkFile.exists() /*&& checkFile.isFile()*/)
+        return true;
+    else
+        return false;
 }

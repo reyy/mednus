@@ -41,6 +41,9 @@ MedNUSPdfViewer::MedNUSPdfViewer(QString filename, QWidget *parent) :
         scrollArea->setStyleSheet(file.readAll());
         file.close();
     }
+
+    //Loaded sucessfully!
+    this->setProperty("Loaded",true);
 }
 
 

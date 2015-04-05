@@ -38,10 +38,19 @@ MedNUSVideoViewer::MedNUSVideoViewer(QString filename, QWidget *parent) :
     connect(&mediaPlayer, SIGNAL(positionChanged(qint64)), control, SLOT(positionChanged(qint64)));
     connect(&mediaPlayer, SIGNAL(durationChanged(qint64)), control, SLOT(durationChanged(qint64)));
     connect(control, SIGNAL(changeVolume(int)), &mediaPlayer, SLOT(setVolume(int)));
-    //static QString fi = filename;
-    mediaPlayer.setMedia(QUrl::fromLocalFile(filename));
-    //mediaPlayer.play();
-    mediaPlayer.pause();
+
+    try
+    {
+        mediaPlayer.setMedia(QUrl::fromLocalFile(filename));
+        mediaPlayer.pause();
+    }
+    catch(int error)
+    {
+        qDebug() << "Error Opening File.";
+    }
+
+    //Loaded sucessfully!
+    this->setProperty("Loaded",true);
 }
 
 
