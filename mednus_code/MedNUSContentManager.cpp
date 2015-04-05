@@ -14,10 +14,15 @@ void MedNUSContentManager::initLessonList(QJsonDocument jsonResponse)
 
     while(curLesson!=lessonArray->end()) {
         QJsonObject fileItem = (*curLesson).toObject();
+        QString desc = fileItem["lesson_desc"].toString();
+        QString owner = fileItem["lesson_owner_domain"].toString() + "\\" + fileItem["lesson_owner"].toString();
         QStringList content = fileItem["file_list"].toString().split(QRegExp("[{}\",]"),
                                                                      QString::SplitBehavior::SkipEmptyParts);
-        //TODO: Account for NULL cases
-        emit callAddLesson(fileItem["lesson_title"].toString(),"Const","",content);
+        //Account for NULL cases
+        if(content.size() == 1 && content[0] =="NULL")
+            content.clear();
+
+        emit callAddLesson(fileItem["lesson_title"].toString(), desc, owner, content);
 
         curLesson++;
     }
