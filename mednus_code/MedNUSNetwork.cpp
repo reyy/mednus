@@ -132,6 +132,7 @@ void MedNUSNetwork::getReply(QNetworkReply *reply)
     else {
         //failure
         qDebug() << "Failure" <<reply->errorString();
+        emit loginResults(false,"","",NONE);
         delete reply;
     }
     isLocked = false;

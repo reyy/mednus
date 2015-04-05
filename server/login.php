@@ -1,7 +1,7 @@
 <?php
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+// error_reporting(E_ALL);
+// ini_set('display_errors', 1);
 
 //Check isset
 if(!isset($_GET["token"]) || !isset($_GET["nusnet_id"]) || !isset($_GET["domain"]))
