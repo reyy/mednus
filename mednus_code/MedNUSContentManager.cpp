@@ -150,11 +150,17 @@ void MedNUSContentManager::openFile(QString fileDir, QString title, int type)
     else
     {
         //Future Call Network to D/L
+        QMessageBox::information(NULL, "File Not Downloaded", "File not found! Network implementation to download missing file is not completed yet.");
     }
 }
 
 
-bool MedNUSContentManager::isFileExist(QString)
+bool MedNUSContentManager::isFileExist(QString path)
 {
-    return true;
+    QFileInfo checkFile(path);
+
+    if (checkFile.exists() /*&& checkFile.isFile()*/)
+        return true;
+    else
+        return false;
 }
