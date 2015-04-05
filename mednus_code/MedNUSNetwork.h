@@ -17,6 +17,7 @@
 #include <QFile>
 #include <QSslCertificate>
 #include <QSslSocket>
+#include "MedNUSAUISettings.h"
 
 class MedNUSNetwork : public QObject
 {
@@ -44,7 +45,7 @@ protected:
 
 signals:
     void showLoadingScreen(bool);
-    void loginResults(bool, QString, QString);
+    void loginResults(bool, QString, QString, interfaceMode);
     void receivedLessonList(QJsonDocument);
 
 public slots:

@@ -54,7 +54,7 @@ private:
 signals:
 
 public slots:
-    void loginCompleted(bool,QString,QString);
+    void loginCompleted(bool, QString, QString, interfaceMode);
     void logout();
     void finalizeWidgets();
 };

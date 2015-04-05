@@ -157,7 +157,7 @@ void MedNUSNetwork::checkTokenReply(QJsonObject jsonObj)
     if(success)
         getProfile();
     else
-        emit loginResults(false,"","");
+        emit loginResults(false,"","",NONE);
 }
 
 
@@ -179,13 +179,36 @@ void MedNUSNetwork::loginReply(QJsonObject jsonObj)
         }
     }
     else
-        emit loginResults(false,"","");
+        emit loginResults(false,"","",NONE);
 }
 
 
 void MedNUSNetwork::profileReply(QJsonObject jsonObj)
 {
-    emit loginResults(true,jsonObj["UserID"].toString(),jsonObj["Name"].toString());
+    QNetworkAccessManager* tempMan = new QNetworkAccessManager();
+    connect(tempMan, SIGNAL(sslErrors(QNetworkReply*, const QList<QSslError> & )), this, SLOT(handleSslErrors(QNetworkReply*, const QList<QSslError> & )));
+    connect(tempMan, &QNetworkAccessManager::finished, [=](QNetworkReply* reply){
+        //Got back results!
+        if(reply->error() == QNetworkReply::NoError)
+        {
+            QString strReply = (QString)reply->readAll();
+            qDebug() << strReply;
+            //TODO: Change 1 & 0
+            if(strReply == "1")
+                emit loginResults(true,jsonObj["UserID"].toString(),jsonObj["Name"].toString(), LECTURER);
+            else if(strReply == "0")
+                emit loginResults(true,jsonObj["UserID"].toString(),jsonObj["Name"].toString(), STUDENT);
+            else
+                emit loginResults(false,"","",NONE);
+        }
+        else
+            emit loginResults(false,"","",NONE);
+        delete tempMan;
+    });
+
+    QString address = "https://bluebell.d1.comp.nus.edu.sg/~anatomy/login.php?nusnet_id="+jsonObj["UserID"].toString()+"&domain=NUSSTU&token="+token;
+    QNetworkRequest request((QUrl(address)));
+    tempMan->get(request);
 }
 
 
