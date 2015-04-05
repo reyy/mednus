@@ -145,7 +145,12 @@ void MedNUSContentManager::openFile(QString fileDir, QString title, int type)
             title.truncate(10);
             title.append("...");
         }
-        emit callAddTab(toAdd,title,dir);
+
+        //Catch Corrupted File
+        if(toAdd->property("Loaded").isValid())
+            emit callAddTab(toAdd,title,dir);
+        else
+            QMessageBox::information(NULL, "", "File could not be opened. It might be corrupted or be used by another process.");
     }
     else
     {
