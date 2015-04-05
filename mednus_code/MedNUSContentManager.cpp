@@ -33,6 +33,11 @@ void MedNUSContentManager::initLessonList(QJsonDocument jsonResponse)
     content.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
     content.push_back("/mednus/lesson1/models/model1");
     content.push_back("/mednus/lesson1/models/model2");
+    content.push_back("/mednus/lesson1/models/benchmarktest_1");
+    content.push_back("/mednus/lesson1/models/benchmarktest_2");
+    content.push_back("/mednus/lesson1/models/benchmarktest_3");
+    content.push_back("/mednus/lesson1/models/benchmarktest_4");
+    content.push_back("/mednus/lesson1/models/benchmarktest_5");
     content.push_back("/mednus/lesson1/quiz/Quiz - The Skull.qiz");
     emit callAddLesson("Functional Anatomy of the Skull","Professor Gopal","Anatomy Department",content);
 
