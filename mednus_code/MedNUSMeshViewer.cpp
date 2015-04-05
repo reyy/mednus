@@ -64,14 +64,31 @@ MedNUSMeshViewer::MedNUSMeshViewer(QString dir, bool withMeshPanel)
     createToolBars();
     createStatusBar();
 
-    try{
-       QElapsedTimer et;
-       et.start();
-       loadMeshDir(dir);
-       qint64 timeTaken = et.elapsed();
-       qDebug() << "Time Taken for mesh: " << timeTaken << " ms.";
+    QMessageBox msgBox;
+    msgBox.setText("Depending on the size of the model. It may take awhile to load.");
+    msgBox.setIcon(QMessageBox::Information);
+    msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+    int ret = msgBox.exec();
+
+    if (ret == QMessageBox::Ok) {
+        try {
+            // Start the timer.
+            QElapsedTimer et;
+            et.start();
+
+            // Load the meshes.
+            loadMeshDir(dir);
+
+            // Check the time taken to load the meshes.
+            qint64 timeTaken = et.elapsed();
+            qDebug() << "Time Taken for mesh: " << timeTaken << " ms.";
+        } catch (int a) {
+            loadMesh();
+        }
+    } else {
+        return;
     }
-    catch(int a){ loadMesh(); }
+
     //drawSphere(0.5,-1,-1,-1);
     //drawSphere(0.8,2,2,2);
     //drawBoundingBox();
