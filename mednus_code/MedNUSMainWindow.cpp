@@ -194,7 +194,7 @@ void MedNUSMainWindow::loginCompleted(bool success, QString matric, QString name
 
         //Todo: Determined if its student or a staff.
 
-        _currentMode=LECTURER;
+        _currentMode=STUDENT;
         qDebug() << "Set mode to  " << _currentMode;
 
         createMenus();

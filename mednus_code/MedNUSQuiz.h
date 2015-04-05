@@ -73,7 +73,7 @@ private:
     bool _showAnswerFlag;
     bool _showTeacherCommentFlag;
 
-    void loadQuizFileToViewer(QString filename, int &row);
+    bool loadQuizFileToViewer(QString filename, int &row);
     void resizeEvent(QResizeEvent *event);
     void initViewerView();
     void deinitViewerView();
