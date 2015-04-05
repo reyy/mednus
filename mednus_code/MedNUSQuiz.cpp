@@ -8,13 +8,25 @@ MedNUSQuiz::MedNUSQuiz(QString filename, QWidget *parent) :
     _parent = parent;
     _filename = filename;
 
-    initViewerView();
+    try
+    {
+        initViewerView();
+    }
+    catch(std::string errorMsg)
+    {
+        qWarning() << errorMsg.c_str();
+        return;
+    }
 
+    //TODO: REMOVE Debug stuff
     if (_parent == NULL)
         qDebug() << "no parent";
     else
         qDebug() << "yes parent";
     qDebug() << "noOfElements = " << _tempWidget->children().size();
+
+    //Loaded sucessfully!
+    this->setProperty("Loaded",true);
 }
 
 
@@ -34,7 +46,8 @@ void MedNUSQuiz::initViewerView() {
     _questionList = new QVector<MedNUSQuizQuestion*>();
 
     // Read Json file
-    loadQuizFileToViewer(_filename, row);
+    if(!loadQuizFileToViewer(_filename, row))
+        throw "Could not load file.";
 
     // Marking button
     _markButton = new QPushButton("Submit", _tempWidget);
@@ -199,15 +212,13 @@ void MedNUSQuiz::markQuiz(bool calledByTimer) {
     scrollScreenToTop();
 }
 
-void MedNUSQuiz::loadQuizFileToViewer(QString filename, int &row) {
+bool MedNUSQuiz::loadQuizFileToViewer(QString filename, int &row) {
 
     QFile file(filename);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
         qWarning() << "Unable to open file.";
-
-        // TODO: Add warning message box.
-        //To Miki, Check with Rey to standardise file not found output.
+        return false;
     }
     QString lastModifiedDate = QFileInfo(file).lastModified().toString();
     //qDebug() << lastModifiedDate;
@@ -351,6 +362,7 @@ void MedNUSQuiz::loadQuizFileToViewer(QString filename, int &row) {
         _questionList->append(question);
         content.clear();
     }
+    return true;
 }
 
 void MedNUSQuiz::loadQuizFileToEditor(QString filename, int &row) {

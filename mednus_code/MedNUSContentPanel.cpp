@@ -64,10 +64,19 @@ void MedNUSContentPanel::addTab(QWidget* toAdd,QString title, QString dir)
             return;
         }
 
-    tabList[type]->addTab(toAdd, title);
-    tabList[type]->setCurrentIndex(tabList[type]->count()-1);
+    //Check if tab opened properly
+    if(toAdd->property("Loaded").isValid())
+    {
+        tabList[type]->addTab(toAdd, title);
+        tabList[type]->setCurrentIndex(tabList[type]->count()-1);
 
-    emit tabOpenedSignal(dir);
+        emit tabOpenedSignal(dir);
+    }
+    else
+    {
+        //Cleanup
+        delete toAdd;
+    }
 }
 
 
