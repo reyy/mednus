@@ -30,7 +30,7 @@ MedNUSMainWindow::MedNUSMainWindow(QWidget *parent) :
 
         setCentralWidget(login);
         connect(login, SIGNAL(callLogin(QString,QString,bool)), network, SLOT(login(QString,QString,bool)));
-        connect(network,SIGNAL(loginResults(bool,QString,QString)),this,SLOT(loginCompleted(bool,QString,QString)));
+        connect(network,SIGNAL(loginResults(bool,QString,QString,interfaceMode)),this,SLOT(loginCompleted(bool,QString,QString,interfaceMode)));
     }
     else
     {
@@ -160,12 +160,12 @@ void MedNUSMainWindow::deleteMenus() {
 }
 
 
-void MedNUSMainWindow::loginCompleted(bool success, QString matric, QString name)
+void MedNUSMainWindow::loginCompleted(bool success, QString matric, QString name, interfaceMode permission)
 {
     if(!success) {
         qDebug() << "\nWrong User/Pass.";
         login->setLoading(false);
-        login->setErrorMessage("Wrong credentials.\nTry again.");
+        login->setErrorMessage("Login Failed.\nPlease Try again.");
     }
     else
     {
@@ -192,9 +192,8 @@ void MedNUSMainWindow::loginCompleted(bool success, QString matric, QString name
 
         login = NULL;
 
-        //Todo: Determined if its student or a staff.
-
-        _currentMode=STUDENT;
+        //Determined if its student or a staff.
+        _currentMode=permission;
         qDebug() << "Set mode to  " << _currentMode;
 
         createMenus();
