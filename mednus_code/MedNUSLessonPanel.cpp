@@ -84,16 +84,16 @@ void MedNUSLessonPanel::addLesson(QString title,QString subTitle,
         fileType filetype;
         if(directory.contains(".png", Qt::CaseInsensitive))
             filetype = fileType::IMAGE;
-        if(directory.contains(".ply", Qt::CaseInsensitive))
-            filetype = fileType::MODEL;
-        if(directory.contains(".pdf", Qt::CaseInsensitive))
+        //else if(directory.contains(".ply", Qt::CaseInsensitive))
+        //    filetype = fileType::MODEL;
+        else if(directory.contains(".pdf", Qt::CaseInsensitive))
             filetype = fileType::PDF;
-        if(directory.contains(".qiz", Qt::CaseInsensitive))
+        else if(directory.contains(".qiz", Qt::CaseInsensitive))
             filetype = fileType::QUIZ;
-        if(directory.contains(".mp4", Qt::CaseInsensitive))
+        else if(directory.contains(".mp4", Qt::CaseInsensitive))
             filetype = fileType::VIDEO;
-        //if(directory.contains(".mqiz", Qt::CaseInsensitive))
-            //filetype = fileType::
+        else
+            filetype = fileType::MODEL;
 
         _package->addContent(directory,filetype);
     }

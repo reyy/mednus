@@ -65,11 +65,11 @@ MedNUSMeshViewer::MedNUSMeshViewer(QString dir, bool withMeshPanel)
     createStatusBar();
 
     try{
-       QStringList list;
-       list.append(dir);
-       //loadMesh(list);
-       //loadMeshDir(dir);
-       loadDir();
+       QElapsedTimer et;
+       et.start();
+       loadMeshDir(dir);
+       qint64 timeTaken = et.elapsed();
+       qDebug() << "Time Taken for mesh: " << timeTaken << " ms.";
     }
     catch(int a){ loadMesh(); }
     //drawSphere(0.5,-1,-1,-1);
