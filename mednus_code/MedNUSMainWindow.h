@@ -50,6 +50,8 @@ private:
     bool _menuCreated;
     bool _teacherMode;
     interfaceMode _currentMode;
+    QWidget *centralWidget;
+    QGridLayout *mainLayout;
 
 signals:
 

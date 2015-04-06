@@ -61,8 +61,8 @@ void MedNUSMainWindow::createWidgets()
     if(!_widgetsCreated) {
          if(_currentMode==LECTURER)
              this->setStyleSheet("MedNUSMainWindow{border-image: url(:/images/login_background2.png) 0 0 0 0 stretch stretch;}");
-         QWidget *centralWidget = new QWidget(this);
-         QGridLayout *mainLayout = new QGridLayout();
+         centralWidget = new QWidget(this);
+         mainLayout = new QGridLayout();
          mainLayout->setColumnStretch(0,1);
          mainLayout->setColumnStretch(1,0);
          mainLayout->setRowStretch(0,0);
@@ -211,7 +211,7 @@ void MedNUSMainWindow::logout()
     login = new MedNUSLogin(this);
     setCentralWidget(login);
     connect(login, SIGNAL(callLogin(QString,QString,bool)), network, SLOT(login(QString,QString,bool)));
-    connect(network,SIGNAL(loginResults(bool,QString,QString)),this,SLOT(loginCompleted(bool,QString,QString)));
+    //connect(network,SIGNAL(loginResults(bool,QString,QString)),this,SLOT(loginCompleted(bool,QString,QString)));
 }
 
 

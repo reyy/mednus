@@ -20,6 +20,7 @@ private:
 private Q_SLOTS:
     void initTestCase();
     void loginTest();
+    void downloadLessonListTest();
     void BluebellHTTPSTest();
     void cleanupTestCase();
 };
