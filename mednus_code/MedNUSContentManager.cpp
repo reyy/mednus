@@ -1,8 +1,10 @@
 #include "MedNUSContentManager.h"
 using namespace std;
 
-MedNUSContentManager::MedNUSContentManager(QObject *parent)
+MedNUSContentManager::MedNUSContentManager(interfaceMode currentMode,
+                                           QObject *parent)
 {
+    _currentMode = currentMode;
 }
 
 
@@ -92,7 +94,7 @@ void MedNUSContentManager::openFile(QString fileDir, QString title, int type)
             break;
 
         case QUIZ:
-            toAdd = new MedNUSQuiz(dir);
+            toAdd = new MedNUSQuiz(dir, _currentMode);
             break;
         }
 

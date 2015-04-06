@@ -16,12 +16,15 @@ class MedNUSContentManager : public QObject
 {
     Q_OBJECT
 public:
-    explicit MedNUSContentManager(QObject *parent = 0);
+    explicit MedNUSContentManager(interfaceMode currentMode,
+                                  QObject *parent = 0);
 
     void openLastView(QStringList);
 
 private:
     bool isFileExist(QString);
+
+    interfaceMode _currentMode;
 
 signals:
     void callAddTab(QWidget*,QString,QString);

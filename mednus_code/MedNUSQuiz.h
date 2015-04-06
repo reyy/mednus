@@ -38,6 +38,7 @@
 
 #include "MedNUSQuizStylesheet.h"
 #include "MedNUSQuizQuestion.h"
+#include "MedNUSAUISettings.h"
 
 
 class MedNUSQuiz : public QWidget
@@ -45,10 +46,13 @@ class MedNUSQuiz : public QWidget
     Q_OBJECT
 
 public:
-    explicit MedNUSQuiz(QString filename, QWidget *parent = 0);
+    explicit MedNUSQuiz(QString filename, interfaceMode currentMode,
+                        QWidget *parent = 0);
     ~MedNUSQuiz();
 
 protected:
+    interfaceMode _currentMode;
+
 // Widget Stuff
     QWidget* _tempWidget;
     QGridLayout* _layout;

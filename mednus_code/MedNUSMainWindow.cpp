@@ -102,7 +102,7 @@ void MedNUSMainWindow::createWidgets()
         connect(tabs, SIGNAL(tabOpenedSignal(QString)), lp, SLOT(tabOpened(QString)));
 
         //Content Manager
-        MedNUSContentManager *contentManager = new MedNUSContentManager();
+        MedNUSContentManager *contentManager = new MedNUSContentManager(_currentMode);
 
         //Connections
         connect(contentManager, SIGNAL(callAddLesson(QString,QString,QString,QStringList)), lp, SLOT(addLesson(QString,QString,QString,QStringList)));
@@ -194,6 +194,7 @@ void MedNUSMainWindow::loginCompleted(bool success, QString matric, QString name
 
         //Determined if its student or a staff.
         _currentMode=permission;
+        _currentMode=STUDENT;
         qDebug() << "Set mode to  " << _currentMode;
 
         createMenus();

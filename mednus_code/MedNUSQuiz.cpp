@@ -1,14 +1,14 @@
 #include "MedNUSQuiz.h"
-#include "MedNUSAUISettings.h"
 
 const int MAX_NO_OF_QUIZ_QUESTIONS = 100;
 
-MedNUSQuiz::MedNUSQuiz(QString filename, QWidget *parent) :
+MedNUSQuiz::MedNUSQuiz(QString filename, interfaceMode currentMode, QWidget *parent) :
     QWidget(parent)
 {
     this->setAccessibleName(_filename);
     _parent = parent;
     _filename = filename;
+    _currentMode = currentMode;
 
     try
     {
@@ -60,12 +60,14 @@ void MedNUSQuiz::initViewerView() {
     _layout->addWidget(_markButton, row++, 0, 1, 2);
 
     // Edit Quiz button
-    _editQuizButton = new QPushButton("Edit Quiz", _tempWidget);
-    _editQuizButton->setVisible(true);
-    _editQuizButton->setStyleSheet(EDIT_BUTTON_STYLESHEET);
-    _editQuizButton->setFont(QFont("Helvetica", 14));
-    connect(_editQuizButton, SIGNAL(released()), this, SLOT(goToEditorView()));
-    _layout->addWidget(_editQuizButton, row++, 0, 1, 2);
+    if (_currentMode == LECTURER) {
+        _editQuizButton = new QPushButton("Edit Quiz", _tempWidget);
+        _editQuizButton->setVisible(true);
+        _editQuizButton->setStyleSheet(EDIT_BUTTON_STYLESHEET);
+        _editQuizButton->setFont(QFont("Helvetica", 14));
+        connect(_editQuizButton, SIGNAL(released()), this, SLOT(goToEditorView()));
+        _layout->addWidget(_editQuizButton, row++, 0, 1, 2);
+    }
 
     _tempWidget->setLayout(_layout);
     _tempWidget->setContentsMargins(10,10,10,10);
