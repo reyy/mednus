@@ -43,7 +43,6 @@
 
 class MedNUSQuiz : public QWidget
 {
-    Q_OBJECT
 
 public:
     explicit MedNUSQuiz(QString filename, interfaceMode currentMode,
@@ -64,6 +63,8 @@ protected:
     QWidget* _parent;
     QString _filename;
 
+    int _lastRow;
+
 
 // Quiz Viewer
 
@@ -72,12 +73,15 @@ public:
     void markQuiz(bool calledByTimer);
 
 private:
+    Q_OBJECT
+
     // General
     QVector<int> _correctAnswerList;
     bool _showAnswerFlag;
     bool _showTeacherCommentFlag;
+    int _noOfQuestions;
 
-    bool loadQuizFileToViewer(QString filename, int &row);
+    bool loadQuizFileToViewer();
     void resizeEvent(QResizeEvent *event);
     void initViewerView();
     void deinitViewerView();
@@ -129,12 +133,11 @@ private:
     QPushButton* _viewQuizButton;
     QComboBox* _noOfQuestionsDropDownBox;
     QListView* _listView;
-    int _noOfQuestions;
 
     void writeFile();
     void initEditorView();
     void deinitEditorView();
-    void loadQuizFileToEditor(QString filename, int &row);
+    void loadQuizFileToEditor();
 
 signals:
     // No signals as of yet.

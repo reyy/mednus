@@ -43,12 +43,12 @@ void MedNUSQuiz::initViewerView() {
     _layout = new QGridLayout(_tempWidget);
     _layout->setContentsMargins(0,0,0,0);
 
-    int row = 0;
+    _lastRow = 0;
     // Add questions here //
     _questionList = new QVector<MedNUSQuizQuestion*>();
 
     // Read Json file
-    if(!loadQuizFileToViewer(_filename, row))
+    if(!loadQuizFileToViewer())
         throw "Could not load file.";
 
     // Marking button
@@ -57,7 +57,7 @@ void MedNUSQuiz::initViewerView() {
     _markButton->setStyleSheet(MARK_BUTTON_STYLESHEET);
     _markButton->setFont (QFont ("Helvetica", 14));
     connect(_markButton, SIGNAL(released()), this, SLOT(callMarkQuiz_byButton()));
-    _layout->addWidget(_markButton, row++, 0, 1, 2);
+    _layout->addWidget(_markButton, _lastRow++, 0, 1, 2);
 
     // Edit Quiz button
     if (_currentMode == LECTURER) {
@@ -66,7 +66,7 @@ void MedNUSQuiz::initViewerView() {
         _editQuizButton->setStyleSheet(EDIT_BUTTON_STYLESHEET);
         _editQuizButton->setFont(QFont("Helvetica", 14));
         connect(_editQuizButton, SIGNAL(released()), this, SLOT(goToEditorView()));
-        _layout->addWidget(_editQuizButton, row++, 0, 1, 2);
+        _layout->addWidget(_editQuizButton, _lastRow++, 0, 1, 2);
     }
 
     _tempWidget->setLayout(_layout);
@@ -102,7 +102,7 @@ void MedNUSQuiz::initEditorView() {
     _layout = new QGridLayout(_tempWidget);
     _layout->setContentsMargins(0,0,0,0);
 
-    int row = 0;
+    _lastRow = 0;
 
     // View Quiz button
     _viewQuizButton = new QPushButton("View Quiz", _tempWidget);
@@ -110,7 +110,7 @@ void MedNUSQuiz::initEditorView() {
     _viewQuizButton->setStyleSheet(EDIT_BUTTON_STYLESHEET);
     _viewQuizButton->setFont(QFont("Helvetica", 14));
     connect(_viewQuizButton, SIGNAL(released()), this, SLOT(goToViewerView()));
-    _layout->addWidget(_viewQuizButton, row++, 0, 1, 2);
+    _layout->addWidget(_viewQuizButton, _lastRow++, 0, 1, 2);
 
     // Number of Questions for quiz.
     _noOfQuestionsDropDownBox = new QComboBox(_tempWidget);
@@ -125,7 +125,10 @@ void MedNUSQuiz::initEditorView() {
             SLOT(updateNoOfQuestions()));
 
     // Load the quiz into the editor.
-    loadQuizFileToEditor(_filename, row);
+    loadQuizFileToEditor();
+
+    // Set the current number of questions in the drop down box based on file.
+    _noOfQuestionsDropDownBox->setCurrentIndex(_noOfQuestions-1);
 
     _tempWidget->setLayout(_layout);
     _tempWidget->setContentsMargins(10,10,10,10);
@@ -220,9 +223,9 @@ void MedNUSQuiz::markQuiz(bool calledByTimer) {
     scrollScreenToTop();
 }
 
-bool MedNUSQuiz::loadQuizFileToViewer(QString filename, int &row) {
+bool MedNUSQuiz::loadQuizFileToViewer() {
 
-    QFile file(filename);
+    QFile file(_filename);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
         qWarning() << "Unable to open file.";
@@ -244,47 +247,47 @@ bool MedNUSQuiz::loadQuizFileToViewer(QString filename, int &row) {
     // Quiz title text label
     _titleTextLabel = new QLabel(quizDetails["title"].toString(), _tempWidget);
     _titleTextLabel->setFont (QFont ("Helvetica", 18,QFont::Bold,false));
-    _layout->addWidget(_titleTextLabel, row++, 0, 1, 2);
+    _layout->addWidget(_titleTextLabel, _lastRow++, 0, 1, 2);
 
     _authorTextLabel = new QLabel("by "+quizDetails["author"].toString(), _tempWidget);
     _authorTextLabel->setFont(QFont("Helvetica", 9, QFont::Normal, true));
-    _layout->addWidget(_authorTextLabel, row++, 0, 1, 1);
+    _layout->addWidget(_authorTextLabel, _lastRow++, 0, 1, 1);
 
     _lastModifiedLabel = new QLabel("last modified on: "+lastModifiedDate, _tempWidget);
     _lastModifiedLabel->setFont(QFont("Helvetica", 9, QFont::Normal, true));
     _lastModifiedLabel->setAlignment(Qt::AlignRight);
-    _layout->addWidget(_lastModifiedLabel, row-1, 1, 1, 1);
+    _layout->addWidget(_lastModifiedLabel, _lastRow-1, 1, 1, 1);
 
     // The instruction text at the top of the quiz.
     _instructionTextLabel = new QLabel(quizDetails["introductionText"].toString(), _tempWidget);
     _instructionTextLabel->setWordWrap(true);
     _instructionTextLabel->setStyleSheet(INSTRUCTION_TEXT_LABEL_STYLESHEET);
     _instructionTextLabel->setFont (QFont ("Helvetica", 11,QFont::Normal,true));
-    _layout->addWidget(_instructionTextLabel, row++, 0, 1, 2);
+    _layout->addWidget(_instructionTextLabel, _lastRow++, 0, 1, 2);
 
     _dummySpace1 = new QLabel("-", _tempWidget);
     _dummySpace1->setStyleSheet(DUMMY_SPACE_STYLESHEET);
     _dummySpace1->setFont (QFont ("Helvetica", 14, QFont::Bold));
-    _layout->addWidget(_dummySpace1, row++, 0, 1, 2, Qt::AlignCenter);
+    _layout->addWidget(_dummySpace1, _lastRow++, 0, 1, 2, Qt::AlignCenter);
 
     _score = new QLabel(TEXT_QUIZ_WARNING, _tempWidget);
     _score->setStyleSheet(SCORE_TEXT_LABEL_STYLESHEET);
     _score->setFont (QFont ("Helvetica", 90,QFont::Bold,true));
     _score->setAlignment(Qt::AlignCenter);
     _score->setVisible(false);
-    _layout->addWidget(_score, row++, 0, 1, 2);
+    _layout->addWidget(_score, _lastRow++, 0, 1, 2);
 
     _startScreenLabel = new QLabel(TEXT_QUIZ_INTRO, _tempWidget);
     _startScreenLabel->setWordWrap(true);
     _startScreenLabel->setStyleSheet("text-align:justify;");
     _startScreenLabel->setFont (QFont ("Helvetica", 12));
-    _layout->addWidget(_startScreenLabel, row++, 0, 1, 2);
+    _layout->addWidget(_startScreenLabel, _lastRow++, 0, 1, 2);
 
     // Quiz flags
     _showAnswerFlag = quizDetails["showAnswer"].toBool();
     _showTeacherCommentFlag = quizDetails["showTeacherComment"].toBool();
 
-    int noOfQuestions = quizDetails["noOfQuestions"].toInt();
+    _noOfQuestions = quizDetails["noOfQuestions"].toInt();
 
     // Load the timer
     _hasTimeLimit = quizDetails["hasTimeLimit"].toBool();
@@ -299,7 +302,7 @@ bool MedNUSQuiz::loadQuizFileToViewer(QString filename, int &row) {
         _timerLabel->setStyleSheet(TIMER_LABEL_STYLESHEET);
         _timerLabel->setFont (QFont ("Helvetica", 14,QFont::Bold,false));
         _timerLabel->setVisible(false);
-        _layout->addWidget(_timerLabel, row++, 0, 1, 2);
+        _layout->addWidget(_timerLabel, _lastRow++, 0, 1, 2);
 
         _labelUpdateTimer = new QTimer(_tempWidget);
         connect(_labelUpdateTimer, SIGNAL(timeout()), this, SLOT(updateTimerLabel()));
@@ -308,7 +311,7 @@ bool MedNUSQuiz::loadQuizFileToViewer(QString filename, int &row) {
         _timedQuizWarningTextLabel->setStyleSheet(TIMED_QUIZ_WARNING_STYLESHEET);
         _timedQuizWarningTextLabel->setFont (QFont ("Helvetica", 12));
         _timedQuizWarningTextLabel->setWordWrap(true);
-        _layout->addWidget(_timedQuizWarningTextLabel, row++, 0, 1, 1);
+        _layout->addWidget(_timedQuizWarningTextLabel, _lastRow++, 0, 1, 1);
     }
 
     // Attempts
@@ -317,26 +320,26 @@ bool MedNUSQuiz::loadQuizFileToViewer(QString filename, int &row) {
     _attemptLabel->setAlignment(Qt::AlignRight);
     _attemptLabel->setFont (QFont ("Helvetica", 12));
     _attemptLabel->setWordWrap(true);
-    _layout->addWidget(_attemptLabel, _hasTimeLimit?row-1:row, 1, 1, 1);
+    _layout->addWidget(_attemptLabel, _hasTimeLimit?_lastRow-1:_lastRow, 1, 1, 1);
 
     // Start Quiz button
     _startQuizButton = new QPushButton("Start Quiz", _tempWidget);
     _startQuizButton->setStyleSheet(START_QUIZ_BUTTON_STYLESHEET);
     _startQuizButton->setFont (QFont ("Helvetica", 14));
     connect(_startQuizButton, SIGNAL(released()), this, SLOT(startQuiz()));
-    _layout->addWidget(_startQuizButton, row++, 0, 1, 2);
+    _layout->addWidget(_startQuizButton, _lastRow++, 0, 1, 2);
     _layout->setAlignment(Qt::AlignTop);
 
     _warning = new QLabel(TEXT_QUIZ_WARNING, _tempWidget);
     _warning->setStyleSheet(WARNING_LABEL_STYLESHEET);
     _warning->setFont (QFont ("Helvetica", 11,QFont::Bold,false));
     _warning->setVisible(false);
-    _layout->addWidget(_warning, row++, 0, 1, 2);
+    _layout->addWidget(_warning, _lastRow++, 0, 1, 2);
 
     // Load the quiz questions.
     QString questionLabelString = "question_";
     QVector<QString> content;
-    for (int i = 1; i <= noOfQuestions; i++)
+    for (int i = 1; i <= _noOfQuestions; i++)
     {
         // Construct the QJsonObject for the particular question first.
         QJsonObject jsonQuestion = obj.value(questionLabelString+QString::number(i)).toObject();
@@ -361,7 +364,7 @@ bool MedNUSQuiz::loadQuizFileToViewer(QString filename, int &row) {
 
         // Create the question.
         MedNUSQuizQuestion *question =
-                new MedNUSQuizQuestion(_tempWidget, _layout, row, content,
+                new MedNUSQuizQuestion(_tempWidget, _layout, _lastRow, content,
                                        noOfOptions,
                                        jsonQuestion["hasImage"].toBool(),
                 QString(jsonQuestion["imageUrl"].toString()));
@@ -373,9 +376,9 @@ bool MedNUSQuiz::loadQuizFileToViewer(QString filename, int &row) {
     return true;
 }
 
-void MedNUSQuiz::loadQuizFileToEditor(QString filename, int &row) {
+void MedNUSQuiz::loadQuizFileToEditor() {
 
-    QFile file(filename);
+    QFile file(_filename);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
         qWarning() << "Unable to open file.";
@@ -399,47 +402,47 @@ void MedNUSQuiz::loadQuizFileToEditor(QString filename, int &row) {
     // Quiz title text label
     _titleTextLabel = new QLabel(quizDetails["title"].toString(), _tempWidget);
     _titleTextLabel->setFont (QFont ("Helvetica", 18,QFont::Bold,false));
-    _layout->addWidget(_titleTextLabel, row++, 0, 1, 2);
+    _layout->addWidget(_titleTextLabel, _lastRow++, 0, 1, 2);
 
     _authorTextLabel = new QLabel("by "+quizDetails["author"].toString(), _tempWidget);
     _authorTextLabel->setFont(QFont("Helvetica", 9, QFont::Normal, true));
-    _layout->addWidget(_authorTextLabel, row++, 0, 1, 1);
+    _layout->addWidget(_authorTextLabel, _lastRow++, 0, 1, 1);
 
     _lastModifiedLabel = new QLabel("last modified on: "+lastModifiedDate, _tempWidget);
     _lastModifiedLabel->setFont(QFont("Helvetica", 9, QFont::Normal, true));
     _lastModifiedLabel->setAlignment(Qt::AlignRight);
-    _layout->addWidget(_lastModifiedLabel, row-1, 1, 1, 1);
+    _layout->addWidget(_lastModifiedLabel, _lastRow-1, 1, 1, 1);
 
     // The instruction text at the top of the quiz.
     _instructionTextLabel = new QLabel(quizDetails["introductionText"].toString(), _tempWidget);
     _instructionTextLabel->setWordWrap(true);
     _instructionTextLabel->setStyleSheet(INSTRUCTION_TEXT_LABEL_STYLESHEET);
     _instructionTextLabel->setFont (QFont ("Helvetica", 11,QFont::Normal,true));
-    _layout->addWidget(_instructionTextLabel, row++, 0, 1, 2);
+    _layout->addWidget(_instructionTextLabel, _lastRow++, 0, 1, 2);
 
     _dummySpace1 = new QLabel("-", _tempWidget);
     _dummySpace1->setStyleSheet(DUMMY_SPACE_STYLESHEET);
     _dummySpace1->setFont (QFont ("Helvetica", 14, QFont::Bold));
-    _layout->addWidget(_dummySpace1, row++, 0, 1, 2, Qt::AlignCenter);
+    _layout->addWidget(_dummySpace1, _lastRow++, 0, 1, 2, Qt::AlignCenter);
 
     _score = new QLabel(TEXT_QUIZ_WARNING, _tempWidget);
     _score->setStyleSheet(SCORE_TEXT_LABEL_STYLESHEET);
     _score->setFont (QFont ("Helvetica", 90,QFont::Bold,true));
     _score->setAlignment(Qt::AlignCenter);
     _score->setVisible(false);
-    _layout->addWidget(_score, row++, 0, 1, 2);
+    _layout->addWidget(_score, _lastRow++, 0, 1, 2);
 
     _startScreenLabel = new QLabel(TEXT_QUIZ_INTRO, _tempWidget);
     _startScreenLabel->setWordWrap(true);
     _startScreenLabel->setStyleSheet("text-align:justify;");
     _startScreenLabel->setFont (QFont ("Helvetica", 12));
-    _layout->addWidget(_startScreenLabel, row++, 0, 1, 2);
+    _layout->addWidget(_startScreenLabel, _lastRow++, 0, 1, 2);
 
     // Quiz flags
     _showAnswerFlag = quizDetails["showAnswer"].toBool();
     _showTeacherCommentFlag = quizDetails["showTeacherComment"].toBool();
 
-    int noOfQuestions = quizDetails["noOfQuestions"].toInt();
+    _noOfQuestions = quizDetails["noOfQuestions"].toInt();
 
     // Load the timer
     _hasTimeLimit = quizDetails["hasTimeLimit"].toBool();
@@ -454,7 +457,7 @@ void MedNUSQuiz::loadQuizFileToEditor(QString filename, int &row) {
         _timerLabel->setStyleSheet(TIMER_LABEL_STYLESHEET);
         _timerLabel->setFont (QFont ("Helvetica", 14,QFont::Bold,false));
         _timerLabel->setVisible(false);
-        _layout->addWidget(_timerLabel, row++, 0, 1, 2);
+        _layout->addWidget(_timerLabel, _lastRow++, 0, 1, 2);
 
         _labelUpdateTimer = new QTimer(_tempWidget);
         connect(_labelUpdateTimer, SIGNAL(timeout()), this, SLOT(updateTimerLabel()));
@@ -463,7 +466,7 @@ void MedNUSQuiz::loadQuizFileToEditor(QString filename, int &row) {
         _timedQuizWarningTextLabel->setStyleSheet(TIMED_QUIZ_WARNING_STYLESHEET);
         _timedQuizWarningTextLabel->setFont (QFont ("Helvetica", 12));
         _timedQuizWarningTextLabel->setWordWrap(true);
-        _layout->addWidget(_timedQuizWarningTextLabel, row++, 0, 1, 1);
+        _layout->addWidget(_timedQuizWarningTextLabel, _lastRow++, 0, 1, 1);
     }
 
     // Attempts
@@ -472,12 +475,12 @@ void MedNUSQuiz::loadQuizFileToEditor(QString filename, int &row) {
     _attemptLabel->setAlignment(Qt::AlignRight);
     _attemptLabel->setFont (QFont ("Helvetica", 12));
     _attemptLabel->setWordWrap(true);
-    _layout->addWidget(_attemptLabel, _hasTimeLimit?row-1:row, 1, 1, 1);
+    _layout->addWidget(_attemptLabel, _hasTimeLimit?_lastRow-1:_lastRow, 1, 1, 1);
 
     // Load the quiz questions.
     QString questionLabelString = "question_";
     QVector<QString> content;
-    for (int i = 1; i <= noOfQuestions; i++)
+    for (int i = 1; i <= _noOfQuestions; i++)
     {
         // Construct the QJsonObject for the particular question first.
         QJsonObject jsonQuestion = obj.value(questionLabelString+QString::number(i)).toObject();
@@ -502,7 +505,7 @@ void MedNUSQuiz::loadQuizFileToEditor(QString filename, int &row) {
 
         // Create the question.
         MedNUSQuizQuestion *question =
-                new MedNUSQuizQuestion(_tempWidget, _layout, row, content,
+                new MedNUSQuizQuestion(_tempWidget, _layout, _lastRow, content,
                                        noOfOptions,
                                        jsonQuestion["hasImage"].toBool(),
                 QString(jsonQuestion["imageUrl"].toString()));
@@ -518,9 +521,26 @@ void MedNUSQuiz::loadQuizFileToEditor(QString filename, int &row) {
 
 void MedNUSQuiz::updateNoOfQuestions()
 {
-    qDebug() << _noOfQuestionsDropDownBox->currentIndex() + 1;
+    //qDebug() << _noOfQuestionsDropDownBox->currentIndex() + 1;
 
-    _noOfQuestions = _noOfQuestionsDropDownBox->currentIndex() + 1;
+    int newNoOfQuestions = _noOfQuestionsDropDownBox->currentIndex() + 1;
+
+    //qDebug() << newNoOfQuestions << "/" << _noOfQuestions;
+
+    if (newNoOfQuestions > _noOfQuestions) {
+        for (int i = _noOfQuestions; i < newNoOfQuestions; i++) {
+            MedNUSQuizQuestion *question =
+                    new MedNUSQuizQuestion(_tempWidget, _layout, _lastRow);
+
+            // Push the question into the question vector.
+            _questionList->append(question);
+        }
+    } else {
+
+    }
+
+    _noOfQuestions = newNoOfQuestions;
+    //qDebug() << "questionlist size = " << _questionList->size();
 }
 
 
