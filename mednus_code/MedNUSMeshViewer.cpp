@@ -96,6 +96,30 @@ MedNUSMeshViewer::MedNUSMeshViewer(QString dir, bool withMeshPanel)
 
     //Loaded sucessfully!
     this->setProperty("Loaded",true);
+
+    //return;
+    //DEBUG
+    QTimer *timer = new QTimer(this);
+       connect(timer, &QTimer::timeout, [=](){
+           double a[] = {5,5,5};
+           double b[] = {50,50,50};
+           double c[]={0,0,0};
+       //        renderer->GetActiveCamera()->SetPosition(a);
+       //        renderer->GetActiveCamera()->SetFocalPoint(b);
+       //        renderer->GetActiveCamera()->SetViewAngle(0.3);
+       //        renderer->GetActiveCamera()->SetViewUp(0.5,0.5,0.5);
+
+          renderer->GetActiveCamera()->GetPosition(a);
+          renderer->GetActiveCamera()->GetFocalPoint(b);
+          qDebug() << renderer->GetActiveCamera()->GetViewAngle();
+          renderer->GetActiveCamera()->GetViewUp(c);
+          qDebug() << a[0] << a[1] << a[2];
+          qDebug() << b[0] << b[1] << b[2];
+          qDebug() << c[0] << c[1] << c[2];
+
+       });
+
+       timer->start(1000);
 }
 
 

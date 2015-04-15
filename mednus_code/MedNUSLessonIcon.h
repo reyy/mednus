@@ -19,6 +19,7 @@ public:
      void setSelected(bool value);
      void setVisible(bool value);
      void setScrollBarSpace(bool value);
+     bool isOpened();
 
 protected:
     void setHighlight(bool status);
