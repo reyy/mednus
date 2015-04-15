@@ -154,6 +154,11 @@ void MedNUSLessonIcon::setScrollBarSpace(bool value) {
     _scrollBarExist = value;
 }
 
+bool MedNUSLessonIcon::isOpened()
+{
+    return _selected;
+}
+
 
 void MedNUSLessonIcon::activateMISC() {
     qDebug() << "test";

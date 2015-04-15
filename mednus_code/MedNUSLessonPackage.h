@@ -9,6 +9,7 @@
 
 #include "MedNUSLessonIcon.h"
 #include "MedNUSAUISettings.h"
+#include "MedNUSStoryManager.h"
 
 class MedNUSLessonPackageContentPanel : public QWidget
 {
@@ -42,6 +43,8 @@ public:
     void setMode(interfaceMode mode);
     void setY(int value);
     int getY();
+
+    bool initStoryLine(QString storyFile);
 
     void addContent(QString filename, fileType filetype);
     void clearContent();
@@ -79,6 +82,7 @@ private:
     QWidget *_parent;
     QScrollArea *_scrollArea;
     MedNUSLessonPackageContentPanel *_contentPanel;
+    MedNUSStoryManager *_storyMan;
     interfaceMode _currentMode;
 
     QPushButton *_btEditTitle;

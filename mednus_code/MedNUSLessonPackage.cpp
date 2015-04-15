@@ -81,6 +81,7 @@ void MedNUSLessonPackageContentPanel::updateGUI(int x, int y, bool collapse,int 
 
 MedNUSLessonPackage::MedNUSLessonPackage(QWidget *parent) :
     QWidget(parent) {
+    _storyMan = NULL;
     _collapse = true;
     _tone=1;
     _x=SIDEBAR_OFFSET;
@@ -224,6 +225,29 @@ void MedNUSLessonPackage::setY(int value) {
 
 int MedNUSLessonPackage::getY() {
     return _y;
+}
+
+bool MedNUSLessonPackage::initStoryLine(QString storyFile)
+{
+    try
+    {
+        _storyMan = new MedNUSStoryManager(storyFile);
+        MedNUSLessonIcon *item = _contentPanel->addContent(storyFile+"/Start Lesson Mode",fileType::GENERIC);
+        connect(this->parent(), SIGNAL(tabClosedSignal(QString)), item, SLOT(tabClosed(QString)));
+        connect(this->parent(), SIGNAL(tabOpenedSignal(QString)), item, SLOT(tabOpened(QString)));
+        connect(item, SIGNAL(emitOpenFile(QString,QString,int)), _storyMan, SLOT(playStory()));
+    }
+    catch(int err)
+    {
+        if(_storyMan != NULL)
+        {
+            delete _storyMan;
+            _storyMan = NULL;
+        }
+        return false;
+    }
+
+    return true;
 }
 
 
