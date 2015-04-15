@@ -220,6 +220,8 @@ void MedNUSQuizQuestion::saveChanges() {
             _options->replace(i, lineEdit->text());
         }
     }
+
+    _correctAnswer = _correctAnswerDropDownBox->currentIndex()+1;
 }
 
 bool MedNUSQuizQuestion::markQuestion()
@@ -334,6 +336,16 @@ void MedNUSQuizQuestion::loadQuestionOptions(QuestionMode mode, QWidget *parent,
             }
 
         }
+
+        _correctAnswerDropDownBox = new QComboBox(parent);
+        for (int i = 1; i <= MAX_NO_OF_OPTIONS; i++) {
+            _correctAnswerDropDownBox->addItem(QString::number(i));
+        }
+        _correctAnswerDropDownBox->setVisible(true);
+        _listView = new QListView(_correctAnswerDropDownBox);
+        _correctAnswerDropDownBox->setView(_listView);
+        _correctAnswerDropDownBox->setCurrentIndex(_correctAnswer-1);
+        layout->addWidget(_correctAnswerDropDownBox, row++, 0, 1, 2);
 
     } else {
         qWarning() << "MedNUSQuizQuestion::loadQuestionOptions():  Invalid mode set.";

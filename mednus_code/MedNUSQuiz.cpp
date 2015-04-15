@@ -131,7 +131,7 @@ void MedNUSQuiz::initEditorView() {
     _tempWidget->setLayout(_layout);
     _tempWidget->setContentsMargins(10,10,10,10);
     _tempWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    _tempWidget->setVisible(true);
+    //_tempWidget->setVisible(true);
     _scrollArea = new QScrollArea(this);
     _scrollArea->setContentsMargins(20,20,20,20);
     _scrollArea->setWidgetResizable(true);
