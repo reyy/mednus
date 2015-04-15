@@ -81,7 +81,7 @@ private:
     QString _author;
     QString _instructionText;
     QString _lastModifiedDate;
-    bool _showAnswerFlag;
+    bool _showCorrectAnswerFlag;
     bool _showTeacherCommentFlag;
     bool _isEditorView;
     QVector<int> _correctAnswerList;

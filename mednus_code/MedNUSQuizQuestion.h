@@ -7,6 +7,8 @@
 #include <QGridLayout>
 #include <QDir>
 #include <QDebug>
+#include <QComboBox>
+#include <QListView>
 #include <QLineEdit>
 
 #include "MedNUSQuizStylesheet.h"
@@ -26,6 +28,7 @@ public:
      *          content[0]              = question text
      *          content[1..noOfOptions] = options
      *          content[noOfOptions+1]  = teacher's comment
+     *          content[noOfOptions+2]  = correct answer (int)
      */
    /* MedNUSQuizQuestion(QWidget *parent, QGridLayout *layout, int& row,
                        QVector<QString> content, int noOfOptions,
@@ -50,7 +53,7 @@ public:
     ~MedNUSQuizQuestion();
 
     int getSelectedAnswer() const;
-    void highlightAnswer(int correctAnswer, bool showCorrectAnswer) const;
+    void highlightAnswer(bool showCorrectAnswer) const;
     bool oneOptionSelected() const;
 
     // Load question into the quiz widget.
@@ -66,6 +69,8 @@ public:
     // Update the storage variables with the data from QLineEdit.
     void saveChanges();
 
+    bool markQuestion();
+
 private:
 // For storage
     int _questionNum;
@@ -73,6 +78,7 @@ private:
     QString _questionText;
     QString _teacherComment;
     int _noOfOptions;
+    int _correctAnswer;
     QVector<QString>* _options;
 
 // For display
@@ -83,6 +89,8 @@ private:
     QWidget* _teacherCommentLabel;
     QButtonGroup* _optionButtonGroup;           // Viewing mode only.
     QVector<QLineEdit*>* _optionsLabelEdit;     // Edit mode only.
+    QComboBox* _correctOptionDropDownBox;
+    QListView* _listView;
 
     void loadQuestionNumLabel(QuestionMode mode, QWidget *parent,
                               QGridLayout *layout, int &row);

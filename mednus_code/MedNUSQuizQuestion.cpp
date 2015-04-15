@@ -21,6 +21,7 @@ MedNUSQuizQuestion::MedNUSQuizQuestion(int questionNum, QVector<QString> content
         _options->append(content[i]);
 
     _teacherComment = content[noOfOptions+1];
+    _correctAnswer = content[noOfOptions+2].toInt();
 }
 
 /*
@@ -110,15 +111,14 @@ int MedNUSQuizQuestion::getSelectedAnswer() const
 }
 
 
-void MedNUSQuizQuestion::highlightAnswer(int correctAnswer,
-                                         bool showCorrectAnswer) const
+void MedNUSQuizQuestion::highlightAnswer(bool showCorrectAnswer) const
 {
     QList<QAbstractButton*> buttonList = _optionButtonGroup->buttons();
     for (int i = 0; i < buttonList.size(); i++)
     {
         if (((QRadioButton*)buttonList.at(i))->isChecked()) {
             // Am I the correct answer?
-            if (i+1 == correctAnswer) {
+            if (i+1 == _correctAnswer) {
                 // Set me to green.
                 ((QRadioButton*)buttonList.at(i))->
                         setStyleSheet(RADIO_BUTTON_HIGHLIGHT_GREEN);
@@ -129,7 +129,7 @@ void MedNUSQuizQuestion::highlightAnswer(int correctAnswer,
             }
         } else {
             // Check if I should be revealing the correct answer.
-            if (showCorrectAnswer && i+1 == correctAnswer) {
+            if (showCorrectAnswer && i+1 == _correctAnswer) {
                 // Set me to green.
                 ((QRadioButton*)buttonList.at(i))->
                         setStyleSheet(RADIO_BUTTON_HIGHLIGHT_GREEN);
@@ -220,6 +220,14 @@ void MedNUSQuizQuestion::saveChanges() {
             _options->replace(i, lineEdit->text());
         }
     }
+}
+
+bool MedNUSQuizQuestion::markQuestion()
+{
+    if (getSelectedAnswer() == _correctAnswer)
+        return true;
+
+    return false;
 }
 
 
