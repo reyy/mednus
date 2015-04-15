@@ -157,19 +157,10 @@ int MedNUSQuiz::getNoOfCorrectAnswers() const {
 
 void MedNUSQuiz::markQuiz(bool calledByTimer) {
 
-// Stop the timer if we have one.
-
-    if (_timer) {
-        _timer->stop();
-        _labelUpdateTimer->stop();
-        _timerLabel->setVisible(false);
-    }
-
-
 // Check if all the questions have been answered.
 
     bool areAllQuestionsAnswered = true;
-    _warning->setVisible(false);
+    //_warning->setVisible(false);
 
     if (!calledByTimer) {
         for (int i = 0; i < _questionList->size(); i++) {
@@ -191,17 +182,30 @@ void MedNUSQuiz::markQuiz(bool calledByTimer) {
     }
 
 
+// Stop the timer if we have one.
+
+    if (_timer != NULL) {
+        qDebug() << "got timer";
+        _timer->stop();
+        _labelUpdateTimer->stop();
+        _timerLabel->setVisible(false);
+    }
+
+
 // Start marking.
 
     for (int i = 0; i < _questionList->size(); i++) {
 
         MedNUSQuizQuestion* qn = (MedNUSQuizQuestion*)_questionList->at(i);
 
-        if (qn->getSelectedAnswer() == _correctAnswerList[i])
+        //if (qn->getSelectedAnswer() == _correctAnswerList[i])
+        //    _noOfCorrectAnswers++;
+
+        if (qn->markQuestion())
             _noOfCorrectAnswers++;
 
         // Show the correct answers only if the teacher wants to.
-        qn->highlightAnswer(_correctAnswerList[i], _showAnswerFlag);
+        qn->highlightAnswer(_showCorrectAnswerFlag);
     }
 
 
@@ -280,7 +284,7 @@ bool MedNUSQuiz::loadQuizFile() {
     _layout->addWidget(_startScreenLabel, _lastRow++, 0, 1, 2);
 
     // Quiz flags
-    _showAnswerFlag = quizDetails["showAnswer"].toBool();
+    _showCorrectAnswerFlag = quizDetails["showAnswer"].toBool();
     _showTeacherCommentFlag = quizDetails["showTeacherComment"].toBool();
 
     _noOfQuestions = quizDetails["noOfQuestions"].toInt();
@@ -407,7 +411,7 @@ bool MedNUSQuiz::loadQuizFile2() {
     _noOfQuestions = quizDetails["noOfQuestions"].toInt();
 
     // Quiz flags
-    _showAnswerFlag = quizDetails["showAnswer"].toBool();
+    _showCorrectAnswerFlag = quizDetails["showAnswer"].toBool();
     _showTeacherCommentFlag = quizDetails["showTeacherComment"].toBool();
     _hasTimeLimit = quizDetails["hasTimeLimit"].toBool();
     _timerDuration = quizDetails["timerDuration"].toInt();
@@ -436,7 +440,9 @@ bool MedNUSQuiz::loadQuizFile2() {
         content.append(QString(jsonQuestion["teacherComment"].toString()));
 
         // Load the correct answers.
-        _correctAnswerList.append(jsonQuestion["correctAnswer"].toInt());
+        int correctAnswer = jsonQuestion["correctAnswer"].toInt();
+        //_correctAnswerList.append(jsonQuestion["correctAnswer"].toInt());
+        content.append(QString::number(correctAnswer));
 
         // Create the question.
         MedNUSQuizQuestion *question =
@@ -497,6 +503,31 @@ void MedNUSQuiz::createQuizWidgets()
     _layout->addWidget(_startScreenLabel, _lastRow++, 0, 1, 2);
 
     if (!_isEditorView) {
+        if (_hasTimeLimit) {
+            _timer = new QTimer(_tempWidget);
+            connect(_timer, SIGNAL(timeout()), this, SLOT(callMarkQuiz_byTimer()));
+            _timer->setSingleShot(true);
+
+            _timerLabel = new QLabel(QString::number(_timer->remainingTime()), _tempWidget);
+            _timerLabel->setWordWrap(true);
+            _timerLabel->setStyleSheet(TIMER_LABEL_STYLESHEET);
+            _timerLabel->setFont (QFont ("Helvetica", 14,QFont::Bold,false));
+            _timerLabel->setVisible(false);
+            _layout->addWidget(_timerLabel, _lastRow++, 0, 1, 2);
+
+            _labelUpdateTimer = new QTimer(_tempWidget);
+            connect(_labelUpdateTimer, SIGNAL(timeout()), this, SLOT(updateTimerLabel()));
+
+            _timedQuizWarningTextLabel = new QLabel(TEXT_QUIZ_TIMED_QUIZ_WARNING +
+                                                    QString("\n") +
+                                                    convertTimeToString(_timerDuration),
+                                                    _tempWidget);
+            _timedQuizWarningTextLabel->setStyleSheet(TIMED_QUIZ_WARNING_STYLESHEET);
+            _timedQuizWarningTextLabel->setFont (QFont ("Helvetica", 12));
+            ((QLabel*)_timedQuizWarningTextLabel)->setWordWrap(true);
+            _layout->addWidget(_timedQuizWarningTextLabel, _lastRow++, 0, 1, 1);
+        }
+
         _startQuizButton = new QPushButton("Start Quiz", _tempWidget);
         _startQuizButton->setStyleSheet(START_QUIZ_BUTTON_STYLESHEET);
         _startQuizButton->setFont (QFont ("Helvetica", 14));
@@ -603,7 +634,7 @@ void MedNUSQuiz::startQuiz()
     _startScreenLabel->setVisible(false);
     _startQuizButton->setVisible(false);
     _instructionTextLabel->setVisible(false);
-    //_timedQuizWarningTextLabel->setVisible(false);
+    _timedQuizWarningTextLabel->setVisible(false);
     //_attemptLabel->setVisible(false);
     _dummySpace1->setVisible(false);
 
@@ -612,11 +643,11 @@ void MedNUSQuiz::startQuiz()
        ((MedNUSQuizQuestion*)_questionList->at(i))->showQuestion();
 
     _markButton->setVisible(true);
-    //_timer->start(_timerDuration);
-    //_timerLabel->setVisible(true);
-    //_labelUpdateTimer->start(500);
+    _timer->start(_timerDuration);
+    _timerLabel->setVisible(true);
+    _labelUpdateTimer->start(500);
     // hack: to force it to start showing from the actual duration instead of -1
-    //updateTimerLabel();
+    updateTimerLabel();
 }
 
 
@@ -662,6 +693,7 @@ void MedNUSQuiz::goToEditorView() {
 void MedNUSQuiz::goToViewerView() {
 
     _isEditorView = false;
+    saveQuiz();
 
     deinitEditorView();
     initViewerView();
