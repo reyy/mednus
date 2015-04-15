@@ -89,7 +89,7 @@ private:
     QWidget* _teacherCommentLabel;
     QButtonGroup* _optionButtonGroup;           // Viewing mode only.
     QVector<QLineEdit*>* _optionsLabelEdit;     // Edit mode only.
-    QComboBox* _correctOptionDropDownBox;
+    QComboBox* _correctAnswerDropDownBox;
     QListView* _listView;
 
     void loadQuestionNumLabel(QuestionMode mode, QWidget *parent,
