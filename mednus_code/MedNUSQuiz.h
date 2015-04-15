@@ -40,73 +40,85 @@
 #include "MedNUSQuizQuestion.h"
 #include "MedNUSAUISettings.h"
 
-
-class MedNUSQuiz : public QWidget
-{
+class MedNUSQuiz : public QWidget {
 
 public:
+
     explicit MedNUSQuiz(QString filename, interfaceMode currentMode,
                         QWidget *parent = 0);
+
     ~MedNUSQuiz();
-
-protected:
-    interfaceMode _currentMode;
-
-// Widget Stuff
-    QWidget* _tempWidget;
-    QGridLayout* _layout;
-    QScrollArea* _scrollArea;
-
-    QVector<MedNUSQuizQuestion*>* _questionList;
-    bool _isEditorView;
-
-    QWidget* _parent;
-    QString _filename;
-
-    int _lastRow;
 
 
 // Quiz Viewer
 
-public:
-    int getNoOfCorrectAnswers() const;
+    // Button Functions
     void markQuiz(bool calledByTimer);
+
+    // Testing
+    int getNoOfCorrectAnswers() const;
+
 
 private:
     Q_OBJECT
 
-    // General
-    QVector<int> _correctAnswerList;
+// General
+
+    // Determine if student or teacher mode.
+    interfaceMode _currentMode;
+
+    // Widget Stuff
+    QWidget* _parent;
+    QWidget* _tempWidget;
+    QGridLayout* _layout;
+    QScrollArea* _scrollArea;
+    int _lastRow;
+
+    // Quiz File Stuff
+    int _noOfQuestions;
+    QString _filename;
+    QString _title;
+    QString _author;
+    QString _instructionText;
+    QString _lastModifiedDate;
     bool _showAnswerFlag;
     bool _showTeacherCommentFlag;
-    int _noOfQuestions;
+    bool _isEditorView;
+    QVector<int> _correctAnswerList;
+    QVector<MedNUSQuizQuestion*>* _questionList;
 
-    bool loadQuizFileToViewer();
+    bool loadQuizFile();
+    bool loadQuizFile2();
+    void createQuizWidgets();
     void resizeEvent(QResizeEvent *event);
+
+
+// Quiz Viewer
+
     void initViewerView();
     void deinitViewerView();
 
     // Start Quiz Screen
-    QLabel* _titleTextLabel;
-    QLabel* _authorTextLabel;
-    QLabel* _instructionTextLabel;
-    QLabel* _timedQuizWarningTextLabel;
-    QLabel* _warning;
-    QLabel* _startScreenLabel;
-    QLabel* _attemptLabel;
-    QLabel* _lastModifiedLabel;
-    QLabel* _dummySpace1;
+    QWidget* _titleTextLabel;
+    QWidget* _authorTextLabel;
+    QWidget* _instructionTextLabel;
+    QWidget* _timedQuizWarningTextLabel;
+    QWidget* _warning;
+    QWidget* _startScreenLabel;
+    QWidget* _attemptLabel;
+    QWidget* _lastModifiedLabel;
+    QWidget* _dummySpace1;
     QPushButton* _startQuizButton;
     QPushButton* _editQuizButton;
 
     // Quiz Screen
-    QPushButton* _markButton;
-    QVector<QButtonGroup*> _questionOptionGroup;
     bool _hasTimeLimit;
     QTimer* _timer;
     int _timerDuration;
     QLabel* _timerLabel;
     QTimer* _labelUpdateTimer;
+    QPushButton* _markButton;
+    QVector<QButtonGroup*> _questionOptionGroup;
 
     QString convertTimeToString(int ms);
 
@@ -116,34 +128,35 @@ private:
 
     void scrollScreenToTop();
 
+
+// Quiz Editor
+
+    // Widget Stuff
+    QPushButton* _viewQuizButton;
+    QPushButton* _saveButton;
+    QComboBox* _noOfQuestionsDropDownBox;
+    QListView* _listView;
+
+    void initEditorView();
+    void deinitEditorView();
+    void writeQuizFile();
+
 signals:
     // No signals as of yet.
 
 public slots:
+
+    // Quiz Viewer
     void callMarkQuiz_byButton();
     void callMarkQuiz_byTimer();
     void startQuiz();
     void updateTimerLabel();
     void goToEditorView();
-    void goToViewerView();
 
-
-// Quiz Editor
-private:
-    QPushButton* _viewQuizButton;
-    QComboBox* _noOfQuestionsDropDownBox;
-    QListView* _listView;
-
-    void writeFile();
-    void initEditorView();
-    void deinitEditorView();
-    void loadQuizFileToEditor();
-
-signals:
-    // No signals as of yet.
-
-public slots:
+    // Quiz Editor
     void updateNoOfQuestions();
+    void goToViewerView();
+    void saveQuiz();
 };
 
 
