@@ -2,6 +2,8 @@
 #define MEDNUSSTORYMANAGER_H
 #include "MedNUSLessonIcon.h"
 #include "MedNUSVideoViewer.h"
+#include "MedNUSPdfViewer.h"
+#include "MedNUSMeshViewer.h"
 using namespace std;
 
 class MedNUSStoryManager : public QObject
@@ -17,14 +19,17 @@ public slots:
     void playStory();
 
 protected:
+    static const short END_OF_STORY = -1;
+    static const short POS_DELTA_LIMIT = 1000;
+
     struct StoryPoint
     {
-        int timestamp;
+        qint64 timestamp;
         int slideNum;
         int cameraViewAngle;
-        float cameraPosition[3];
-        float cameraFocalPoint[3];
-        float cameraViewUp[3];
+        double cameraPosition[3];
+        double cameraFocalPoint[3];
+        double cameraViewUp[3];
     };
 
     vector<StoryPoint> *storyPointList;
@@ -37,9 +42,12 @@ protected:
     QString pdfFileName;
 
     bool isReady = false;
+    qint64 prevPos = 1;
+    int nextStoryPoint = 0;
 
 //resume from last?
     bool loadStoryFile(QString storyFile);
+    void goToStoryPoint(StoryPoint);
 
 protected slots:
     void videoPositionChanged(qint64);
