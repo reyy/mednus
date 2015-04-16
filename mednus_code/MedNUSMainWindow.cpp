@@ -99,13 +99,13 @@ void MedNUSMainWindow::createWidgets()
         lp->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
         mainLayout->addWidget(lp,1,1);
         connect(tabs, SIGNAL(tabClosedSignal(QString)), lp, SLOT(tabClosed(QString)));
-        connect(tabs, SIGNAL(tabOpenedSignal(QString)), lp, SLOT(tabOpened(QString)));
+        connect(tabs, SIGNAL(tabOpenedSignal(QString, QWidget*)), lp, SLOT(tabOpened(QString, QWidget*)));
 
         //Content Manager
         MedNUSContentManager *contentManager = new MedNUSContentManager();
 
         //Connections
-        connect(contentManager, SIGNAL(callAddLesson(QString,QString,QString,QStringList)), lp, SLOT(addLesson(QString,QString,QString,QStringList)));
+        connect(contentManager, SIGNAL(callAddLesson(QString,QString,QString,QStringList,QString)), lp, SLOT(addLesson(QString,QString,QString,QStringList,QString)));
         connect(lp, SIGNAL(emitOpenFile(QString,QString,int)), contentManager, SLOT(openFile(QString,QString,int)));
         connect(contentManager, SIGNAL(callAddTab(QWidget*,QString,QString)), tabs, SLOT(addTab(QWidget*,QString,QString)));
         connect(fb,SIGNAL(toggleLayout(int)),tabs,SLOT(toggleView(int)));
@@ -194,6 +194,7 @@ void MedNUSMainWindow::loginCompleted(bool success, QString matric, QString name
 
         //Determined if its student or a staff.
         _currentMode=permission;
+        _currentMode=STUDENT;
         qDebug() << "Set mode to  " << _currentMode;
 
         createMenus();

@@ -234,7 +234,7 @@ bool MedNUSLessonPackage::initStoryLine(QString storyFile)
         _storyMan = new MedNUSStoryManager(storyFile);
         MedNUSLessonIcon *item = _contentPanel->addContent(storyFile+"/Start Lesson Mode",fileType::GENERIC);
         connect(this->parent(), SIGNAL(tabClosedSignal(QString)), item, SLOT(tabClosed(QString)));
-        connect(this->parent(), SIGNAL(tabOpenedSignal(QString)), item, SLOT(tabOpened(QString)));
+        connect(this->parent(), SIGNAL(tabOpenedSignal(QString,QWidget*)), item, SLOT(tabOpened(QString,QWidget*)));
         connect(item, SIGNAL(emitOpenFile(QString,QString,int)), _storyMan, SLOT(playStory()));
     }
     catch(bool err)
@@ -254,7 +254,7 @@ bool MedNUSLessonPackage::initStoryLine(QString storyFile)
 void MedNUSLessonPackage::addContent(QString filename, fileType filetype) {
     MedNUSLessonIcon *item = _contentPanel->addContent(filename,filetype);
     connect(this->parent(), SIGNAL(tabClosedSignal(QString)), item, SLOT(tabClosed(QString)));
-    connect(this->parent(), SIGNAL(tabOpenedSignal(QString)), item, SLOT(tabOpened(QString)));
+    connect(this->parent(), SIGNAL(tabOpenedSignal(QString, QWidget*)), item, SLOT(tabOpened(QString, QWidget*)));
     connect(item, SIGNAL(emitOpenFile(QString,QString,int)), this, SLOT(callOpenFile(QString,QString,int)));
 
     if(_storyMan)

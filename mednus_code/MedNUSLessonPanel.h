@@ -63,11 +63,11 @@ public slots:
     void callOpenFile(QString str, QString title, int type);
 
     void tabClosed(QString t);
-    void tabOpened(QString t);
+    void tabOpened(QString t, QWidget*);
 signals:
     void emitOpenFile(QString, QString, int);
     void tabClosedSignal(QString);
-    void tabOpenedSignal(QString);
+    void tabOpenedSignal(QString, QWidget*);
 };
 
 

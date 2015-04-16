@@ -21,11 +21,13 @@ public:
      void setScrollBarSpace(bool value);
      bool isOpened();
 
+     QWidget* getContentWidget();
+     void forceOpenFile();
+
 protected:
     void setHighlight(bool status);
     void mousePressEvent(QMouseEvent* event);
 
-private:
     bool _scrollBarExist;
     bool _selected;
     QLabel *_highlight;
@@ -43,11 +45,13 @@ private:
     QPushButton *_btDelete;
     QPushButton *_btMisc;
 
+    QWidget* _contentWidget = NULL;
+
 signals:
     void emitOpenFile(QString, QString, int);
 
 public slots:
-    void tabOpened(QString);
+    void tabOpened(QString, QWidget*);
     void tabClosed(QString);
 
 protected slots:
