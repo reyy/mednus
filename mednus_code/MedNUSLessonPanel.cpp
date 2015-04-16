@@ -237,8 +237,8 @@ void MedNUSLessonPanel::callOpenFile(QString str, QString title, int type) {
 }
 
 
-void MedNUSLessonPanel::tabOpened(QString t) {
-    emit tabOpenedSignal(t);
+void MedNUSLessonPanel::tabOpened(QString t, QWidget* w) {
+    emit tabOpenedSignal(t, w);
 }
 
 

@@ -36,6 +36,9 @@ MedNUSVideoViewer::MedNUSVideoViewer(QString filename, QWidget *parent) :
     connect(&mediaPlayer, SIGNAL(stateChanged(QMediaPlayer::State)),
             control, SLOT(mediaStateChanged(QMediaPlayer::State)));
     connect(&mediaPlayer, SIGNAL(positionChanged(qint64)), control, SLOT(positionChanged(qint64)));
+    connect(&mediaPlayer, &QMediaPlayer::positionChanged, [=](qint64 pos){
+        emit positionChanged(pos);
+    });
     connect(&mediaPlayer, SIGNAL(durationChanged(qint64)), control, SLOT(durationChanged(qint64)));
     connect(control, SIGNAL(changeVolume(int)), &mediaPlayer, SLOT(setVolume(int)));
 

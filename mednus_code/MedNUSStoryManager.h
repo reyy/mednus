@@ -1,6 +1,7 @@
 #ifndef MEDNUSSTORYMANAGER_H
 #define MEDNUSSTORYMANAGER_H
 #include "MedNUSLessonIcon.h"
+#include "MedNUSVideoViewer.h"
 using namespace std;
 
 class MedNUSStoryManager : public QObject
@@ -39,6 +40,9 @@ protected:
 
 //resume from last?
     bool loadStoryFile(QString storyFile);
+
+protected slots:
+    void videoPositionChanged(qint64);
 };
 
 #endif // MEDNUSSTORYMANAGER_H

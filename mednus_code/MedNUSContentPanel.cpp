@@ -67,7 +67,7 @@ void MedNUSContentPanel::addTab(QWidget* toAdd,QString title, QString dir)
     tabList[type]->addTab(toAdd, title);
     tabList[type]->setCurrentIndex(tabList[type]->count()-1);
 
-    emit tabOpenedSignal(dir);
+    emit tabOpenedSignal(dir, toAdd);
 }
 
 
