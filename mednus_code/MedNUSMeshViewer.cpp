@@ -147,6 +147,15 @@ void MedNUSMeshViewer::forceLoadMesh(const QString &fileName)
     } catch (int a) {}
 }
 
+void MedNUSMeshViewer::setCameraView(int cameraViewAngle, double cameraPosition[], double cameraFocalPoint[], double cameraViewUp[])
+{
+    vtkCamera *cam = renderer->GetActiveCamera();
+    cam->SetViewAngle(cameraViewAngle);
+    cam->SetPosition(cameraPosition[0], cameraPosition[1], cameraPosition[2]);
+    cam->SetFocalPoint(cameraFocalPoint);
+    cam->SetViewUp(cameraViewUp);
+}
+
 // Event handling
 
 void MedNUSMeshViewer::closeEvent(QCloseEvent *event)

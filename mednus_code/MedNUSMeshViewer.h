@@ -89,6 +89,9 @@ public:
     void forceAddMesh(const QString &fileName);
     void forceLoadMesh(const QString &fileName);
 
+    //For story mode
+    void setCameraView(int cameraViewAngle, double cameraPosition[3], double cameraFocalPoint[3], double cameraViewUp[3]);
+
 protected:
     void closeEvent(QCloseEvent *event);
 

@@ -59,10 +59,61 @@ bool MedNUSStoryManager::loadStoryFile(QString storyFile)
     this->videoFileName = "/mednus/lesson1/videos/Osteology of the Skull- 12 Newborn Skull.mp4";
     this->modelFileName = "/mednus/lesson1/models/model2";
     this->pdfFileName = "/mednus/lesson1/pdf/Functional anatomy of skull.pdf";
+
+    StoryPoint temp;
+    temp.timestamp = 1891;
+    temp.slideNum = 2;
+    temp.cameraPosition[0] =  365.956; temp.cameraPosition[1] = 106.795; temp.cameraPosition[2] = 468.587;
+    temp.cameraFocalPoint[0] = -120.327; temp.cameraFocalPoint[1] = -118.244; temp.cameraFocalPoint[2] = 108.92;
+    temp.cameraViewUp[0] = -0.106299; temp.cameraViewUp[1] = 0.901206; temp.cameraViewUp[2] =-0.420153;
+    temp.cameraViewAngle = 30;
+    storyPointList->push_back(temp);
     return true;
+}
+
+void MedNUSStoryManager::goToStoryPoint(MedNUSStoryManager::StoryPoint curStoryPoint)
+{
+    if(++nextStoryPoint > storyPointList->size())
+        nextStoryPoint = END_OF_STORY;
+    //
+    qDebug() <<"HHHHH";
+    if(pdfFile->isOpened())
+    {
+        MedNUSPdfViewer* pdfWidget = dynamic_cast<MedNUSPdfViewer*>(pdfFile->getContentWidget());
+        pdfWidget->setPage(curStoryPoint.slideNum);
+    }
+
+    if(modelFile->isOpened())
+    {
+        MedNUSMeshViewer* modelWidget = dynamic_cast<MedNUSMeshViewer*>(modelFile->getContentWidget());
+        modelWidget->setCameraView(curStoryPoint.cameraViewAngle,
+                                   curStoryPoint.cameraPosition,
+                                   curStoryPoint.cameraFocalPoint,
+                                   curStoryPoint.cameraViewUp);
+    }
+
 }
 
 void MedNUSStoryManager::videoPositionChanged(qint64 pos)
 {
-    qDebug() << pos;
+    qint64 posDelta = pos - prevPos;
+   /* if(posDelta > POS_DELTA_LIMIT || posDelta < 0)
+    {
+        //Recheck everything
+        for(int i = 0; i < storyPointList->size(); i++)
+            if((*storyPointList)[i].timestamp >= pos)
+                nextStoryPoint = i;
+            else
+                break;
+
+        //Get back on track
+        goToStoryPoint((*storyPointList)[nextStoryPoint]);
+    }
+    else*/ if(nextStoryPoint != END_OF_STORY)
+    {
+        StoryPoint next = (*storyPointList)[nextStoryPoint];
+        if(next.timestamp >= pos)
+            goToStoryPoint(next);
+    }
+    //qDebug() << pos;
 }
