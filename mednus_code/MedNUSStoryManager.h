@@ -10,6 +10,8 @@ public:
     MedNUSStoryManager(QString);
     ~MedNUSStoryManager();
 
+    void checkAddedItem(QString, fileType, MedNUSLessonIcon*);
+
 public slots:
     void playStory();
 
@@ -28,6 +30,13 @@ protected:
     MedNUSLessonIcon *videoFile;
     MedNUSLessonIcon *modelFile;
     MedNUSLessonIcon *pdfFile;
+
+    QString videoFileName;
+    QString modelFileName;
+    QString pdfFileName;
+
+    bool isReady = false;
+
 //resume from last?
     bool loadStoryFile(QString storyFile);
 };

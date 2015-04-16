@@ -237,7 +237,7 @@ bool MedNUSLessonPackage::initStoryLine(QString storyFile)
         connect(this->parent(), SIGNAL(tabOpenedSignal(QString)), item, SLOT(tabOpened(QString)));
         connect(item, SIGNAL(emitOpenFile(QString,QString,int)), _storyMan, SLOT(playStory()));
     }
-    catch(int err)
+    catch(bool err)
     {
         if(_storyMan != NULL)
         {
@@ -256,6 +256,9 @@ void MedNUSLessonPackage::addContent(QString filename, fileType filetype) {
     connect(this->parent(), SIGNAL(tabClosedSignal(QString)), item, SLOT(tabClosed(QString)));
     connect(this->parent(), SIGNAL(tabOpenedSignal(QString)), item, SLOT(tabOpened(QString)));
     connect(item, SIGNAL(emitOpenFile(QString,QString,int)), this, SLOT(callOpenFile(QString,QString,int)));
+
+    if(_storyMan)
+        _storyMan->checkAddedItem(filename, filetype, item);
 }
 
 
