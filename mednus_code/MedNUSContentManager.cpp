@@ -35,7 +35,7 @@ void MedNUSContentManager::initLessonList(QJsonDocument jsonResponse)
     content.push_back("/mednus/lesson1/pdf/Functional anatomy of skull.pdf");
     content.push_back("/mednus/lesson1/models/model2");
     content.push_back("/mednus/lesson1/quiz/Quiz - The Skull.qiz");
-    emit callAddLesson("Functional Anatomy of the Skull","Professor Gopal","Anatomy Department",content, "something");
+    emit callAddLesson("Functional Anatomy of the Skull","Professor Gopal","Anatomy Department",content, "/mednus/lesson1/story");
 
     QStringList content2;
     content2.push_back("/mednus/lesson2/pdf/axial_lecture_2.pdf");
