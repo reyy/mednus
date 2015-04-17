@@ -1,5 +1,9 @@
 #include "MedNUSStoryManager.h"
 
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
+
 MedNUSStoryManager::MedNUSStoryManager(QString storyFile)
 {
     storyPointList = new vector<StoryPoint>();
@@ -35,15 +39,17 @@ void MedNUSStoryManager::checkAddedItem(QString fileName, fileType type, MedNUSL
 void MedNUSStoryManager::playStory()
 {
     //TODO: Account for NULL
-    if(!videoFile->isOpened())
+    if(videoFile && !videoFile->isOpened())
         videoFile->forceOpenFile();
-    if(!pdfFile->isOpened())
+    if(pdfFile && !pdfFile->isOpened())
         pdfFile->forceOpenFile();
-    if(!modelFile->isOpened())
+    if(modelFile && !modelFile->isOpened())
         modelFile->forceOpenFile();
 
     //TODO: Set a timeout!
-    while(!videoFile->isOpened() || !pdfFile->isOpened() || !modelFile->isOpened()) {}
+    while((!videoFile || !videoFile->isOpened()) ||
+          (!pdfFile || !pdfFile->isOpened()) ||
+          (!modelFile || !modelFile->isOpened())) {}
 
     MedNUSVideoViewer* videoWidget = dynamic_cast<MedNUSVideoViewer*>(videoFile->getContentWidget());
     connect(videoWidget, SIGNAL(positionChanged(qint64)), this, SLOT(videoPositionChanged(qint64)));
@@ -53,37 +59,51 @@ void MedNUSStoryManager::playStory()
 
 bool MedNUSStoryManager::loadStoryFile(QString storyFile)
 {
-    if(storyFile == "")
+    QString dir = QDir::homePath();
+    dir.append(storyFile);
+
+    QFile file(dir);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qWarning() << "Unable to open file.";
         return false;
-    //TEMP
-    this->videoFileName = "/mednus/lesson1/videos/Osteology of the Skull- 12 Newborn Skull.mp4";
-    this->modelFileName = "/mednus/lesson1/models/model2";
-    this->pdfFileName = "/mednus/lesson1/pdf/Functional anatomy of skull.pdf";
+    }
 
-    StoryPoint temp;
-    temp.timestamp = 0;
-    temp.slideNum = 1;
-    temp.cameraPosition[0] =  -120.327; temp.cameraPosition[1] = -118.244; temp.cameraPosition[2] =754.268;
-    temp.cameraFocalPoint[0] = -120.327; temp.cameraFocalPoint[1] = -118.244; temp.cameraFocalPoint[2] = 108.92;
-    temp.cameraViewUp[0] = 0; temp.cameraViewUp[1] = 1; temp.cameraViewUp[2] =0;
-    temp.cameraViewAngle = 30;
-    storyPointList->push_back(temp);
+    QJsonDocument doc = QJsonDocument::fromJson(file.readAll());
+    QJsonObject obj = doc.object();
+    QJsonValue jsonValue = obj.value(QString("videoFile"));
+    videoFileName = jsonValue.toString();
 
-    temp.timestamp = 20000;
-    temp.slideNum = 2;
-    temp.cameraPosition[0] =  365.956; temp.cameraPosition[1] = 106.795; temp.cameraPosition[2] = 468.587;
-    temp.cameraFocalPoint[0] = -120.327; temp.cameraFocalPoint[1] = -118.244; temp.cameraFocalPoint[2] = 108.92;
-    temp.cameraViewUp[0] = -0.106299; temp.cameraViewUp[1] = 0.901206; temp.cameraViewUp[2] =-0.420153;
-    temp.cameraViewAngle = 30;
-    storyPointList->push_back(temp);
+    jsonValue = obj.value(QString("3DFile"));
+    modelFileName = jsonValue.toString();
 
-    temp.timestamp = 50000;
-    temp.slideNum = 3;
-    temp.cameraPosition[0] =  -631.827; temp.cameraPosition[1] = 118.549; temp.cameraPosition[2] =423.198;
-    temp.cameraFocalPoint[0] = -120.327; temp.cameraFocalPoint[1] = -118.244; temp.cameraFocalPoint[2] = 108.92;
-    temp.cameraViewUp[0] = 0.0842606; temp.cameraViewUp[1] = 0.856923; temp.cameraViewUp[2] =-0.508511;
-    temp.cameraViewAngle = 30;
-    storyPointList->push_back(temp);
+    jsonValue = obj.value(QString("PDFFile"));
+    pdfFileName = jsonValue.toString();
+
+    jsonValue = obj.value(QString("timeline"));
+    QJsonArray timelineDetails = jsonValue.toArray();
+
+    for(int i = 0; i < timelineDetails.size(); i++)
+    {
+        obj = timelineDetails[i].toObject();
+
+        StoryPoint temp;
+        temp.timestamp = qint64(obj.value(QString("timestamp")).toString().toLongLong());
+        temp.slideNum = obj.value(QString("slide")).toInt();
+
+        QJsonArray posArray = obj.value(QString("cameraPosition")).toArray();
+        QJsonArray focArray = obj.value(QString("cameraFocalPoint")).toArray();
+        QJsonArray vupArray = obj.value(QString("cameraViewUp")).toArray();
+        for(int i = 0; i<3; i++)
+        {
+            temp.cameraPosition[i] =  posArray[i].toDouble();
+            temp.cameraFocalPoint[i] = focArray[i].toDouble();
+            temp.cameraViewUp[i] = vupArray[i].toDouble();
+        }
+
+        temp.cameraViewAngle = obj.value(QString("cameraViewAngle")).toInt();
+        storyPointList->push_back(temp);
+    }
+
     return true;
 }
 
@@ -130,8 +150,8 @@ void MedNUSStoryManager::videoPositionChanged(qint64 pos)
     else if(nextStoryPoint != END_OF_STORY)
     {
         StoryPoint next = (*storyPointList)[nextStoryPoint];
-        if(next.timestamp >= pos)
-            goToStoryPoint(next);
         qDebug() << next.timestamp << pos;
+        if(next.timestamp <= pos)
+            goToStoryPoint(next);
     }
 }
