@@ -136,22 +136,43 @@ void MedNUSLessonIcon::mousePressEvent ( QMouseEvent * event ){
 }
 
 
-void MedNUSLessonIcon::tabOpened(QString path)
+void MedNUSLessonIcon::tabOpened(QString path, QWidget *widget)
 {
     if(path.contains( _path))
+    {
         setHighlight(true);
+        _contentWidget = widget;
+    }
 }
 
 
 void MedNUSLessonIcon::tabClosed(QString path)
 {
     if(path.contains( _path))
+    {
         setHighlight(false);
+        _contentWidget = NULL;
+    }
 }
 
 
 void MedNUSLessonIcon::setScrollBarSpace(bool value) {
     _scrollBarExist = value;
+}
+
+bool MedNUSLessonIcon::isOpened()
+{
+    return _selected;
+}
+
+QWidget *MedNUSLessonIcon::getContentWidget()
+{
+    return _contentWidget;
+}
+
+void MedNUSLessonIcon::forceOpenFile()
+{
+    emit emitOpenFile(_path, _text->text(), _filetype);
 }
 
 

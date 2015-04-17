@@ -72,14 +72,17 @@ void MedNUSLessonPanel::addLesson(MedNUSLessonPackage * _package) {
 
 
 void MedNUSLessonPanel::addLesson(QString title,QString subTitle,
-                                  QString description, QStringList directories) {
+                                  QString description, QStringList directories, QString storyFile="") {
     MedNUSLessonPackage *_package = new MedNUSLessonPackage(this);
     _package->setTitle(title);
     _package->setSubHeader(subTitle);
     _package->setDescription(description);
     _package->setMode(_currentMode);
 
-    for(int i=0;i<directories.size();i++) {
+    _package->initStoryLine(storyFile);
+
+    for(int i=0;i<directories.size();i++)
+    {
         QString directory = directories.at(i);
         fileType filetype;
         if(directory.contains(".png", Qt::CaseInsensitive))
@@ -234,8 +237,8 @@ void MedNUSLessonPanel::callOpenFile(QString str, QString title, int type) {
 }
 
 
-void MedNUSLessonPanel::tabOpened(QString t) {
-    emit tabOpenedSignal(t);
+void MedNUSLessonPanel::tabOpened(QString t, QWidget* w) {
+    emit tabOpenedSignal(t, w);
 }
 
 

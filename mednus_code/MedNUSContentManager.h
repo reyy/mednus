@@ -28,7 +28,7 @@ private:
 
 signals:
     void callAddTab(QWidget*,QString,QString);
-    void callAddLesson(QString title, QString subTitle, QString description, QStringList directory);
+    void callAddLesson(QString title, QString subTitle, QString description, QStringList directory, QString storyFile);
 
 public slots:
     void openFile(QString fileDir, QString title, int type);
