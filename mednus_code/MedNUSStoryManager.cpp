@@ -61,11 +61,27 @@ bool MedNUSStoryManager::loadStoryFile(QString storyFile)
     this->pdfFileName = "/mednus/lesson1/pdf/Functional anatomy of skull.pdf";
 
     StoryPoint temp;
-    temp.timestamp = 1891;
+    temp.timestamp = 0;
+    temp.slideNum = 1;
+    temp.cameraPosition[0] =  -120.327; temp.cameraPosition[1] = -118.244; temp.cameraPosition[2] =754.268;
+    temp.cameraFocalPoint[0] = -120.327; temp.cameraFocalPoint[1] = -118.244; temp.cameraFocalPoint[2] = 108.92;
+    temp.cameraViewUp[0] = 0; temp.cameraViewUp[1] = 1; temp.cameraViewUp[2] =0;
+    temp.cameraViewAngle = 30;
+    storyPointList->push_back(temp);
+
+    temp.timestamp = 20000;
     temp.slideNum = 2;
     temp.cameraPosition[0] =  365.956; temp.cameraPosition[1] = 106.795; temp.cameraPosition[2] = 468.587;
     temp.cameraFocalPoint[0] = -120.327; temp.cameraFocalPoint[1] = -118.244; temp.cameraFocalPoint[2] = 108.92;
     temp.cameraViewUp[0] = -0.106299; temp.cameraViewUp[1] = 0.901206; temp.cameraViewUp[2] =-0.420153;
+    temp.cameraViewAngle = 30;
+    storyPointList->push_back(temp);
+
+    temp.timestamp = 50000;
+    temp.slideNum = 3;
+    temp.cameraPosition[0] =  -631.827; temp.cameraPosition[1] = 118.549; temp.cameraPosition[2] =423.198;
+    temp.cameraFocalPoint[0] = -120.327; temp.cameraFocalPoint[1] = -118.244; temp.cameraFocalPoint[2] = 108.92;
+    temp.cameraViewUp[0] = 0.0842606; temp.cameraViewUp[1] = 0.856923; temp.cameraViewUp[2] =-0.508511;
     temp.cameraViewAngle = 30;
     storyPointList->push_back(temp);
     return true;
@@ -73,7 +89,7 @@ bool MedNUSStoryManager::loadStoryFile(QString storyFile)
 
 void MedNUSStoryManager::goToStoryPoint(MedNUSStoryManager::StoryPoint curStoryPoint)
 {
-    if(++nextStoryPoint > storyPointList->size())
+    if(++nextStoryPoint >= storyPointList->size())
         nextStoryPoint = END_OF_STORY;
     //
     qDebug() <<"HHHHH";
@@ -97,11 +113,11 @@ void MedNUSStoryManager::goToStoryPoint(MedNUSStoryManager::StoryPoint curStoryP
 void MedNUSStoryManager::videoPositionChanged(qint64 pos)
 {
     qint64 posDelta = pos - prevPos;
-   /* if(posDelta > POS_DELTA_LIMIT || posDelta < 0)
+    if(/*posDelta > POS_DELTA_LIMIT ||*/ posDelta < 0)
     {
         //Recheck everything
         for(int i = 0; i < storyPointList->size(); i++)
-            if((*storyPointList)[i].timestamp >= pos)
+            if((*storyPointList)[i].timestamp <= pos)
                 nextStoryPoint = i;
             else
                 break;
@@ -109,11 +125,11 @@ void MedNUSStoryManager::videoPositionChanged(qint64 pos)
         //Get back on track
         goToStoryPoint((*storyPointList)[nextStoryPoint]);
     }
-    else*/ if(nextStoryPoint != END_OF_STORY)
+    else if(nextStoryPoint != END_OF_STORY)
     {
         StoryPoint next = (*storyPointList)[nextStoryPoint];
         if(next.timestamp >= pos)
             goToStoryPoint(next);
+        qDebug() << next.timestamp << pos;
     }
-    //qDebug() << pos;
 }

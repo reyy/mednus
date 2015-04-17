@@ -34,6 +34,7 @@ MedNUSMainWindow::MedNUSMainWindow(QWidget *parent) :
     }
     else
     {
+        _currentMode=STUDENT;
         this->userName = "Temporary Testing Name";
         login = NULL;
         createWidgets();
@@ -125,6 +126,19 @@ void MedNUSMainWindow::createWidgets()
             fb->setTrayOut(true);
 
         });
+
+        if(SKIP_LOGIN)
+        {
+            centralWidget->setLayout(mainLayout);
+            setCentralWidget(centralWidget);
+
+            _widgetsCreated = true;
+
+
+            lp->setTrayOut(true);
+            ub->setTrayOut(true);
+            fb->setTrayOut(true);
+        }
 
         //Fetch Lesson List
         network->downloadLessonList();
