@@ -92,20 +92,22 @@ void MedNUSStoryManager::goToStoryPoint(MedNUSStoryManager::StoryPoint curStoryP
     if(++nextStoryPoint >= storyPointList->size())
         nextStoryPoint = END_OF_STORY;
     //
-    qDebug() <<"HHHHH";
-    if(pdfFile->isOpened())
+    //qDebug() <<"HHHHH";
+    if(pdfFile && pdfFile->isOpened() && pdfFile->getContentWidget())
     {
-        MedNUSPdfViewer* pdfWidget = dynamic_cast<MedNUSPdfViewer*>(pdfFile->getContentWidget());
-        pdfWidget->setPage(curStoryPoint.slideNum);
+        MedNUSPdfViewer* pdfWidget;
+        if(pdfWidget = dynamic_cast<MedNUSPdfViewer*>(pdfFile->getContentWidget()))
+            pdfWidget->setPage(curStoryPoint.slideNum);
     }
 
-    if(modelFile->isOpened())
+    if(modelFile && modelFile->isOpened() && modelFile->getContentWidget())
     {
-        MedNUSMeshViewer* modelWidget = dynamic_cast<MedNUSMeshViewer*>(modelFile->getContentWidget());
-        modelWidget->setCameraView(curStoryPoint.cameraViewAngle,
-                                   curStoryPoint.cameraPosition,
-                                   curStoryPoint.cameraFocalPoint,
-                                   curStoryPoint.cameraViewUp);
+        MedNUSMeshViewer* modelWidget;
+        if (modelWidget = dynamic_cast<MedNUSMeshViewer*>(modelFile->getContentWidget()));
+            modelWidget->setCameraView(curStoryPoint.cameraViewAngle,
+                                       curStoryPoint.cameraPosition,
+                                       curStoryPoint.cameraFocalPoint,
+                                       curStoryPoint.cameraViewUp);
     }
 
 }
