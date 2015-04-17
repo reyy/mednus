@@ -21,6 +21,9 @@ public:
     explicit MedNUSVideoViewer(QString filename, QWidget *parent = 0);
     ~MedNUSVideoViewer();
 
+signals:
+    void positionChanged(qint64);
+
 protected:
     QMediaPlayer mediaPlayer;
     QGraphicsView *videoView;

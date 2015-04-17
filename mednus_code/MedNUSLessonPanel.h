@@ -59,15 +59,15 @@ private:
     void loadPixmap();
 
 public slots:
-    void addLesson(QString title, QString subTitle, QString description, QStringList directory);
+    void addLesson(QString title, QString subTitle, QString description, QStringList directory, QString storyFile);
     void callOpenFile(QString str, QString title, int type);
 
     void tabClosed(QString t);
-    void tabOpened(QString t);
+    void tabOpened(QString t, QWidget*);
 signals:
     void emitOpenFile(QString, QString, int);
     void tabClosedSignal(QString);
-    void tabOpenedSignal(QString);
+    void tabOpenedSignal(QString, QWidget*);
 };
 
 

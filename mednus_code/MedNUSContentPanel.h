@@ -46,7 +46,7 @@ private:
 
 signals:
     void tabClosedSignal(QString);
-    void tabOpenedSignal(QString);
+    void tabOpenedSignal(QString, QWidget*);
 
 public slots:
     void tabClosed(QString t){emit tabClosedSignal(t);}

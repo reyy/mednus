@@ -34,6 +34,7 @@ MedNUSMainWindow::MedNUSMainWindow(QWidget *parent) :
     }
     else
     {
+        _currentMode=STUDENT;
         this->userName = "Temporary Testing Name";
         login = NULL;
         createWidgets();
@@ -99,13 +100,13 @@ void MedNUSMainWindow::createWidgets()
         lp->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
         mainLayout->addWidget(lp,1,1);
         connect(tabs, SIGNAL(tabClosedSignal(QString)), lp, SLOT(tabClosed(QString)));
-        connect(tabs, SIGNAL(tabOpenedSignal(QString)), lp, SLOT(tabOpened(QString)));
+        connect(tabs, SIGNAL(tabOpenedSignal(QString, QWidget*)), lp, SLOT(tabOpened(QString, QWidget*)));
 
         //Content Manager
         MedNUSContentManager *contentManager = new MedNUSContentManager(_currentMode);
 
         //Connections
-        connect(contentManager, SIGNAL(callAddLesson(QString,QString,QString,QStringList)), lp, SLOT(addLesson(QString,QString,QString,QStringList)));
+        connect(contentManager, SIGNAL(callAddLesson(QString,QString,QString,QStringList,QString)), lp, SLOT(addLesson(QString,QString,QString,QStringList,QString)));
         connect(lp, SIGNAL(emitOpenFile(QString,QString,int)), contentManager, SLOT(openFile(QString,QString,int)));
         connect(contentManager, SIGNAL(callAddTab(QWidget*,QString,QString)), tabs, SLOT(addTab(QWidget*,QString,QString)));
         connect(fb,SIGNAL(toggleLayout(int)),tabs,SLOT(toggleView(int)));
@@ -125,6 +126,19 @@ void MedNUSMainWindow::createWidgets()
             fb->setTrayOut(true);
 
         });
+
+        if(SKIP_LOGIN)
+        {
+            centralWidget->setLayout(mainLayout);
+            setCentralWidget(centralWidget);
+
+            _widgetsCreated = true;
+
+
+            lp->setTrayOut(true);
+            ub->setTrayOut(true);
+            fb->setTrayOut(true);
+        }
 
         //Fetch Lesson List
         network->downloadLessonList();
