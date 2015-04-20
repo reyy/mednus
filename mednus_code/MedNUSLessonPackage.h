@@ -22,6 +22,7 @@ public:
     int getContentSize();
 
     MedNUSLessonIcon* addContent(QString filename, fileType filetype);
+    void removeContent(MedNUSLessonIcon*);
     void clearContent();
 
     void updateGUI(int x, int y, bool collapse, int amtOfLesson);
@@ -104,6 +105,7 @@ protected slots:
     void locateNewFile();
     void addNewQuiz();
     void deleteLesson();
+    void deleteFile(MedNUSLessonIcon*);
 
 signals:
     void emitOpenFile(QString, QString, int);
