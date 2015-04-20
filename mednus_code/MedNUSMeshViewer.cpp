@@ -97,7 +97,25 @@ MedNUSMeshViewer::MedNUSMeshViewer(QString dir, bool withMeshPanel)
     //Loaded sucessfully!
     this->setProperty("Loaded",true);
 
-    //return;
+    //DEBUG
+       QTimer *timer = new QTimer(this);
+          connect(timer, &QTimer::timeout, [=](){
+              double a[] = {5,5,5};
+              double b[] = {50,50,50};
+              double c[]={0,0,0};
+
+             renderer->GetActiveCamera()->GetPosition(a);
+             renderer->GetActiveCamera()->GetFocalPoint(b);
+             qDebug() << renderer->GetActiveCamera()->GetViewAngle();
+             renderer->GetActiveCamera()->GetViewUp(c);
+             qDebug() << a[0] << a[1] << a[2];
+             qDebug() << b[0] << b[1] << b[2];
+             qDebug() << c[0] << c[1] << c[2];
+
+          });
+
+          timer->start(1000);
+
 }
 
 
@@ -127,11 +145,32 @@ void MedNUSMeshViewer::forceLoadMesh(const QString &fileName)
 
 void MedNUSMeshViewer::setCameraView(int cameraViewAngle, double cameraPosition[], double cameraFocalPoint[], double cameraViewUp[])
 {
+    vtkCameraInterpolator *interpolator = vtkCameraInterpolator::New();
+    interpolator->SetInterpolationType(vtkCameraInterpolator::INTERPOLATION_TYPE_SPLINE);
+
     vtkCamera *cam = renderer->GetActiveCamera();
-    cam->SetViewAngle(cameraViewAngle);
-    cam->SetPosition(cameraPosition);
-    cam->SetFocalPoint(cameraFocalPoint);
-    cam->SetViewUp(cameraViewUp);
+    vtkCamera *moveTo = vtkCamera::New();
+    moveTo->DeepCopy(cam);
+    moveTo->SetViewAngle(cameraViewAngle);
+    moveTo->SetPosition(cameraPosition);
+    moveTo->SetFocalPoint(cameraFocalPoint);
+    moveTo->SetViewUp(cameraViewUp);
+
+    interpolator->Initialize();
+    interpolator->AddCamera(0,cam);
+    interpolator->AddCamera(200,moveTo);
+
+    double delT = static_cast<double>(200) / 48;
+
+    double t=0.0;
+    for (int i=0; i < 48; i++, t+=delT)
+    {
+        interpolator->InterpolateCamera(t,cam);
+        renderWindow->Render();
+    }
+    interpolator->Delete();
+    moveTo->Delete();
+
     renderWindow->Render();
 }
 
