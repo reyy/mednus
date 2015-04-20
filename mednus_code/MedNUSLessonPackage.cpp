@@ -45,6 +45,16 @@ MedNUSLessonIcon* MedNUSLessonPackageContentPanel::addContent(QString filename, 
     return item;
 }
 
+void MedNUSLessonPackageContentPanel::removeContent(MedNUSLessonIcon *toDelete)
+{
+    for(int i=0; i<_listOfItems.size(); i++)
+        if(_listOfItems.at(i) == toDelete)
+        {
+            _listOfItems.removeAt(i);
+            delete toDelete;
+        }
+}
+
 
 void MedNUSLessonPackageContentPanel::clearContent() {
     while(_listOfItems.size()>0) {
@@ -274,6 +284,7 @@ void MedNUSLessonPackage::addContent(QString filename, fileType filetype) {
     connect(this->parent(), SIGNAL(tabClosedSignal(QString)), item, SLOT(tabClosed(QString)));
     connect(this->parent(), SIGNAL(tabOpenedSignal(QString, QWidget*)), item, SLOT(tabOpened(QString, QWidget*)));
     connect(item, SIGNAL(emitOpenFile(QString,QString,int)), this, SLOT(callOpenFile(QString,QString,int)));
+    connect(item, SIGNAL(emitDeleteFile(MedNUSLessonIcon*)), this, SLOT(deleteFile(MedNUSLessonIcon*)));
 
     if(_storyMan)
         _storyMan->checkAddedItem(filename, filetype, item);
@@ -515,16 +526,39 @@ void MedNUSLessonPackage::deleteLesson() {
     switch (ret) {
        case QMessageBox::Yes:
            //To do: Delete the lesson.
-            this->_collapse=true;
-            this->updateGUI(false);
-        this->hide();
+           this->_collapse=true;
+           this->updateGUI(false);
+           this->hide();
            emit emitdeleteLesson(this);
+
            break;
        case QMessageBox::No:
            break;
        default:
            // should never be reached
            break;
-     }
+    }
+}
+
+void MedNUSLessonPackage::deleteFile(MedNUSLessonIcon *toDelete)
+{
+    QMessageBox msgBox;
+    msgBox.setText("Are you sure you want to remove this file?");
+    //msgBox.setInformativeText("Are you sure you want to remove this file?");
+    msgBox.setStandardButtons(QMessageBox::No | QMessageBox::Yes );
+    msgBox.setDefaultButton(QMessageBox::No);
+
+    int ret = msgBox.exec();
+    switch (ret) {
+       case QMessageBox::Yes:
+            _contentPanel->removeContent(toDelete);
+            updateGUI(true);
+           break;
+
+       case QMessageBox::No:
+       default:
+           break;
+    }
+
 }
 
