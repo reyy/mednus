@@ -129,9 +129,6 @@ void MedNUSMeshViewer::setCameraView(int cameraViewAngle, double cameraPosition[
 {
     vtkCamera *cam = renderer->GetActiveCamera();
     cam->SetViewAngle(cameraViewAngle);
-    //double *t= cam->GetPosition();
-    //cam->SetPosition(365.956, 106.795,468.587);
-    //cam->SetPosition(cameraPosition[0], cameraPosition[1], cameraPosition[2]);
     cam->SetPosition(cameraPosition);
     cam->SetFocalPoint(cameraFocalPoint);
     cam->SetViewUp(cameraViewUp);
