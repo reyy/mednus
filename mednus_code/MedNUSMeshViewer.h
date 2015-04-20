@@ -57,7 +57,8 @@ class QPushButton;
 #include "vtkMINCImageWriter.h"
 #include "vtkMINCImageReader.h"
 #include "vtkObjectBase.h"
-
+#include "vtkCameraInterpolator.h"
+#include "vtkTupleInterpolator.h"
 // class PMeshPart
 // {
 //     friend class MedNUSMeshViewer;
