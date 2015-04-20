@@ -101,6 +101,7 @@ void MedNUSMainWindow::createWidgets()
         mainLayout->addWidget(lp,1,1);
         connect(tabs, SIGNAL(tabClosedSignal(QString)), lp, SLOT(tabClosed(QString)));
         connect(tabs, SIGNAL(tabOpenedSignal(QString, QWidget*)), lp, SLOT(tabOpened(QString, QWidget*)));
+        connect(ub, SIGNAL(emitNewLesson()), lp, SLOT(addLesson()));
 
         //Content Manager
         MedNUSContentManager *contentManager = new MedNUSContentManager(_currentMode);

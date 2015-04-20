@@ -97,7 +97,7 @@ MedNUSLessonPackage::MedNUSLessonPackage(QWidget *parent) :
     this->setMinimumWidth(LESSONPANEL_WIDTH);
     this->setStyleSheet("background-color: #ededed;");
 
-    _currentMode = NONE;
+    //_currentMode = NONE;
 
     _background = new QLabel(parent);
     //_background->setPixmap(QPixmap(QString::fromStdString(":/images/copy.png")));
