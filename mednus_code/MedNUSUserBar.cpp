@@ -137,7 +137,8 @@ void MedNUSUserBar::mousePressEvent(QMouseEvent *event)
 
 
 void MedNUSUserBar::createNewLesson() {
-    qDebug() <<"ToDo: Create New Lesson";
+    //qDebug() <<"ToDo: Create New Lesson";
+    emit emitNewLesson();
 //    emit emitOpenFile(_path, _text->text(), 0);
 }
 

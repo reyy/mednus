@@ -49,6 +49,7 @@ protected:
 
 signals:
     void emitOpenFile(QString, QString, int);
+    void emitDeleteFile(MedNUSLessonIcon*);
 
 public slots:
     void tabOpened(QString, QWidget*);

@@ -44,6 +44,7 @@ protected slots:
 
 signals:
     void emitLogout();
+    void emitNewLesson();
 };
 
 

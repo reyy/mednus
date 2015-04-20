@@ -70,6 +70,21 @@ void MedNUSLessonPanel::addLesson(MedNUSLessonPackage * _package) {
     updateGUI();
 }
 
+void MedNUSLessonPanel::removeLesson(MedNUSLessonPackage *toDelete)
+{
+    for(int i=0;i<(int)_lessonList.size();i++) {
+        MedNUSLessonPackage *temp = _lessonList.at(i);
+        if(temp == toDelete) {
+            _lessonList.removeAt(i);
+            delete toDelete;
+            update();
+            updateGUI();
+            return;
+        }
+    }
+    qWarning() << "Lesson could not be removed.";
+}
+
 
 void MedNUSLessonPanel::addLesson(QString title,QString subTitle,
                                   QString description, QStringList directories, QString storyFile="") {
@@ -106,6 +121,27 @@ void MedNUSLessonPanel::addLesson(QString title,QString subTitle,
 
     connect(_package, SIGNAL(emitOpenFile(QString,QString,int)),
             this, SLOT(callOpenFile(QString,QString,int)));
+    connect(_package, SIGNAL(emitdeleteLesson(MedNUSLessonPackage*)),
+            this, SLOT(removeLesson(MedNUSLessonPackage*)));
+}
+
+void MedNUSLessonPanel::addLesson()
+{
+    MedNUSLessonPackage *_package = new MedNUSLessonPackage(this);
+    _package->setTitle("Untitled Lesson");
+    _package->setSubHeader("Add Information");
+    _package->setDescription("Add Description");
+    _package->setMode(_currentMode);
+
+    _lessonList.push_back(_package);
+    updateGUI();
+    update();
+    _package->updateGUI(_trayOut);
+
+    connect(_package, SIGNAL(emitOpenFile(QString,QString,int)),
+            this, SLOT(callOpenFile(QString,QString,int)));
+    connect(_package, SIGNAL(emitdeleteLesson(MedNUSLessonPackage*)),
+            this, SLOT(removeLesson(MedNUSLessonPackage*)));
 }
 
 
@@ -113,6 +149,7 @@ bool MedNUSLessonPanel::removeLesson(QString title) {
     for(int i=0;i<(int)_lessonList.size();i++) {
         MedNUSLessonPackage *temp = _lessonList.at(i);
         if(temp->getTitle().compare(title)) {
+            _lessonList.removeAt(i);
             delete temp;
             updateGUI();
             return true;
