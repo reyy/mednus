@@ -11,7 +11,7 @@ MedNUSLessonPackageContentPanel::MedNUSLessonPackageContentPanel(int x,int y,QWi
 
     _currentMode = NONE;
     this->setGeometry(QRect(0,0,LESSONPANEL_WIDTH-LESSONPANEL_BORDER*3-SIDEBAR_OFFSET,_listOfItems.size()*LESSONPACKAGEITEM_HEIGHT+2));
-
+    this->show();
     _parent=this;
 }
 
@@ -82,8 +82,9 @@ void MedNUSLessonPackageContentPanel::updateGUI(int x, int y, bool collapse,int 
         }*/
 
         //amtOfLesson*LESSONPANEL_CONTRACTED_CLICKHEIGHT;
-
+        this->show();
         for(int i=0;i<_listOfItems.size();i++) {
+            _listOfItems.at(i)->show();
             _listOfItems.at(i)->setVisible(true);
             _listOfItems.at(i)->updatePosition(x,y,0,5+i*LESSONPACKAGEITEM_HEIGHT);
             _listOfItems.at(i)->setScrollBarSpace(exceedLimit);
@@ -110,11 +111,13 @@ MedNUSLessonPackage::MedNUSLessonPackage(QWidget *parent) :
     //_currentMode = NONE;
 
     _background = new QLabel(parent);
+    _background->show();
     //_background->setPixmap(QPixmap(QString::fromStdString(":/images/copy.png")));
 
     _loadStatus = new QLabel(parent);
     _loadStatus->setPixmap(((MedNUSLessonPanel*)parent)->getLoadingIcon(10));
     _loadStatus->setScaledContents(true);
+    _loadStatus->show();
     //To Do: Tag the value to load state, set the existing text to 50% opacity.
 
     _moduleTitle = new QLabel(parent);
@@ -125,6 +128,7 @@ MedNUSLessonPackage::MedNUSLessonPackage(QWidget *parent) :
     }
     _moduleTitle->setFont (QFont ("Helvetica", 12,QFont::Bold,false));
     _moduleTitle->setGeometry(QRect(_x+9+LESSONPANEL_BORDERICON, _y, LESSONPANEL_WIDTH, 16));
+    _moduleTitle->show();
 
     _subHeader = new QLabel(parent);
     if(_currentMode == STUDENT) {
@@ -204,6 +208,7 @@ MedNUSLessonPackage::MedNUSLessonPackage(QWidget *parent) :
     connect(_btUpload,SIGNAL(clicked()),this,SLOT(locateNewFile()));
     connect(_btNewQuiz,SIGNAL(clicked()),this,SLOT(addNewQuiz()));
     connect(_btDelete,SIGNAL(clicked()),this,SLOT(deleteLesson()));
+
 }
 
 
