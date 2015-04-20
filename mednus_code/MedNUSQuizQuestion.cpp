@@ -2,6 +2,11 @@
 
 const int MAX_NO_OF_OPTIONS = 4;
 
+// Offsets determine the position of the object in the content QVector that
+//      is passed into the constructor.
+const int CONTENT_TEACHER_COMMENT_OFFSET = 1;
+const int CONTENT_CORRECT_ANSWER_OFFSET = 2;
+
 MedNUSQuizQuestion::MedNUSQuizQuestion(int questionNum, QVector<QString> content,
                                        int noOfOptions, bool hasImage,
                                        QString imageUrl) {
@@ -20,8 +25,8 @@ MedNUSQuizQuestion::MedNUSQuizQuestion(int questionNum, QVector<QString> content
     for (int i = 1; i <= noOfOptions; i++)
         _options->append(content[i]);
 
-    _teacherComment = content[noOfOptions+1];
-    _correctAnswer = content[noOfOptions+2].toInt();
+    _teacherComment = content[noOfOptions+CONTENT_TEACHER_COMMENT_OFFSET];
+    _correctAnswer = content[noOfOptions+CONTENT_CORRECT_ANSWER_OFFSET].toInt();
 }
 
 /*
