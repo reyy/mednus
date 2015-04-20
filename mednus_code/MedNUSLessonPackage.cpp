@@ -17,6 +17,9 @@ MedNUSLessonPackageContentPanel::MedNUSLessonPackageContentPanel(int x,int y,QWi
 
 
 MedNUSLessonPackageContentPanel::~MedNUSLessonPackageContentPanel(){
+    //QList<QWidget *> widgets = _listOfItems;
+        foreach(MedNUSLessonIcon * widget, _listOfItems)
+            delete widget;
 }
 
 
@@ -195,6 +198,21 @@ MedNUSLessonPackage::MedNUSLessonPackage(QWidget *parent) :
 
 
 MedNUSLessonPackage::~MedNUSLessonPackage() {
+    SAFE_DELETE(_contentPanel);
+    SAFE_DELETE(_loadStatus);
+    SAFE_DELETE(_background);
+    delete _moduleTitle;
+    delete _subHeader;
+    delete _description;
+    delete _scrollArea;
+    SAFE_DELETE(_storyMan);
+    SAFE_DELETE(_btEditTitle);
+    SAFE_DELETE(_btEditSubHeader);
+    SAFE_DELETE(_btEditDescription);
+
+    SAFE_DELETE(_btUpload);
+    SAFE_DELETE(_btNewQuiz);
+    SAFE_DELETE(_btDelete);
 }
 
 
@@ -497,6 +515,10 @@ void MedNUSLessonPackage::deleteLesson() {
     switch (ret) {
        case QMessageBox::Yes:
            //To do: Delete the lesson.
+            this->_collapse=true;
+            this->updateGUI(false);
+        this->hide();
+           emit emitdeleteLesson(this);
            break;
        case QMessageBox::No:
            break;
