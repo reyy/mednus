@@ -3,7 +3,7 @@
 
 #include <QDir>
 
-#define SKIP_LOGIN 0
+#define SKIP_LOGIN 1
 
 MedNUSMainWindow::MedNUSMainWindow(QWidget *parent) :
     QMainWindow(parent)
@@ -34,7 +34,7 @@ MedNUSMainWindow::MedNUSMainWindow(QWidget *parent) :
     }
     else
     {
-        _currentMode=STUDENT;
+        _currentMode=LECTURER;
         this->userName = "Temporary Testing Name";
         login = NULL;
         createWidgets();
@@ -101,6 +101,7 @@ void MedNUSMainWindow::createWidgets()
         mainLayout->addWidget(lp,1,1);
         connect(tabs, SIGNAL(tabClosedSignal(QString)), lp, SLOT(tabClosed(QString)));
         connect(tabs, SIGNAL(tabOpenedSignal(QString, QWidget*)), lp, SLOT(tabOpened(QString, QWidget*)));
+        connect(ub, SIGNAL(emitNewLesson()), lp, SLOT(addLesson()));
 
         //Content Manager
         MedNUSContentManager *contentManager = new MedNUSContentManager(_currentMode);
@@ -124,11 +125,12 @@ void MedNUSMainWindow::createWidgets()
             lp->setTrayOut(true);
             ub->setTrayOut(true);
             fb->setTrayOut(true);
-
+            lp->updateGUI();
         });
 
         if(SKIP_LOGIN)
         {
+            contentManager->initLessonList(QJsonDocument());
             centralWidget->setLayout(mainLayout);
             setCentralWidget(centralWidget);
 
@@ -139,10 +141,8 @@ void MedNUSMainWindow::createWidgets()
             ub->setTrayOut(true);
             fb->setTrayOut(true);
         }
-
-        //Fetch Lesson List
-        network->downloadLessonList();
-        //contentManager->initLessonList(NULL);
+        else
+            network->downloadLessonList();
     }
 }
 

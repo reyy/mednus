@@ -31,6 +31,8 @@
 #define MIN(a,b) ((a) < (b) ? (a) : (b))
 #define MAX(a,b) ((a) > (b) ? (a) : (b))
 
+#define SAFE_DELETE(a) {if( (a) != NULL ) delete (a); (a) = NULL;}
+
 enum interfaceMode {
     NONE,
     STUDENT,

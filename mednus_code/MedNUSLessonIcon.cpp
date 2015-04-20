@@ -183,4 +183,5 @@ void MedNUSLessonIcon::activateMISC() {
 
 void MedNUSLessonIcon::deleteSelection() {
     qDebug() << "test2";
+    emit emitDeleteFile(this);
 }

@@ -1,4 +1,4 @@
-#ifndef MEDNUSLESSONPACKAGE_H
+﻿#ifndef MEDNUSLESSONPACKAGE_H
 #define MEDNUSLESSONPACKAGE_H
 
 #include <QPushButton>
@@ -22,6 +22,7 @@ public:
     int getContentSize();
 
     MedNUSLessonIcon* addContent(QString filename, fileType filetype);
+    void removeContent(MedNUSLessonIcon*);
     void clearContent();
 
     void updateGUI(int x, int y, bool collapse, int amtOfLesson);
@@ -73,25 +74,25 @@ private:
     float _height;
 
     QString _title;
-    QLabel *_loadStatus;
-    QLabel *_background;
-    QLabel *_moduleTitle;
-    QLabel *_subHeader;
-    QLabel *_description;
+    QLabel *_loadStatus = NULL;
+    QLabel *_background = NULL;
+    QLabel *_moduleTitle = NULL;
+    QLabel *_subHeader = NULL;
+    QLabel *_description = NULL;
     bool _collapse;
-    QWidget *_parent;
-    QScrollArea *_scrollArea;
-    MedNUSLessonPackageContentPanel *_contentPanel;
-    MedNUSStoryManager *_storyMan;
+    QWidget *_parent = NULL;
+    QScrollArea *_scrollArea = NULL;
+    MedNUSLessonPackageContentPanel *_contentPanel = NULL;
+    MedNUSStoryManager *_storyMan = NULL;
     interfaceMode _currentMode;
 
-    QPushButton *_btEditTitle;
-    QPushButton *_btEditSubHeader;
-    QPushButton *_btEditDescription;
+    QPushButton *_btEditTitle = NULL;
+    QPushButton *_btEditSubHeader = NULL;
+    QPushButton *_btEditDescription = NULL;
 
-    QPushButton *_btUpload;
-    QPushButton *_btNewQuiz;
-    QPushButton *_btDelete;
+    QPushButton *_btUpload = NULL;
+    QPushButton *_btNewQuiz = NULL;
+    QPushButton *_btDelete = NULL;
 
 public slots:
     void callOpenFile(QString str, QString title, int type);
@@ -104,9 +105,11 @@ protected slots:
     void locateNewFile();
     void addNewQuiz();
     void deleteLesson();
+    void deleteFile(MedNUSLessonIcon*);
 
 signals:
     void emitOpenFile(QString, QString, int);
+    void emitdeleteLesson(MedNUSLessonPackage*);
 };
 
 

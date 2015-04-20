@@ -17,6 +17,9 @@ MedNUSLessonPackageContentPanel::MedNUSLessonPackageContentPanel(int x,int y,QWi
 
 
 MedNUSLessonPackageContentPanel::~MedNUSLessonPackageContentPanel(){
+    //QList<QWidget *> widgets = _listOfItems;
+        foreach(MedNUSLessonIcon * widget, _listOfItems)
+            delete widget;
 }
 
 
@@ -40,6 +43,16 @@ MedNUSLessonIcon* MedNUSLessonPackageContentPanel::addContent(QString filename, 
     item->setMode(_currentMode);
     _listOfItems.push_back(item);
     return item;
+}
+
+void MedNUSLessonPackageContentPanel::removeContent(MedNUSLessonIcon *toDelete)
+{
+    for(int i=0; i<_listOfItems.size(); i++)
+        if(_listOfItems.at(i) == toDelete)
+        {
+            _listOfItems.removeAt(i);
+            delete toDelete;
+        }
 }
 
 
@@ -94,7 +107,7 @@ MedNUSLessonPackage::MedNUSLessonPackage(QWidget *parent) :
     this->setMinimumWidth(LESSONPANEL_WIDTH);
     this->setStyleSheet("background-color: #ededed;");
 
-    _currentMode = NONE;
+    //_currentMode = NONE;
 
     _background = new QLabel(parent);
     //_background->setPixmap(QPixmap(QString::fromStdString(":/images/copy.png")));
@@ -195,6 +208,21 @@ MedNUSLessonPackage::MedNUSLessonPackage(QWidget *parent) :
 
 
 MedNUSLessonPackage::~MedNUSLessonPackage() {
+    SAFE_DELETE(_contentPanel);
+    SAFE_DELETE(_loadStatus);
+    SAFE_DELETE(_background);
+    delete _moduleTitle;
+    delete _subHeader;
+    delete _description;
+    delete _scrollArea;
+    SAFE_DELETE(_storyMan);
+    SAFE_DELETE(_btEditTitle);
+    SAFE_DELETE(_btEditSubHeader);
+    SAFE_DELETE(_btEditDescription);
+
+    SAFE_DELETE(_btUpload);
+    SAFE_DELETE(_btNewQuiz);
+    SAFE_DELETE(_btDelete);
 }
 
 
@@ -256,6 +284,7 @@ void MedNUSLessonPackage::addContent(QString filename, fileType filetype) {
     connect(this->parent(), SIGNAL(tabClosedSignal(QString)), item, SLOT(tabClosed(QString)));
     connect(this->parent(), SIGNAL(tabOpenedSignal(QString, QWidget*)), item, SLOT(tabOpened(QString, QWidget*)));
     connect(item, SIGNAL(emitOpenFile(QString,QString,int)), this, SLOT(callOpenFile(QString,QString,int)));
+    connect(item, SIGNAL(emitDeleteFile(MedNUSLessonIcon*)), this, SLOT(deleteFile(MedNUSLessonIcon*)));
 
     if(_storyMan)
         _storyMan->checkAddedItem(filename, filetype, item);
@@ -458,6 +487,25 @@ void MedNUSLessonPackage::editDescription() {
 
 void MedNUSLessonPackage::locateNewFile() {
     //To do: Select new file.
+    //To do: Select new file.
+    QString directory = QFileDialog::getOpenFileName(this, tr("Select File"),"", tr("PDF Files (*.pdf);;Video Files (*.mp4);;Model Dir(*)"));
+
+    fileType filetype;
+    if(directory.contains(".png", Qt::CaseInsensitive))
+        filetype = fileType::IMAGE;
+    //else if(directory.contains(".ply", Qt::CaseInsensitive))
+    //    filetype = fileType::MODEL;
+    else if(directory.contains(".pdf", Qt::CaseInsensitive))
+        filetype = fileType::PDF;
+    else if(directory.contains(".qiz", Qt::CaseInsensitive))
+        filetype = fileType::QUIZ;
+    else if(directory.contains(".mp4", Qt::CaseInsensitive))
+        filetype = fileType::VIDEO;
+    else
+        filetype = fileType::MODEL;
+
+    addContent(directory,filetype);
+    this->updateGUI(true);
 }
 
 
@@ -497,12 +545,39 @@ void MedNUSLessonPackage::deleteLesson() {
     switch (ret) {
        case QMessageBox::Yes:
            //To do: Delete the lesson.
+           this->_collapse=true;
+           this->updateGUI(false);
+           this->hide();
+           emit emitdeleteLesson(this);
+
            break;
        case QMessageBox::No:
            break;
        default:
            // should never be reached
            break;
-     }
+    }
+}
+
+void MedNUSLessonPackage::deleteFile(MedNUSLessonIcon *toDelete)
+{
+    QMessageBox msgBox;
+    msgBox.setText("Are you sure you want to remove this file?");
+    //msgBox.setInformativeText("Are you sure you want to remove this file?");
+    msgBox.setStandardButtons(QMessageBox::No | QMessageBox::Yes );
+    msgBox.setDefaultButton(QMessageBox::No);
+
+    int ret = msgBox.exec();
+    switch (ret) {
+       case QMessageBox::Yes:
+            _contentPanel->removeContent(toDelete);
+            updateGUI(true);
+           break;
+
+       case QMessageBox::No:
+       default:
+           break;
+    }
+
 }
 
