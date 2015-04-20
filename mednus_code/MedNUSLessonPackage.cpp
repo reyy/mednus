@@ -487,6 +487,25 @@ void MedNUSLessonPackage::editDescription() {
 
 void MedNUSLessonPackage::locateNewFile() {
     //To do: Select new file.
+    //To do: Select new file.
+    QString directory = QFileDialog::getOpenFileName(this, tr("Select File"),"", tr("PDF Files (*.pdf);;Video Files (*.mp4);;Model Dir(*)"));
+
+    fileType filetype;
+    if(directory.contains(".png", Qt::CaseInsensitive))
+        filetype = fileType::IMAGE;
+    //else if(directory.contains(".ply", Qt::CaseInsensitive))
+    //    filetype = fileType::MODEL;
+    else if(directory.contains(".pdf", Qt::CaseInsensitive))
+        filetype = fileType::PDF;
+    else if(directory.contains(".qiz", Qt::CaseInsensitive))
+        filetype = fileType::QUIZ;
+    else if(directory.contains(".mp4", Qt::CaseInsensitive))
+        filetype = fileType::VIDEO;
+    else
+        filetype = fileType::MODEL;
+
+    addContent(directory,filetype);
+    this->updateGUI(true);
 }
 
 
