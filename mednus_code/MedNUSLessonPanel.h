@@ -60,6 +60,7 @@ private:
 
 public slots:
     void addLesson(QString title, QString subTitle, QString description, QStringList directory, QString storyFile);
+    void removeLesson(MedNUSLessonPackage*);
     void callOpenFile(QString str, QString title, int type);
 
     void tabClosed(QString t);
