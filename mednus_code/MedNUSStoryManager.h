@@ -32,7 +32,7 @@ protected:
         double cameraViewUp[3];
     };
 
-    vector<StoryPoint> *storyPointList;
+    QVector<StoryPoint> *storyPointList;
     MedNUSLessonIcon *videoFile;
     MedNUSLessonIcon *modelFile;
     MedNUSLessonIcon *pdfFile;
@@ -51,6 +51,7 @@ protected:
 
 protected slots:
     void videoPositionChanged(qint64);
+    void initStoryPoints();
 };
 
 #endif // MEDNUSSTORYMANAGER_H

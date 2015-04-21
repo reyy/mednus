@@ -50,6 +50,7 @@ protected:
 signals:
     void emitOpenFile(QString, QString, int);
     void emitDeleteFile(MedNUSLessonIcon*);
+    void emitTabIsOpen();
 
 public slots:
     void tabOpened(QString, QWidget*);
