@@ -62,6 +62,9 @@ protected:
     int _volume;
     qint64 _duration;
 
+    QPushButton *_nextButton;
+    QPushButton *_prevButton;
+    QPushButton *_addEditButton;
     QList <qint64> _storyPoints;
     QWidget *_storyPointContainer;
 

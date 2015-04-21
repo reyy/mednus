@@ -138,6 +138,21 @@ MedNUSVideoControl::MedNUSVideoControl(QWidget *parent):
     _videoTimer->setStyleSheet("color:#FFFFFF;font-size:8px;text-align:center;background-color:rgba(0,0,0,0);");
     _videoTimer->setText("0:00 / 0:00");
 
+    _nextButton = new QPushButton((this));
+    _nextButton->setIconSize(QSize(24,24));
+    _nextButton->setFlat(true);
+    _nextButton->setStyleSheet("QPushButton {border-style: outset; border-width: 0px;background-image: url(:/images/bt_next.png); background-color:rgba(0,0,0,0);}");
+
+    _prevButton = new QPushButton((this));
+    _prevButton->setIconSize(QSize(24,24));
+    _prevButton->setFlat(true);
+    _prevButton->setStyleSheet("QPushButton {border-style: outset; border-width: 0px;background-image: url(:/images/bt_prev.png); background-color:rgba(0,0,0,0);}");
+
+    _addEditButton = new QPushButton((this));
+    _addEditButton->setIconSize(QSize(32,24));
+    _addEditButton->setFlat(true);
+    _addEditButton->setStyleSheet("QPushButton {border-style: outset; border-width: 0px;background-image: url(:/images/bt_vidadd.png); background-color:rgba(0,0,0,0);}");
+
 
     connect(_volumeButton,SIGNAL(clicked()), this, SLOT(volumeClicked()));
     connect(_playButton, SIGNAL(clicked()),parent->parentWidget(), SLOT(togglePlay()));
@@ -160,6 +175,16 @@ void MedNUSVideoControl::updateUI() {
     _volumeButton->setGeometry(QRect(VIDEO_BORDER+VIDEO_ICON_SIZE+VIDEO_SEP_LENGTH,playerHeight,VIDEO_ICON_SIZE,VIDEO_ICON_SIZE));
     _positionSlider->setGeometry(QRect(VIDEO_BORDER+VIDEO_ICON_SIZE*2+VIDEO_SEP_LENGTH*2,playerHeight,this->width()-(VIDEO_BORDER*2+VIDEO_ICON_SIZE*2+VIDEO_SEP_LENGTH*3)-VIDEO_TIME_LENGTH,VIDEO_ICON_SIZE));
     _videoTimer->setGeometry(QRect(this->width()-VIDEO_BORDER-VIDEO_TIME_LENGTH,playerHeight,VIDEO_TIME_LENGTH,VIDEO_ICON_SIZE));
+
+    if(true)
+    {
+        //_addEditButton->setStyleSheet("QPushButton {border-style: outset; border-width: 0px;background-image: url(:/images/bt_vidadd.png); background-color:rgba(0,0,0,0);}");
+        _addEditButton->setGeometry(QRect(VIDEO_BORDER+24,playerHeight-24,VIDEO_ICON_SIZE+8,VIDEO_ICON_SIZE));
+
+        _prevButton->setGeometry(QRect(VIDEO_BORDER,playerHeight-24,VIDEO_ICON_SIZE,VIDEO_ICON_SIZE));
+        _nextButton->setGeometry(QRect(VIDEO_BORDER+24+32,playerHeight-24,VIDEO_ICON_SIZE,VIDEO_ICON_SIZE));
+    }
+
     _storyPointContainer->setGeometry(_positionSlider->geometry());
     foreach(QObject *storyPointLabel, _storyPointContainer->children())
         if(storyPointLabel->property("pos2").isValid() && _duration!=0)
@@ -167,10 +192,6 @@ void MedNUSVideoControl::updateUI() {
             qint64 timestamp = storyPointLabel->property("pos2").toString().toLongLong();
             ((QWidget*)(storyPointLabel))->setGeometry(QRect(_positionSlider->width()*timestamp/_duration
                                                              ,VIDEO_ICON_SIZE/4,/*VIDEO_ICON_SIZE/*/1,VIDEO_ICON_SIZE/2));
-            qDebug() << _positionSlider->width();
-            qDebug() <<(storyPointLabel->property("pos2").toString());
-            qDebug() <<(storyPointLabel->property("pos2").toString().toLongLong());
-            qDebug() << _positionSlider->width()*timestamp/_duration;
         }
 
 }
