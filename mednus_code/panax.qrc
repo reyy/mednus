@@ -130,5 +130,9 @@
         <file>images/bt_stats.png</file>
         <file>images/bt_sDelete_p.png</file>
         <file>ssl/bluebell.crt</file>
+        <file>images/bt_prev.png</file>
+        <file>images/bt_next.png</file>
+        <file>images/bt_vidadd.png</file>
+        <file>images/bt_videdit.png</file>
     </qresource>
 </RCC>
