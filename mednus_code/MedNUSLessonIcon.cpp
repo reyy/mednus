@@ -142,6 +142,7 @@ void MedNUSLessonIcon::tabOpened(QString path, QWidget *widget)
     {
         setHighlight(true);
         _contentWidget = widget;
+        emit emitTabIsOpen();
     }
 }
 
