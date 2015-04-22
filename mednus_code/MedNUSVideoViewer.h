@@ -26,6 +26,7 @@ public:
 signals:
     void positionChanged(qint64);
     void addEditStoryPoint(qint64);
+    void deleteStoryPoint(qint64);
 
 protected:
     QMediaPlayer mediaPlayer;
@@ -46,6 +47,7 @@ protected slots:
     void setPosition(qint64 position);
     void setVolume(int volume);
     void addEditStoryPoint() {emit addEditStoryPoint(mediaPlayer.position());}
+    void deleteStoryPoint() {emit deleteStoryPoint(mediaPlayer.position());}
 };
 
 class MedNUSVideoControl : public QWidget

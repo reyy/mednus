@@ -173,6 +173,7 @@ MedNUSVideoControl::MedNUSVideoControl(interfaceMode currentMode, QWidget *paren
     connect(_nextButton, SIGNAL(clicked()), this, SLOT(goToNextStoryPoint()));
     connect(_prevButton, SIGNAL(clicked()), this, SLOT(goToPrevStoryPoint()));
     connect(_addEditButton, SIGNAL(clicked()), parent->parentWidget(), SLOT(addEditStoryPoint()));
+    connect(_delButton, SIGNAL(clicked()), parent->parentWidget(), SLOT(deleteStoryPoint()));
 }
 
 

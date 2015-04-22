@@ -203,6 +203,7 @@ void MedNUSStoryManager::initStoryPoints()
         videoWidget->initStoryPoints(spList);
 
         connect(videoWidget, SIGNAL(addEditStoryPoint(qint64)), this, SLOT(addEditStoryPoints(qint64)));
+        connect(videoWidget, SIGNAL(deleteStoryPoint(qint64)), this, SLOT(deleteStoryPoints(qint64)));
     }
 }
 
@@ -241,4 +242,16 @@ void MedNUSStoryManager::addEditStoryPoints(qint64 pos)
         return;
     }
     //Add to last
+}
+
+void MedNUSStoryManager::deleteStoryPoints(qint64 pos)
+{
+    for(int i = 0; i<storyPointList->size(); i++)//StoryPoint point = (*storyPointList)[i]
+        if((*storyPointList)[i].timestamp == pos)
+        {
+            storyPointList->removeAt(i);
+            initStoryPoints();
+            return;
+        }
+    //TODO: return error
 }

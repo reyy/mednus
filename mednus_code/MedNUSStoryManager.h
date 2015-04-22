@@ -55,6 +55,7 @@ protected slots:
     void videoPositionChanged(qint64);
     void initStoryPoints();
     void addEditStoryPoints(qint64);
+    void deleteStoryPoints(qint64);
 };
 
 #endif // MEDNUSSTORYMANAGER_H
