@@ -24,6 +24,7 @@ public:
 
 signals:
     void positionChanged(qint64);
+    void addEditStoryPoint(qint64);
 
 protected:
     QMediaPlayer mediaPlayer;
@@ -42,6 +43,7 @@ protected slots:
     void setPosition(int position);
     void setPosition(qint64 position);
     void setVolume(int volume);
+    void addEditStoryPoint() {emit addEditStoryPoint(mediaPlayer.position());}
 };
 
 class MedNUSVideoControl : public QWidget
@@ -69,6 +71,7 @@ protected:
     QPushButton *_addEditButton;
     QList <qint64> _storyPoints;
     QWidget *_storyPointContainer;
+    QMediaPlayer::State _state = QMediaPlayer::PausedState;
 
     QString timeConvert(qint64);
 

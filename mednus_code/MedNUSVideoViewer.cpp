@@ -166,6 +166,7 @@ MedNUSVideoControl::MedNUSVideoControl(QWidget *parent):
 
     connect(_nextButton, SIGNAL(clicked()), this, SLOT(goToNextStoryPoint()));
     connect(_prevButton, SIGNAL(clicked()), this, SLOT(goToPrevStoryPoint()));
+    connect(_addEditButton, SIGNAL(clicked()), parent->parentWidget(), SLOT(addEditStoryPoint()));
 }
 
 
@@ -208,6 +209,10 @@ void MedNUSVideoControl::updateUI() {
 void MedNUSVideoControl::setStoryPoints(QList<qint64> sp)
 {
     _storyPoints = sp;
+
+    foreach(QObject *existing, _storyPointContainer->children())
+        delete existing;
+
     foreach(qint64 timestamp, sp)
     {
         QLabel *storyPointLabel = new QLabel(_storyPointContainer);
@@ -215,6 +220,8 @@ void MedNUSVideoControl::setStoryPoints(QList<qint64> sp)
         storyPointLabel->setPixmap(QPixmap(QString::fromStdString(":/images/icon_quiz.png")));
         storyPointLabel->show();
     }
+    positionChanged(_position);
+    updateUI();
 }
 
 
@@ -241,10 +248,19 @@ void MedNUSVideoControl::mediaStateChanged(QMediaPlayer::State state)
 {
     switch(state) {
     case QMediaPlayer::PlayingState:
+        _state = QMediaPlayer::PlayingState;
         this->_playButton->setStyleSheet("QPushButton {border-style: outset; border-width: 0px;background-image: url(:/images/bt_pause.png); background-color:rgba(0,0,0,0);}");
+        _addEditButton->hide();
         break;
     default:
+        _state = QMediaPlayer::PausedState;
         this->_playButton->setStyleSheet("QPushButton {border-style: outset; border-width: 0px;background-image: url(:/images/bt_play.png); background-color:rgba(0,0,0,0);}");
+        _addEditButton->show();
+        _addEditButton->setStyleSheet("QPushButton {border-style: outset; border-width: 0px;background-image: url(:/images/bt_vidadd.png); background-color:rgba(0,0,0,0);}");
+        foreach(qint64 pos, _storyPoints)
+            if(pos == _position)
+                _addEditButton->setStyleSheet("QPushButton {border-style: outset; border-width: 0px;background-image: url(:/images/bt_videdit.png); background-color:rgba(0,0,0,0);}");
+
         break;
     }
 }
@@ -255,6 +271,17 @@ void MedNUSVideoControl::positionChanged(qint64 position)
     _position = position;
     _positionSlider->setValue(position);
     _videoTimer->setText(timeConvert(position) +"/" + _durationText);
+    if(_state == QMediaPlayer::PausedState)
+    {
+        bool isEdit = false;
+        foreach(qint64 pos, _storyPoints)
+            if(pos == _position)
+                isEdit = true;
+        if(isEdit)
+            _addEditButton->setStyleSheet("QPushButton {border-style: outset; border-width: 0px;background-image: url(:/images/bt_videdit.png); background-color:rgba(0,0,0,0);}");
+        else
+            _addEditButton->setStyleSheet("QPushButton {border-style: outset; border-width: 0px;background-image: url(:/images/bt_vidadd.png); background-color:rgba(0,0,0,0);}");
+    }
 }
 
 
