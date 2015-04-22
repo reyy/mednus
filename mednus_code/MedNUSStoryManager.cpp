@@ -183,7 +183,7 @@ void MedNUSStoryManager::videoPositionChanged(qint64 pos)
     else if(nextStoryPoint != END_OF_STORY)
     {
         StoryPoint next = (*storyPointList)[nextStoryPoint];
-        qDebug() << next.timestamp << pos;
+        //qDebug() << next.timestamp << pos;
         if(next.timestamp <= pos + 999)
             goToStoryPoint(next);
     }

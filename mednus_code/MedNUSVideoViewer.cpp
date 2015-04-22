@@ -160,6 +160,10 @@ MedNUSVideoControl::MedNUSVideoControl(interfaceMode currentMode, QWidget *paren
     _addEditButton->setFlat(true);
     _addEditButton->setStyleSheet("QPushButton {border-style: outset; border-width: 0px;background-image: url(:/images/bt_vidadd.png); background-color:rgba(0,0,0,0);}");
 
+    _delButton = new QPushButton((this));
+    _delButton->setIconSize(QSize(32,24));
+    _delButton->setFlat(true);
+    _delButton->setStyleSheet("QPushButton {border-style: outset; border-width: 0px;background-image: url(:/images/bt_viddel.png); background-color:rgba(0,0,0,0);}");
 
     connect(_volumeButton,SIGNAL(clicked()), this, SLOT(volumeClicked()));
     connect(_playButton, SIGNAL(clicked()),parent->parentWidget(), SLOT(togglePlay()));
@@ -190,9 +194,8 @@ void MedNUSVideoControl::updateUI() {
 
     if(_currentMode == interfaceMode::LECTURER)
     {
-        //_addEditButton->setStyleSheet("QPushButton {border-style: outset; border-width: 0px;background-image: url(:/images/bt_vidadd.png); background-color:rgba(0,0,0,0);}");
         _addEditButton->setGeometry(QRect(VIDEO_BORDER+24,playerHeight-24,VIDEO_ICON_SIZE+8,VIDEO_ICON_SIZE));
-
+        _delButton->setGeometry(QRect(VIDEO_BORDER+24,playerHeight-40,VIDEO_ICON_SIZE+8,VIDEO_ICON_SIZE));
         _prevButton->setGeometry(QRect(VIDEO_BORDER,playerHeight-24,VIDEO_ICON_SIZE,VIDEO_ICON_SIZE));
         _nextButton->setGeometry(QRect(VIDEO_BORDER+24+32,playerHeight-24,VIDEO_ICON_SIZE,VIDEO_ICON_SIZE));
     }
@@ -201,6 +204,7 @@ void MedNUSVideoControl::updateUI() {
         _prevButton->hide();
         _nextButton->hide();
         _addEditButton->hide();
+        _delButton->hide();
     }
 
     _storyPointContainer->setGeometry(_positionSlider->geometry());
@@ -259,6 +263,7 @@ void MedNUSVideoControl::mediaStateChanged(QMediaPlayer::State state)
         _state = QMediaPlayer::PlayingState;
         this->_playButton->setStyleSheet("QPushButton {border-style: outset; border-width: 0px;background-image: url(:/images/bt_pause.png); background-color:rgba(0,0,0,0);}");
         _addEditButton->hide();
+        _delButton->hide();
         break;
     default:
         _state = QMediaPlayer::PausedState;
@@ -290,9 +295,15 @@ void MedNUSVideoControl::positionChanged(qint64 position)
             if(pos == _position)
                 isEdit = true;
         if(isEdit)
+        {
             _addEditButton->setStyleSheet("QPushButton {border-style: outset; border-width: 0px;background-image: url(:/images/bt_videdit.png); background-color:rgba(0,0,0,0);}");
+            _delButton->show();
+        }
         else
+        {
             _addEditButton->setStyleSheet("QPushButton {border-style: outset; border-width: 0px;background-image: url(:/images/bt_vidadd.png); background-color:rgba(0,0,0,0);}");
+            _delButton->hide();
+        }
     }
 }
 
