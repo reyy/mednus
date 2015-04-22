@@ -70,6 +70,7 @@ protected:
 
     QPushButton *_nextButton;
     QPushButton *_prevButton;
+    QPushButton *_delButton;
     QPushButton *_addEditButton;
     QList <qint64> _storyPoints;
     QWidget *_storyPointContainer;
