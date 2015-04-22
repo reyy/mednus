@@ -134,6 +134,7 @@ private:
     // Widget Stuff
     QPushButton* _viewQuizButton;
     QPushButton* _saveButton;
+    QLabel* _noOfQuestionsDropDownBoxLabel;
     QComboBox* _noOfQuestionsDropDownBox;
     QListView* _listView;
 

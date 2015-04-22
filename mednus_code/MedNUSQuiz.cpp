@@ -69,6 +69,7 @@ void MedNUSQuiz::initViewerView() {
     _scrollArea->setAutoFillBackground(true);
     _scrollArea->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     _scrollArea->setVisible(true);
+
     //Load scrollbar style.
     QFile file2(":/images/scrollbar.css");
     if(file2.open(QIODevice::ReadOnly|QIODevice::Text)) {
@@ -91,6 +92,33 @@ void MedNUSQuiz::initEditorView() {
 
     _lastRow = 0;
 
+    // Number of Questions for quiz.
+    _noOfQuestionsDropDownBoxLabel = new QLabel("No. of Questions", _tempWidget);
+    _noOfQuestionsDropDownBoxLabel->setVisible(true);
+    _layout->addWidget(_noOfQuestionsDropDownBoxLabel, _lastRow, 0, 1, 1);
+
+    _noOfQuestionsDropDownBox = new QComboBox(_tempWidget);
+    for (int i = 1; i <= MAX_NO_OF_QUIZ_QUESTIONS; i++) {
+        _noOfQuestionsDropDownBox->addItem(QString::number(i));
+    }
+    _noOfQuestionsDropDownBox->setMaxVisibleItems(MAX_NO_OF_QUIZ_QUESTIONS/2);
+    _noOfQuestionsDropDownBox->setStyleSheet(DROPDOWN_STYLESHEET);
+    _noOfQuestionsDropDownBox->setVisible(true);
+    _listView = new QListView(_noOfQuestionsDropDownBox);
+    _listView->setStyleSheet(DROPDOWN_LIST_VIEW_STYLESHEET);
+    _noOfQuestionsDropDownBox->setView(_listView);
+    connect(_noOfQuestionsDropDownBox, SIGNAL(currentIndexChanged(int)), this,
+            SLOT(updateNoOfQuestions()));
+    _layout->addWidget(_noOfQuestionsDropDownBox, _lastRow++, 1, 1, 1);
+
+    // Load the quiz into the editor.
+    //if (!loadQuizFile())
+     //   throw "Could not load file.";
+
+    createQuizWidgets();
+
+
+
     // View Quiz button
     _viewQuizButton = new QPushButton("View Quiz", _tempWidget);
     _viewQuizButton->setVisible(true);
@@ -99,30 +127,13 @@ void MedNUSQuiz::initEditorView() {
     connect(_viewQuizButton, SIGNAL(released()), this, SLOT(goToViewerView()));
     _layout->addWidget(_viewQuizButton, _lastRow++, 0, 1, 2);
 
+    // Save Quiz button
     _saveButton = new QPushButton("Save", _tempWidget);
     _saveButton->setVisible(true);
     _saveButton->setStyleSheet(EDIT_BUTTON_STYLESHEET);
     _saveButton->setFont(QFont("Helvetica", 14));
     connect(_saveButton, SIGNAL(released()), this, SLOT(saveQuiz()));
     _layout->addWidget(_saveButton, _lastRow++, 0, 1, 2);
-
-    // Number of Questions for quiz.
-    _noOfQuestionsDropDownBox = new QComboBox(_tempWidget);
-    for (int i = 1; i <= MAX_NO_OF_QUIZ_QUESTIONS; i++) {
-        _noOfQuestionsDropDownBox->addItem(QString::number(i));
-    }
-    _noOfQuestionsDropDownBox->setMaxVisibleItems(MAX_NO_OF_QUIZ_QUESTIONS/2);
-    _noOfQuestionsDropDownBox->setVisible(true);
-    _listView = new QListView(_noOfQuestionsDropDownBox);
-    _noOfQuestionsDropDownBox->setView(_listView);
-    connect(_noOfQuestionsDropDownBox, SIGNAL(currentIndexChanged(int)), this,
-            SLOT(updateNoOfQuestions()));
-
-    // Load the quiz into the editor.
-    //if (!loadQuizFile())
-     //   throw "Could not load file.";
-
-    createQuizWidgets();
 
 
     // Set the current number of questions in the drop down box based on file.
@@ -139,6 +150,13 @@ void MedNUSQuiz::initEditorView() {
     _scrollArea->setAutoFillBackground(true);
     _scrollArea->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     _scrollArea->setVisible(true);
+
+    //Load scrollbar style.
+    QFile file2(":/images/scrollbar.css");
+    if(file2.open(QIODevice::ReadOnly|QIODevice::Text)) {
+        _scrollArea->setStyleSheet(file2.readAll());
+        file2.close();
+    }
 
     _isEditorView = true;
 }

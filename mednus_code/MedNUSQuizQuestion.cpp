@@ -20,6 +20,8 @@ MedNUSQuizQuestion::MedNUSQuizQuestion(int questionNum, QVector<QString> content
         _questionImageUrl = "";
 
     _noOfOptions = noOfOptions;
+    _dummySpace = new QVector<QLabel*>();
+    _amtOfDummySpace = 3;
     _options = new QVector<QString>();
     _optionsLabelEdit = new QVector<QLineEdit*>();
     for (int i = 1; i <= noOfOptions; i++)
@@ -182,6 +184,9 @@ void MedNUSQuizQuestion::loadQuestion(QuestionMode mode, QWidget *parent,
 
     loadQuestionTeacherCommentLabel(mode, parent, layout, row);
     qDebug()<<"6";
+
+    // Load some dummy space at the end of the question to seperate the questions.
+    loadEndOfQuestionDummySpace(mode, parent, layout, row);
 }
 
 
@@ -205,6 +210,9 @@ void MedNUSQuizQuestion::showQuestion() const
     QList<QAbstractButton*> buttonList = _optionButtonGroup->buttons();
     for (int i = 0; i < buttonList.size(); i++)
         ((QRadioButton*)buttonList.at(i))->setVisible(true);
+
+    for (int i = 0; i < _amtOfDummySpace; i++)
+        _dummySpace->at(i)->setVisible(true);
 }
 
 
@@ -244,8 +252,8 @@ void MedNUSQuizQuestion::loadQuestionNumLabel(QuestionMode mode, QWidget *parent
     _questionNumLabel = new QLabel("Question " + QString::number(_questionNum),
                                    parent);
     _questionNumLabel->setWordWrap(true);
-    _questionNumLabel->setAlignment(Qt::AlignCenter);
-    _questionNumLabel->setFont (QFont ("Helvetica", 12, QFont::Bold));
+    _questionNumLabel->setAlignment(Qt::AlignLeft);
+    _questionNumLabel->setFont (QFont ("Helvetica", 24, QFont::Bold));
 
     if (mode == VIEWER)
         _questionNumLabel->setVisible(false);
@@ -323,24 +331,34 @@ void MedNUSQuizQuestion::loadQuestionOptions(QuestionMode mode, QWidget *parent,
 
         // Existing options.
         for (int i = 1; i <= _noOfOptions; i++) {
+            QLabel* optionNumLabel = new QLabel("Option "+QString::number(i), parent);
+            optionNumLabel->setVisible(true);
+            layout->addWidget(optionNumLabel, row, 0, 1, 1);
             QLineEdit* lineEdit = new QLineEdit(_options->at(i-1), parent);
             lineEdit->setFont (QFont ("Helvetica", 12));
             _optionsLabelEdit->append(lineEdit);
-            layout->addWidget(lineEdit, row++, 0, 1, 2);
+            layout->addWidget(lineEdit, row++, 1, 1, 1);
         }
 
         // Unused options.
         if (_noOfOptions < MAX_NO_OF_OPTIONS) {
 
             for (int i = _noOfOptions; i < MAX_NO_OF_OPTIONS; i++) {
+                QLabel* optionNumLabel = new QLabel("Option "+QString::number(i), parent);
+                optionNumLabel->setVisible(true);
+                layout->addWidget(optionNumLabel, row, 0, 1, 1);
                 QLineEdit* lineEdit = new QLineEdit("", parent);
                 lineEdit->setPlaceholderText("Option " + QString::number(i));
                 lineEdit->setFont (QFont ("Helvetica", 12));
                 _optionsLabelEdit->append(lineEdit);
-                layout->addWidget(lineEdit, row++, 0, 1, 2);
+                layout->addWidget(lineEdit, row++, 1, 1, 1);
             }
 
         }
+
+        QLabel* correctAnswerLabel = new QLabel("Correct Option:", parent);
+        correctAnswerLabel->setVisible(true);
+        layout->addWidget(correctAnswerLabel, row, 0, 1, 1);
 
         _correctAnswerDropDownBox = new QComboBox(parent);
         for (int i = 1; i <= MAX_NO_OF_OPTIONS; i++) {
@@ -348,9 +366,10 @@ void MedNUSQuizQuestion::loadQuestionOptions(QuestionMode mode, QWidget *parent,
         }
         _correctAnswerDropDownBox->setVisible(true);
         _listView = new QListView(_correctAnswerDropDownBox);
+        _listView->setStyleSheet(DROPDOWN_LIST_VIEW_STYLESHEET);
         _correctAnswerDropDownBox->setView(_listView);
         _correctAnswerDropDownBox->setCurrentIndex(_correctAnswer-1);
-        layout->addWidget(_correctAnswerDropDownBox, row++, 0, 1, 2);
+        layout->addWidget(_correctAnswerDropDownBox, row++, 1, 1, 1);
 
     } else {
         qWarning() << "MedNUSQuizQuestion::loadQuestionOptions():  Invalid mode set.";
@@ -379,5 +398,23 @@ void MedNUSQuizQuestion::loadQuestionTeacherCommentLabel(QuestionMode mode,
 
     } else {
         qWarning() << "MedNUSQuizQuestion::loadQuestionTeacherCommentLabel():  Invalid mode set.";
+    }
+}
+
+void MedNUSQuizQuestion::loadEndOfQuestionDummySpace(QuestionMode mode,
+                                                     QWidget *parent,
+                                                     QGridLayout *layout,
+                                                     int &row) {
+    for (int i = 0; i < _amtOfDummySpace; i++) {
+        QLabel* dummySpace = new QLabel(" ", parent);
+        dummySpace->setFont(QFont("Helvetica", 12, QFont::Bold));
+        dummySpace->setAlignment(Qt::AlignCenter);
+
+        if (mode == VIEWER)
+            dummySpace->setVisible(false);
+
+        layout->addWidget(dummySpace, row++, 0, 1, 2);
+
+        _dummySpace->append(dummySpace);
     }
 }
