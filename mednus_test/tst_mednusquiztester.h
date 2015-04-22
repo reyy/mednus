@@ -21,6 +21,10 @@ private Q_SLOTS:
     void cleanupTestCase();
     void markQuizTestCase();
     void helloTestCase();
+
+    void editQuizTitleNormalTestCase();
+    void editQuizTitleZeroTestCase();
+    void editQuizTitleOverBoundaryTestCase();
 };
 
 //#include "tst_mednusquiztester.moc"

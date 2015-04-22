@@ -559,6 +559,11 @@ void MedNUSQuiz::updateNoOfQuestions()
 
     int newNoOfQuestions = _noOfQuestionsDropDownBox->currentIndex() + 1;
 
+    if (newNoOfQuestions < 1 || newNoOfQuestions > MAX_NO_OF_QUIZ_QUESTIONS) {
+        qWarning() << "ERROR: New number of questions is invalid : " << newNoOfQuestions;
+        return;
+    }
+
     //qDebug() << newNoOfQuestions << "/" << _noOfQuestions;
 
     if (newNoOfQuestions > _noOfQuestions) {
