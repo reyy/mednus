@@ -48,7 +48,6 @@ using namespace std;
 
 MedNUSMeshViewer::MedNUSMeshViewer(QString dir, bool withMeshPanel)
 {
-    withMeshPanel = false;
     this->setAccessibleName(dir);
     // Initialisation
     appName = QString("Mesh Viewer");
@@ -82,7 +81,11 @@ MedNUSMeshViewer::MedNUSMeshViewer(QString dir, bool withMeshPanel)
 
             // Check the time taken to load the meshes.
             qint64 timeTaken = et.elapsed();
-            qDebug() << "Time Taken for mesh: " << timeTaken << " ms.";
+            /*qDebug() << "Time Taken for mesh: " << timeTaken << " ms.";
+            qDebug() << "# of vertices: " << meshModel.getData(0)->GetNumberOfVerts();
+            qDebug() << "# of polygons: " << meshModel.getData(0)->GetNumberOfPolys();
+            qDebug() << "# of vertices: " << meshModel.getData(1)->GetNumberOfVerts();
+            qDebug() << "# of polygons: " << meshModel.getData(1)->GetNumberOfPolys();*/
         } catch (int a) {
             loadMesh();
         }
