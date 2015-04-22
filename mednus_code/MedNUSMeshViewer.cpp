@@ -48,7 +48,6 @@ using namespace std;
 
 MedNUSMeshViewer::MedNUSMeshViewer(QString dir, bool withMeshPanel)
 {
-    withMeshPanel = false;
     this->setAccessibleName(dir);
     // Initialisation
     appName = QString("Mesh Viewer");
@@ -82,7 +81,11 @@ MedNUSMeshViewer::MedNUSMeshViewer(QString dir, bool withMeshPanel)
 
             // Check the time taken to load the meshes.
             qint64 timeTaken = et.elapsed();
-            qDebug() << "Time Taken for mesh: " << timeTaken << " ms.";
+            /*qDebug() << "Time Taken for mesh: " << timeTaken << " ms.";
+            qDebug() << "# of vertices: " << meshModel.getData(0)->GetNumberOfVerts();
+            qDebug() << "# of polygons: " << meshModel.getData(0)->GetNumberOfPolys();
+            qDebug() << "# of vertices: " << meshModel.getData(1)->GetNumberOfVerts();
+            qDebug() << "# of polygons: " << meshModel.getData(1)->GetNumberOfPolys();*/
         } catch (int a) {
             loadMesh();
         }
@@ -290,224 +293,21 @@ void MedNUSMeshViewer::createWidgets(bool withMeshPanel)
 
 void MedNUSMeshViewer::createActions()
 {
-//    newProjectAction = new QAction(QObject::tr("&New Project"), this);
-//    newProjectAction->setIcon(QIcon(":/images/new.png"));
-//    newProjectAction->setShortcut(QObject::tr("Ctrl+N"));
-//    newProjectAction->setStatusTip(QObject::tr("Create a new project"));
-//    connect(newProjectAction, SIGNAL(triggered()),
-//        this, SLOT(newProject()));
-    
-//    openProjectAction = new QAction(QObject::tr("&Open Project"), this);
-//    openProjectAction->setIcon(QIcon(":/images/open.png"));
-//    openProjectAction->setShortcut(QObject::tr("Ctrl+O"));
-//    openProjectAction->setStatusTip(QObject::tr("Open a project file"));
-//    connect(openProjectAction, SIGNAL(triggered()),
-//        this, SLOT(openProject()));
-
-//    saveProjectAction = new QAction(QObject::tr("&Save Project"), this);
-//    saveProjectAction->setIcon(QIcon(":/images/save.png"));
-//    saveProjectAction->setShortcut(QObject::tr("Ctrl+S"));
-//    saveProjectAction->setStatusTip(QObject::tr("Save project to file"));
-//    connect(saveProjectAction, SIGNAL(triggered()),
-//        this, SLOT(saveProject()));
-
-//    saveProjectAsAction = new QAction(QObject::tr("Save Project &As"), this);
-//    saveProjectAsAction->setIcon(QIcon(":/images/saveas.png"));
-//    saveProjectAsAction->setShortcut(QObject::tr("Ctrl+A"));
-//    saveProjectAsAction->setStatusTip(QObject::tr("Save project to another file"));
-//    connect(saveProjectAsAction, SIGNAL(triggered()),
-//        this, SLOT(saveProjectAs()));
-    
-//    loadDirAction = new QAction(QObject::tr("Load Mesh by &Directory"), this);
-//    loadDirAction->setIcon(QIcon(":/images/loaddir.png"));
-//    loadDirAction->setShortcut(QObject::tr("Ctrl+D"));
-//    loadDirAction->setStatusTip(QObject::tr("Load mesh files in a directory"));
-//    connect(loadDirAction, SIGNAL(triggered()), this, SLOT(loadDir()));
-    
-//    loadMeshAction = new QAction(QObject::tr("Load Mesh by &File"), this);
-//    loadMeshAction->setIcon(QIcon(":/images/loadmesh.png"));
-//    loadMeshAction->setShortcut(QObject::tr("Ctrl+F"));
-//    loadMeshAction->setStatusTip(QObject::tr("Load meshes by file names"));
-//    connect(loadMeshAction, SIGNAL(triggered()), this, SLOT(loadMesh()));
-    
-//    addMeshAction = new QAction(QObject::tr("Add Mesh by File"), this);
-//    addMeshAction->setIcon(QIcon(":/images/addmesh.png"));
-//    addMeshAction->setStatusTip(QObject::tr("Add meshes by file names"));
-//    connect(addMeshAction, SIGNAL(triggered()), this, SLOT(addMesh()));
-        
-//    saveDirPlyAction = new QAction(QObject::tr("in PLY format"), this);
-//    connect(saveDirPlyAction, SIGNAL(triggered()), this, SLOT(saveDirPly()));
-
-//    saveDirStlAction = new QAction(QObject::tr("in STL format"), this);
-//    connect(saveDirStlAction, SIGNAL(triggered()), this, SLOT(saveDirStl()));
-    
-//    exitAction = new QAction(QObject::tr("E&xit"), this);
-//    exitAction->setShortcut(QObject::tr("Ctrl+Q"));
-//    exitAction->setStatusTip(QObject::tr("Exit Mesh Viewer"));
-//    connect(exitAction, SIGNAL(triggered()), this, SLOT(close()));
-    
-//    saveViewAction = new QAction(QObject::tr("Save &View"), this);
-//    saveViewAction->setIcon(QIcon(":/images/saveview.png"));
-//    saveViewAction->setShortcut(QObject::tr("Shift+V"));
-//    saveViewAction->setStatusTip(QObject::tr("Save current view to a file"));
-//    connect(saveViewAction, SIGNAL(triggered()), this, SLOT(saveView()));
-    
-//    frontFaceAction = new QAction(QObject::tr("&Hide Front Faces"), this);
-//    frontFaceAction->setIcon(QIcon(":/images/hide.png"));
-//    frontFaceAction->setShortcut(QObject::tr("Shift+H"));
-//    frontFaceAction->setStatusTip(QObject::tr("Hide/show front faces"));
-//    frontFaceAction->setCheckable(true);
-//    connect(frontFaceAction, SIGNAL(triggered()), this,
-//        SLOT(toggleFrontFace()));
-        
-//    smoothSurfaceAction = new QAction(QObject::tr("&Smooth Surface"), this);
-//    smoothSurfaceAction->setShortcut(QObject::tr("Shift+S"));
-//    smoothSurfaceAction->setStatusTip(QObject::tr("Smooth surface"));
-//    smoothSurfaceAction->setCheckable(true);
-//    connect(smoothSurfaceAction, SIGNAL(triggered()), this,
-//        SLOT(setSmoothSurface()));
-        
-//    flatSurfaceAction = new QAction(QObject::tr("&Flat Surface"), this);
-//    flatSurfaceAction->setShortcut(QObject::tr("Shift+F"));
-//    flatSurfaceAction->setStatusTip(QObject::tr("Flat surface"));
-//    flatSurfaceAction->setCheckable(true);
-//    connect(flatSurfaceAction, SIGNAL(triggered()), this,
-//        SLOT(setFlatSurface()));
-        
-//    flatLinesAction = new QAction(QObject::tr("Flat &Lines"), this);
-//    flatLinesAction->setShortcut(QObject::tr("Shift+L"));
-//    flatLinesAction->setStatusTip(QObject::tr("Flat surface & lines"));
-//    flatLinesAction->setCheckable(true);
-//    connect(flatLinesAction, SIGNAL(triggered()), this,
-//        SLOT(setFlatLines()));
-        
-//    wireFrameAction = new QAction(QObject::tr("&Wire Frame"), this);
-//    wireFrameAction->setShortcut(QObject::tr("Shift+W"));
-//    wireFrameAction->setStatusTip(QObject::tr("Wire frame"));
-//    wireFrameAction->setCheckable(true);
-//    connect(wireFrameAction, SIGNAL(triggered()), this,
-//        SLOT(setWireFrame()));
-        
-//    meshPointAction = new QAction(QObject::tr("&Points"), this);
-//    meshPointAction->setShortcut(QObject::tr("Shift+P"));
-//    meshPointAction->setStatusTip(QObject::tr("Point"));
-//    meshPointAction->setCheckable(true);
-//    connect(meshPointAction, SIGNAL(triggered()), this,
-//        SLOT(setMeshPoint()));
-        
-//    QActionGroup *meshModeGroup = new QActionGroup(this);
-//    meshModeGroup->addAction(smoothSurfaceAction);
-//    meshModeGroup->addAction(flatSurfaceAction);
-//    meshModeGroup->addAction(flatLinesAction);
-//    meshModeGroup->addAction(wireFrameAction);
-//    meshModeGroup->addAction(meshPointAction);
-//    smoothSurfaceAction->setChecked(true);
-    
-//    if (meshPanel)
-//    {
-//        toggleMeshPanelAction = meshPanel->toggleViewAction();
-//        toggleMeshPanelAction->setIcon(QIcon(":/images/list.png"));
-//    }
-//    else
-//        toggleMeshPanelAction = NULL;
-       
-//    infoAction = new QAction(QObject::tr("&Info"), this);
-//    infoAction->setIcon(QIcon(":/images/info.png"));
-//    infoAction->setShortcut(QObject::tr("Ctrl+I"));
-//    infoAction->setStatusTip(QObject::tr("Data information"));
-//    connect(infoAction, SIGNAL(triggered()), this,
-//        SLOT(info()));
-
-//    helpAction = new QAction(QObject::tr("&Help"), this);
-//    helpAction->setIcon(QIcon(":/images/help.png"));
-//    helpAction->setShortcut(QObject::tr("Ctrl+H"));
-//    helpAction->setStatusTip(QObject::tr("Help information"));
-//    connect(helpAction, SIGNAL(triggered()), this, SLOT(help()));
-        
-//    aboutAction = new QAction(QObject::tr("About"), this);
-//    aboutAction->setStatusTip(QObject::tr("About this software"));
-//    connect(aboutAction, SIGNAL(triggered()), this, SLOT(about()));
 }
 
 
 void MedNUSMeshViewer::createMenus()
 {
-//    fileMenu = menuBar()->addMenu(QObject::tr("&File"));
-//    fileMenu->addAction(newProjectAction);
-//    fileMenu->addAction(openProjectAction);
-//    fileMenu->addAction(saveProjectAction);
-//    fileMenu->addAction(saveProjectAsAction);
-//    fileMenu->addSeparator();
-
-//    fileMenu->addAction(loadDirAction);
-//    fileMenu->addAction(loadMeshAction);
-//    fileMenu->addAction(addMeshAction);
-    
-//    saveMeshMenu = fileMenu->addMenu(QObject::tr("&Save Visible Meshes"));
-//    saveMeshMenu->setIcon(QIcon("images/savedir.png"));
-//    saveMeshMenu->addAction(saveDirPlyAction);
-//    saveMeshMenu->addAction(saveDirStlAction);
-    
-//    fileMenu->addSeparator();
-//    fileMenu->addAction(exitAction);
-
-//    //viewMenu = menuBar()->addMenu(QObject::tr("&View"));
-//    viewMenu->addAction(saveViewAction);
-//    viewMenu->addAction(frontFaceAction);
-    
-//    //meshModeMenu = viewMenu->addMenu(QObject::tr("&Mesh Mode"));
-//    meshModeMenu->addAction(smoothSurfaceAction);
-//    meshModeMenu->addAction(flatSurfaceAction);
-//    meshModeMenu->addAction(flatLinesAction);
-//    meshModeMenu->addAction(wireFrameAction);
-//    meshModeMenu->addAction(meshPointAction);
-
-//    if (toggleMeshPanelAction)
-//        viewMenu->addAction(toggleMeshPanelAction);
-//    viewMenu->addAction(infoAction);
-
-//    menuBar()->addSeparator();
-
-//    helpMenu = menuBar()->addMenu(QObject::tr("&Help"));
-//    helpMenu->addAction(helpAction);
-//    helpMenu->addAction(aboutAction);
 }
 
 
 void MedNUSMeshViewer::createToolBars()
 {
-    //
-    //fileToolBar = addToolBar(QObject::tr("&File"));
-//    fileToolBar = new QToolBar("File", this);
-//    fileToolBar->addAction(newProjectAction);
-//    fileToolBar->addAction(openProjectAction);
-//    fileToolBar->addAction(saveProjectAction);
-//    fileToolBar->addAction(loadDirAction);
-//    fileToolBar->addAction(loadMeshAction);
-//    fileToolBar->addAction(addMeshAction);
-//    //this->layout()->addWidget(fileToolBar);
-    
-//    //viewToolBar = addToolBar(QObject::tr("&View"));
-//    //viewToolBar = new QToolBar("View", this);
-//    fileToolBar->addAction(saveViewAction);
-//    fileToolBar->addAction(frontFaceAction);
-//    fileToolBar->addWidget(meshModeBox);
-//    //
-    
-//    if (toggleMeshPanelAction)
-//        fileToolBar->addAction(toggleMeshPanelAction);
-//    fileToolBar->addAction(infoAction);
-//    //this->layout()->addWidget(viewToolBar);
-
-//    //fileToolBar = new QToolBar("Help", this);
-//    fileToolBar->addAction(helpAction);
-    //this->layout()->addWidget(fileToolBar);
 }
 
 
 void MedNUSMeshViewer::createStatusBar()
 {
-    //statusBar()->showMessage(QObject::tr(""));
 }
 
 
@@ -598,8 +398,7 @@ void MedNUSMeshViewer::loadMeshDir(const QString &dirName) {
                 fileNames.append(dirName + "/" + list[i]);
 
             QApplication::setOverrideCursor(Qt::WaitCursor);
-            if (loadMesh(fileNames))
-                readDir = dirName;
+            loadMesh(fileNames);
             QApplication::restoreOverrideCursor();
         }
     }
@@ -624,51 +423,11 @@ void MedNUSMeshViewer::addMesh()
 
 void MedNUSMeshViewer::saveDirPly()
 {
-    QString dirName = QFileDialog::getExistingDirectory(this,
-        QObject::tr("Save visible meshes into a directory in PLY format"),
-        writeDir);
-        
-    if (!dirName.isEmpty() && !meshModel.isEmpty())
-    {
-        for (int i = 0; i < meshModel.size(); ++i)
-            if (meshModel.getActor(i)->GetVisibility())
-            {
-                QString fileName = dirName + QString("/%1.ply").
-                    arg(i, 8, 10, QChar('0'));
-                vtkPLYWriter *writer = vtkPLYWriter::New();
-                writer->SetFileName(fileName.toLatin1().data());
-                writer->SetInputData(meshModel.getData(i));
-                writer->Update();
-                writer->Delete();
-            }
-            
-        writeDir = dirName;
-    }
 }
 
 
 void MedNUSMeshViewer::saveDirStl()
 {
-    QString dirName = QFileDialog::getExistingDirectory(this,
-        QObject::tr("Save visible meshes into a directory in STL format"),
-        writeDir);
-        
-    if (!dirName.isEmpty() && !meshModel.isEmpty())
-    {
-        for (int i = 0; i < meshModel.size(); ++i)
-            if (meshModel.getActor(i)->GetVisibility())
-            {
-                QString fileName = dirName + QString("/%1.stl").
-                    arg(i, 8, 10, QChar('0'));
-                vtkSTLWriter *writer = vtkSTLWriter::New();
-                writer->SetFileName(fileName.toLatin1().data());
-                writer->SetInputData(meshModel.getData(i));
-                writer->Update();
-                writer->Delete();
-            }
-            
-        writeDir = dirName;
-    }
 }
 
 
@@ -691,13 +450,13 @@ void MedNUSMeshViewer::saveView()
 
 void MedNUSMeshViewer::toggleFrontFace()
 {
-    if (meshModel.isEmpty())
+    if (meshList.isEmpty())
         return;
         
     hideFrontFace = !hideFrontFace;
     
-    for (int i = 0; i < meshModel.size(); ++i)
-        meshModel.getActor(i)->GetProperty()->
+    for (int i = 0; i < meshList.size(); ++i)
+        meshList[i].actor->GetProperty()->
             SetFrontfaceCulling(hideFrontFace);
     renderWindow->Render();
 }
@@ -746,9 +505,9 @@ void MedNUSMeshViewer::setMeshMode(int mode)
             break;
     }
     
-    for (int i = 0; i < meshModel.size(); ++i)
+    for (int i = 0; i < meshList.size(); ++i)
     {
-        vtkProperty *property = meshModel.getActor(i)->GetProperty();
+        vtkProperty *property = meshList[i].actor->GetProperty();
         property->SetRepresentation(rep);
         property->SetInterpolation(interpol);
         property->SetEdgeVisibility(edgeOn);
@@ -795,61 +554,16 @@ void MedNUSMeshViewer::setMeshPoint()
 
 void MedNUSMeshViewer::info()
 {
-    QString msg;
-    
-    if (loaded)
-    {
-        msg = QString("Project name: %1<br><br>").arg(projectName);
-        
-        int numFaces = 0;
-        long memSize = 0;
-        
-        for (int i = 0; i < meshModel.size(); ++i)
-        {
-            vtkPolyData *data = meshModel.getData(i);
-            numFaces += data->GetPolys()->GetNumberOfCells();
-            memSize += data->GetPolys()->GetActualMemorySize();
-        }
-        
-        msg += QString("%1 faces, %2 MB<br>").
-           arg(numFaces).arg(memSize / 1000.0, 0, 'f', 2);
-    }
-    else
-        msg = QString("No mesh loaded.");
-        
-           
-    QMessageBox::about(this, QObject::tr("Data Information"),
-        QString("<h2>%1</h2> <p></p>").arg(appName) + msg);
 }
 
 
 void MedNUSMeshViewer::help()
 {
-    QMessageBox::about(this, QObject::tr("Help information"),
-       QString("<h2>%1</h2>").arg(appName) +
-       "<p></p>" +
-       "<p>Control keys:<br><br>" +
-       "left mouse button: camera rotate<br>" +
-       "SHIFT + left mouse button: camera pan<br>" +
-       "CTRL + left mouse button: camera spin<br>" +
-       "middle mouse wheel: zoom<br>" +
-       "middle mouse button: camera pan<br>" +
-       "right mouse button: camera zoom<br>" +
-       "r: reset camera<br><br>" +
-       "right mouse click: select mesh<br>" +
-       "DEL: delete selected meshes<br>");
 }
 
 
 void MedNUSMeshViewer::about()
 {
-    QMessageBox::about(this, QString("About %1").arg(appName),
-       QString("<h2>%1</h2>").arg(appName) +
-       "<p>Copyright &copy; 2012, 2013, 2014<br>" +
-       "Leow Wee Kheng<br>" +
-       "Department of Computer Science<br>" +
-       "National University of Singapore<p></p>" +
-       "Implemented using Qt, VTK.");
 }
 
 
@@ -861,44 +575,44 @@ void MedNUSMeshViewer::setAppName(const QString &name)
 
 void MedNUSMeshViewer::setVisibility(int row, bool visible)
 {
-   if (row < 0 || row >= meshModel.size())
+   if (row < 0 || row >= meshList.size())
        return;
        
-    meshModel.getActor(row)->SetVisibility(visible ? 1 : 0);
+    meshList[row].actor->SetVisibility(visible ? 1 : 0);
     renderWindow->Render();
 }
 
 
 void MedNUSMeshViewer::setColor(int row, QColor color)
 {
-   if (row < 0 || row >= meshModel.size())
+   if (row < 0 || row >= meshList.size())
        return;
     
     double red = color.red() / 255.0;
     double green = color.green() / 255.0;
     double blue = color.blue() / 255.0;
-    meshModel.getActor(row)->GetProperty()->SetColor(red, green, blue);
+    meshList[row].actor->GetProperty()->SetColor(red, green, blue);
     renderWindow->Render();
 }
 
 
 void MedNUSMeshViewer::setTransparency(int row, float value)
 {
-   if (row < 0 || row >= meshModel.size())
+   if (row < 0 || row >= meshList.size())
        return;
     
-    meshModel.getActor(row)->GetProperty()->SetOpacity(1.0 - value);
+    meshList[row].actor->GetProperty()->SetOpacity(1.0 - value);
     renderWindow->Render();
 }
 
 
 void MedNUSMeshViewer::blink(int row)
 {
-   if (row < 0 || row >= meshModel.size())
+   if (row < 0 || row >= meshList.size())
        return;
         
     double red, green, blue, r, g, b;
-    vtkProperty *property = meshModel.getActor(row)->GetProperty();
+    vtkProperty *property = meshList[row].actor->GetProperty();
     property->GetColor(red, green, blue);
     r = g = b = 0.5;
     
@@ -916,11 +630,27 @@ void MedNUSMeshViewer::blink(int row)
 
 void MedNUSMeshViewer::deleteMesh(int row)
 {
-   if (row < 0 || row >= meshModel.size())
+   /*if (row < 0 || row >= meshList.size())
        return;
        
-    renderer->RemoveActor(meshModel.getActor(row));
-    meshModel.removeAt(row);
+    renderer->RemoveActor(meshList[row]);
+    meshList.removeAt(row);
+    renderWindow->Render();*/
+    QList<QTableWidgetSelectionRange> list = meshTable->selectedRanges();
+    if (list.isEmpty())
+        return;
+
+    QTableWidgetSelectionRange range = list[0];  // Only 1 range.
+    for (int i = range.bottomRow(); i >= range.topRow(); --i)
+    {
+        meshTable->removeRow(i);
+        renderer->RemoveActor(meshList[i].actor);
+        meshList[i].normals->Delete();
+        meshList[i].mapper->Delete();
+        meshList[i].actor->Delete();
+        meshList.removeAt(i);
+    }
+
     renderWindow->Render();
 }
 
@@ -936,18 +666,11 @@ void MedNUSMeshViewer::installPipeline(int startIndex)
         renderWindow->AddRenderer(renderer);
     }
     
-    for (int i = startIndex; i < meshModel.size(); ++i){
-        renderer->AddActor(meshModel.getActor(i));
-        meshModel.getActor(i)->SetScale(i*0.1 + 1);
-}
-    //****CRAPPY TEST CODE
-
-
-    //drawSphere(20,-1,-1,-1);
-    //drawSphere(20,1,1,1);
-    //drawBoundingBox();
-
-    //****END OF CRAPPY CODE
+    for (int i = startIndex; i < meshList.size(); ++i) {
+        //renderer->AddActor(meshModel.getActor(i));
+        //meshModel.getActor(i)->SetScale(i*0.1 + 1);
+        renderer->AddActor(meshList[i].actor);
+    }
 
     hideFrontFace = 0;
     //frontFaceAction->setChecked(false);
@@ -1004,7 +727,7 @@ void MedNUSMeshViewer::drawBoundingBox()
 
 void MedNUSMeshViewer::uninstallPipeline()
 {   
-    if (renderer)
+    /*if (renderer)
     {
         renderer->RemoveAllViewProps();
         renderWindow->RemoveRenderer(renderer);
@@ -1019,6 +742,23 @@ void MedNUSMeshViewer::uninstallPipeline()
         for (int i = size - 1; i >= 0; --i)
             meshTable->removeRow(i);  // Remove rows from bottom up.
     }
+    projectName = QString("Untitled");
+    loaded = false;*/
+
+    if (renderer) {
+        renderer->RemoveAllViewProps();
+        renderWindow->RemoveRenderer(renderer);
+        renderer->Delete();
+        renderer = NULL;
+    }
+
+    for (int i = 0; i < meshList.size(); i++) {
+        meshList[i].normals->Delete();
+        meshList[i].mapper->Delete();
+        meshList[i].actor->Delete();
+        meshTable->removeRow(0);
+    }
+    meshList.clear();
     projectName = QString("Untitled");
     loaded = false;
 }
@@ -1036,7 +776,7 @@ bool MedNUSMeshViewer::loadMesh(const QStringList &fileNames)
 
 bool MedNUSMeshViewer::addMesh(const QStringList &fileNames)
 {
-    int startIndex = meshModel.size();
+    int startIndex = meshList.size();
     
     for (int i = 0; i < fileNames.size(); ++i)
     {
@@ -1071,7 +811,7 @@ bool MedNUSMeshViewer::addMesh(const QStringList &fileNames)
         }
         
         // Try to read data
-        reader->Update();
+        /*reader->Update();
         unsigned long err = reader->GetErrorCode();
         
         if (err != 0)
@@ -1090,7 +830,50 @@ bool MedNUSMeshViewer::addMesh(const QStringList &fileNames)
         reader->Delete();
 
         if (meshTable)
-            meshTable->append(name, source);
+            meshTable->append(name, source);*/
+
+        // Append to mesh list
+        PMeshPart part;
+        part.name = QFileInfo(fileNames[i]).baseName();
+        part.source = fileNames[i];
+        part.data = reader->GetOutput();
+        reader->Update();
+
+        part.normals = vtkPolyDataNormals::New();
+        part.normals->SetInputData(part.data);
+        part.mapper = vtkPolyDataMapper::New();
+        part.mapper->SetInputConnection(part.normals->GetOutputPort());
+        part.mapper->Update();
+        part.actor = vtkActor::New();
+        part.actor->SetMapper(part.mapper);
+        meshList.append(part);
+        reader->Delete();
+
+        // Append to mesh table
+        int j = meshTable->rowCount();
+        meshTable->insertRow(j);
+        meshTable->setRowHeight(j, RowHeight);
+
+        QTableWidgetItem *item = new QTableWidgetItem;
+        item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsUserCheckable);
+        item->setCheckState(Qt::Checked);
+        meshTable->setItem(j, 0, item);
+
+        item = new QTableWidgetItem;
+        item->setFlags(Qt::ItemIsEnabled);
+        item->setBackground(QBrush(QColor(255, 255, 255)));
+        meshTable->setItem(j, 1, item);
+
+        item = new QTableWidgetItem(part.name);
+        item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable |
+            Qt::ItemIsEditable);
+        item->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+        meshTable->setItem(j, 2, item);
+
+        item = new QTableWidgetItem(part.source);
+        item->setFlags(Qt::ItemIsEnabled);
+        item->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+        meshTable->setItem(j, 3, item);
     }
        
     installPipeline(startIndex);
@@ -1148,8 +931,8 @@ void MedNUSMeshViewer::highlight(vtkActor *actor)
         meshTable->setCurrentCell(-1, -1);
     else
     {
-        for (int i = 0; i < meshModel.size(); ++i)
-            if (meshModel.getActor(i) == actor)
+        for (int i = 0; i < meshList.size(); ++i)
+            if (meshList[i].actor == actor)
                 meshTable->setCurrentCell(i, NameColumn);
     }
 }
