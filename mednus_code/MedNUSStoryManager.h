@@ -20,7 +20,7 @@ public slots:
 
 protected:
     static const short END_OF_STORY = -1;
-    static const short POS_DELTA_LIMIT = 1000;
+    static const short POS_DELTA_LIMIT = 1500;
 
     struct StoryPoint
     {

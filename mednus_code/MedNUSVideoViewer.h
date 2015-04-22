@@ -40,6 +40,7 @@ protected:
 protected slots:
     void togglePlay();
     void setPosition(int position);
+    void setPosition(qint64 position);
     void setVolume(int volume);
 };
 
@@ -60,7 +61,8 @@ protected:
     QLabel *_videoTimer;
     QString _durationText;
     int _volume;
-    qint64 _duration;
+    qint64 _duration = 0;
+    qint64 _position = 0;
 
     QPushButton *_nextButton;
     QPushButton *_prevButton;
@@ -73,12 +75,16 @@ protected:
 signals:
     void seekTo(int millisecond);
     void changeVolume(int);
+    void changePosition(qint64);
 
 protected slots:
     void mediaStateChanged(QMediaPlayer::State state);
     void positionChanged(qint64 position);
     void durationChanged(qint64 duration);
     void volumeClicked();
+
+    void goToNextStoryPoint();
+    void goToPrevStoryPoint();
 };
 
 

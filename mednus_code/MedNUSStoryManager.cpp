@@ -139,7 +139,7 @@ void MedNUSStoryManager::goToStoryPoint(MedNUSStoryManager::StoryPoint curStoryP
 void MedNUSStoryManager::videoPositionChanged(qint64 pos)
 {
     qint64 posDelta = pos - prevPos;
-    if(/*posDelta > POS_DELTA_LIMIT ||*/ posDelta < 0)
+    if(posDelta > POS_DELTA_LIMIT || posDelta < 0)
     {
         //Recheck everything
         for(int i = 0; i < storyPointList->size(); i++)
@@ -154,10 +154,11 @@ void MedNUSStoryManager::videoPositionChanged(qint64 pos)
     else if(nextStoryPoint != END_OF_STORY)
     {
         StoryPoint next = (*storyPointList)[nextStoryPoint];
-        //qDebug() << next.timestamp << pos;
-        if(next.timestamp <= pos)
+        //qDebug() << posDelta;//next.timestamp << pos;
+        if(next.timestamp <= pos + 999)
             goToStoryPoint(next);
     }
+    prevPos = pos;
 }
 
 void MedNUSStoryManager::initStoryPoints()

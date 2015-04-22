@@ -61,6 +61,11 @@ MedNUSVideoViewer::~MedNUSVideoViewer()
 
 void MedNUSVideoViewer::initStoryPoints(QList<qint64> sp){control->setStoryPoints(sp);}
 
+void MedNUSVideoViewer::setPosition(qint64 position)
+{
+    mediaPlayer.setPosition(position);
+}
+
 
 void MedNUSVideoViewer::keyPressEvent(QKeyEvent *event)
 {
@@ -157,6 +162,10 @@ MedNUSVideoControl::MedNUSVideoControl(QWidget *parent):
     connect(_volumeButton,SIGNAL(clicked()), this, SLOT(volumeClicked()));
     connect(_playButton, SIGNAL(clicked()),parent->parentWidget(), SLOT(togglePlay()));
     connect(_positionSlider, SIGNAL(sliderMoved(int)),parent->parentWidget(), SLOT(setPosition(int)));
+    connect(this, SIGNAL(changePosition(qint64)),parent->parentWidget(), SLOT(setPosition(qint64)));
+
+    connect(_nextButton, SIGNAL(clicked()), this, SLOT(goToNextStoryPoint()));
+    connect(_prevButton, SIGNAL(clicked()), this, SLOT(goToPrevStoryPoint()));
 }
 
 
@@ -176,7 +185,7 @@ void MedNUSVideoControl::updateUI() {
     _positionSlider->setGeometry(QRect(VIDEO_BORDER+VIDEO_ICON_SIZE*2+VIDEO_SEP_LENGTH*2,playerHeight,this->width()-(VIDEO_BORDER*2+VIDEO_ICON_SIZE*2+VIDEO_SEP_LENGTH*3)-VIDEO_TIME_LENGTH,VIDEO_ICON_SIZE));
     _videoTimer->setGeometry(QRect(this->width()-VIDEO_BORDER-VIDEO_TIME_LENGTH,playerHeight,VIDEO_TIME_LENGTH,VIDEO_ICON_SIZE));
 
-    if(true)
+    if(true)//mode==LECTURER
     {
         //_addEditButton->setStyleSheet("QPushButton {border-style: outset; border-width: 0px;background-image: url(:/images/bt_vidadd.png); background-color:rgba(0,0,0,0);}");
         _addEditButton->setGeometry(QRect(VIDEO_BORDER+24,playerHeight-24,VIDEO_ICON_SIZE+8,VIDEO_ICON_SIZE));
@@ -243,6 +252,7 @@ void MedNUSVideoControl::mediaStateChanged(QMediaPlayer::State state)
 
 void MedNUSVideoControl::positionChanged(qint64 position)
 {
+    _position = position;
     _positionSlider->setValue(position);
     _videoTimer->setText(timeConvert(position) +"/" + _durationText);
 }
@@ -263,4 +273,29 @@ void MedNUSVideoControl::volumeClicked() {
 
     _volumeButton->setStyleSheet("QPushButton {border-style: outset; border-width: 0px;background-image: url(:/images/bt_volume_"+QString::number(_volume)+".png); background-color:rgba(0,0,0,0);}");
     emit changeVolume(_volume*100/3);
+}
+
+void MedNUSVideoControl::goToNextStoryPoint()
+{
+    foreach(qint64 timestamp, _storyPoints)
+        if(timestamp > _position + 200)
+        {
+            //emit _positionSlider->sliderMoved(timestamp);
+            qDebug() << timestamp << _position;
+            emit changePosition(timestamp);
+            //(static_cast<MedNUSVideoViewer*>(parentWidget()))->setPosition(timestamp);
+            return;
+        }
+}
+
+void MedNUSVideoControl::goToPrevStoryPoint()
+{
+    for(int i = _storyPoints.size() - 1; i>=0; i--)
+        if(_storyPoints[i] + 1000 - 1 < _position)
+        {
+            qDebug() << _storyPoints[i] << _position;
+            emit changePosition(_storyPoints[i]);
+            //emit _positionSlider->sliderMoved(_storyPoints[i]);
+            return;
+        }
 }
