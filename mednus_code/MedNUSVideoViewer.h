@@ -20,6 +20,7 @@ class MedNUSVideoViewer : public QWidget
 public:
     explicit MedNUSVideoViewer(QString filename, QWidget *parent = 0);
     ~MedNUSVideoViewer();
+    void initStoryPoints(QList<qint64>);
 
 signals:
     void positionChanged(qint64);
@@ -50,6 +51,7 @@ public:
     ~MedNUSVideoControl();
 
     void updateUI();
+    void setStoryPoints(QList<qint64> sp);
 
 protected:
     QPushButton *_playButton;
@@ -58,6 +60,13 @@ protected:
     QLabel *_videoTimer;
     QString _durationText;
     int _volume;
+    qint64 _duration;
+
+    QPushButton *_nextButton;
+    QPushButton *_prevButton;
+    QPushButton *_addEditButton;
+    QList <qint64> _storyPoints;
+    QWidget *_storyPointContainer;
 
     QString timeConvert(qint64);
 

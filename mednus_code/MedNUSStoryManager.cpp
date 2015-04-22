@@ -6,7 +6,7 @@
 
 MedNUSStoryManager::MedNUSStoryManager(QString storyFile)
 {
-    storyPointList = new vector<StoryPoint>();
+    storyPointList = new QVector<StoryPoint>();
     videoFile = NULL;
     modelFile = NULL;
     pdfFile = NULL;
@@ -27,9 +27,13 @@ void MedNUSStoryManager::checkAddedItem(QString fileName, fileType type, MedNUSL
     if(type == fileType::MODEL && fileName == modelFileName)
         modelFile = icon;
     else if (type == fileType::VIDEO && fileName == videoFileName)
+    {
         videoFile = icon;
+        connect(videoFile,SIGNAL(emitTabIsOpen()), this, SLOT(initStoryPoints()));
+    }
     else if (type == fileType::PDF && fileName == pdfFileName)
         pdfFile = icon;
+
 
     //TODO: Account for NULL cases
     if(modelFile && videoFile && pdfFile)
@@ -150,8 +154,22 @@ void MedNUSStoryManager::videoPositionChanged(qint64 pos)
     else if(nextStoryPoint != END_OF_STORY)
     {
         StoryPoint next = (*storyPointList)[nextStoryPoint];
-        qDebug() << next.timestamp << pos;
+        //qDebug() << next.timestamp << pos;
         if(next.timestamp <= pos)
             goToStoryPoint(next);
+    }
+}
+
+void MedNUSStoryManager::initStoryPoints()
+{
+    if(!videoFile || !videoFile->getContentWidget())
+        qWarning() << "Unable to init story points";
+    else
+    {
+        QList<qint64> spList;
+        foreach(StoryPoint point, *storyPointList)
+            spList.push_back(point.timestamp);
+        MedNUSVideoViewer* videoWidget = dynamic_cast<MedNUSVideoViewer*>(videoFile->getContentWidget());
+        videoWidget->initStoryPoints(spList);
     }
 }
