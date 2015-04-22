@@ -60,7 +60,7 @@ MedNUSVideoViewer::~MedNUSVideoViewer()
     delete videoView;
 }
 
-void MedNUSVideoViewer::initStoryPoints(QList<qint64> sp){control->setStoryPoints(sp);}
+void MedNUSVideoViewer::initStoryPoints(QList<qint64> sp){control->setStoryPoints(sp);this->resizeEvent(NULL); this->updateGeometry();}
 
 void MedNUSVideoViewer::setPosition(qint64 position)
 {
@@ -214,7 +214,7 @@ void MedNUSVideoControl::updateUI() {
         {
             qint64 timestamp = storyPointLabel->property("pos2").toString().toLongLong();
             ((QWidget*)(storyPointLabel))->setGeometry(QRect(_positionSlider->width()*timestamp/_duration
-                                                             ,VIDEO_ICON_SIZE/4,/*VIDEO_ICON_SIZE/*/1,VIDEO_ICON_SIZE/2));
+                                                             ,VIDEO_ICON_SIZE/4,/*VIDEO_ICON_SIZE/*/3,VIDEO_ICON_SIZE/2));
         }
 
 }
