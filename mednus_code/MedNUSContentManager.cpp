@@ -86,7 +86,7 @@ void MedNUSContentManager::openFile(QString fileDir, QString title, int type)
             break;
 
         case VIDEO:
-            toAdd = new MedNUSVideoViewer(dir);
+            toAdd = new MedNUSVideoViewer(dir, _currentMode);
             break;
 
         case MODEL:
