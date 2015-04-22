@@ -163,6 +163,10 @@ bool MedNUSQuizQuestion::oneOptionSelected() const
 void MedNUSQuizQuestion::loadQuestion(QuestionMode mode, QWidget *parent,
                                       QGridLayout *layout, int &row) {
 
+
+    // Load some dummy space at the start of the question to seperate the questions.
+    loadEndOfQuestionDummySpace(mode, parent, layout, row);
+
     qDebug()<<"num="<<_questionNum;
     qDebug()<<"1";
     loadQuestionNumLabel(mode, parent, layout, row);
@@ -184,9 +188,6 @@ void MedNUSQuizQuestion::loadQuestion(QuestionMode mode, QWidget *parent,
 
     loadQuestionTeacherCommentLabel(mode, parent, layout, row);
     qDebug()<<"6";
-
-    // Load some dummy space at the end of the question to seperate the questions.
-    loadEndOfQuestionDummySpace(mode, parent, layout, row);
 }
 
 
@@ -235,6 +236,14 @@ void MedNUSQuizQuestion::saveChanges() {
     }
 
     _correctAnswer = _correctAnswerDropDownBox->currentIndex()+1;
+}
+
+void MedNUSQuizQuestion::writeToFile(QJsonObject &json) {
+
+    json["noOfOptions"] = _noOfOptions;
+    json["question"] = _questionText;
+    json["correctAnswer"] = _correctAnswer;
+    json["teacherComment"] = _teacherComment;
 }
 
 bool MedNUSQuizQuestion::markQuestion()
@@ -344,11 +353,11 @@ void MedNUSQuizQuestion::loadQuestionOptions(QuestionMode mode, QWidget *parent,
         if (_noOfOptions < MAX_NO_OF_OPTIONS) {
 
             for (int i = _noOfOptions; i < MAX_NO_OF_OPTIONS; i++) {
-                QLabel* optionNumLabel = new QLabel("Option "+QString::number(i), parent);
+                QLabel* optionNumLabel = new QLabel("Option "+QString::number(i+1), parent);
                 optionNumLabel->setVisible(true);
                 layout->addWidget(optionNumLabel, row, 0, 1, 1);
                 QLineEdit* lineEdit = new QLineEdit("", parent);
-                lineEdit->setPlaceholderText("Option " + QString::number(i));
+                lineEdit->setPlaceholderText("Option " + QString::number(i+1));
                 lineEdit->setFont (QFont ("Helvetica", 12));
                 _optionsLabelEdit->append(lineEdit);
                 layout->addWidget(lineEdit, row++, 1, 1, 1);

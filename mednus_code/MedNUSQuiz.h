@@ -89,6 +89,7 @@ private:
 
     bool loadQuizFile();
     bool loadQuizFile2();
+    bool writeQuizFile();
     void createQuizWidgets();
     void resizeEvent(QResizeEvent *event);
 
@@ -140,7 +141,6 @@ private:
 
     void initEditorView();
     void deinitEditorView();
-    void writeQuizFile();
 
 signals:
     // No signals as of yet.

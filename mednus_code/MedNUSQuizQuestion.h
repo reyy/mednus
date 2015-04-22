@@ -10,6 +10,7 @@
 #include <QComboBox>
 #include <QListView>
 #include <QLineEdit>
+#include <QJsonObject>
 
 #include "MedNUSQuizStylesheet.h"
 
@@ -68,6 +69,7 @@ public:
 
     // Update the storage variables with the data from QLineEdit.
     void saveChanges();
+    void writeToFile(QJsonObject &json);
 
     bool markQuestion();
 
@@ -88,7 +90,7 @@ private:
     QWidget* _questionTextLabel;
     QWidget* _teacherCommentLabel;
     //QLabel* _dummySpace;                        // End of question
-    QVector<QLabel*>* _dummySpace;               // End of question
+    QVector<QLabel*>* _dummySpace;               // Start of question
     int _amtOfDummySpace;
     QButtonGroup* _optionButtonGroup;           // Viewing mode only.
     QVector<QLineEdit*>* _optionsLabelEdit;     // Edit mode only.

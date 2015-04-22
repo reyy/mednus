@@ -226,12 +226,12 @@ void MedNUSMeshViewer::createWidgets(bool withMeshPanel)
     
     // Central widget
     QGridLayout *grid = new QGridLayout;
-    grid->addWidget(vtkWidget, 0, 0);
+    grid->addWidget(vtkWidget, 0, 0, 45, 1);
 //    QWidget *main = new QWidget;
 //    main->setLayout(grid);
 //    main->setStyleSheet("background-color: #285183;");
     grid->setContentsMargins(0,0,0,0);
-    this->setLayout(grid);
+    //this->setLayout(grid);
     //setStyleSheet("background-color: #1a394a;");
     //setCentralWidget(main);
     
@@ -270,13 +270,15 @@ void MedNUSMeshViewer::createWidgets(bool withMeshPanel)
 //        QMainWindow *mw = new QMainWindow( this );
 //        this->layout()->addWidget(mw);
 //        mw->addDockWidget(Qt::BottomDockWidgetArea, meshPanel);
-        this->layout()->addWidget(meshPanel);
+        grid->addWidget(meshPanel, 45, 0, 5, 1);
+        //this->layout()->addWidget(meshPanel);
     }
     else
     {
         meshTable = NULL;
         meshPanel = NULL;
     }
+    this->setLayout(grid);
 
     vtkWidget->updateGeometry();
 }

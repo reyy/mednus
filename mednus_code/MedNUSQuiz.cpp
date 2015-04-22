@@ -407,7 +407,7 @@ bool MedNUSQuiz::loadQuizFile2() {
 
     QFile file(_filename);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        qWarning() << "Unable to open file.";
+        qWarning() << "Unable to open quiz file for loading.";
         return false;
     }
     _lastModifiedDate = QFileInfo(file).lastModified().toString();
@@ -471,6 +471,43 @@ bool MedNUSQuiz::loadQuizFile2() {
         _questionList->append(question);
         content.clear();
     }
+    return true;
+}
+
+bool MedNUSQuiz::writeQuizFile() {
+
+    QFile file(_filename);
+    if (!file.open(QIODevice::WriteOnly)) {
+        qWarning() << "Unable to open quiz file for saving.";
+        return false;
+    }
+
+    QJsonObject json;
+
+// Save the details of the quiz first.
+    QJsonObject detailsObj;
+
+    detailsObj["title"] = _title;
+    detailsObj["author"] = _author;
+    detailsObj["introductionText"] = _instructionText;
+    detailsObj["noOfQuestions"] = _noOfQuestions;
+
+    json["details"] = detailsObj;
+// Save the questions.
+    for (int i = 0; i < _noOfQuestions; i++) {
+        QJsonObject questionJson;
+
+        _questionList->at(i)->writeToFile(questionJson);
+
+        QString questionNumString = "question_" + QString::number(i+1);
+        json[questionNumString] = questionJson;
+    }
+
+    QJsonDocument doc(json);
+    file.write(doc.toJson());
+
+
+    qDebug()<<"write";
     return true;
 }
 
@@ -731,6 +768,8 @@ void MedNUSQuiz::saveQuiz()
     for (int i = 0; i < _questionList->size(); i++) {
         _questionList->at(i)->saveChanges();
     }
+
+    writeQuizFile();
 }
 
 
