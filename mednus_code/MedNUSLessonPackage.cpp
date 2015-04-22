@@ -512,6 +512,7 @@ void MedNUSLessonPackage::locateNewFile() {
 
     addContent(directory,filetype);
     this->updateGUI(true);
+    emit emitOpenFile(directory, directory, filetype);
 }
 
 
