@@ -31,3 +31,18 @@ void MedNUSQuizTester::markQuizTestCase() {
 void MedNUSQuizTester::helloTestCase() {
 
 }
+
+
+void MedNUSQuizTester::editQuizTitleNormalTestCase() {
+    MedNUSQuiz* tempQuiz = new MedNUSQuiz("~mednus/lesson1/quiz/Quiz - The Skull.qiz");
+}
+
+
+void MedNUSQuizTester::editQuizTitleZeroTestCase() {
+
+}
+
+
+void MedNUSQuizTester::editQuizTitleOverBoundaryTestCase() {
+
+}
