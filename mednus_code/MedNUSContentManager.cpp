@@ -108,7 +108,7 @@ void MedNUSContentManager::openFile(QString fileDir, QString title, int type)
         //Catch Corrupted File
         if(toAdd->property("Loaded").isValid())
             emit callAddTab(toAdd,title,dir);
-        else
+        else if(!toAdd->property("Cancelled").isValid())
             QMessageBox::information(NULL, "", "File could not be opened. It might be corrupted or be used by another process.");
     }
     else if(isFileExist(fileDir))
@@ -145,7 +145,7 @@ void MedNUSContentManager::openFile(QString fileDir, QString title, int type)
         //Catch Corrupted File
         if(toAdd->property("Loaded").isValid())
             emit callAddTab(toAdd,title,dir);
-        else
+        else if(!toAdd->property("Cancelled").isValid())
             QMessageBox::information(NULL, "", "File could not be opened. It might be corrupted or be used by another process.");
     }
     else

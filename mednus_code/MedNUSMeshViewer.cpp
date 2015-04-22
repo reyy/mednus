@@ -90,6 +90,7 @@ MedNUSMeshViewer::MedNUSMeshViewer(QString dir, bool withMeshPanel)
             loadMesh();
         }
     } else {
+        this->setProperty("Cancelled", true);
         return;
     }
 
