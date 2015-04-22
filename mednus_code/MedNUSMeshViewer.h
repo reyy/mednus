@@ -36,7 +36,7 @@
 #include <QStringList>
 
 #include "PMeshTableWidget.h"
-#include "PMeshModel.h"
+//#include "PMeshModel.h"
 
 class QAction;
 class QComboBox;
@@ -58,18 +58,17 @@ class QPushButton;
 #include "vtkMINCImageReader.h"
 #include "vtkObjectBase.h"
 
-// class PMeshPart
-// {
-//     friend class MedNUSMeshViewer;
-//     QString name;
-//     QString source;
-//     vtkPolyData *data;
-//     vtkPolyDataNormals *normals;
-//     vtkPolyDataMapper *mapper;
-//     vtkActor *actor;
-//     QColor color;
-//     float transparency;
-// };
+class PMeshPart {
+    friend class MedNUSMeshViewer;
+    QString name;
+    QString source;
+    vtkPolyData *data;
+    vtkPolyDataNormals *normals;
+    vtkPolyDataMapper *mapper;
+    vtkActor *actor;
+    QColor color;
+    float transparency;
+};
 
 class MedNUSMeshViewer: public QWidget
 {
@@ -145,8 +144,8 @@ protected:
     QComboBox *meshModeBox;
     QDockWidget *meshPanel;
     PMeshTableWidget *meshTable;
-    //QList<PMeshPart> meshList;
-    PMeshModel meshModel;
+    QList<PMeshPart> meshList;
+    //PMeshModel meshModel;
 
     // VTK objects
     vtkRenderer *renderer;
