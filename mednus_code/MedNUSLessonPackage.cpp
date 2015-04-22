@@ -164,6 +164,7 @@ MedNUSLessonPackage::MedNUSLessonPackage(QWidget *parent) :
         _scrollArea->setStyleSheet(file.readAll());
         file.close();
     } 
+    _scrollArea->show();
 
     _btEditTitle = new QPushButton(parent);
     _btEditTitle->setIconSize(QSize(16,16));
