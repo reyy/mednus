@@ -209,11 +209,13 @@ void MedNUSStoryManager::initStoryPoints()
 void MedNUSStoryManager::addEditStoryPoints(qint64 pos)
 {
     qDebug() << pos;
-    //add if empty
+    //TODO: if empty
+
     for(int i = 0; i<storyPointList->size(); i++)//StoryPoint point = (*storyPointList)[i]
         if((*storyPointList)[i].timestamp == pos)
         {
-            //edit
+            fillInStoryPointData(pos, &(*storyPointList)[i]);
+            initStoryPoints();
             return;
         }
         else if((*storyPointList)[i].timestamp > pos)

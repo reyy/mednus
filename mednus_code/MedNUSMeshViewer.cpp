@@ -176,11 +176,11 @@ void MedNUSMeshViewer::setCameraView(int cameraViewAngle, double cameraPosition[
 
 int MedNUSMeshViewer::getViewAngle() {return renderer->GetActiveCamera()->GetViewAngle();}
 
-double *MedNUSMeshViewer::getCamerPosition() {double* a; renderer->GetActiveCamera()->GetPosition(a); return a;}
+double *MedNUSMeshViewer::getCamerPosition() {double a[3]; renderer->GetActiveCamera()->GetPosition(a);return a;}
 
-double *MedNUSMeshViewer::getCameraFocalPoint() {double* a; renderer->GetActiveCamera()->GetFocalPoint(a); return a;}
+double *MedNUSMeshViewer::getCameraFocalPoint() {double a[3]; renderer->GetActiveCamera()->GetFocalPoint(a); return a;}
 
-double *MedNUSMeshViewer::getCameraViewUp() {double* a; renderer->GetActiveCamera()->GetViewUp(a); return a;}
+double *MedNUSMeshViewer::getCameraViewUp() {double a[3]; renderer->GetActiveCamera()->GetViewUp(a); return a;}
 
 // Event handling
 
