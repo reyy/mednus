@@ -16,6 +16,7 @@ class MedNUSPdfViewer : public QWidget
 public:
     explicit MedNUSPdfViewer(QString filename, QWidget *parent = 0);
     void setPage(int num);
+    int getPage() {return pageNum;}
 
 protected:
     int pageNum = 0;
