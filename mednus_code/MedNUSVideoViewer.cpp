@@ -2,9 +2,10 @@
 #include <QDebug>
 #include "MedNUSAUISettings.h"
 
-MedNUSVideoViewer::MedNUSVideoViewer(QString filename, QWidget *parent) :
+MedNUSVideoViewer::MedNUSVideoViewer(QString filename, interfaceMode currentMode, QWidget *parent) :
     QWidget(parent)
 {
+    this->currentMode = currentMode;
     this->setAccessibleName(filename);
 
     videoView = new QGraphicsView(this);
@@ -26,7 +27,7 @@ MedNUSVideoViewer::MedNUSVideoViewer(QString filename, QWidget *parent) :
     videoView->setBackgroundBrush(QBrush(Qt::black, Qt::SolidPattern));
     videoView->setStyleSheet( "QGraphicsView { border-style: none; background-color:black}" );
 
-    control = new MedNUSVideoControl(videoView);
+    control = new MedNUSVideoControl(currentMode, videoView);
 
     connect(control, SIGNAL(changeVolume(int)), &mediaPlayer, SLOT(setVolume(int)));
     connect(&mediaPlayer, SIGNAL(stateChanged(QMediaPlayer::State)),control, SLOT(mediaStateChanged(QMediaPlayer::State)));
@@ -119,9 +120,10 @@ void MedNUSVideoViewer::setVolume(int volume)
 }
 
 
-MedNUSVideoControl::MedNUSVideoControl(QWidget *parent):
+MedNUSVideoControl::MedNUSVideoControl(interfaceMode currentMode, QWidget *parent):
     QWidget(parent)
 {
+    _currentMode = currentMode;
     _volume=3;
     _playButton = new QPushButton((this));
     _playButton->setIconSize(QSize(24,24));
@@ -186,13 +188,19 @@ void MedNUSVideoControl::updateUI() {
     _positionSlider->setGeometry(QRect(VIDEO_BORDER+VIDEO_ICON_SIZE*2+VIDEO_SEP_LENGTH*2,playerHeight,this->width()-(VIDEO_BORDER*2+VIDEO_ICON_SIZE*2+VIDEO_SEP_LENGTH*3)-VIDEO_TIME_LENGTH,VIDEO_ICON_SIZE));
     _videoTimer->setGeometry(QRect(this->width()-VIDEO_BORDER-VIDEO_TIME_LENGTH,playerHeight,VIDEO_TIME_LENGTH,VIDEO_ICON_SIZE));
 
-    if(true)//mode==LECTURER
+    if(_currentMode == interfaceMode::LECTURER)
     {
         //_addEditButton->setStyleSheet("QPushButton {border-style: outset; border-width: 0px;background-image: url(:/images/bt_vidadd.png); background-color:rgba(0,0,0,0);}");
         _addEditButton->setGeometry(QRect(VIDEO_BORDER+24,playerHeight-24,VIDEO_ICON_SIZE+8,VIDEO_ICON_SIZE));
 
         _prevButton->setGeometry(QRect(VIDEO_BORDER,playerHeight-24,VIDEO_ICON_SIZE,VIDEO_ICON_SIZE));
         _nextButton->setGeometry(QRect(VIDEO_BORDER+24+32,playerHeight-24,VIDEO_ICON_SIZE,VIDEO_ICON_SIZE));
+    }
+    else
+    {
+        _prevButton->hide();
+        _nextButton->hide();
+        _addEditButton->hide();
     }
 
     _storyPointContainer->setGeometry(_positionSlider->geometry());
@@ -255,12 +263,16 @@ void MedNUSVideoControl::mediaStateChanged(QMediaPlayer::State state)
     default:
         _state = QMediaPlayer::PausedState;
         this->_playButton->setStyleSheet("QPushButton {border-style: outset; border-width: 0px;background-image: url(:/images/bt_play.png); background-color:rgba(0,0,0,0);}");
-        _addEditButton->show();
-        _addEditButton->setStyleSheet("QPushButton {border-style: outset; border-width: 0px;background-image: url(:/images/bt_vidadd.png); background-color:rgba(0,0,0,0);}");
-        foreach(qint64 pos, _storyPoints)
-            if(pos == _position)
-                _addEditButton->setStyleSheet("QPushButton {border-style: outset; border-width: 0px;background-image: url(:/images/bt_videdit.png); background-color:rgba(0,0,0,0);}");
-
+        if(_currentMode == interfaceMode::LECTURER)
+        {
+            _addEditButton->show();
+            _addEditButton->setStyleSheet("QPushButton {border-style: outset; border-width: 0px;background-image: url(:/images/bt_vidadd.png); background-color:rgba(0,0,0,0);}");
+            foreach(qint64 pos, _storyPoints)
+                if(pos == _position)
+                    _addEditButton->setStyleSheet("QPushButton {border-style: outset; border-width: 0px;background-image: url(:/images/bt_videdit.png); background-color:rgba(0,0,0,0);}");
+        }
+        else
+            _addEditButton->hide();
         break;
     }
 }

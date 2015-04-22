@@ -11,6 +11,7 @@
 #include <QStyle>
 #include <QPushButton>
 #include <QGridLayout>
+#include "MedNUSAUISettings.h"
 
 class MedNUSVideoControl;
 
@@ -18,7 +19,7 @@ class MedNUSVideoViewer : public QWidget
 {
     Q_OBJECT
 public:
-    explicit MedNUSVideoViewer(QString filename, QWidget *parent = 0);
+    explicit MedNUSVideoViewer(QString filename, interfaceMode currentMode = interfaceMode::STUDENT, QWidget *parent = 0);
     ~MedNUSVideoViewer();
     void initStoryPoints(QList<qint64>);
 
@@ -33,6 +34,7 @@ protected:
     QGraphicsScene *scene;
     MedNUSVideoControl *control;
     QString fi;
+    interfaceMode currentMode;
 
     void keyPressEvent(QKeyEvent *event);
     void resizeEvent(QResizeEvent *);
@@ -50,7 +52,7 @@ class MedNUSVideoControl : public QWidget
 {
     Q_OBJECT
 public:
-    explicit MedNUSVideoControl(QWidget *parent = 0);
+    explicit MedNUSVideoControl(interfaceMode currentMode, QWidget *parent = 0);
     ~MedNUSVideoControl();
 
     void updateUI();
@@ -72,6 +74,7 @@ protected:
     QList <qint64> _storyPoints;
     QWidget *_storyPointContainer;
     QMediaPlayer::State _state = QMediaPlayer::PausedState;
+    interfaceMode _currentMode;
 
     QString timeConvert(qint64);
 
