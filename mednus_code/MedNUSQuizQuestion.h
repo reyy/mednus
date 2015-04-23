@@ -63,6 +63,7 @@ public:
     // Load question into the quiz widget.
     void loadQuestion(QuestionMode mode, QWidget *parent, QGridLayout *layout,
                       int &row);
+    void unloadQuestion(QuestionMode prevMode);
 
     // Set a highlight on text label of question left unanswered.
     void setNotice(bool isAnswered);

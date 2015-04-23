@@ -13,8 +13,14 @@ MedNUSQuiz::MedNUSQuiz(QString filename, interfaceMode currentMode, QWidget *par
     _questionList = new QVector<MedNUSQuizQuestion*>();
 
     // Read Json file
-    if(!loadQuizFile2())
-        qWarning() << "Could not load file.";
+    if(!loadQuizFile2()) {
+        if (currentMode == LECTURER) {
+            initEditorView();
+        } else {
+            qWarning() << "Could not load file.";
+            return;
+        }
+    }
 
     initViewerView();
 
@@ -84,6 +90,10 @@ void MedNUSQuiz::initViewerView() {
 
 
 void MedNUSQuiz::deinitViewerView() {
+
+    for (int i = 0; i < _questionList->size(); i++)
+        _questionList->at(i)->unloadQuestion(MedNUSQuizQuestion::VIEWER);
+
     delete _tempWidget;
     delete _scrollArea;
 }
@@ -199,6 +209,11 @@ void MedNUSQuiz::initEditorView() {
 
 
 void MedNUSQuiz::deinitEditorView() {
+
+
+    for (int i = 0; i < _questionList->size(); i++)
+        _questionList->at(i)->unloadQuestion(MedNUSQuizQuestion::EDITOR);
+
     delete _tempWidget;
     delete _scrollArea;
 }
@@ -584,7 +599,8 @@ void MedNUSQuiz::createQuizWidgets()
     ((QLabel*)_lastModifiedLabel)->setAlignment(Qt::AlignRight);
     _layout->addWidget(_lastModifiedLabel, _lastRow-1, 1, 1, 1);
 
-    ((QLabel*)_instructionTextLabel)->setWordWrap(true);
+    if (!_isEditorView)
+       ((QLabel*)_instructionTextLabel)->setWordWrap(true);
     _instructionTextLabel->setStyleSheet(INSTRUCTION_TEXT_LABEL_STYLESHEET);
     _instructionTextLabel->setFont (QFont ("Helvetica", 11,QFont::Normal,true));
     _layout->addWidget(_instructionTextLabel, _lastRow++, 0, 1, 2);

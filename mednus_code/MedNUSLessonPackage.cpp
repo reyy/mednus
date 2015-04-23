@@ -528,7 +528,7 @@ void MedNUSLessonPackage::addNewQuiz() {
     switch (ret) {
        case QMessageBox::Yes:
            //HACK: Opening a dummy file.
-        emit emitOpenFile("/mednus/lesson1/makequiz/maker.json", "Quiz Maker", 1);
+        emit emitOpenFile("/mednus/lesson1/quiz/untitled.json", "Quiz Maker", 1);
            break;
        case QMessageBox::No:
            break;
