@@ -35,6 +35,20 @@ MedNUSQuizQuestion::MedNUSQuizQuestion(int questionNum, QVector<QString> content
     _correctAnswer = content[noOfOptions+CONTENT_CORRECT_ANSWER_OFFSET].toInt();
 }
 
+MedNUSQuizQuestion::MedNUSQuizQuestion(int questionNum) {
+
+    _questionNum = questionNum;
+    _questionText = "";
+    _questionImageUrl = "";
+    _noOfOptions = 0;
+    _dummySpace = new QVector<QLabel*>();
+    _amtOfDummySpace = 3;
+    _options = new QVector<QString>();
+    _optionsLabelEdit = new QVector<QLineEdit*>();
+    _teacherComment = "";
+    _correctAnswer = 0;
+}
+
 /*
 MedNUSQuizQuestion::MedNUSQuizQuestion(QWidget *parent, QGridLayout *layout,
                                        int& row, QVector<QString> content,
@@ -311,6 +325,7 @@ void MedNUSQuizQuestion::loadQuestionTextLabel(QuestionMode mode, QWidget *paren
     } else if (mode == EDITOR) {
 
         _questionTextLabel = new QLineEdit(_questionText, parent);
+        ((QLineEdit*)_questionTextLabel)->setPlaceholderText("Question Text");
         _questionTextLabel->setFont (QFont ("Helvetica", 12));
         _questionTextLabel->setVisible(true);
         layout->addWidget(_questionTextLabel, row++, 0, 1, 2);
@@ -427,6 +442,7 @@ void MedNUSQuizQuestion::loadQuestionTeacherCommentLabel(QuestionMode mode,
     } else if (mode == EDITOR) {
 
         _teacherCommentLabel = new QLineEdit(_teacherComment, parent);
+        ((QLineEdit*)_teacherCommentLabel)->setPlaceholderText("Comment for student.");
         _teacherCommentLabel->setFont (QFont ("Helvetica", 12));
         layout->addWidget(_teacherCommentLabel, row++, 0, 1, 2);
 

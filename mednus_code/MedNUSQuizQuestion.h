@@ -41,6 +41,8 @@ public:
                        int noOfOptions, bool hasImage = false,
                        QString imageUrl = "");
 
+    MedNUSQuizQuestion(int questionNum);
+
     /*  MedNUSQuizQuestion constructor (editor view - new question):
      *      This constructor is meant to be used by the quiz editor to
      *      create new (empty) questions.
