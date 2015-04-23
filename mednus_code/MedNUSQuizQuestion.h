@@ -11,6 +11,7 @@
 #include <QListView>
 #include <QLineEdit>
 #include <QJsonObject>
+#include <QJsonArray>
 
 #include "MedNUSQuizStylesheet.h"
 
@@ -68,7 +69,8 @@ public:
     void showQuestion() const;
 
     // Update the storage variables with the data from QLineEdit.
-    void saveChanges();
+    bool saveChanges();
+    bool saveOptions();
     void writeToFile(QJsonObject &json);
 
     bool markQuestion();

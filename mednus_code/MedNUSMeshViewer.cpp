@@ -283,7 +283,6 @@ void MedNUSMeshViewer::createWidgets(bool withMeshPanel)
     vtkWidget->updateGeometry();
 }
 
-
 void MedNUSMeshViewer::createActions()
 {
 }
@@ -394,6 +393,12 @@ void MedNUSMeshViewer::loadMeshDir(const QString &dirName) {
             loadMesh(fileNames);
             QApplication::restoreOverrideCursor();
         }
+    }
+
+
+    qDebug() << meshList.size();
+    for (int i = 0; i < meshList.size(); i++) {
+        qDebug() << "#" << i << " = " << meshList[i].data->GetNumberOfPolys();
     }
 }
 
@@ -773,6 +778,10 @@ bool MedNUSMeshViewer::addMesh(const QStringList &fileNames)
     
     for (int i = 0; i < fileNames.size(); ++i)
     {
+        QElapsedTimer et;
+        et.start();
+
+
         QString suffix = QFileInfo(fileNames[i]).suffix();
        
         vtkPolyDataAlgorithm *reader = NULL;
@@ -867,6 +876,9 @@ bool MedNUSMeshViewer::addMesh(const QStringList &fileNames)
         item->setFlags(Qt::ItemIsEnabled);
         item->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
         meshTable->setItem(j, 3, item);
+
+        qint64 timeElapsed = et.elapsed();
+        qDebug() << "#" << i << ": " << timeElapsed << "ms";
     }
        
     installPipeline(startIndex);

@@ -5,7 +5,7 @@ const int MAX_NO_OF_QUIZ_QUESTIONS = 100;
 MedNUSQuiz::MedNUSQuiz(QString filename, interfaceMode currentMode, QWidget *parent) :
     QWidget(parent)
 {
-    this->setAccessibleName(_filename);
+    this->setAccessibleName(filename);
     _parent = parent;
     _filename = filename;
     _currentMode = currentMode;
@@ -29,6 +29,10 @@ MedNUSQuiz::~MedNUSQuiz()
 }
 
 void MedNUSQuiz::initViewerView() {
+
+    while (_tempWidget != NULL) {
+        _tempWidget = NULL;
+    }
 
     _tempWidget = new QWidget(_parent);
     _layout = new QGridLayout(_tempWidget);
@@ -86,13 +90,19 @@ void MedNUSQuiz::deinitViewerView() {
 
 
 void MedNUSQuiz::initEditorView() {
+
+    while (_tempWidget != NULL) {
+        _tempWidget = NULL;
+    }
+
     _tempWidget = new QWidget(_parent);
     _layout = new QGridLayout(_tempWidget);
     _layout->setContentsMargins(0,0,0,0);
 
     _lastRow = 0;
 
-    // Number of Questions for quiz.
+
+// Number of Questions for quiz.
     _noOfQuestionsDropDownBoxLabel = new QLabel("No. of Questions", _tempWidget);
     _noOfQuestionsDropDownBoxLabel->setVisible(true);
     _layout->addWidget(_noOfQuestionsDropDownBoxLabel, _lastRow, 0, 1, 1);
@@ -110,6 +120,30 @@ void MedNUSQuiz::initEditorView() {
     connect(_noOfQuestionsDropDownBox, SIGNAL(currentIndexChanged(int)), this,
             SLOT(updateNoOfQuestions()));
     _layout->addWidget(_noOfQuestionsDropDownBox, _lastRow++, 1, 1, 1);
+
+
+// Checkboxes for various flags
+    _showAnswerCheckBox = new QCheckBox("Show answers after quiz?", _tempWidget);
+    _showAnswerCheckBox->setVisible(true);
+    _showAnswerCheckBox->setChecked(true);
+    _layout->addWidget(_showAnswerCheckBox, _lastRow++, 0, 1, 2);
+
+    _showTeacherCommenCheckBox = new QCheckBox("Show comments after quiz?", _tempWidget);
+    _showTeacherCommenCheckBox->setVisible(true);
+    _showTeacherCommenCheckBox->setChecked(true);
+    _layout->addWidget(_showTeacherCommenCheckBox, _lastRow++, 0, 1, 2);
+
+    _hasTimerCheckBox = new QCheckBox("Timed Quiz? (Duration in seconds)", _tempWidget);
+    _hasTimerCheckBox->setVisible(true);
+    _hasTimerCheckBox->setChecked(true);
+    _layout->addWidget(_hasTimerCheckBox, _lastRow, 0, 1, 1);
+
+    _timerDurationEditLabel = new QLineEdit(_tempWidget);
+    _timerDurationEditLabel->setVisible(true);
+    _timerDurationEditLabel->setPlaceholderText("Duration in seconds.");
+    if (verifyTimerDuration(_timerDuration))
+        _timerDurationEditLabel->setText(QString::number(_timerDuration/1000));
+    _layout->addWidget(_timerDurationEditLabel, _lastRow++, 1, 1, 1);
 
     // Load the quiz into the editor.
     //if (!loadQuizFile())
@@ -165,6 +199,14 @@ void MedNUSQuiz::initEditorView() {
 void MedNUSQuiz::deinitEditorView() {
     delete _tempWidget;
     delete _scrollArea;
+}
+
+bool MedNUSQuiz::verifyTimerDuration(int ms) {
+    if (ms < 1000) {
+        return false;
+    }
+
+    return true;
 }
 
 
@@ -491,6 +533,12 @@ bool MedNUSQuiz::writeQuizFile() {
     detailsObj["author"] = _author;
     detailsObj["introductionText"] = _instructionText;
     detailsObj["noOfQuestions"] = _noOfQuestions;
+    detailsObj["showAnswer"] = _showCorrectAnswerFlag;
+    detailsObj["showTeacherComment"] = _showTeacherCommentFlag;
+    detailsObj["hasTimeLimit"] = _hasTimerCheckBox->isChecked();
+    detailsObj["timerDuration"] = _timerDuration;
+
+    qDebug() << "timerDuration saved = " << _timerDuration;
 
     json["details"] = detailsObj;
 // Save the questions.
@@ -694,7 +742,7 @@ void MedNUSQuiz::startQuiz()
     _startScreenLabel->setVisible(false);
     _startQuizButton->setVisible(false);
     _instructionTextLabel->setVisible(false);
-    _timedQuizWarningTextLabel->setVisible(false);
+    if (_timedQuizWarningTextLabel != NULL) _timedQuizWarningTextLabel->setVisible(false);
     //_attemptLabel->setVisible(false);
     _dummySpace1->setVisible(false);
 
@@ -759,17 +807,29 @@ void MedNUSQuiz::goToViewerView() {
     initViewerView();
 }
 
-void MedNUSQuiz::saveQuiz()
+bool MedNUSQuiz::saveQuiz()
 {
     _title = ((QLineEdit*)_titleTextLabel)->text();
     _author = ((QLineEdit*)_authorTextLabel)->text();
     _instructionText = ((QLineEdit*)_instructionTextLabel)->text();
+    _showCorrectAnswerFlag = _showAnswerCheckBox->isChecked();
+    _showTeacherCommentFlag = _showTeacherCommenCheckBox->isChecked();
+    _hasTimeLimit = _hasTimerCheckBox->isChecked();
+    _timerDuration = _timerDurationEditLabel->text().toInt()*1000;
+
+    if (!verifyTimerDuration(_timerDuration)) {
+        qWarning() << "timer duration invalid";
+        return false;
+    }
 
     for (int i = 0; i < _questionList->size(); i++) {
-        _questionList->at(i)->saveChanges();
+        if (!_questionList->at(i)->saveChanges())
+            return false;
     }
 
     writeQuizFile();
+
+    return true;
 }
 
 
