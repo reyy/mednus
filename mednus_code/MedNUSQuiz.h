@@ -41,7 +41,11 @@
 #include "MedNUSQuizQuestion.h"
 #include "MedNUSAUISettings.h"
 
+//#include "../mednus_test/tst_mednusquiztester.h"
+
 class MedNUSQuiz : public QWidget {
+
+    //friend class MedNUSQuizTester;
 
 public:
 
