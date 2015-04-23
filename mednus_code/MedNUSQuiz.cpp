@@ -647,6 +647,9 @@ void MedNUSQuiz::createQuizWidgets()
             _timedQuizWarningTextLabel->setFont (QFont ("Helvetica", 12));
             ((QLabel*)_timedQuizWarningTextLabel)->setWordWrap(true);
             _layout->addWidget(_timedQuizWarningTextLabel, _lastRow++, 0, 1, 1);
+        } else {
+            _timerLabel = NULL;
+            _timedQuizWarningTextLabel = NULL;
         }
 
         _startQuizButton = new QPushButton("Start Quiz", _tempWidget);
@@ -771,11 +774,14 @@ void MedNUSQuiz::startQuiz()
        ((MedNUSQuizQuestion*)_questionList->at(i))->showQuestion();
 
     _markButton->setVisible(true);
-    _timer->start(_timerDuration);
-    _timerLabel->setVisible(true);
-    _labelUpdateTimer->start(500);
-    // hack: to force it to start showing from the actual duration instead of -1
-    updateTimerLabel();
+
+    if (_hasTimeLimit) {
+        _timer->start(_timerDuration);
+        _timerLabel->setVisible(true);
+        _labelUpdateTimer->start(500);
+        // hack: to force it to start showing from the actual duration instead of -1
+        updateTimerLabel();
+    }
 }
 
 
