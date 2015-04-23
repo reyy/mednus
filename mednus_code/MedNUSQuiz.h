@@ -35,6 +35,7 @@
 // For editor
 #include <QComboBox>
 #include <QListView>
+#include <QCheckBox>
 
 #include "MedNUSQuizStylesheet.h"
 #include "MedNUSQuizQuestion.h"
@@ -133,6 +134,10 @@ private:
 // Quiz Editor
 
     // Widget Stuff
+    QCheckBox* _showAnswerCheckBox;
+    QCheckBox* _showTeacherCommenCheckBox;
+    QCheckBox* _hasTimerCheckBox;
+    QLineEdit* _timerDurationEditLabel;
     QPushButton* _viewQuizButton;
     QPushButton* _saveButton;
     QLabel* _noOfQuestionsDropDownBoxLabel;
@@ -141,6 +146,7 @@ private:
 
     void initEditorView();
     void deinitEditorView();
+    bool verifyTimerDuration(int ms);
 
 signals:
     // No signals as of yet.
@@ -157,7 +163,7 @@ public slots:
     // Quiz Editor
     void updateNoOfQuestions();
     void goToViewerView();
-    void saveQuiz();
+    bool saveQuiz();
 };
 
 

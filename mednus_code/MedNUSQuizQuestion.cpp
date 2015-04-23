@@ -11,6 +11,10 @@ MedNUSQuizQuestion::MedNUSQuizQuestion(int questionNum, QVector<QString> content
                                        int noOfOptions, bool hasImage,
                                        QString imageUrl) {
 
+    qDebug() << "qNum: " << questionNum;
+    qDebug() << "noOfOptions = " << noOfOptions;
+    qDebug() << "content.length = " << content.size();
+
     _questionNum = questionNum;
     _questionText = content[0];
 
@@ -217,7 +221,7 @@ void MedNUSQuizQuestion::showQuestion() const
 }
 
 
-void MedNUSQuizQuestion::saveChanges() {
+bool MedNUSQuizQuestion::saveChanges() {
 
     qDebug()<<"saving num="<<_questionNum;
     _questionText = ((QLineEdit*)_questionTextLabel)->displayText();
@@ -225,17 +229,30 @@ void MedNUSQuizQuestion::saveChanges() {
     _teacherComment = ((QLineEdit*)_teacherCommentLabel)->displayText();
     qDebug()<<"done tc";
 
+
+    if (!saveOptions())
+        return false;
+
+    _correctAnswer = _correctAnswerDropDownBox->currentIndex()+1;
+
+    return true;
+}
+
+bool MedNUSQuizQuestion::saveOptions() {
     //TODO: Change it such that is push a button to add options.
-    for (int i = 0; i < _noOfOptions; i++) {
+    _options->clear();
+    for (int i = 0; i < MAX_NO_OF_OPTIONS; i++) {
         qDebug()<<"option"<<i;
         QLineEdit* lineEdit = _optionsLabelEdit->at(i);
 
-        if (!QString::compare(lineEdit->text(), "", Qt::CaseInsensitive)) {
-            _options->replace(i, lineEdit->text());
-        }
+        if (lineEdit->text().length() > 0)
+            _options->append(lineEdit->text());
     }
 
-    _correctAnswer = _correctAnswerDropDownBox->currentIndex()+1;
+    qDebug() << "new noOfOptions" << _options->size();
+    _noOfOptions = _options->size();
+
+    return true;
 }
 
 void MedNUSQuizQuestion::writeToFile(QJsonObject &json) {
@@ -244,6 +261,14 @@ void MedNUSQuizQuestion::writeToFile(QJsonObject &json) {
     json["question"] = _questionText;
     json["correctAnswer"] = _correctAnswer;
     json["teacherComment"] = _teacherComment;
+
+    QJsonArray optionArray;
+
+    for (int i = 0; i < _noOfOptions; i++) {
+        optionArray.append(_options->at(i));
+    }
+
+    json["options"] = optionArray;
 }
 
 bool MedNUSQuizQuestion::markQuestion()
