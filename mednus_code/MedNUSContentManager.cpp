@@ -86,7 +86,7 @@ void MedNUSContentManager::openFile(QString fileDir, QString title, int type)
             break;
 
         case VIDEO:
-            toAdd = new MedNUSVideoViewer(dir);
+            toAdd = new MedNUSVideoViewer(dir, _currentMode);
             break;
 
         case MODEL:
@@ -108,7 +108,44 @@ void MedNUSContentManager::openFile(QString fileDir, QString title, int type)
         //Catch Corrupted File
         if(toAdd->property("Loaded").isValid())
             emit callAddTab(toAdd,title,dir);
-        else
+        else if(!toAdd->property("Cancelled").isValid())
+            QMessageBox::information(NULL, "", "File could not be opened. It might be corrupted or be used by another process.");
+    }
+    else if(isFileExist(fileDir))
+    {
+        dir = fileDir;
+        //Create MedNUSVideo/Mesh/PDF instance
+        QWidget *toAdd;
+
+        switch (type) {
+        case PDF:
+            toAdd = new MedNUSPdfViewer(dir);
+            break;
+
+        case VIDEO:
+            toAdd = new MedNUSVideoViewer(dir, _currentMode);
+            break;
+
+        case MODEL:
+            toAdd = new MedNUSMeshViewer(dir, true);
+            break;
+
+        case QUIZ:
+            toAdd = new MedNUSQuiz(dir, _currentMode);
+            break;
+        }
+
+        //Todo: Temp fix for too long titles
+        if (title.length()>10)
+        {
+            title.truncate(10);
+            title.append("...");
+        }
+
+        //Catch Corrupted File
+        if(toAdd->property("Loaded").isValid())
+            emit callAddTab(toAdd,title,dir);
+        else if(!toAdd->property("Cancelled").isValid())
             QMessageBox::information(NULL, "", "File could not be opened. It might be corrupted or be used by another process.");
     }
     else

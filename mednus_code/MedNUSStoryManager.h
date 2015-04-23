@@ -20,16 +20,16 @@ public slots:
 
 protected:
     static const short END_OF_STORY = -1;
-    static const short POS_DELTA_LIMIT = 1000;
+    static const short POS_DELTA_LIMIT = 1500;
 
     struct StoryPoint
     {
-        qint64 timestamp;
-        int slideNum;
-        int cameraViewAngle;
-        double cameraPosition[3];
-        double cameraFocalPoint[3];
-        double cameraViewUp[3];
+        qint64 timestamp = 0;
+        int slideNum = 0;
+        int cameraViewAngle = 0;
+        double cameraPosition[3] = {0,0,0};
+        double cameraFocalPoint[3] = {0,0,0};
+        double cameraViewUp[3] = {0,0,0};
     };
 
     QVector<StoryPoint> *storyPointList;
@@ -49,9 +49,13 @@ protected:
     bool loadStoryFile(QString storyFile);
     void goToStoryPoint(StoryPoint);
 
+    bool fillInStoryPointData(qint64,StoryPoint*);
+
 protected slots:
     void videoPositionChanged(qint64);
     void initStoryPoints();
+    void addEditStoryPoints(qint64);
+    void deleteStoryPoints(qint64);
 };
 
 #endif // MEDNUSSTORYMANAGER_H
