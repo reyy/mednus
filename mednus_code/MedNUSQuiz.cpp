@@ -102,6 +102,23 @@ void MedNUSQuiz::initEditorView() {
     _lastRow = 0;
 
 
+    // View Quiz button
+    _viewQuizButton = new QPushButton("View Quiz", _tempWidget);
+    _viewQuizButton->setVisible(true);
+    _viewQuizButton->setStyleSheet(EDIT_BUTTON_STYLESHEET);
+    _viewQuizButton->setFont(QFont("Helvetica", 14));
+    connect(_viewQuizButton, SIGNAL(released()), this, SLOT(goToViewerView()));
+    _layout->addWidget(_viewQuizButton, _lastRow++, 0, 1, 2);
+
+    // Save Quiz button
+    _saveButton = new QPushButton("Save", _tempWidget);
+    _saveButton->setVisible(true);
+    _saveButton->setStyleSheet(EDIT_BUTTON_STYLESHEET);
+    _saveButton->setFont(QFont("Helvetica", 14));
+    connect(_saveButton, SIGNAL(released()), this, SLOT(saveQuiz()));
+    _layout->addWidget(_saveButton, _lastRow++, 0, 1, 2);
+
+
 // Number of Questions for quiz.
     _noOfQuestionsDropDownBoxLabel = new QLabel("No. of Questions", _tempWidget);
     _noOfQuestionsDropDownBoxLabel->setVisible(true);
@@ -153,21 +170,6 @@ void MedNUSQuiz::initEditorView() {
 
 
 
-    // View Quiz button
-    _viewQuizButton = new QPushButton("View Quiz", _tempWidget);
-    _viewQuizButton->setVisible(true);
-    _viewQuizButton->setStyleSheet(EDIT_BUTTON_STYLESHEET);
-    _viewQuizButton->setFont(QFont("Helvetica", 14));
-    connect(_viewQuizButton, SIGNAL(released()), this, SLOT(goToViewerView()));
-    _layout->addWidget(_viewQuizButton, _lastRow++, 0, 1, 2);
-
-    // Save Quiz button
-    _saveButton = new QPushButton("Save", _tempWidget);
-    _saveButton->setVisible(true);
-    _saveButton->setStyleSheet(EDIT_BUTTON_STYLESHEET);
-    _saveButton->setFont(QFont("Helvetica", 14));
-    connect(_saveButton, SIGNAL(released()), this, SLOT(saveQuiz()));
-    _layout->addWidget(_saveButton, _lastRow++, 0, 1, 2);
 
 
     // Set the current number of questions in the drop down box based on file.
@@ -670,19 +672,21 @@ void MedNUSQuiz::updateNoOfQuestions()
     //qDebug() << newNoOfQuestions << "/" << _noOfQuestions;
 
     if (newNoOfQuestions > _noOfQuestions) {
-        for (int i = _noOfQuestions; i < newNoOfQuestions; i++) {
-            //MedNUSQuizQuestion *question =
-                    //new MedNUSQuizQuestion(_tempWidget, _layout, _lastRow);
+        for (int i = _noOfQuestions+1; i <= newNoOfQuestions; i++) {
+            MedNUSQuizQuestion *question =
+                    new MedNUSQuizQuestion(i);
+
+            question->loadQuestion(MedNUSQuizQuestion::EDITOR, _tempWidget, _layout, _lastRow);
 
             // Push the question into the question vector.
-            //_questionList->append(question);
+            _questionList->append(question);
         }
     } else {
 
     }
 
     _noOfQuestions = newNoOfQuestions;
-    //qDebug() << "questionlist size = " << _questionList->size();
+    qDebug() << "questionlist size = " << _questionList->size();
 }
 
 
