@@ -5,7 +5,7 @@ const int MAX_NO_OF_QUIZ_QUESTIONS = 100;
 MedNUSQuiz::MedNUSQuiz(QString filename, interfaceMode currentMode, QWidget *parent) :
     QWidget(parent)
 {
-    this->setAccessibleName(_filename);
+    this->setAccessibleName(filename);
     _parent = parent;
     _filename = filename;
     _currentMode = currentMode;
@@ -29,6 +29,10 @@ MedNUSQuiz::~MedNUSQuiz()
 }
 
 void MedNUSQuiz::initViewerView() {
+
+    while (_tempWidget != NULL) {
+        _tempWidget = NULL;
+    }
 
     _tempWidget = new QWidget(_parent);
     _layout = new QGridLayout(_tempWidget);
@@ -69,6 +73,7 @@ void MedNUSQuiz::initViewerView() {
     _scrollArea->setAutoFillBackground(true);
     _scrollArea->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     _scrollArea->setVisible(true);
+
     //Load scrollbar style.
     QFile file2(":/images/scrollbar.css");
     if(file2.open(QIODevice::ReadOnly|QIODevice::Text)) {
@@ -85,11 +90,68 @@ void MedNUSQuiz::deinitViewerView() {
 
 
 void MedNUSQuiz::initEditorView() {
+
+    while (_tempWidget != NULL) {
+        _tempWidget = NULL;
+    }
+
     _tempWidget = new QWidget(_parent);
     _layout = new QGridLayout(_tempWidget);
     _layout->setContentsMargins(0,0,0,0);
 
     _lastRow = 0;
+
+
+// Number of Questions for quiz.
+    _noOfQuestionsDropDownBoxLabel = new QLabel("No. of Questions", _tempWidget);
+    _noOfQuestionsDropDownBoxLabel->setVisible(true);
+    _layout->addWidget(_noOfQuestionsDropDownBoxLabel, _lastRow, 0, 1, 1);
+
+    _noOfQuestionsDropDownBox = new QComboBox(_tempWidget);
+    for (int i = 1; i <= MAX_NO_OF_QUIZ_QUESTIONS; i++) {
+        _noOfQuestionsDropDownBox->addItem(QString::number(i));
+    }
+    _noOfQuestionsDropDownBox->setMaxVisibleItems(MAX_NO_OF_QUIZ_QUESTIONS/2);
+    _noOfQuestionsDropDownBox->setStyleSheet(DROPDOWN_STYLESHEET);
+    _noOfQuestionsDropDownBox->setVisible(true);
+    _listView = new QListView(_noOfQuestionsDropDownBox);
+    _listView->setStyleSheet(DROPDOWN_LIST_VIEW_STYLESHEET);
+    _noOfQuestionsDropDownBox->setView(_listView);
+    connect(_noOfQuestionsDropDownBox, SIGNAL(currentIndexChanged(int)), this,
+            SLOT(updateNoOfQuestions()));
+    _layout->addWidget(_noOfQuestionsDropDownBox, _lastRow++, 1, 1, 1);
+
+
+// Checkboxes for various flags
+    _showAnswerCheckBox = new QCheckBox("Show answers after quiz?", _tempWidget);
+    _showAnswerCheckBox->setVisible(true);
+    _showAnswerCheckBox->setChecked(true);
+    _layout->addWidget(_showAnswerCheckBox, _lastRow++, 0, 1, 2);
+
+    _showTeacherCommenCheckBox = new QCheckBox("Show comments after quiz?", _tempWidget);
+    _showTeacherCommenCheckBox->setVisible(true);
+    _showTeacherCommenCheckBox->setChecked(true);
+    _layout->addWidget(_showTeacherCommenCheckBox, _lastRow++, 0, 1, 2);
+
+    _hasTimerCheckBox = new QCheckBox("Timed Quiz? (Duration in seconds)", _tempWidget);
+    _hasTimerCheckBox->setVisible(true);
+    _hasTimerCheckBox->setChecked(true);
+    _layout->addWidget(_hasTimerCheckBox, _lastRow, 0, 1, 1);
+
+    _timerDurationEditLabel = new QLineEdit(_tempWidget);
+    _timerDurationEditLabel->setVisible(true);
+    _timerDurationEditLabel->setPlaceholderText("Duration in seconds.");
+    if (verifyTimerDuration(_timerDuration))
+        _timerDurationEditLabel->setText(QString::number(_timerDuration/1000));
+    _layout->addWidget(_timerDurationEditLabel, _lastRow++, 1, 1, 1);
+
+    // Load the quiz into the editor.
+    //if (!loadQuizFile())
+     //   throw "Could not load file.";
+
+    createQuizWidgets();
+
+
 
     // View Quiz button
     _viewQuizButton = new QPushButton("View Quiz", _tempWidget);
@@ -99,30 +161,13 @@ void MedNUSQuiz::initEditorView() {
     connect(_viewQuizButton, SIGNAL(released()), this, SLOT(goToViewerView()));
     _layout->addWidget(_viewQuizButton, _lastRow++, 0, 1, 2);
 
+    // Save Quiz button
     _saveButton = new QPushButton("Save", _tempWidget);
     _saveButton->setVisible(true);
     _saveButton->setStyleSheet(EDIT_BUTTON_STYLESHEET);
     _saveButton->setFont(QFont("Helvetica", 14));
     connect(_saveButton, SIGNAL(released()), this, SLOT(saveQuiz()));
     _layout->addWidget(_saveButton, _lastRow++, 0, 1, 2);
-
-    // Number of Questions for quiz.
-    _noOfQuestionsDropDownBox = new QComboBox(_tempWidget);
-    for (int i = 1; i <= MAX_NO_OF_QUIZ_QUESTIONS; i++) {
-        _noOfQuestionsDropDownBox->addItem(QString::number(i));
-    }
-    _noOfQuestionsDropDownBox->setMaxVisibleItems(MAX_NO_OF_QUIZ_QUESTIONS/2);
-    _noOfQuestionsDropDownBox->setVisible(true);
-    _listView = new QListView(_noOfQuestionsDropDownBox);
-    _noOfQuestionsDropDownBox->setView(_listView);
-    connect(_noOfQuestionsDropDownBox, SIGNAL(currentIndexChanged(int)), this,
-            SLOT(updateNoOfQuestions()));
-
-    // Load the quiz into the editor.
-    //if (!loadQuizFile())
-     //   throw "Could not load file.";
-
-    createQuizWidgets();
 
 
     // Set the current number of questions in the drop down box based on file.
@@ -140,6 +185,13 @@ void MedNUSQuiz::initEditorView() {
     _scrollArea->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     _scrollArea->setVisible(true);
 
+    //Load scrollbar style.
+    QFile file2(":/images/scrollbar.css");
+    if(file2.open(QIODevice::ReadOnly|QIODevice::Text)) {
+        _scrollArea->setStyleSheet(file2.readAll());
+        file2.close();
+    }
+
     _isEditorView = true;
 }
 
@@ -147,6 +199,14 @@ void MedNUSQuiz::initEditorView() {
 void MedNUSQuiz::deinitEditorView() {
     delete _tempWidget;
     delete _scrollArea;
+}
+
+bool MedNUSQuiz::verifyTimerDuration(int ms) {
+    if (ms < 1000) {
+        return false;
+    }
+
+    return true;
 }
 
 
@@ -389,7 +449,7 @@ bool MedNUSQuiz::loadQuizFile2() {
 
     QFile file(_filename);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        qWarning() << "Unable to open file.";
+        qWarning() << "Unable to open quiz file for loading.";
         return false;
     }
     _lastModifiedDate = QFileInfo(file).lastModified().toString();
@@ -453,6 +513,49 @@ bool MedNUSQuiz::loadQuizFile2() {
         _questionList->append(question);
         content.clear();
     }
+    return true;
+}
+
+bool MedNUSQuiz::writeQuizFile() {
+
+    QFile file(_filename);
+    if (!file.open(QIODevice::WriteOnly)) {
+        qWarning() << "Unable to open quiz file for saving.";
+        return false;
+    }
+
+    QJsonObject json;
+
+// Save the details of the quiz first.
+    QJsonObject detailsObj;
+
+    detailsObj["title"] = _title;
+    detailsObj["author"] = _author;
+    detailsObj["introductionText"] = _instructionText;
+    detailsObj["noOfQuestions"] = _noOfQuestions;
+    detailsObj["showAnswer"] = _showCorrectAnswerFlag;
+    detailsObj["showTeacherComment"] = _showTeacherCommentFlag;
+    detailsObj["hasTimeLimit"] = _hasTimerCheckBox->isChecked();
+    detailsObj["timerDuration"] = _timerDuration;
+
+    qDebug() << "timerDuration saved = " << _timerDuration;
+
+    json["details"] = detailsObj;
+// Save the questions.
+    for (int i = 0; i < _noOfQuestions; i++) {
+        QJsonObject questionJson;
+
+        _questionList->at(i)->writeToFile(questionJson);
+
+        QString questionNumString = "question_" + QString::number(i+1);
+        json[questionNumString] = questionJson;
+    }
+
+    QJsonDocument doc(json);
+    file.write(doc.toJson());
+
+
+    qDebug()<<"write";
     return true;
 }
 
@@ -639,7 +742,7 @@ void MedNUSQuiz::startQuiz()
     _startScreenLabel->setVisible(false);
     _startQuizButton->setVisible(false);
     _instructionTextLabel->setVisible(false);
-    _timedQuizWarningTextLabel->setVisible(false);
+    if (_timedQuizWarningTextLabel != NULL) _timedQuizWarningTextLabel->setVisible(false);
     //_attemptLabel->setVisible(false);
     _dummySpace1->setVisible(false);
 
@@ -704,15 +807,29 @@ void MedNUSQuiz::goToViewerView() {
     initViewerView();
 }
 
-void MedNUSQuiz::saveQuiz()
+bool MedNUSQuiz::saveQuiz()
 {
     _title = ((QLineEdit*)_titleTextLabel)->text();
     _author = ((QLineEdit*)_authorTextLabel)->text();
     _instructionText = ((QLineEdit*)_instructionTextLabel)->text();
+    _showCorrectAnswerFlag = _showAnswerCheckBox->isChecked();
+    _showTeacherCommentFlag = _showTeacherCommenCheckBox->isChecked();
+    _hasTimeLimit = _hasTimerCheckBox->isChecked();
+    _timerDuration = _timerDurationEditLabel->text().toInt()*1000;
+
+    if (!verifyTimerDuration(_timerDuration)) {
+        qWarning() << "timer duration invalid";
+        return false;
+    }
 
     for (int i = 0; i < _questionList->size(); i++) {
-        _questionList->at(i)->saveChanges();
+        if (!_questionList->at(i)->saveChanges())
+            return false;
     }
+
+    writeQuizFile();
+
+    return true;
 }
 
 

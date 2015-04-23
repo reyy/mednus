@@ -236,12 +236,12 @@ void MedNUSMeshViewer::createWidgets(bool withMeshPanel)
     
     // Central widget
     QGridLayout *grid = new QGridLayout;
-    grid->addWidget(vtkWidget, 0, 0);
+    grid->addWidget(vtkWidget, 0, 0, 45, 1);
 //    QWidget *main = new QWidget;
 //    main->setLayout(grid);
 //    main->setStyleSheet("background-color: #285183;");
     grid->setContentsMargins(0,0,0,0);
-    this->setLayout(grid);
+    //this->setLayout(grid);
     //setStyleSheet("background-color: #1a394a;");
     //setCentralWidget(main);
     
@@ -280,17 +280,18 @@ void MedNUSMeshViewer::createWidgets(bool withMeshPanel)
 //        QMainWindow *mw = new QMainWindow( this );
 //        this->layout()->addWidget(mw);
 //        mw->addDockWidget(Qt::BottomDockWidgetArea, meshPanel);
-        this->layout()->addWidget(meshPanel);
+        grid->addWidget(meshPanel, 45, 0, 5, 1);
+        //this->layout()->addWidget(meshPanel);
     }
     else
     {
         meshTable = NULL;
         meshPanel = NULL;
     }
+    this->setLayout(grid);
 
     vtkWidget->updateGeometry();
 }
-
 
 void MedNUSMeshViewer::createActions()
 {
@@ -402,6 +403,12 @@ void MedNUSMeshViewer::loadMeshDir(const QString &dirName) {
             loadMesh(fileNames);
             QApplication::restoreOverrideCursor();
         }
+    }
+
+
+    qDebug() << meshList.size();
+    for (int i = 0; i < meshList.size(); i++) {
+        qDebug() << "#" << i << " = " << meshList[i].data->GetNumberOfPolys();
     }
 }
 
@@ -781,6 +788,10 @@ bool MedNUSMeshViewer::addMesh(const QStringList &fileNames)
     
     for (int i = 0; i < fileNames.size(); ++i)
     {
+        QElapsedTimer et;
+        et.start();
+
+
         QString suffix = QFileInfo(fileNames[i]).suffix();
        
         vtkPolyDataAlgorithm *reader = NULL;
@@ -875,6 +886,9 @@ bool MedNUSMeshViewer::addMesh(const QStringList &fileNames)
         item->setFlags(Qt::ItemIsEnabled);
         item->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
         meshTable->setItem(j, 3, item);
+
+        qint64 timeElapsed = et.elapsed();
+        qDebug() << "#" << i << ": " << timeElapsed << "ms";
     }
        
     installPipeline(startIndex);

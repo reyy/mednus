@@ -18,6 +18,9 @@
 #define QUESTION_ANSWERED_NOTICE_STYLESHEET "QLabel{margin-top:8px;margin-bottom:4px;padding:10px;background:rgba(0,0,0,50);border-top-left-radius: 16px;border-bottom-right-radius: 16px;}"
 #define QUESTION_UNANSWERED_NOTICE_STYLESHEET "QLabel{margin-top:8px;margin-bottom:4px;padding:10px;background:rgba(229,165,57,255);border-top-left-radius: 16px;border-bottom-right-radius: 16px;}"
 
+#define DROPDOWN_STYLESHEET "QComboBox { drop-down:color:#000000 }"
+#define DROPDOWN_LIST_VIEW_STYLESHEET "QListView { color: #000000} "
+
 // Quiz radio button highlights
 #define RADIO_BUTTON_HIGHLIGHT_GREEN "QRadioButton::indicator {width: 0px;height: 13px; } QRadioButton {font: bold;color: rgba(50, 255, 50, 255);}"
 #define RADIO_BUTTON_HIGHLIGHT_RED "QRadioButton::indicator {width: 0px;height: 13px; } QRadioButton {font: bold;color: rgba(255, 0, 0, 255);}"
