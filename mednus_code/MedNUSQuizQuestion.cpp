@@ -208,6 +208,42 @@ void MedNUSQuizQuestion::loadQuestion(QuestionMode mode, QWidget *parent,
     qDebug()<<"6";
 }
 
+void MedNUSQuizQuestion::unloadQuestion(QuestionMode prevMode) {
+    if (_questionNumLabel != NULL) {
+        delete _questionNumLabel;
+        _questionNumLabel = NULL;
+    }
+
+    if (_questionTextLabel != NULL) {
+        delete _questionTextLabel;
+        _questionTextLabel = NULL;
+    }
+
+    if (_questionImageLabel != NULL) {
+        delete _questionImageLabel;
+        _questionImageLabel = NULL;
+    }
+
+    if (prevMode == EDITOR) {
+        for (int i = 0; i < MAX_NO_OF_OPTIONS; i++) {
+            delete _optionsLabelEdit->at(0);
+            _optionsLabelEdit->removeFirst();
+        }
+    }
+
+    if (_teacherCommentLabel != NULL) {
+        delete _teacherCommentLabel;
+        _teacherCommentLabel = NULL;
+    }
+
+    if (_dummySpace->size() > 0) {
+        for (int i = 0; i < _amtOfDummySpace; i++) {
+            delete _dummySpace->at(0);
+            _dummySpace->removeFirst();
+        }
+    }
+}
+
 
 void MedNUSQuizQuestion::setNotice(bool isAnswered) {
     if (isAnswered) {
