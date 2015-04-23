@@ -90,6 +90,7 @@ MedNUSMeshViewer::MedNUSMeshViewer(QString dir, bool withMeshPanel)
             loadMesh();
         }
     } else {
+        this->setProperty("Cancelled", true);
         return;
     }
 
@@ -176,6 +177,15 @@ void MedNUSMeshViewer::setCameraView(int cameraViewAngle, double cameraPosition[
 
     renderWindow->Render();
 }
+
+int MedNUSMeshViewer::getViewAngle() {return renderer->GetActiveCamera()->GetViewAngle();}
+
+//VERY BAD STUFF //MUST CHANGE!
+double *MedNUSMeshViewer::getCamerPosition() {double a[3]; renderer->GetActiveCamera()->GetPosition(a);return a;}
+
+double *MedNUSMeshViewer::getCameraFocalPoint() {double a[3]; renderer->GetActiveCamera()->GetFocalPoint(a); return a;}
+
+double *MedNUSMeshViewer::getCameraViewUp() {double a[3]; renderer->GetActiveCamera()->GetViewUp(a); return a;}
 
 // Event handling
 

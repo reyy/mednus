@@ -93,6 +93,10 @@ public:
 
     //For story mode
     void setCameraView(int cameraViewAngle, double cameraPosition[3], double cameraFocalPoint[3], double cameraViewUp[3]);
+    int getViewAngle();
+    double* getCamerPosition();
+    double* getCameraFocalPoint();
+    double* getCameraViewUp();
 
 protected:
     void closeEvent(QCloseEvent *event);

@@ -56,6 +56,8 @@ void MedNUSPdfViewer::setPage(int num)
 
     image = pdfPage->renderToImage(0.4 * physicalDpiX(), 0.4 * physicalDpiY());
     imageLabel->setPixmap(QPixmap::fromImage(image));
+
+    pageNum = num;
 }
 
 

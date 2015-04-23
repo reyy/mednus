@@ -136,10 +136,39 @@ void MedNUSStoryManager::goToStoryPoint(MedNUSStoryManager::StoryPoint curStoryP
 
 }
 
+bool MedNUSStoryManager::fillInStoryPointData(qint64 pos, StoryPoint *toAdd)
+{
+    toAdd->timestamp = pos;
+    if(modelFile && modelFile->getContentWidget())
+    {
+        MedNUSMeshViewer* modelWidget = dynamic_cast<MedNUSMeshViewer*>(modelFile->getContentWidget());
+        //toAdd.cameraFocalPoint = modelWidget->
+        for(int i=0; i<3;i++)
+        {
+            toAdd->cameraPosition[i] = modelWidget->getCamerPosition()[i];
+            toAdd->cameraFocalPoint[i] = modelWidget->getCameraFocalPoint()[i];
+            toAdd->cameraViewUp[i] = modelWidget->getCameraViewUp()[i];
+        }
+        toAdd->cameraViewAngle = modelWidget->getViewAngle();
+    }
+    else
+        return false;
+
+    if(pdfFile && pdfFile->getContentWidget())
+    {
+        MedNUSPdfViewer* modelWidget = dynamic_cast<MedNUSPdfViewer*>(pdfFile->getContentWidget());
+        toAdd->slideNum = modelWidget->getPage();
+    }
+    else
+        return false;
+
+    return true;
+}
+
 void MedNUSStoryManager::videoPositionChanged(qint64 pos)
 {
     qint64 posDelta = pos - prevPos;
-    if(/*posDelta > POS_DELTA_LIMIT ||*/ posDelta < 0)
+    if(posDelta > POS_DELTA_LIMIT || posDelta < 0)
     {
         //Recheck everything
         for(int i = 0; i < storyPointList->size(); i++)
@@ -155,9 +184,10 @@ void MedNUSStoryManager::videoPositionChanged(qint64 pos)
     {
         StoryPoint next = (*storyPointList)[nextStoryPoint];
         //qDebug() << next.timestamp << pos;
-        if(next.timestamp <= pos)
+        if(next.timestamp <= pos + 999)
             goToStoryPoint(next);
     }
+    prevPos = pos;
 }
 
 void MedNUSStoryManager::initStoryPoints()
@@ -171,5 +201,57 @@ void MedNUSStoryManager::initStoryPoints()
             spList.push_back(point.timestamp);
         MedNUSVideoViewer* videoWidget = dynamic_cast<MedNUSVideoViewer*>(videoFile->getContentWidget());
         videoWidget->initStoryPoints(spList);
+
+        connect(videoWidget, SIGNAL(addEditStoryPoint(qint64)), this, SLOT(addEditStoryPoints(qint64)));
+        connect(videoWidget, SIGNAL(deleteStoryPoint(qint64)), this, SLOT(deleteStoryPoints(qint64)));
     }
+}
+
+void MedNUSStoryManager::addEditStoryPoints(qint64 pos)
+{
+    for(int i = 0; i<storyPointList->size(); i++)//StoryPoint point = (*storyPointList)[i]
+        if((*storyPointList)[i].timestamp == pos)
+        {
+            fillInStoryPointData(pos, &(*storyPointList)[i]);
+            initStoryPoints();
+            return;
+        }
+        else if((*storyPointList)[i].timestamp > pos)
+        {
+            StoryPoint toAdd;
+            fillInStoryPointData(pos, &toAdd);
+            storyPointList->insert(i, toAdd);
+            initStoryPoints();
+            return;
+        }
+    //Add to first
+    if(((*storyPointList).size() <= 0) || (*storyPointList)[0].timestamp > pos)
+    {
+        StoryPoint toAdd;
+        fillInStoryPointData(pos, &toAdd);
+        storyPointList->push_front(toAdd);
+        initStoryPoints();
+        return;
+    }
+    else if((*storyPointList)[storyPointList->size() - 1].timestamp < pos)
+    {
+        StoryPoint toAdd;
+        fillInStoryPointData(pos, &toAdd);
+        storyPointList->push_back(toAdd);
+        initStoryPoints();
+        return;
+    }
+    //Add to last
+}
+
+void MedNUSStoryManager::deleteStoryPoints(qint64 pos)
+{
+    for(int i = 0; i<storyPointList->size(); i++)//StoryPoint point = (*storyPointList)[i]
+        if((*storyPointList)[i].timestamp == pos)
+        {
+            storyPointList->removeAt(i);
+            initStoryPoints();
+            return;
+        }
+    //TODO: return error
 }

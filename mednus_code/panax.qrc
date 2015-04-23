@@ -134,5 +134,6 @@
         <file>images/bt_next.png</file>
         <file>images/bt_vidadd.png</file>
         <file>images/bt_videdit.png</file>
+        <file>images/bt_viddel.png</file>
     </qresource>
 </RCC>
