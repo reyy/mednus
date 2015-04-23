@@ -98,13 +98,13 @@ void MedNUSFrontBar::resizeEvent(QResizeEvent* event)
     _btView3->setGeometry(QRect(this->x()+this->geometry().width()-36*3, this->y()+space, 32,24));
     _logo->setVisible(true);
 
-    if(_currentMode==STUDENT) {
+    //if(_currentMode==STUDENT) {
         _btView1->setVisible(true);
         _btView2->setVisible(true);
         _btView3->setVisible(true);
-    } else {
-        _btView1->setVisible(false);
-        _btView2->setVisible(false);
-        _btView3->setVisible(false);
-    }
+    //} else {
+        //_btView1->setVisible(false);
+        //_btView2->setVisible(false);
+        //_btView3->setVisible(false);
+    //}
 }
